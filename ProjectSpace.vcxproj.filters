@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="src\Util.h" />
+    <ClInclude Include="src\rpg\Character.h" />
+    <ClInclude Include="src\menu\BattleMenu.h" />
+    <ClInclude Include="src\menu\BattleOrder.h" />
+    <ClInclude Include="src\menu\Button.h" />
+    <ClInclude Include="src\menu\ButtonMenu.h" />
+    <ClInclude Include="src\menu\HBox.h" />
+    <ClInclude Include="src\menu\MenuElement.h" />
+    <ClInclude Include="src\menu\Portrait.h" />
+    <ClInclude Include="src\menu\Slider.h" />
+    <ClInclude Include="src\menu\TextBox.h" />
+    <ClInclude Include="src\menu\VBox.h" />
+    <ClInclude Include="src\game\Camera.h" />
+    <ClInclude Include="src\game\Entity.h" />
+    <ClInclude Include="src\game\EScene.h" />
+    <ClInclude Include="src\game\Factory.h" />
+    <ClInclude Include="src\game\FpsCounter.h" />
+    <ClInclude Include="src\game\Game.h" />
+    <ClInclude Include="src\game\InputHandler.h" />
+    <ClInclude Include="src\game\Scene.h" />
+    <ClInclude Include="src\game\WindowStyle.h" />
+    <ClInclude Include="src\collision\Collidable.h" />
+    <ClInclude Include="src\collision\CollisionBox.h" />
+    <ClInclude Include="src\collision\CollisionManager.h" />
+    <ClInclude Include="src\collision\CollisionShape.h" />
+    <ClInclude Include="src\collision\CollisionType.h" />
+    <ClInclude Include="src\collision\Line2D.h" />
+    <ClInclude Include="src\collision\Line2f.h" />
+    <ClInclude Include="src\collision\SAT.h" />
+    <ClInclude Include="src\animation\AnimatedSprite.h" />
+    <ClInclude Include="src\animation\Animation.h" />
+    <ClInclude Include="src\animation\EAnimation.h" />
+    <ClInclude Include="src\animation\FadeAnimation.h" />
+    <ClInclude Include="src\animation\TranslateAnimation.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\rpg\Character.cpp" />
+    <ClCompile Include="src\menu\BattleMenu.cpp" />
+    <ClCompile Include="src\menu\BattleOrder.cpp" />
+    <ClCompile Include="src\menu\Button.cpp" />
+    <ClCompile Include="src\menu\ButtonMenu.cpp" />
+    <ClCompile Include="src\menu\HBox.cpp" />
+    <ClCompile Include="src\menu\Portrait.cpp" />
+    <ClCompile Include="src\menu\Slider.cpp" />
+    <ClCompile Include="src\menu\TextBox.cpp" />
+    <ClCompile Include="src\menu\VBox.cpp" />
+    <ClCompile Include="src\game\Camera.cpp" />
+    <ClCompile Include="src\game\Factory.cpp" />
+    <ClCompile Include="src\game\FpsCounter.cpp" />
+    <ClCompile Include="src\game\Game.cpp" />
+    <ClCompile Include="src\game\InputHandler.cpp" />
+    <ClCompile Include="src\game\Scene.cpp" />
+    <ClCompile Include="src\collision\Collidable.cpp" />
+    <ClCompile Include="src\collision\CollisionBox.cpp" />
+    <ClCompile Include="src\collision\CollisionManager.cpp" />
+    <ClCompile Include="src\collision\CollisionShape.cpp" />
+    <ClCompile Include="src\collision\Line2D.cpp" />
+    <ClCompile Include="src\collision\Line2F.cpp" />
+    <ClCompile Include="src\animation\AnimatedSprite.cpp" />
+    <ClCompile Include="src\animation\Animation.cpp" />
+    <ClCompile Include="src\animation\FadeAnimation.cpp" />
+    <ClCompile Include="src\animation\TranslateAnimation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="rsrc\1_magicspell_spritesheet.png" />
+  </ItemGroup>
+</Project>
