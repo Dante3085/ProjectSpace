@@ -10,7 +10,8 @@ namespace ProjectSpace
 	enum class EScene
 	{
 		DEBUG = 0,
-		LEVEL_ONE = 1,
+		LEVEL_ONE,
+		TILEMAP,
 	};
 }
 

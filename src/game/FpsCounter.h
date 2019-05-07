@@ -82,11 +82,16 @@ namespace ProjectSpace
 		void move(float x, float y);
 		void move(sf::Vector2f v);
 
+		void setHide(bool hide);
+		bool isHidden();
+
 	private:
 		sf::Font font; 	 	   // Font of FpsCounter text.
 		sf::Text text; 	 	   // Displayable Text of the FpsCounter.
 		std::string str; 	   // Text Content of the FpsCounter.
 		sf::Vector2f position; // Position of the FpsCounter. OVERHEAD (Muss ueberall veraendert werden)
+
+		bool hide;
 	};
 }
 

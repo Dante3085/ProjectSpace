@@ -50,7 +50,7 @@ namespace ProjectSpace
 		 *
 		 * @return     The key state.
 		 */
-		bool isKeyPressed(sf::Keyboard::Key key);
+		bool wasKeyPressed(sf::Keyboard::Key key);
 
 	private:
 		std::vector<std::function<void()>> actions;   // All input actions of the InputHandler.

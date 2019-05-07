@@ -22,7 +22,7 @@ namespace ProjectSpace
 		keyStates[key] = pressed;
 	}
 
-	bool InputHandler::isKeyPressed(sf::Keyboard::Key key)
+	bool InputHandler::wasKeyPressed(sf::Keyboard::Key key)
 	{
 		if (keyStates.count(key) == 0)
 		{

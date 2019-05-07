@@ -64,7 +64,7 @@ namespace ProjectSpace
 			sf::Time time = clock.restart();
 			float frameTime = time.asSeconds();
 			
-			std::cout << "frameTime: " << frameTime << ", fps: " << 1.0f / frameTime << std::endl;
+			// std::cout << "frameTime: " << frameTime << ", fps: " << 1.0f / frameTime << std::endl;
 
 			// This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen. Ist wohl ziemlich wichtig in SFML.)
 			sf::Event event;
@@ -113,6 +113,7 @@ namespace ProjectSpace
 		// Creating Levels
 		scenes[EScene::DEBUG] = Factory::CREATE_DEBUG_SCENE(window);
 		scenes[EScene::LEVEL_ONE] = Factory::CREATE_DEBUG_SCENE_2(window);
+		scenes[EScene::TILEMAP] = Factory::CREATE_TILEMAP_SCENE(window);
 		currentScene = scenes[EScene::DEBUG];
 
 		// Fps Counter of the Game.
@@ -145,11 +146,16 @@ namespace ProjectSpace
 			setCurrentScene(EScene::LEVEL_ONE);
 		}, window, "Level 1"};
 
-		btnBox->addMenuElements({btn, btn2, btn3, btn4});
+		Button* btn5 = new Button{ [this]()
+		{
+			setCurrentScene(EScene::TILEMAP);
+		}, window, "Tilemap Level" };
+
+		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5});
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
-		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4}, globalInputHandler};
+		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5}, globalInputHandler};
 
 		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 0.5f};
 		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}, 0.5f};
@@ -160,7 +166,8 @@ namespace ProjectSpace
 		});
 
 		// Setting up input handler
-		globalInputHandler->add([this, menuBackward, menuForward]()
+		globalInputHandler->storeKeyState(sf::Keyboard::F1, false);
+		globalInputHandler->add([this, menuBackward, menuForward, globalInputHandler, fpsCounter]()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
@@ -178,6 +185,20 @@ namespace ProjectSpace
 				menuForward->stop();
 				menuBackward->start();
 			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1) && !globalInputHandler->wasKeyPressed(sf::Keyboard::F1))
+			{
+				if (fpsCounter->isHidden())
+				{
+					fpsCounter->setHide(false);
+				}
+				else
+				{
+					fpsCounter->setHide(true);
+				}
+			}
+
+			globalInputHandler->storeKeyState(sf::Keyboard::F1, sf::Keyboard::isKeyPressed(sf::Keyboard::F1));
 		});
 
 		globalEntities = {fpsCounter, globalInputHandler, btnBox, menuForward, menuBackward, buttonMenu};

@@ -5,6 +5,7 @@ namespace ProjectSpace
 {
 
 	FpsCounter::FpsCounter(std::string fontPath, int x, int y)
+		: hide{false}
 	{
 		font.loadFromFile(fontPath);
 		text.setFont(font);
@@ -13,14 +14,20 @@ namespace ProjectSpace
 
 	void FpsCounter::update(sf::Time time)
 	{
-		str = "fps: ";
-		str.append(std::to_string(1.0f / time.asSeconds()));
-		text.setString(str);
+		if (!hide)
+		{
+			str = "fps: ";
+			str.append(std::to_string(1.0f / time.asSeconds()));
+			text.setString(str);
+		}
 	}
 
 	void FpsCounter::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		target.draw(text);
+		if (!hide)
+		{
+			target.draw(text);
+		}
 	}
 
 	sf::Vector2f FpsCounter::getPosition() const
@@ -62,5 +69,14 @@ namespace ProjectSpace
 	{
 		position += v;
 		text.move(position);
+	}
+
+	void FpsCounter::setHide(bool hide)
+	{
+		this->hide = hide;
+	}
+	bool FpsCounter::isHidden()
+	{
+		return hide;
 	}
 }

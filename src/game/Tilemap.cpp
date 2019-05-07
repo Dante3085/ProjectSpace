@@ -59,7 +59,7 @@ namespace ProjectSpace
 			{
 				sf::RectangleShape shape{ tileSize };
 				shape.setPosition(position.x + (col * tileSize.x), position.y + (row * tileSize.y));
-				shape.setFillColor(sf::Color::Red);
+				shape.setFillColor(sf::Color::Transparent);
 
 				tiles.push_back(std::vector<sf::RectangleShape>{});
 				tiles[row].push_back(shape);

@@ -38,7 +38,7 @@ namespace ProjectSpace
 
 	void ButtonMenu::update(sf::Time time)
 	{
-		if (!inputHandler->isKeyPressed(keyForward))
+		if (!inputHandler->wasKeyPressed(keyForward))
 		{
 			if (sf::Keyboard::isKeyPressed(keyForward))
 			{
@@ -46,7 +46,7 @@ namespace ProjectSpace
 			}
 		}
 
-		if (!inputHandler->isKeyPressed(keyBackward))
+		if (!inputHandler->wasKeyPressed(keyBackward))
 		{
 			if (sf::Keyboard::isKeyPressed(keyBackward))
 			{
@@ -56,7 +56,7 @@ namespace ProjectSpace
 
 		if (!sf::Keyboard::isKeyPressed(keyPress))
 		{
-			if (inputHandler->isKeyPressed(keyPress))
+			if (inputHandler->wasKeyPressed(keyPress))
 			{
 				buttons[selected]->press();
 			}
