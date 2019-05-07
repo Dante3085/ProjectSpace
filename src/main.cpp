@@ -1,10 +1,7 @@
 
 #include "game/Game.h"
-#include "collision/Line2F.h"
 
 using namespace ProjectSpace;
-
-// Auf dem develop branch
 
 /* TODO
 
@@ -76,6 +73,9 @@ using namespace ProjectSpace;
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
 
+ - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
+ die Camera aber nicht mehr geupdatet wird.
+
 */
 
 /* USEFULL LINKS
@@ -89,17 +89,17 @@ using namespace ProjectSpace;
  - Comment member variables by using Single-Line too keep the class shorter
  */
 
- /* INCLUDES
-   - <> includes vor "" includes
-   - Sind mit einer Leerzeile voneinander getrennt.
-   - AUSNAHME: In cpp Files steht der include des entsprechenden h Files immer ganz oben abgetrennt mit einer Leerzeile.
-   - Nur das benoetigte includieren.
-  */
+/* INCLUDES
+ - <> includes vor "" includes
+ - Sind mit einer Leerzeile voneinander getrennt.
+ - AUSNAHME: In cpp Files steht der include des entsprechenden h Files immer ganz oben abgetrennt mit einer Leerzeile.
+ - Nur das benoetigte includieren.
+*/
 
-  /* SUBLIME EDITOR
-   - STRG + SHIFT + P: "install package control" (Ist das installiert, koennen Packages/Erweiterungen fuer Sublime installiert werden.)
-   - STRG + SHIFT + P: "install package -> DoxyDoxygen" (Installiert Doxygen Dokumentationssystem)
-   */
+/* SUBLIME EDITOR
+ - STRG + SHIFT + P: "install package control" (Ist das installiert, koennen Packages/Erweiterungen fuer Sublime installiert werden.)
+ - STRG + SHIFT + P: "install package -> DoxyDoxygen" (Installiert Doxygen Dokumentationssystem)
+*/
 
 int main()
 {

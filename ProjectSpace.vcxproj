@@ -53,6 +53,7 @@
     <ClInclude Include="src\menu\VBox.h" />
     <ClInclude Include="src\rpg\Character.h" />
     <ClInclude Include="src\Util.h" />
+    <ClInclude Include="src\game\Tilemap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\animation\AnimatedSprite.cpp" />
@@ -82,6 +83,7 @@
     <ClCompile Include="src\menu\TextBox.cpp" />
     <ClCompile Include="src\menu\VBox.cpp" />
     <ClCompile Include="src\rpg\Character.cpp" />
+    <ClCompile Include="src\game\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="rsrc\1_magicspell_spritesheet.png" />

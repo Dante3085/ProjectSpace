@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SFML/Audio/Music.hpp>
 
+#include "Tilemap.h"
 #include "../menu/BattleMenu.h"
 #include "../menu/TextBox.h"
 #include "../menu/Button.h"
@@ -238,9 +239,19 @@ namespace ProjectSpace
 
 		BattleMenu* battleMenu = new BattleMenu{sf::Vector2f{1000, 500}, inputHandler, window};
 
-		scene->addEntities({textBox, battleOrder, collisionManager, inputHandler, battleMenu, midnightSprite, knightSprite, fadeAnimation, camera});
+		sf::Texture* texture = new sf::Texture{};
+		texture->loadFromFile("rsrc/generic-rpg/tiles/generic-rpg-tile02.png");
 
-		scene->addDrawables({backgroundSprite, knightSprite, battleOrder, battleMenu, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube,
+		Tilemap* tilemap = new Tilemap{ sf::Vector2f{0, 0}, sf::Vector2f{64, 64}, std::map<char, sf::Texture*>
+		{
+			{'s', texture}
+		} };
+
+		tilemap->loadFromFile("rsrc/test.txt");
+
+		scene->addEntities({textBox, battleOrder, collisionManager, inputHandler, battleMenu, midnightSprite, knightSprite, fadeAnimation});
+
+		scene->addDrawables({backgroundSprite, tilemap, knightSprite, battleOrder, battleMenu, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube,
 							 threeDCube2, threeDCube3, rectangle, midnightSprite, textBox});
 
 		return scene;

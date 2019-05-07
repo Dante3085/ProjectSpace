@@ -64,7 +64,7 @@ namespace ProjectSpace
 			sf::Time time = clock.restart();
 			float frameTime = time.asSeconds();
 			
-			// std::cout << "frameTime: " << frameTime << ", fps: " << 1.0f / frameTime << std::endl;
+			std::cout << "frameTime: " << frameTime << ", fps: " << 1.0f / frameTime << std::endl;
 
 			// This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen. Ist wohl ziemlich wichtig in SFML.)
 			sf::Event event;
@@ -133,10 +133,7 @@ namespace ProjectSpace
 			window.close();
 		}, window, "EXIT"};
 
-		Button* btn2 = new Button{[this]()
-		{
-			window.close();
-		}, window, "EXIT"};
+		Button* btn2 = new Button{ window, "Close Menu" };
 
 		Button* btn3 = new Button{[this]()
 		{
@@ -156,6 +153,11 @@ namespace ProjectSpace
 
 		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 0.5f};
 		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}, 0.5f};
+
+		btn2->setOnPressed([this, menuBackward]()
+		{
+			menuBackward->start();
+		});
 
 		// Setting up input handler
 		globalInputHandler->add([this, menuBackward, menuForward]()

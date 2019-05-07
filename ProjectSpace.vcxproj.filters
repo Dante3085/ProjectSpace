@@ -35,6 +35,7 @@
     <ClInclude Include="src\animation\EAnimation.h" />
     <ClInclude Include="src\animation\FadeAnimation.h" />
     <ClInclude Include="src\animation\TranslateAnimation.h" />
+    <ClInclude Include="src\game\Tilemap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -64,6 +65,7 @@
     <ClCompile Include="src\animation\Animation.cpp" />
     <ClCompile Include="src\animation\FadeAnimation.cpp" />
     <ClCompile Include="src\animation\TranslateAnimation.cpp" />
+    <ClCompile Include="src\game\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="rsrc\1_magicspell_spritesheet.png" />
