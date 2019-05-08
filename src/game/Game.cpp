@@ -59,7 +59,8 @@ namespace ProjectSpace
 		sf::Clock clock{};
 
 		// This is main Game-Loop
-		int i = 0;
+		std::string strFrameTime{""};
+		int counter = 0;
 		while (window.isOpen())
 		{
 			// At the start of each iteration "clock.restart()" will return the time that the last iteration took.
@@ -67,7 +68,19 @@ namespace ProjectSpace
 			sf::Time time = clock.restart();
 			float frameTime = time.asSeconds();
 			
-			// std::cout << "frameTime: " << frameTime << ", fps: " << 1.0f / frameTime << std::endl;
+			strFrameTime.append("frameTime: ");
+			strFrameTime.append(std::to_string(frameTime));
+			strFrameTime.append(" ");
+			strFrameTime.append("fps: ");
+			strFrameTime.append(std::to_string(1.0f / frameTime));
+			strFrameTime.append("\n");
+
+			if (counter == 10)
+			{
+				std::cout << strFrameTime;
+				strFrameTime.clear();
+				counter = 0;
+			}
 
 			// This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen. Ist wohl ziemlich wichtig in SFML.)
 			sf::Event event;
@@ -97,7 +110,8 @@ namespace ProjectSpace
 			}
 
 			window.display();
-			++i;
+
+			++counter;
 		}
 	}
 

@@ -69,17 +69,16 @@ namespace ProjectSpace
 	{
 		if (drawBoundingBox)
 		{
-			sf::FloatRect globalBounds = shape.getGlobalBounds();
+			/*sf::FloatRect globalBounds = shape.getGlobalBounds();
 
 			sf::RectangleShape boundingBox{sf::Vector2f{globalBounds.width, globalBounds.height}};
 			boundingBox.setPosition(sf::Vector2f{globalBounds.left, globalBounds.top});
 			boundingBox.setOutlineThickness(1);
 			boundingBox.setOutlineColor(sf::Color{30,144,255});
-			boundingBox.setFillColor(sf::Color{0, 0, 0, 0});
-
-			target.draw(shape);
+			boundingBox.setFillColor(sf::Color{0, 0, 0, 0});*/
 			// target.draw(boundingBox);
 		}
+		target.draw(shape);
 	}
 
 	sf::Shape const& CollisionShape::getShape() const

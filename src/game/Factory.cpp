@@ -239,7 +239,7 @@ namespace ProjectSpace
 
 		BattleMenu * battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
-		scene->addEntities({ textBox, battleOrder, collisionManager, inputHandler, battleMenu, midnightSprite, knightSprite, fadeAnimation });
+		scene->addEntities({ textBox, battleOrder, inputHandler, battleMenu, midnightSprite, knightSprite, fadeAnimation, collisionManager });
 
 		scene->addDrawables({ backgroundSprite, knightSprite, battleOrder, battleMenu, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube,
 							 threeDCube2, threeDCube3, rectangle, midnightSprite, textBox });
