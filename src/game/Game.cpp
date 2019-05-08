@@ -25,7 +25,7 @@ namespace ProjectSpace
 	: window{sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style},
 	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, windowHeight{(float)sf::VideoMode::getDesktopMode().height}
 	{
-		window.setFramerateLimit(61);
+		// window.setFramerateLimit(61);
 
 		init();
 	}
@@ -34,7 +34,7 @@ namespace ProjectSpace
 	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}
 	{
 		// Makes sure that not more than 60 Frames per Second are calculated. Save Ressources.
-		window.setFramerateLimit(61);
+		// window.setFramerateLimit(61);
 
 		init();
 	}
@@ -50,6 +50,8 @@ namespace ProjectSpace
 		{
 			delete e;
 		}
+
+		// Was mache ich jetzt, wenn Drawables die keine Entities sind existieren ?
 	}
 	
 	void Game::start()
@@ -57,6 +59,7 @@ namespace ProjectSpace
 		sf::Clock clock{};
 
 		// This is main Game-Loop
+		int i = 0;
 		while (window.isOpen())
 		{
 			// At the start of each iteration "clock.restart()" will return the time that the last iteration took.
@@ -94,6 +97,7 @@ namespace ProjectSpace
 			}
 
 			window.display();
+			++i;
 		}
 	}
 

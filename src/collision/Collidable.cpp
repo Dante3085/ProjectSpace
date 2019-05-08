@@ -13,7 +13,7 @@ namespace ProjectSpace
 		}
 	}
 
-	std::vector<Line2F*> Collidable::getLines() const
+	std::vector<Line2F*> const& Collidable::getLines() const
 	{
 		return lines;
 	}

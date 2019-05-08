@@ -9,6 +9,8 @@ namespace ProjectSpace
 		{
 			delete e;
 		}
+
+		// Was mache ich jetzt, wenn Drawables die keine Entities sind existieren ?
 	}
 
 	void Scene::update(sf::Time time)

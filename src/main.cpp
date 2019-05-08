@@ -76,6 +76,11 @@ using namespace ProjectSpace;
  - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
  die Camera aber nicht mehr geupdatet wird.
 
+ - Tilemap mit VertexArray. Anzahl der sf::Drawable::draw calls bestimmt Performance. VertexArrays können in einem draw call gezeichnet werden.
+   (https://www.sfml-dev.org/tutorials/2.5/graphics-vertex-array.php)
+
+ - Game Instanz als Singleton
+
 */
 
 /* USEFULL LINKS

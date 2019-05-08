@@ -40,6 +40,7 @@
     <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\game\InputHandler.h" />
     <ClInclude Include="src\game\Scene.h" />
+    <ClInclude Include="src\game\Tilemap.h" />
     <ClInclude Include="src\game\WindowStyle.h" />
     <ClInclude Include="src\menu\BattleMenu.h" />
     <ClInclude Include="src\menu\BattleOrder.h" />
@@ -53,7 +54,6 @@
     <ClInclude Include="src\menu\VBox.h" />
     <ClInclude Include="src\rpg\Character.h" />
     <ClInclude Include="src\Util.h" />
-    <ClInclude Include="src\game\Tilemap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\animation\AnimatedSprite.cpp" />
@@ -83,7 +83,6 @@
     <ClCompile Include="src\menu\TextBox.cpp" />
     <ClCompile Include="src\menu\VBox.cpp" />
     <ClCompile Include="src\rpg\Character.cpp" />
-    <ClCompile Include="src\game\Tilemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="rsrc\1_magicspell_spritesheet.png" />
@@ -160,11 +159,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>Y:\Programming\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Y:\Programming\Libraries\SFML-2.5.1\lib;C:\Programming\Libraries\SFML-2.5.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-network-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

@@ -22,7 +22,7 @@ namespace ProjectSpace
 		virtual sf::FloatRect getGlobalBounds() const = 0;
 		virtual sf::Shape const& getShape() const = 0;
 
-		std::vector<Line2F*> getLines() const;
+		std::vector<Line2F*> const& getLines() const;
 		bool getDrawBoundingBox();
 		void setDrawBoundingBox(bool drawBoundingBox);
 		CollisionType getCollisionType();

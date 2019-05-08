@@ -267,7 +267,7 @@ namespace ProjectSpace
 	{
 		Scene* scene = new Scene();
 
-		sf::Texture* left = new sf::Texture{};
+		/*sf::Texture* left = new sf::Texture{};
 		left->loadFromFile("rsrc/generic-rpg/tiles/left-tile.png");
 
 		sf::Texture* topLeftCorner = new sf::Texture{};
@@ -317,9 +317,28 @@ namespace ProjectSpace
 			{'t', tree},
 		} };
 
-		trees->loadFromFile("tilemaps/trees.txt");
+		trees->loadFromFile("tilemaps/trees.txt");*/
 
-		scene->addDrawables({ ground, trees });
+		const int level[] =
+		{
+			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+			1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+			0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+			0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+			0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+			2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+			0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+		};
+
+		// create the tilemap from the level definition
+		Tilemap* map = new Tilemap{};
+		if (!map->load("rsrc/sfml-tileset.png", sf::Vector2u(32, 32), level, 16, 8))
+		{
+			std::cout << "@CREATE_TILEMAP_SCENE: Did not find Tilemap file." << std::endl;
+		}
+
+		scene->addDrawables({ map });
 
 		return scene;
 	}
