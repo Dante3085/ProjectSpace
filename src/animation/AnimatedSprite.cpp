@@ -9,8 +9,8 @@
 namespace ProjectSpace
 {
 	AnimatedSprite::AnimatedSprite(sf::Vector2f position, float speed)
-		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, speed{ speed }, previousPosition{ sprite.getPosition() },
-		collisionHandler{ [](Collidable * partner) {} }
+		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
+		speed{ speed }, previousPosition{ sprite.getPosition() }
 	{
 		sprite.setPosition(position);
 		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
@@ -107,16 +107,6 @@ namespace ProjectSpace
 	{
 		// return sprite.getGlobalBounds().intersects(partner->getGlobalBounds());
 		return false;
-	}
-
-	void AnimatedSprite::handleCollision(Collidable * partner)
-	{
-		collisionHandler(partner);
-	}
-
-	void AnimatedSprite::setCollisionHandler(std::function<void(Collidable * partner)> collisionHandler)
-	{
-		this->collisionHandler = collisionHandler;
 	}
 
 	sf::FloatRect AnimatedSprite::getGlobalBounds() const

@@ -25,7 +25,19 @@ namespace ProjectSpace
 
 	bool CollisionBox::collidesWith(Collidable const* partner) const
 	{
-		return box.getGlobalBounds().intersects(partner->getGlobalBounds());
+		// return box.getGlobalBounds().intersects(partner->getGlobalBounds());
+
+		for (Line2F* l1 : this->lines)
+		{
+			for (Line2F* l2 : partner->getLines())
+			{
+				if (l1->intersects(*l2))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	void CollisionBox::handleCollision(Collidable* partner)

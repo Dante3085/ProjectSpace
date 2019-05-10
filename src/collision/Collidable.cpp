@@ -3,7 +3,11 @@
 
 namespace ProjectSpace
 {
-	Collidable::Collidable(CollisionType type) : type{type}, drawBoundingBox{false} {}
+	Collidable::Collidable(CollisionType type) 
+	: type{ type }, drawBoundingBox{ false }, collisionHandler{ [](Collidable* partner){} } 
+	{
+
+	}
 
 	Collidable::~Collidable() 
 	{
@@ -11,6 +15,11 @@ namespace ProjectSpace
 		{
 			delete l;
 		}
+	}
+
+	void Collidable::handleCollision(Collidable* partner)
+	{
+		collisionHandler(partner);
 	}
 
 	std::vector<Line2F*> const& Collidable::getLines() const
@@ -36,5 +45,10 @@ namespace ProjectSpace
 	void Collidable::setCollisionType(CollisionType type)
 	{
 		this->type = type;
+	}
+
+	void Collidable::setCollisionHandler(std::function<void(Collidable* partner)> collisionHandler)
+	{
+		this->collisionHandler = collisionHandler;
 	}
 }

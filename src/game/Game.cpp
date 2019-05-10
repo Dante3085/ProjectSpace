@@ -25,7 +25,7 @@ namespace ProjectSpace
 	: window{sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style},
 	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, windowHeight{(float)sf::VideoMode::getDesktopMode().height}
 	{
-		// window.setFramerateLimit(61);
+		window.setFramerateLimit(60);
 
 		init();
 	}
@@ -34,7 +34,7 @@ namespace ProjectSpace
 	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}
 	{
 		// Makes sure that not more than 60 Frames per Second are calculated. Save Ressources.
-		// window.setFramerateLimit(61);
+		window.setFramerateLimit(60);
 
 		init();
 	}
@@ -194,13 +194,13 @@ namespace ProjectSpace
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
 			{
-				menuBackward->stop();
+				menuBackward->pause();
 				menuForward->start();
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 			{
-				menuForward->stop();
+				menuForward->pause();
 				menuBackward->start();
 			}
 

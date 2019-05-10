@@ -88,13 +88,15 @@ namespace ProjectSpace
 		knightSprite->setAnimation(EAnimation::IDLE);
 		knightSprite->setDrawBoundingBox(true);
 
-		knightSprite->setCollisionHandler([knightSprite](Collidable * partner)
+		knightSprite->setCollisionHandler([knightSprite](Collidable* partner)
+		{
+			if (partner->getCollisionType() == CollisionType::WALL)
 			{
-				if (partner->getCollisionType() == CollisionType::WALL)
-				{
-					knightSprite->setPosition(knightSprite->getPreviousPosition());
-				}
-			});
+				knightSprite->setPosition(knightSprite->getPreviousPosition());
+			}
+		});
+
+		Character* knight = new Character{*knightSprite};
 
 		FadeAnimation * fadeAnimation = new FadeAnimation{ knightSprite->getSprite(), 1000 };
 
@@ -165,55 +167,16 @@ namespace ProjectSpace
 		threeDCube3->setDrawBoundingBox(true);
 		threeDCube3->setCollisionType(CollisionType::WALL);
 
-		CollisionManager * collisionManager = new CollisionManager{ {knightSprite, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, rectangle, smallDiamant, bigDiamant, threeDCube,
-																   threeDCube2, threeDCube3} };
+		sf::Vector2u windowSize{ window.getSize() };
+		CollisionBox* windowBoundsBox = new CollisionBox{ sf::Vector2f{(float)windowSize.x, (float)windowSize.y}, sf::Vector2f{0, 0} };
+		windowBoundsBox->setCollisionType(CollisionType::WALL);
+		windowBoundsBox->setDrawBoundingBox(true);
 
-		BattleOrder * battleOrder = new BattleOrder
-		{
-			{
-				new Character{15, 20, 3, 4}, new Character, new Character
-			}, sf::Vector2f{400, 200}, 5, 5
-		};
+		CollisionManager * collisionManager = new CollisionManager{ {knightSprite, triangle, triangle2, triangle3, triangle4, triangle5, 
+																	 triangle6, rectangle, smallDiamant, bigDiamant, threeDCube,
+																     threeDCube2, threeDCube3, windowBoundsBox} };
 
 		InputHandler * inputHandler = new InputHandler{};
-		inputHandler->add([knightSprite, &window, battleOrder, fadeAnimation]()
-			{
-				sf::Vector2f pos = knightSprite->getPosition();
-				float speed = knightSprite->getSpeed();
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-				{
-					knightSprite->setAnimation(EAnimation::RIGHT);
-					knightSprite->move(speed, 0);
-				}
-
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-				{
-					knightSprite->setAnimation(EAnimation::LEFT);
-					knightSprite->move(-speed, 0);
-				}
-
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-				{
-					knightSprite->setAnimation(EAnimation::UP);
-					knightSprite->move(0, -speed);
-				}
-
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-				{
-					knightSprite->setAnimation(EAnimation::DOWN);
-					knightSprite->move(0, speed);
-				}
-
-				else
-				{
-					knightSprite->setAnimation(EAnimation::IDLE);
-				}
-
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-				{
-					fadeAnimation->start();
-				}
-			});
 
 		/*sf::Music* music = new sf::Music;
 
@@ -239,10 +202,10 @@ namespace ProjectSpace
 
 		BattleMenu * battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
-		scene->addEntities({ textBox, battleOrder, inputHandler, battleMenu, midnightSprite, knightSprite, fadeAnimation, collisionManager });
+		scene->addEntities({ textBox, inputHandler, battleMenu, midnightSprite, knight, fadeAnimation, collisionManager });
 
-		scene->addDrawables({ backgroundSprite, knightSprite, battleOrder, battleMenu, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube,
-							 threeDCube2, threeDCube3, rectangle, midnightSprite, textBox });
+		scene->addDrawables({ backgroundSprite, knight, battleMenu, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube,
+							 threeDCube2, threeDCube3, rectangle, midnightSprite, textBox, windowBoundsBox });
 
 		return scene;
 	}

@@ -1,12 +1,61 @@
 
 #include "Character.h"
+#include <math.h>
 
 namespace ProjectSpace
 {
-	Character::Character(int strength, int defense, int agility, int intelligence)
-	: strength{strength}, defense{defense}, agility{agility}, intelligence{intelligence}
+	Character::Character(AnimatedSprite& animSprite, int strength, int defense, int agility, int intelligence)
+	: animSprite{animSprite}, strength{strength}, defense{defense}, agility{agility}, intelligence{intelligence},
+	movementKeys{{NORTH, sf::Keyboard::W}, {EAST, sf::Keyboard::D}, {SOUTH, sf::Keyboard::S}, {WEST, sf::Keyboard::A}},
+	velocity{0, 0}, acceleration{0, 0}, frictionConstant{0.01f}, speed{0.75f}
 	{
 
+	}
+
+	void Character::update(sf::Time time)
+	{
+		if (sf::Keyboard::isKeyPressed(movementKeys[NORTH]))
+		{
+			velocity.y -= speed;
+			animSprite.setAnimation(EAnimation::UP);
+		}
+
+		else if (sf::Keyboard::isKeyPressed(movementKeys[EAST]))
+		{
+			velocity.x += speed;
+			animSprite.setAnimation(EAnimation::RIGHT);
+		}
+
+		else if (sf::Keyboard::isKeyPressed(movementKeys[SOUTH]))
+		{
+			velocity.y += speed;
+			animSprite.setAnimation(EAnimation::DOWN);
+		}
+
+		else if (sf::Keyboard::isKeyPressed(movementKeys[WEST]))
+		{
+			velocity.x -= speed;
+			animSprite.setAnimation(EAnimation::LEFT);
+		}
+		else
+		{
+			animSprite.setAnimation(EAnimation::IDLE);
+		}
+
+		animSprite.move(velocity);
+		velocity *= pow(frictionConstant, time.asSeconds());
+
+		animSprite.update(time);
+	}
+
+	void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(animSprite);
+	}
+
+	void Character::setMovementKeys(std::map<EDirection, sf::Keyboard::Key>& movementKeys)
+	{
+		this->movementKeys = movementKeys;
 	}
 
 	int Character::getStrength()
@@ -47,5 +96,10 @@ namespace ProjectSpace
 	void Character::setIntelligence(int intelligence)
 	{
 		this->intelligence = intelligence;
+	}
+
+	void Character::setMovementKeys(std::map<EDirection, sf::Keyboard::Key> movementKeys)
+	{
+		this->movementKeys = movementKeys;
 	}
 }

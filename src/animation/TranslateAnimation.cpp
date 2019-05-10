@@ -75,14 +75,14 @@ namespace ProjectSpace
 		doUpdate = true;
 	}
 
-	void TranslateAnimation::stop()
+	void TranslateAnimation::pause()
 	{
 		doUpdate = false;
 	}
 
 	void TranslateAnimation::reset()
 	{
-			// menuElement->setPosition(from);
+		// menuElement->setPosition(from);
 		doUpdate = false;
 		finished = false;
 	}

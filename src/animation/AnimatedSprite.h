@@ -65,11 +65,9 @@ namespace ProjectSpace
 		 */
 		void addAnimation(EAnimation name, Animation* animation);
 
-		void setCollisionHandler(std::function<void(Collidable* partner)> collisionHandler);
 		sf::FloatRect getGlobalBounds() const override;
 		sf::Shape const& getShape() const override;
 		bool collidesWith(Collidable const* partner) const override;
-		void handleCollision(Collidable* partner) override;
 		sf::Vector2f getPreviousPosition() const;
 		float getSpeed();
 		void setSpeed(float speed);
@@ -110,7 +108,6 @@ namespace ProjectSpace
 		float elapsedSeconds; 						 // For tracking time when updating frames.
 		float speed; 								 // Pixels per Second.
 		sf::Vector2f previousPosition;
-		std::function<void(Collidable* partner)> collisionHandler;
 	};
 }
 
