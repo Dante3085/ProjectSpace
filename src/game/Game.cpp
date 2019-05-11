@@ -77,7 +77,7 @@ namespace ProjectSpace
 
 			if (counter == 10)
 			{
-				std::cout << strFrameTime;
+				// std::cout << strFrameTime;
 				strFrameTime.clear();
 				counter = 0;
 			}

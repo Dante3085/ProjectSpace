@@ -1,13 +1,14 @@
 
 #include "Character.h"
 #include <math.h>
+#include "../Util.h"
 
 namespace ProjectSpace
 {
 	Character::Character(AnimatedSprite& animSprite, int strength, int defense, int agility, int intelligence)
 	: animSprite{animSprite}, strength{strength}, defense{defense}, agility{agility}, intelligence{intelligence},
 	movementKeys{{NORTH, sf::Keyboard::W}, {EAST, sf::Keyboard::D}, {SOUTH, sf::Keyboard::S}, {WEST, sf::Keyboard::A}},
-	velocity{0, 0}, acceleration{0, 0}, frictionConstant{0.01f}, speed{0.75f}
+	velocity{0, 0}, acceleration{0, 0}, frictionConstant{0.0001f}, speed{2.f}
 	{
 
 	}
@@ -44,6 +45,15 @@ namespace ProjectSpace
 
 		animSprite.move(velocity);
 		velocity *= pow(frictionConstant, time.asSeconds());
+
+		if (abs(velocity.x) < 0.1f)
+		{
+			velocity.x = 0;
+		}
+		if (abs(velocity.y) < 0.1f)
+		{
+			velocity.y = 0;
+		}
 
 		animSprite.update(time);
 	}

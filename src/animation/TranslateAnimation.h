@@ -112,6 +112,9 @@ namespace ProjectSpace
 		bool finished;				// Stores whether TranslateAnimation has successfully translated it's MenuElement 
 									// to the end position.
 		float duration;				// Stores how long the TranslateAnimation will take.
+		
+		float frictionConstant;
+		sf::Vector2f velocity;
 	};
 }
 

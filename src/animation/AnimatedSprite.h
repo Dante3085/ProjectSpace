@@ -20,9 +20,6 @@
 
 namespace ProjectSpace
 {
-	/**
-	 * @brief Creates animated Sprites using instances of the Animation class
-	 */
 	class AnimatedSprite : public sf::Drawable, public Entity, public Collidable
 	{
 	public:
@@ -33,7 +30,7 @@ namespace ProjectSpace
 		 * @param[in]  position      Initial position of the AnimatedSprite
 		 * @param[in]  speed  Pixels per Second that this AnimatedSprite moves (NICHT IMPLEMENTIERT)
 		 */
-		AnimatedSprite(sf::Vector2f position, float speed = 100);
+		AnimatedSprite(sf::Vector2f position);
 
 		/**
 		 * @brief      Draws this AnimatedSprite on given RenderTarget. Makes following Syntax possible: RenderTarget.draw(AnimatedSprite)

@@ -79,7 +79,7 @@ namespace ProjectSpace
 		midnightSprite->scale(1.2f, 1.2f);
 		midnightSprite->setDrawBoundingBox(true);
 
-		AnimatedSprite * knightSprite = new AnimatedSprite{ sf::Vector2f{1000, 500}, 10 };
+		AnimatedSprite * knightSprite = new AnimatedSprite{ sf::Vector2f{1000, 500} };
 		knightSprite->addAnimation(EAnimation::IDLE, knightIdleAnim);
 		knightSprite->addAnimation(EAnimation::LEFT, knightLeftRunAnim);
 		knightSprite->addAnimation(EAnimation::UP, knightUpRunAnim);

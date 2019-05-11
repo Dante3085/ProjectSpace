@@ -1,78 +1,42 @@
 
 #include "TranslateAnimation.h"
+#include "../Util.h"
 
 namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to, float duration)
-	: menuElement{menuElement}, doUpdate{false}, from{from}, to{to}, duration{duration}, distance{to - from}, finished{false}
+	: menuElement{menuElement}, doUpdate{false}, from{from}, to{to}, duration{duration}, distance{to - from}, finished{false},
+	frictionConstant{0.5f}, velocity{(to - menuElement->getPosition()) * (1.f/ 20.f)}
 	{
+		
 	}
 
 	void TranslateAnimation::update(sf::Time time)
 	{
 		if (doUpdate)
 		{
-			sf::Vector2f mPos = menuElement->getPosition();
-			intervall = sf::Vector2f{distance.x / (duration * (1.0f / time.asSeconds())), distance.y / (duration * (1.0f / time.asSeconds()))};
-
-				// BOTH POSITIVE
-			if (intervall.x >= 0 && intervall.y >= 0)
+			float distance = vectorLength(to - menuElement->getPosition());
+			std::cout << distance << std::endl;
+			if (distance < 1)
 			{
-				if (mPos.x >= to.x && mPos.y >= to.y)
-				{
-					menuElement->setPosition(to);
+				menuElement->setPosition(to);
+				doUpdate = false;
+				finished = true;
+				velocity = (to - from) * (1.f / 20.f);
 
-					doUpdate = false;
-					finished = true;
-					return;
-				}
+				return;
 			}
 
-				// BOTH NEGATIVE
-			else if (intervall.x < 0 && intervall.y < 0)
-			{
-				if (mPos.x <= to.x && mPos.y <= to.y)
-				{
-					menuElement->setPosition(to);
-
-					doUpdate = false;
-					finished = true;
-					return;
-				}
-			}
-
-				// X-POSITIV AND Y-NEGATIV
-			else if (intervall.x >= 0 && intervall.y < 0)
-			{
-				if (mPos.x >= to.x && mPos.y <= to.y)
-				{
-					menuElement->setPosition(to);
-
-					doUpdate = false;
-					finished = true;
-					return;
-				}
-			}
-
-				// X-NEGATIVE AND Y-POSITIVE
-			else
-			{
-				if (mPos.x <= to.x && mPos.y >= to.y)
-				{
-					menuElement->setPosition(to);
-
-					doUpdate = false;
-					finished = true;
-					return;
-				}
-			}
-			menuElement->move(intervall);
+			// Is supposed to gradually reduce the velocity.
+			velocity *= pow(frictionConstant, time.asSeconds());
+			menuElement->move(velocity);
 		}
 	}
 
 	void TranslateAnimation::start()
 	{
 		doUpdate = true;
+		velocity = (to - menuElement->getPosition()) * (1.f / 20.f);
 	}
 
 	void TranslateAnimation::pause()

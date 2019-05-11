@@ -8,9 +8,9 @@
 
 namespace ProjectSpace
 {
-	AnimatedSprite::AnimatedSprite(sf::Vector2f position, float speed)
+	AnimatedSprite::AnimatedSprite(sf::Vector2f position)
 		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		speed{ speed }, previousPosition{ sprite.getPosition() }
+		  previousPosition{ sprite.getPosition() }
 	{
 		sprite.setPosition(position);
 		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
@@ -124,16 +124,6 @@ namespace ProjectSpace
 		return previousPosition;
 	}
 
-	float AnimatedSprite::getSpeed()
-	{
-		return speed;
-	}
-
-	void AnimatedSprite::setSpeed(float speed)
-	{
-		this->speed = speed;
-	}
-
 	void AnimatedSprite::setPosition(float x, float y)
 	{
 		sprite.setPosition(x, y);
@@ -197,6 +187,7 @@ namespace ProjectSpace
 
 	void AnimatedSprite::move(const sf::Vector2f& offset) 			 
 	{ 
+		previousPosition = sf::Vector2f{ sprite.getPosition() };
 		sprite.move(offset); 
 	}
 

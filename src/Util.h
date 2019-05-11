@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <math.h>
 
 #include "collision/Line2F.h"
 
@@ -21,6 +22,11 @@ namespace ProjectSpace
 		stream << "{{" << r.left << ", " << r.top << "}, {" << r.left + r.width << ", " << r.top <<"}, {"
 		<< r.left + r.width << ", " << r.top + r.height << "}, {" << r.left << ", " << r.top + r.height << "}}";
 		return stream;
+	}
+
+	static float vectorLength(sf::Vector2f const& v)
+	{
+		return sqrt(pow(v.x, 2) + pow(v.y, 2));
 	}
 }
 
