@@ -12,9 +12,13 @@
 
 namespace ProjectSpace
 {
+	/**
+	 * @brief      Class for selecting through a set of Buttons.
+	 */
 	class ButtonMenu : public Entity
 	{
 	public:
+		ButtonMenu(InputHandler* inputHandler);
 		ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler);
 		ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
 			sf::Keyboard::Key keyForward, sf::Keyboard::Key keyBackward, sf::Keyboard::Key keyPress);
@@ -40,6 +44,8 @@ namespace ProjectSpace
 		 * @param[in]  index  The index of Button in this ButtonMenu.
 		 */
 		void select(int index);
+
+		void addButton(Button const* button);
 
 	private:
 		std::vector<Button const*> buttons; // Buttons in this ButtonMenu.

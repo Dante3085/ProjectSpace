@@ -16,13 +16,14 @@ namespace ProjectSpace
 	class VBox : public MenuElement
 	{
 	public:
-		VBox();
+		VBox(float spacing = 0);
 		VBox(std::vector<MenuElement*> menuElements, sf::Vector2f position, float spacing = 0);
 
 		void update(sf::Time time) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		void show();
 		void hide();
+		bool isHidden();
 		void setNeedsUpdate();
 		void addMenuElement(MenuElement* b);
 		void addMenuElements(std::vector<MenuElement*> menuElements);

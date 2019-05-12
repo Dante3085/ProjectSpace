@@ -46,6 +46,7 @@
     <ClInclude Include="src\menu\BattleOrder.h" />
     <ClInclude Include="src\menu\Button.h" />
     <ClInclude Include="src\menu\ButtonMenu.h" />
+    <ClInclude Include="src\menu\ExpandMenu.h" />
     <ClInclude Include="src\menu\HBox.h" />
     <ClInclude Include="src\menu\MenuElement.h" />
     <ClInclude Include="src\menu\Portrait.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="src\menu\BattleOrder.cpp" />
     <ClCompile Include="src\menu\Button.cpp" />
     <ClCompile Include="src\menu\ButtonMenu.cpp" />
+    <ClCompile Include="src\menu\ExpandMenu.cpp" />
     <ClCompile Include="src\menu\HBox.cpp" />
     <ClCompile Include="src\menu\Portrait.cpp" />
     <ClCompile Include="src\menu\Slider.cpp" />

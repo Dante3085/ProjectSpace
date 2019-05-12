@@ -16,7 +16,6 @@ namespace ProjectSpace
 		if (doUpdate)
 		{
 			float distance = vectorLength(to - menuElement->getPosition());
-			std::cout << distance << std::endl;
 			if (distance < 1)
 			{
 				menuElement->setPosition(to);

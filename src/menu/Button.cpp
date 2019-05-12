@@ -5,7 +5,7 @@ namespace ProjectSpace
 {
 	Button::Button(std::function<void()> onPressed, sf::Window const& window, std::string string)
 	: onPressed{onPressed}, window{window}, mouseOnButton{false}, previousMouseOnButton{false}, 
-	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}
+	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}, str{string}
 	{
 		font.loadFromFile("rsrc/fonts/arial.ttf");
 		text.setFont(font);
@@ -31,7 +31,7 @@ namespace ProjectSpace
 
 	Button::Button(sf::Window const& window, std::string string)
 	: onPressed{[](){}}, window{window}, mouseOnButton{false}, previousMouseOnButton{false}, 
-	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}
+	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}, str{string}
 	{
 		font.loadFromFile("rsrc/fonts/arial.ttf");
 		text.setFont(font);

@@ -15,12 +15,9 @@ namespace ProjectSpace
 
 		virtual float getWidth() const = 0;
 		virtual float getHeight() const = 0;
-
 		virtual sf::Vector2f getPosition() const = 0;
-
 		virtual void setPosition(float x, float y) = 0;
 		virtual void setPosition(sf::Vector2f v) = 0;
-
 		virtual void move(float x, float y) = 0;
 		virtual void move(sf::Vector2f v) = 0;
 

@@ -4,6 +4,15 @@
 
 namespace ProjectSpace
 {
+	ButtonMenu::ButtonMenu(InputHandler* inputHandler)
+	: buttons{}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
+	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, btnPress{2}
+	{
+		inputHandler->storeKeyState(keyForward, false);
+		inputHandler->storeKeyState(keyBackward, false);
+		inputHandler->storeKeyState(keyPress, false);
+	}
+
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler) 
 	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
 	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, btnPress{2}
@@ -88,5 +97,10 @@ namespace ProjectSpace
 		}
 		buttons[selected]->unselect();
 		buttons[selected = index]->select();
+	}
+
+	void ButtonMenu::addButton(Button const* button)
+	{
+		buttons.push_back(button);
 	}
 }

@@ -6,6 +6,7 @@
 #include <SFML/Audio/Music.hpp>
 
 #include "Tilemap.h"
+#include "../menu/ExpandMenu.h"
 #include "../menu/BattleMenu.h"
 #include "../menu/TextBox.h"
 #include "../menu/Button.h"
@@ -172,40 +173,46 @@ namespace ProjectSpace
 		windowBoundsBox->setCollisionType(CollisionType::WALL);
 		windowBoundsBox->setDrawBoundingBox(true);
 
-		CollisionManager * collisionManager = new CollisionManager{ {knightSprite, triangle, triangle2, triangle3, triangle4, triangle5, 
-																	 triangle6, rectangle, smallDiamant, bigDiamant, threeDCube,
-																     threeDCube2, threeDCube3, windowBoundsBox} };
+		CollisionManager * collisionManager = new CollisionManager{ {windowBoundsBox, knightSprite} };
 
 		InputHandler * inputHandler = new InputHandler{};
 
-		/*sf::Music* music = new sf::Music;
-
-		if (!music->openFromFile("rsrc/marvin_track.ogg"))
+		Button* expand0 = new Button
 		{
-			std::cout << "Failed to load track" << std::endl;
-		}
-		music->setVolume(50);
-		music->setLoop(true);
+			[](){}, window, "expand0"
+		};
 
-		Button* playMusicBtn = new Button{[music]()
+		Button* expand01 = new Button
 		{
-			music->play();
-		}, window, "PlayMusic"};
+			[&window]()
+			{
+				window.close();
+			}, window, "expand01 - Exit"
+		};
 
-		Button* pauseMusicBtn = new Button{[music]()
+		Button* expand02 = new Button
 		{
-			music->pause();
-		}, window, "PauseMusic"};
+			[](){}, window, "expand02"
+		};
 
-		playMusicBtn->setPosition(0, 0);
-		pauseMusicBtn->setPosition(playMusicBtn->getPosition() + sf::Vector2f{0, playMusicBtn->getHeight() + 5});*/
+		Button* expand1 = new Button
+		{
+			[](){}, window, "expand1"
+		};
+	
+		ExpandMenu* expandMenu = new ExpandMenu
+		{ 
+			{
+				{expand0, {expand01, expand02}},
+				{expand1, {}},
+			}, sf::Vector2f{200, 100}, inputHandler
+		};
 
-		BattleMenu * battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
+		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
-		scene->addEntities({ textBox, inputHandler, battleMenu, midnightSprite, knight, fadeAnimation, collisionManager });
+		scene->addEntities({ inputHandler, knight, collisionManager, expandMenu });
 
-		scene->addDrawables({ backgroundSprite, knight, battleMenu, triangle, triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube,
-							 threeDCube2, threeDCube3, rectangle, midnightSprite, textBox, windowBoundsBox });
+		scene->addDrawables({ backgroundSprite, knight, expandMenu });
 
 		return scene;
 	}

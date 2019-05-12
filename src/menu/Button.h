@@ -175,7 +175,8 @@ namespace ProjectSpace
 		sf::RectangleShape rectangle; 			// The Button's shape.
 		sf::Text text; 				  			// Text displayed on Button.
 		sf::Font font; 				  			// Font for Button Text.
-		std::function<void()> onPressed; // A function that determines what the Button will do when pressed.
+		std::string str;
+		std::function<void()> onPressed;        // A function that determines what the Button will do when pressed.
 		std::function<void()> onSelected;		// A function that determines what the Button will do when it is selected.
 		std::function<void()> onUnselected; 	// A function that determines what the Button will do when it is unselected.
 	};

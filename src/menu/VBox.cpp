@@ -3,7 +3,7 @@
 
 namespace ProjectSpace
 {
-	VBox::VBox() : position{0, 0}, spacing{0}, needsUpdate{true}, hidden{false} {}
+	VBox::VBox(float spacing) : position{0, 0}, spacing{spacing}, needsUpdate{true}, hidden{false} {}
 
 	VBox::VBox(std::vector<MenuElement*> menuElements, sf::Vector2f position, float spacing) 
 	: menuElements{menuElements}, position{position}, spacing{spacing}, needsUpdate{true}, hidden{false} {}
@@ -64,6 +64,11 @@ namespace ProjectSpace
 	void VBox::hide()
 	{
 		hidden = true;
+	}
+
+	bool VBox::isHidden()
+	{
+		return hidden;
 	}
 
 	void VBox::setNeedsUpdate()
