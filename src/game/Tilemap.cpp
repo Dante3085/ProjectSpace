@@ -3,7 +3,7 @@
 
 namespace ProjectSpace
 {
-	/*Tilemap::Tilemap(std::string const& tileset, sf::Vector2u originalTextureSize, sf::Vector2u targetTileSize,
+	Tilemap::Tilemap(std::string const& tileset, sf::Vector2u originalTextureSize, sf::Vector2u targetTileSize,
 		std::map<char, std::pair<int, int>>)
 	{
 		
@@ -12,7 +12,7 @@ namespace ProjectSpace
 	void Tilemap::loadFromFile(std::string const& tilemap)
 	{
 
-	}*/
+	}
 
 	bool Tilemap::load(std::string const& tileset, sf::Vector2u tileSize, int const* tiles, unsigned int width, unsigned int height)
 	{

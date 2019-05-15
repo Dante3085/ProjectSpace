@@ -7,6 +7,7 @@ using namespace ProjectSpace;*/
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <iostream>
+#include "Tilemap.h"
 
 /* TODO
 
@@ -118,12 +119,7 @@ int main()
 
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Vertex Test");
 	
-	sf::Vertex vertices[] =
-	{
-		sf::Vertex{sf::Vector2f{100, 100}, sf::Color::Red, sf::Vector2f{0, 0}},
-		sf::Vertex{sf::Vector2f{200, 100}, sf::Color::Green, sf::Vector2f{0, 0}},
-		sf::Vertex{sf::Vector2f{100, 200}, sf::Color::Blue, sf::Vector2f{0, 0}},
-	};
+	ProjectSpace::Tilemap t{};
 
 	sf::Clock clock{};
 	std::string strFrameTime{ "" };
