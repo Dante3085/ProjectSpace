@@ -1,11 +1,11 @@
 
 #include "TranslateAnimation.h"
-#include "../Util.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {
-	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to, float duration)
-	: menuElement{menuElement}, doUpdate{false}, from{from}, to{to}, duration{duration}, distance{to - from}, finished{false},
+	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to)
+	: menuElement{menuElement}, doUpdate{false}, from{from}, to{to}, distance{to - from}, finished{false},
 	frictionConstant{0.5f}, velocity{(to - menuElement->getPosition()) * (1.f/ 20.f)}
 	{
 		

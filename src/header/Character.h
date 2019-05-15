@@ -8,8 +8,8 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <functional>
 
-#include "../game/Entity.h"
-#include "../animation/AnimatedSprite.h"
+#include "Entity.h"
+#include "AnimatedSprite.h"
 
 namespace ProjectSpace
 {

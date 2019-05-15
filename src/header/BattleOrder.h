@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <iostream>
 
-#include "../rpg/Character.h"
-#include "../animation/TranslateAnimation.h"
+#include "Character.h"
+#include "TranslateAnimation.h"
 #include "MenuElement.h"
 #include "Portrait.h"
 

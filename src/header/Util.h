@@ -7,7 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <math.h>
 
-#include "collision/Line2F.h"
+#include "Line2F.h"
 
 namespace ProjectSpace
 {

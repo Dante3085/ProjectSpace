@@ -1,5 +1,5 @@
 
-#include "game/Game.h"
+#include "Game.h"
 #include "Util.h"
 
 using namespace ProjectSpace;

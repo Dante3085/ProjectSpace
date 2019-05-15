@@ -5,16 +5,16 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
-#include "../menu/ButtonMenu.h"
-#include "../animation/TranslateAnimation.h"
-#include "../menu/VBox.h"
-#include "../menu/HBox.h"
-#include "../game/InputHandler.h"
-#include "../game/FpsCounter.h"
-#include "../menu/TextBox.h"
-#include "../animation/FadeAnimation.h"
-#include "../menu/Button.h"
-#include "../menu/ButtonMenu.h"
+#include "ButtonMenu.h"
+#include "TranslateAnimation.h"
+#include "VBox.h"
+#include "HBox.h"
+#include "InputHandler.h"
+#include "FpsCounter.h"
+#include "TextBox.h"
+#include "FadeAnimation.h"
+#include "Button.h"
+#include "ButtonMenu.h"
 #include "InputHandler.h"
 #include "Scene.h"
 #include "Factory.h" 
@@ -129,9 +129,9 @@ namespace ProjectSpace
 	void Game::init()
 	{
 		// Creating Levels
-		scenes[EScene::DEBUG] = Factory::CREATE_DEBUG_SCENE(window);
-		scenes[EScene::LEVEL_ONE] = Factory::CREATE_DEBUG_SCENE_2(window);
-		scenes[EScene::TILEMAP] = Factory::CREATE_TILEMAP_SCENE(window);
+		scenes[EScene::DEBUG] = Factory::createDebugScene(window);
+		scenes[EScene::LEVEL_ONE] = Factory::createEmptyScene(window);
+		scenes[EScene::TILEMAP] = Factory::createTilemapScene(window);
 		currentScene = scenes[EScene::DEBUG];
 
 		// Fps Counter of the Game.
@@ -175,8 +175,8 @@ namespace ProjectSpace
 
 		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5}, globalInputHandler};
 
-		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 0.5f};
-		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}, 0.5f};
+		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}};
+		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}};
 
 		btn2->setOnPressed([this, menuBackward]()
 		{

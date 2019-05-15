@@ -8,10 +8,10 @@
 #include <vector>
 #include <map>
 
-#include "../game/Entity.h"
-#include "../game/EScene.h"
-#include "../game/Scene.h"
-#include "../game/WindowStyle.h"
+#include "Entity.h"
+#include "EScene.h"
+#include "Scene.h"
+#include "WindowStyle.h"
 
 namespace ProjectSpace
 {

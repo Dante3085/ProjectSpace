@@ -5,7 +5,7 @@
 #include <SFML/System/Time.hpp>
 #include <vector>
 
-#include "../game/Entity.h"
+#include "Entity.h"
 #include "Collidable.h"
 
 namespace ProjectSpace

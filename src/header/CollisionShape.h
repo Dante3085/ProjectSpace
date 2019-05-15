@@ -9,7 +9,7 @@
 #include <iostream>
 
 #include "Collidable.h"
-#include "../Util.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {

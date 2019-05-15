@@ -5,7 +5,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-#include "../Util.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {

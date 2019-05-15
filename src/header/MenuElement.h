@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics/Drawable.hpp>
 
-#include "../game/Entity.h"
+#include "Entity.h"
 
 namespace ProjectSpace
 {

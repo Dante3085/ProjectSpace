@@ -6,8 +6,8 @@
 #include <SFML/System/Time.hpp>
 #include <vector>
 
-#include "../game/Entity.h"
-#include "../game/InputHandler.h"
+#include "Entity.h"
+#include "InputHandler.h"
 #include "Button.h"
 
 namespace ProjectSpace

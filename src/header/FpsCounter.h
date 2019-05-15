@@ -9,7 +9,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <string>
 
-#include "../menu/MenuElement.h"
+#include "MenuElement.h"
 
 namespace ProjectSpace
 {

@@ -11,13 +11,11 @@ namespace ProjectSpace
 		vboxs.push_back(VBox{5});
 		buttonMenus.push_back(ButtonMenu{inputHandler});
 
-		// VBoxen und ButtonMenus für die Unterbuttons der obersten Buttons.
+		// VBoxen, ButtonMenus und TranslateAnimations für die Unterbuttons der obersten Buttons.
 		for (int i = 0; i < buttons.size(); ++i)
 		{
-			/*vboxs.push_back(VBox{5});
-			vboxs[i + 1].hide();*/
-			hboxs.push_back(HBox{5});
-			hboxs[i].hide();
+			vboxs.push_back(VBox{5});
+			vboxs[i + 1].hide();
 			buttonMenus.push_back(ButtonMenu{inputHandler});
 		}
 
@@ -29,30 +27,24 @@ namespace ProjectSpace
 			buttonMenus[0].addButton(pair.first);
 			for (Button const* btn : pair.second)
 			{
-				/*vboxs[i + 1].addMenuElement((MenuElement*)btn);*/
-				hboxs[i].addMenuElement((MenuElement*)btn);
+				vboxs[i + 1].addMenuElement((MenuElement*)btn);
 				buttonMenus[i + 1].addButton(btn);
 			}
 
 			// Funktion der obersten Buttons festlegen.
 			pair.first->setOnPressed([this, i]()
 			{
-				/*if (vboxs[i + 1].isHidden())
+				if (vboxs[i + 1].isHidden())
 				{
 					vboxs[i + 1].show();
+					tBackwardAnims[i].pause();
+					tForwardAnims[i].start();
 				}
 				else
 				{
 					vboxs[i + 1].hide();
-				}*/
-
-				if (hboxs[i].isHidden())
-				{
-					hboxs[i].show();
-				}
-				else
-				{
-					hboxs[i].hide();
+					tForwardAnims[i].pause();
+					tBackwardAnims[i].start();
 				}
 			});
 			++i;
@@ -60,48 +52,42 @@ namespace ProjectSpace
 
 		// Alles korrekt positionieren
 		vboxs[0].setPosition(position);
-		//for (int i = 1; i < vboxs.size(); ++i)
-		//{
-		//	// vboxs[i].setPosition(position.x + vboxs[0].getWidth() + 5, position.y + 5);
-		//}
-
-		for (int i = 0; i < hboxs.size(); ++i)
+		for (int i = 1; i < vboxs.size(); ++i)
 		{
-			hboxs[i].setPosition(position.x + vboxs[0].getWidth() + 5, position.y);
+			vboxs[i].setPosition(position);
+			tForwardAnims.push_back(TranslateAnimation{&vboxs[i], position, sf::Vector2f{position.x + vboxs[0].getWidth(), position.y}});
+			tBackwardAnims.push_back(TranslateAnimation{&vboxs[i], sf::Vector2f{position.x + vboxs[0].getWidth(), position.y}, position});
 		}
 	}
 
 	void ExpandMenu::update(sf::Time time) 
 	{
-		/*for (VBox& v : vboxs)
+		for (VBox& v : vboxs)
 		{
 			v.update(time);
-		}*/
-
-		vboxs[0].update(time);
-
-		for (HBox& h : hboxs)
-		{
-			h.update(time);
 		}
 
 		for (ButtonMenu& b : buttonMenus)
 		{
 			b.update(time);
 		}
+
+		for (TranslateAnimation& t : tForwardAnims)
+		{
+			t.update(time);
+		}
+
+		for (TranslateAnimation& t : tBackwardAnims)
+		{
+			t.update(time);
+		}
 	}
 
 	void ExpandMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{ 
-		/*for (VBox const& v : vboxs)
+		for (VBox const& v : vboxs)
 		{
 			target.draw(v);
-		}*/
-		target.draw(vboxs[0]);
-
-		for (HBox const& h : hboxs)
-		{
-			target.draw(h);
 		}
 	}
 

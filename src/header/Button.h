@@ -13,8 +13,8 @@
 #include <SFML/Graphics/Color.hpp>
 #include <functional>
 
-#include "../game/Entity.h"
-#include "../menu/MenuElement.h"
+#include "Entity.h"
+#include "MenuElement.h"
 
 namespace ProjectSpace
 {

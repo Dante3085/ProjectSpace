@@ -5,8 +5,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "../game/Entity.h"
-#include "../menu/Button.h"
+#include "Entity.h"
+#include "Button.h"
 
 namespace ProjectSpace
 {
@@ -27,7 +27,7 @@ namespace ProjectSpace
 		 * @param[in]  duration     The amount of time the TranslateAnimation will take to translate the Menuelement
 		 * from 'from' to 'to'.
 		 */
-		TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to, float duration);
+		TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to);
 
 		/**
 		 * @brief      Updates the TranslateAnimation each frame.

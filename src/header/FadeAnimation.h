@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <iostream>
 
-#include "../game/Entity.h"
+#include "Entity.h"
 
 namespace ProjectSpace
 {

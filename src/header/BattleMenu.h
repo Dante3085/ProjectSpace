@@ -13,7 +13,7 @@
 #include "ButtonMenu.h"
 #include "VBox.h"
 #include "HBox.h"
-#include "../game/InputHandler.h"
+#include "InputHandler.h"
 
 namespace ProjectSpace
 {

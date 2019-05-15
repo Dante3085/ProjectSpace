@@ -13,8 +13,8 @@
 #include <iostream>
 #include <functional>
 
-#include "../game/Entity.h"
-#include "../collision/Collidable.h"
+#include "Entity.h"
+#include "Collidable.h"
 #include "EAnimation.h"
 #include "Animation.h"
 

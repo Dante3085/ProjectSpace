@@ -6,28 +6,28 @@
 #include <SFML/Audio/Music.hpp>
 
 #include "Tilemap.h"
-#include "../menu/ExpandMenu.h"
-#include "../menu/BattleMenu.h"
-#include "../menu/TextBox.h"
-#include "../menu/Button.h"
-#include "../menu/VBox.h"
-#include "../menu/HBox.h"
-#include "../menu/BattleOrder.h"
-#include "../menu/Portrait.h"
-#include "../animation/FadeAnimation.h"
-#include "../animation/TranslateAnimation.h"
-#include "../animation/Animation.h"
-#include "../animation/AnimatedSprite.h"
-#include "../collision/CollisionManager.h"
-#include "../collision/CollisionBox.h"
-#include "../collision/CollisionShape.h"
-#include "../rpg/Character.h"
+#include "ExpandMenu.h"
+#include "BattleMenu.h"
+#include "TextBox.h"
+#include "Button.h"
+#include "VBox.h"
+#include "HBox.h"
+#include "BattleOrder.h"
+#include "Portrait.h"
+#include "FadeAnimation.h"
+#include "TranslateAnimation.h"
+#include "Animation.h"
+#include "AnimatedSprite.h"
+#include "CollisionManager.h"
+#include "CollisionBox.h"
+#include "CollisionShape.h"
+#include "Character.h"
 #include "InputHandler.h"
 #include "Camera.h"
 
 namespace ProjectSpace
 {
-	Scene* Factory::CREATE_DEBUG_SCENE(sf::RenderWindow& window)
+	Scene* Factory::createDebugScene(sf::RenderWindow& window)
 	{
 		Scene* scene = new Scene();
 
@@ -217,7 +217,7 @@ namespace ProjectSpace
 		return scene;
 	}
 
-	Scene * Factory::CREATE_DEBUG_SCENE_2(sf::RenderWindow & window)
+	Scene* Factory::createEmptyScene(sf::RenderWindow & window)
 	{
 		Scene* scene = new Scene();
 
@@ -233,7 +233,7 @@ namespace ProjectSpace
 		return scene;
 	}
 
-	Scene* Factory::CREATE_TILEMAP_SCENE(sf::RenderWindow & window)
+	Scene* Factory::createTilemapScene(sf::RenderWindow & window)
 	{
 		Scene* scene = new Scene();
 
@@ -291,19 +291,19 @@ namespace ProjectSpace
 
 		const int level[] =
 		{
-			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
-			1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-			0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
-			0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-			0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
-			2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
-			0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+			0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+			1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+			0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+			0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+			0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+			2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1, 2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+			0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
 		};
 
 		// create the tilemap from the level definition
 		Tilemap* map = new Tilemap{};
-		if (!map->load("rsrc/sfml-tileset.png", sf::Vector2u(32, 32), level, 16, 8))
+		if (!map->load("rsrc/sfml-tileset.png", sf::Vector2u(32, 32), level, 64, 8))
 		{
 			std::cout << "@CREATE_TILEMAP_SCENE: Did not find Tilemap file." << std::endl;
 		}
@@ -311,5 +311,11 @@ namespace ProjectSpace
 		scene->addDrawables({ map });
 
 		return scene;
+	}
+
+	ExpandMenu* createCombatMenu()
+	{
+		// TODO(moritz):
+		return nullptr;
 	}
 }

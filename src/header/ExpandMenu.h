@@ -12,6 +12,7 @@
 #include "ButtonMenu.h"
 #include "VBox.h"
 #include "HBox.h"
+#include "TranslateAnimation.h"
 
 namespace ProjectSpace
 {
@@ -36,7 +37,8 @@ namespace ProjectSpace
 		std::map<Button*, std::vector<Button*>> buttons;
 		std::vector<ButtonMenu> buttonMenus;
 		std::vector<VBox> vboxs;
-		std::vector<HBox> hboxs;
+		std::vector<TranslateAnimation> tForwardAnims;
+		std::vector<TranslateAnimation> tBackwardAnims;
 		sf::Vector2f position;
 	};
 }

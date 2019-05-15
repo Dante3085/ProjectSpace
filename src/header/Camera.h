@@ -9,8 +9,8 @@
 #include <iostream>
 
 #include "Entity.h"
-#include "../animation/AnimatedSprite.h"
-#include "../Util.h"
+#include "AnimatedSprite.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {
