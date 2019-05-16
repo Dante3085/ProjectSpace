@@ -1,38 +1,34 @@
 
 #include "Tilemap.h"
+#include <iostream>
+#include <fstream>
 
 namespace ProjectSpace
 {
-	Tilemap::Tilemap(std::string const& tileset, sf::Vector2u originalTextureSize, sf::Vector2u targetTileSize,
-		std::map<char, std::pair<int, int>>)
+	void Tilemap::load(std::string const& tileset, sf::Vector2u tileSize, std::string const& tilemap, unsigned int width, unsigned int height)
 	{
-		
-	}
+		std::ifstream ifs(tilemap);
+		std::string tiles((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
 
-	void Tilemap::loadFromFile(std::string const& tilemap)
-	{
-
-	}
-
-	bool Tilemap::load(std::string const& tileset, sf::Vector2u tileSize, int const* tiles, unsigned int width, unsigned int height)
-	{
 		// load the tileset texture
 		if (!this->tileset.loadFromFile(tileset))
 		{
-			return false;
+			std::cout << "@Tilemap::load(): Failed to load Tileset." << std::endl;
+			return;
 		}
 
 		// resize the vertex array to fit the level size
 		vertices.setPrimitiveType(sf::Quads);
 		vertices.resize(width * height * 4);
-
+		
 		// populate the vertex array, with one quad per tile
 		for (unsigned int i = 0; i < width; ++i)
 		{
 			for (unsigned int j = 0; j < height; ++j)
 			{
 				// get the current tile number
-				int tileNumber = tiles[i + j * width];
+				// int tileNumber = tiles[i + j * width];
+				int tileNumber = tiles[1];
 
 				// find its position in the tileset texture
 				int tu = tileNumber % (this->tileset.getSize().x / tileSize.x);
@@ -54,7 +50,6 @@ namespace ProjectSpace
 				quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
 			}
 		}
-		return true;
 	}
 
 	void Tilemap::draw(sf::RenderTarget& target, sf::RenderStates states) const

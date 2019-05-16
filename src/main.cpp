@@ -1,13 +1,8 @@
 
-/*#include "Game.h"
+#include "Game.h"
 #include "Util.h"
 
-using namespace ProjectSpace;*/
-
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <iostream>
-#include "Tilemap.h"
+using namespace ProjectSpace;
 
 /* TODO
 
@@ -114,55 +109,8 @@ using namespace ProjectSpace;*/
 
 int main()
 {
-	/*Game g{ "ProjectSpace" };
-	g.start();*/
+	Game g{ "ProjectSpace" };
+	g.start();
 
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Vertex Test");
-	
-	ProjectSpace::Tilemap t{};
-
-	sf::Clock clock{};
-	std::string strFrameTime{ "" };
-	float frameTime = 0;
-	int counter = 0;
-	while (window.isOpen())
-	{
-		frameTime = clock.restart().asSeconds();
-
-		strFrameTime.append("frameTime: ");
-		strFrameTime.append(std::to_string(frameTime));
-		strFrameTime.append(" ");
-		strFrameTime.append("fps: ");
-		strFrameTime.append(std::to_string(1.0f / frameTime));
-		strFrameTime.append("\n");
-
-		if (counter == 10)
-		{
-			std::cout << strFrameTime;
-			strFrameTime.clear();
-			counter = 0;
-		}
-
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		{
-			window.close();
-		}
-
-		window.clear();
-		window.draw(vertices, 3, sf::PrimitiveType::Triangles);
-		window.display();
-
-		++counter;
-	}
-
-	std::cout << "Enter to continue ..." << std::endl;
-	std::cin.get();
 	return 0;
 }
