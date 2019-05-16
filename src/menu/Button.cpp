@@ -19,13 +19,13 @@ namespace ProjectSpace
 		onSelected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 255));
-			this->move(5, 0);
+			// this->move(5, 0);
 		};
 
 		onUnselected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 200));
-			this->move(-5, 0);
+			// this->move(-5, 0);
 		};
 	}
 
@@ -45,13 +45,13 @@ namespace ProjectSpace
 		onSelected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 255));
-			this->move(5, 0);
+			// this->move(5, 0);
 		};
 
 		onUnselected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 200));
-			this->move(-5, 0);
+			// this->move(-5, 0);
 		};
 	}
 

@@ -33,7 +33,7 @@ namespace ProjectSpace
 			// velocity *= pow(frictionConstant, time.asSeconds());
 			
 			static sf::Vector2f minVelocity{10.f, 10.f};
-			velocity *= 0.9f;
+			velocity *= 0.8f;
 			if (abs(velocity.x) < minVelocity.x || abs(velocity.y) < minVelocity.y)
 			{
 				velocity = (to - menuElement->getPosition()) * (1.f / 20.f);
