@@ -1,6 +1,7 @@
 
 #include "TranslateAnimation.h"
 #include "Util.h"
+#include <math.h>
 
 namespace ProjectSpace
 {
@@ -16,7 +17,9 @@ namespace ProjectSpace
 		if (doUpdate)
 		{
 			float distance = vectorLength(to - menuElement->getPosition());
-			if (distance < 1)
+			std::cout << "distance: " << distance << "\n";
+
+			if (distance < 1.f)
 			{
 				menuElement->setPosition(to);
 				doUpdate = false;
@@ -27,7 +30,15 @@ namespace ProjectSpace
 			}
 
 			// Is supposed to gradually reduce the velocity.
-			velocity *= pow(frictionConstant, time.asSeconds());
+			// velocity *= pow(frictionConstant, time.asSeconds());
+			
+			static sf::Vector2f minVelocity{10.f, 10.f};
+			velocity *= 0.9f;
+			if (abs(velocity.x) < minVelocity.x || abs(velocity.y) < minVelocity.y)
+			{
+				velocity = (to - menuElement->getPosition()) * (1.f / 20.f);
+			}
+
 			menuElement->move(velocity);
 		}
 	}
