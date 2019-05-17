@@ -18,16 +18,16 @@ namespace ProjectSpace
 	public:
 
 		/**
-		 * @brief      Constructs a TranslateAnimation that can translate the given MenuElement from 'from' to 'to' 
-		 * in the given duration.
+		 * @brief      Constructs a TranslateAnimation that can translate the given MenuElement from 'from' to 'to'.
 		 *
 		 * @param      menuElement  The menu element
 		 * @param[in]  from         The point in 2D-Space the TranslateAnimation will start from.
 		 * @param[in]  to           The point in 2D-Space the TranslateAnimation will end on.
-		 * @param[in]  duration     The amount of time the TranslateAnimation will take to translate the Menuelement
 		 * from 'from' to 'to'.
+		 * @param[in]  velocityModifier Scalar multiplied with distance vector between MenuElement and to. This will dictate the step
+		 * the MenuElement is moved each update.
 		 */
-		TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to);
+		TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float velocityModifier = 1.f / 20.f);
 
 		/**
 		 * @brief      Updates the TranslateAnimation each frame.
@@ -102,19 +102,18 @@ namespace ProjectSpace
 		 */
 		bool isFinished() const;
 
+		bool isUpdating() const;
+
 	private:
 		MenuElement* menuElement;	// The MenuElement that the TranslateAnimation will work on.
 		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.
 		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
-		sf::Vector2f intervall;		// The amount the MenuElement will be moved each update() call towards the end position.
-		sf::Vector2f distance;		// Distance between from and to (start- and end position).
 		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
 		bool finished;				// Stores whether TranslateAnimation has successfully translated it's MenuElement 
 									// to the end position.
-		float duration;				// Stores how long the TranslateAnimation will take.
 		
-		float frictionConstant;
 		sf::Vector2f velocity;
+		float velocityModifier;
 	};
 }
 

@@ -5,9 +5,9 @@
 
 namespace ProjectSpace
 {
-	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f from, sf::Vector2f to)
-	: menuElement{menuElement}, doUpdate{false}, from{from}, to{to}, distance{to - from}, finished{false},
-	frictionConstant{0.5f}, velocity{(to - menuElement->getPosition()) * (1.f/ 20.f)}
+	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float velocityModifier)
+	: menuElement{menuElement}, doUpdate{false}, from{from}, to{to}, finished{false}, velocityModifier{velocityModifier},
+	  velocity{(to - menuElement->getPosition()) * velocityModifier}
 	{
 		
 	}
@@ -17,9 +17,9 @@ namespace ProjectSpace
 		if (doUpdate)
 		{
 			float distance = vectorLength(to - menuElement->getPosition());
-			std::cout << "distance: " << distance << "\n";
+			// std::cout << "distance: " << distance << "\n";
 
-			if (distance < 1.f)
+			if (distance < 0.3f)
 			{
 				menuElement->setPosition(to);
 				doUpdate = false;
@@ -28,15 +28,12 @@ namespace ProjectSpace
 
 				return;
 			}
-
-			// Is supposed to gradually reduce the velocity.
-			// velocity *= pow(frictionConstant, time.asSeconds());
 			
 			static sf::Vector2f minVelocity{10.f, 10.f};
 			velocity *= 0.8f;
 			if (abs(velocity.x) < minVelocity.x || abs(velocity.y) < minVelocity.y)
 			{
-				velocity = (to - menuElement->getPosition()) * (1.f / 20.f);
+				velocity = (to - menuElement->getPosition()) * velocityModifier;
 			}
 
 			menuElement->move(velocity);
@@ -69,7 +66,6 @@ namespace ProjectSpace
 	void TranslateAnimation::setFrom(sf::Vector2f from)
 	{
 		this->from = from;
-		distance = to - from;
 	}
 
 	sf::Vector2f TranslateAnimation::getTo() const
@@ -80,7 +76,6 @@ namespace ProjectSpace
 	void TranslateAnimation::setTo(sf::Vector2f to)
 	{
 		this->to = to;
-		distance = to - from;
 	}
 
 	void TranslateAnimation::setMenuElement(MenuElement* menuElement)
@@ -96,5 +91,10 @@ namespace ProjectSpace
 	bool TranslateAnimation::isFinished() const
 	{
 		return finished;
+	}
+
+	bool TranslateAnimation::isUpdating() const
+	{
+		return doUpdate;
 	}
 }
