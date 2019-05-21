@@ -104,6 +104,11 @@ namespace ProjectSpace
 
 		bool isUpdating() const;
 
+		/**
+		 * @brief      Sets from<->to so that the Translation now happens in reverse.
+		 */
+		void reverse();
+
 	private:
 		MenuElement* menuElement;	// The MenuElement that the TranslateAnimation will work on.
 		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.

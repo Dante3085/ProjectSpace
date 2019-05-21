@@ -97,4 +97,11 @@ namespace ProjectSpace
 	{
 		return doUpdate;
 	}
+
+	void TranslateAnimation::reverse()
+	{
+		sf::Vector2f temp{from};
+		from = to;
+		to = temp;
+	}
 }

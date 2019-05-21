@@ -3,11 +3,11 @@
 
 namespace ProjectSpace
 {
-	FadeAnimation::FadeAnimation(sf::Sprite* sprite, float duration) 
-	: sprite{sprite}, color{255, 255, 255, 255}, delay{duration / 255}, amount{-255.f / duration}, elapsedSeconds{0}, 
-	doUpdate{false} {}
+	FadeAnimation::FadeAnimation(sf::Sprite* sprite, int startAlpha, int endAlpha, float alphaModifier) 
+		: sprite{ sprite }, startAlpha{ startAlpha }, endAlpha{ endAlpha }, 
+		 doUpdate{ false }, alphaVelocity((endAlpha - startAlpha) * alphaModifier) {}
 
-	void FadeAnimation::update(sf::Time time)
+	/*void FadeAnimation::update(sf::Time time)
 	{
 		if (doUpdate)
 		{
@@ -17,7 +17,22 @@ namespace ProjectSpace
 				sprite->setColor(color);
 			}
 			elapsedSeconds += time.asSeconds();
-			std::cout << "test" << std::endl;
+		}
+	}*/
+
+	void FadeAnimation::update(sf::Time time)
+	{
+		if (doUpdate)
+		{
+			sf::Color fadeColor = sprite->getColor();
+			fadeColor.a += alphaVelocity;
+			sprite->setColor(fadeColor);
+			alphaVelocity *= 0.8f;
+
+			if (fadeColor.a == 0)
+			{
+				doUpdate = false;
+			}
 		}
 	}
 
@@ -28,8 +43,8 @@ namespace ProjectSpace
 
 	void FadeAnimation::refresh()
 	{
-		color.a = 255;
+		/*color.a = 255;
 		sprite->setColor(color);
-		elapsedSeconds = 0;
+		elapsedSeconds = 0;*/
 	}
 }

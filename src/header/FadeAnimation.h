@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/System/Time.hpp>
 #include <iostream>
 
 #include "Entity.h"
@@ -23,7 +24,7 @@ namespace ProjectSpace
 		 * @param      sprite    The sprite
 		 * @param[in]  duration  The duration
 		 */
-		FadeAnimation(sf::Sprite* sprite, float duration);
+		FadeAnimation(sf::Sprite* sprite, int startAlpha = 0, int endAlpha = 255, float alphaModifier = 0.8f);
 		
 
 		/**
@@ -45,11 +46,12 @@ namespace ProjectSpace
 
 	private:
 		sf::Sprite* sprite; // Sprite that the FadeAnimation will be used on.
-		sf::Color color;	// For gradually updating the Sprite's Color.
-		float amount;
-		float delay;
-		float elapsedSeconds;
 		bool doUpdate;
+		int startAlpha;
+		int endAlpha;
+		int alphaVelocity;
+		float alphaModifier;
+		sf::Time targetSeconds;
 	};
 }
 

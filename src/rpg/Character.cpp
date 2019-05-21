@@ -17,25 +17,29 @@ namespace ProjectSpace
 	{
 		if (sf::Keyboard::isKeyPressed(movementKeys[NORTH]))
 		{
-			velocity.y -= speed;
+			// velocity.y -= speed;
+			animSprite.move(0, -10);
 			animSprite.setAnimation(EAnimation::UP);
 		}
 
 		else if (sf::Keyboard::isKeyPressed(movementKeys[EAST]))
 		{
-			velocity.x += speed;
+			// velocity.x += speed;
+			animSprite.move(10, 0);
 			animSprite.setAnimation(EAnimation::RIGHT);
 		}
 
 		else if (sf::Keyboard::isKeyPressed(movementKeys[SOUTH]))
 		{
-			velocity.y += speed;
+			// velocity.y += speed;
+			animSprite.move(0, 10);
 			animSprite.setAnimation(EAnimation::DOWN);
 		}
 
 		else if (sf::Keyboard::isKeyPressed(movementKeys[WEST]))
 		{
-			velocity.x -= speed;
+			// velocity.x -= speed;
+			animSprite.move(-10, 0);
 			animSprite.setAnimation(EAnimation::LEFT);
 		}
 		else
@@ -43,7 +47,7 @@ namespace ProjectSpace
 			animSprite.setAnimation(EAnimation::IDLE);
 		}
 
-		animSprite.move(velocity);
+		/*animSprite.move(velocity);
 		velocity *= pow(frictionConstant, time.asSeconds());
 
 		if (abs(velocity.x) < 0.1f)
@@ -53,7 +57,7 @@ namespace ProjectSpace
 		if (abs(velocity.y) < 0.1f)
 		{
 			velocity.y = 0;
-		}
+		}*/
 
 		animSprite.update(time);
 	}
