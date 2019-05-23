@@ -16,13 +16,16 @@ namespace ProjectSpace
 	class CollisionShape : public Collidable, public sf::Drawable
 	{
 	public:
-		CollisionShape(std::vector<sf::Vector2f> points);
+		CollisionShape(std::vector<sf::Vector2f> points = {});
 
 		bool collidesWith(Collidable const* partner) const;
 		void handleCollision(Collidable* partner);
 		sf::FloatRect getGlobalBounds() const;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		sf::Shape const& getShape() const override;
+
+		void setPoint(int index, sf::Vector2f const& p);
+		void setAllPoints(std::vector<sf::Vector2f> const&);
 
 	private:
 		sf::ConvexShape shape;

@@ -65,6 +65,7 @@
     <ClInclude Include="src\header\Game.h" />
     <ClInclude Include="src\header\HBox.h" />
     <ClInclude Include="src\header\InputHandler.h" />
+    <ClInclude Include="src\header\LayerCollidable.h" />
     <ClInclude Include="src\header\Line2D.h" />
     <ClInclude Include="src\header\Line2f.h" />
     <ClInclude Include="src\header\MenuElement.h" />
@@ -110,6 +111,7 @@
     <ClCompile Include="src\game\InputHandler.cpp" />
     <ClCompile Include="src\game\Scene.cpp" />
     <ClCompile Include="src\game\Tilemap.cpp" />
+    <ClCompile Include="src\collision\LayerCollidable.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\menu\BattleMenu.cpp" />
     <ClCompile Include="src\menu\BattleOrder.cpp" />

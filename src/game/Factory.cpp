@@ -367,11 +367,14 @@ namespace ProjectSpace
 		CollisionBox* cb_background = new CollisionBox{sf::Vector2f{(float)window_size.x, (float)window_size.y}, sf::Vector2f{0, 0}};
 		cb_background->setCollisionType(CollisionType::WALL);
 
-		CollisionBox* cs0 = new CollisionBox{ sf::Vector2f{850, 0}, sf::Vector2f{400, 135} };
+		CollisionShape* cs0 = new CollisionShape{ {sf::Vector2f{690, 0}, sf::Vector2f{1240, 0}, sf::Vector2f{1240, 130},
+												   sf::Vector2f{800, 130}, sf::Vector2f{800, 590}, sf::Vector2f{690, 590}} };
 		cs0->setCollisionType(CollisionType::WALL);
 		cs0->setDrawBoundingBox(true);
 
-		CollisionBox* cs1 = new CollisionBox{ sf::Vector2f{380, 0}, sf::Vector2f{470, 800} };
+		CollisionShape* cs1 = new CollisionShape{ {sf::Vector2f{800, 590}, sf::Vector2f{1130, 590}, sf::Vector2f{1130, 760}, sf::Vector2f{1190, 807},
+												  sf::Vector2f{1115, 1060}, sf::Vector2f{1000, 1150}, sf::Vector2f{830, 1150}, sf::Vector2f{830, 1317}, 
+												  sf::Vector2f{540, 1290}, sf::Vector2f{480, 1030}, sf::Vector2f{370, 1035}, sf::Vector2f{370, 917}} };
 		cs1->setCollisionType(CollisionType::WALL);
 		cs1->setDrawBoundingBox(true);
 

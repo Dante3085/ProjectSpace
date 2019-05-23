@@ -12,11 +12,13 @@
 #include <map>
 #include <iostream>
 #include <functional>
+#include <vector>
 
 #include "Entity.h"
 #include "Collidable.h"
 #include "EAnimation.h"
 #include "Animation.h"
+#include "CollisionShape.h"
 
 namespace ProjectSpace
 {
@@ -25,12 +27,20 @@ namespace ProjectSpace
 	public:
 
 		/**
-		 * @brief      Constructs an AnimatedSprite object
+		 * @brief      Uses Rectangle for CollisionDetection.
 		 *
 		 * @param[in]  position      Initial position of the AnimatedSprite
 		 * @param[in]  speed  Pixels per Second that this AnimatedSprite moves (NICHT IMPLEMENTIERT)
 		 */
 		AnimatedSprite(sf::Vector2f position);
+
+		/**
+		 * @brief      Uses CollisionShape for CollisionDetection.
+		 *
+		 * @param[in]  position         The position
+		 * @param[in]  collisionPoints  The collision points
+		 */
+		AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> collisionPoints);
 
 		/**
 		 * @brief      Draws this AnimatedSprite on given RenderTarget. Makes following Syntax possible: RenderTarget.draw(AnimatedSprite)
@@ -99,6 +109,7 @@ namespace ProjectSpace
 
 		sf::Sprite sprite; 							 // Displays a frame of this AnimatedSprite at any given moment in time.
 		sf::RectangleShape shape;
+		CollisionShape collisionShape;
 		std::map<EAnimation, Animation*> animations; // Contains all Animations registered on this AnimatedSprite by name.
 		EAnimation currentAnimation; 				 // Name of the current Animation of this AnimatedSprite.
 		int frameIndex; 							 // Stores on which frame of the current Animation the AnimatedSprite is currently on.

@@ -73,6 +73,7 @@
     <ClInclude Include="src\header\Util.h" />
     <ClInclude Include="src\header\VBox.h" />
     <ClInclude Include="src\header\WindowStyle.h" />
+    <ClInclude Include="src\header\LayerCollidable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="src\animation\TranslateAnimation.cpp" />
     <ClCompile Include="src\game\Tilemap.cpp" />
     <ClCompile Include="src\menu\ExpandMenu.cpp" />
+    <ClCompile Include="src\collision\LayerCollidable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="rsrc\1_magicspell_spritesheet.png" />

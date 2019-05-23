@@ -34,6 +34,17 @@ namespace ProjectSpace
 		lines.push_back(new Line2F{ lowerLeft, upperLeft });
 	}
 
+	AnimatedSprite::AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> collisionPoints)
+	: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
+		  previousPosition{ sprite.getPosition() }
+	{
+		sprite.setPosition(position);
+		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
+		sprite.setScale(2, 2);
+
+		
+	}
+
 	void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(sprite);

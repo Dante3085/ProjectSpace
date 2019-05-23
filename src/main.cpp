@@ -84,6 +84,11 @@ using namespace ProjectSpace;
 
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
+ - Final Fantasy 7 Textvariation:
+ 	- Text in Textbox: Normale Leute sprechen
+ 	- Weißer Text ohne Textbox: Gedanken eines Charakters
+ 	- Grauer Text ohne Textbox: Charakter hört andere Stimme in Gedanken/Kopf.
+
 */
 
 /* USEFULL LINKS
