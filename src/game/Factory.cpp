@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <SFML/Audio/Music.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 #include "Tilemap.h"
 #include "ExpandMenu.h"
@@ -27,7 +28,7 @@
 
 namespace ProjectSpace
 {
-	Scene* Factory::createDebugScene(sf::RenderWindow& window)
+	Scene* Factory::create_debug_scene(sf::RenderWindow& window)
 	{
 		Scene* scene = new Scene();
 
@@ -194,89 +195,56 @@ namespace ProjectSpace
 			[](){}, window, "expand0"
 		};
 
+		sf::Vector2f newSize{ 50, 50 };
+
+		Button* expand00 = new Button
+		{
+			[](){}, window, "e"
+		};
+		expand00->setSize(newSize);
+
 		Button* expand01 = new Button
 		{
-			[](){}, window, "expand01 - Exit"
+			[](){}, window, "e"
 		};
-
-		Button* expand02 = new Button
-		{
-			[](){}, window, "expand02"
-		};
+		expand01->setSize(newSize);
 
 		Button* expand1 = new Button
 		{
 			[](){}, window, "expand1"
 		};
 
+		Button* expand2 = new Button
+		{
+			[](){}, window, "expand2"
+		};
+
+		Button* expand3 = new Button
+		{
+			[](){}, window, "expand3"
+		};		
+
 		ExpandMenu* expandMenu = new ExpandMenu
 		{ 
 			{
-				{expand0, {expand01, expand02}},
+				{expand0, {expand00, expand01}},
 				{expand1, {}},
+				{expand2, {}},
+				{expand3, {}}
 			}, sf::Vector2f{200, 100}, inputHandler
 		};
 
 		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
-		Button* testBtn = new Button
-		{
-			[]()
-			{
-				std::cout << "testBtn pressed" << std::endl;
-			}, window, "testBtn"
-		};
+		scene->addEntities({ inputHandler, knight, collisionManager, expandMenu, fadeAnimation });
 
-		Button* testBtn2 = new Button
-		{
-			[]()
-			{
-				std::cout << "testBtn2 pressed" << std::endl;
-			}, window, "testBtn2"
-		};
-		testBtn2->setPosition(500, 100);
-
-		TranslateAnimation* ttTestBtnForward = new TranslateAnimation
-		{
-			testBtn, sf::Vector2f{500, 500}, sf::Vector2f{2000, 2000}, 1.f / 20
-		};
-
-		TranslateAnimation* ttTestBtnBackward = new TranslateAnimation
-		{
-			testBtn, sf::Vector2f{2000, 2000}, sf::Vector2f{500, 500}, 1.f / 20
-		};
-
-		inputHandler->storeKeyState(sf::Keyboard::Num1, false);
-		inputHandler->storeKeyState(sf::Keyboard::Num2, false);
-		inputHandler->add([ttTestBtnForward, ttTestBtnBackward, inputHandler]()
-		{
-			if (!inputHandler->wasKeyPressed(sf::Keyboard::Num1) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-			{
-				ttTestBtnBackward->pause();
-				ttTestBtnForward->start();
-			}
-
-			if (!inputHandler->wasKeyPressed(sf::Keyboard::Num2) && sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-			{
-				ttTestBtnForward->pause();
-				ttTestBtnBackward->start();
-			}
-
-			inputHandler->storeKeyState(sf::Keyboard::Num1, sf::Keyboard::isKeyPressed(sf::Keyboard::Num1));
-			inputHandler->storeKeyState(sf::Keyboard::Num2, sf::Keyboard::isKeyPressed(sf::Keyboard::Num2));
-		});
-
-		scene->addEntities({ inputHandler, knight, collisionManager, expandMenu, fadeAnimation, ttTestBtnForward, 
-			ttTestBtnBackward, testBtn, testBtn2 });
-
-		scene->addDrawables({ backgroundSprite, knight, expandMenu, testBtn, windowBoundsBox, triangle, 
-			triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube, 
-			threeDCube2, threeDCube3, testBtn2 });
+		scene->addDrawables({ backgroundSprite, knight, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube, 
+			threeDCube2, threeDCube3 });
 
 		return scene;
 	}
 
-	Scene* Factory::createEmptyScene(sf::RenderWindow & window)
+	Scene* Factory::create_empty_scene(sf::RenderWindow & window)
 	{
 		Scene* scene = new Scene();
 
@@ -292,7 +260,7 @@ namespace ProjectSpace
 		return scene;
 	}
 
-	Scene* Factory::createTilemapScene(sf::RenderWindow & window)
+	Scene* Factory::create_tilemap_scene(sf::RenderWindow & window)
 	{
 		Scene* scene = new Scene();
 
@@ -357,7 +325,74 @@ namespace ProjectSpace
 		return scene;
 	}
 
-	ExpandMenu* createCombatMenu()
+	Scene* Factory::create_collision_scene(sf::RenderWindow& window)
+	{
+		Scene* scene = new Scene{};
+
+		// Spielercharakter
+		Animation* knightIdleAnim = new Animation{ "rsrc/knight_idle.png", 84, 84, 0, 0, 4, 0.15f };
+		Animation* knightLeftRunAnim = new Animation{ "rsrc/knight_left_run.png", 84, 84, 0, 0, 6, 0.1f };
+		Animation* knightUpRunAnim = new Animation{ "rsrc/knight_up_run.png", 84, 84, 0, 0, 5, 0.1f };
+		Animation* knightRightRunAnim = new Animation{ "rsrc/knight_right_run.png", 84, 84, 0, 0, 6, 0.1f };
+		Animation* knightDownRunAnim = new Animation{ "rsrc/knight_down_run.png", 84, 84, 0, 0, 5, 0.1f };
+
+		AnimatedSprite* knightSprite = new AnimatedSprite{ sf::Vector2f{900, 220} };
+		knightSprite->addAnimation(EAnimation::IDLE, knightIdleAnim);
+		knightSprite->addAnimation(EAnimation::LEFT, knightLeftRunAnim);
+		knightSprite->addAnimation(EAnimation::UP, knightUpRunAnim);
+		knightSprite->addAnimation(EAnimation::RIGHT, knightRightRunAnim);
+		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
+		knightSprite->setAnimation(EAnimation::IDLE);
+		knightSprite->setDrawBoundingBox(true);
+
+		knightSprite->setCollisionHandler([knightSprite](Collidable * partner)
+			{
+				if (partner->getCollisionType() == CollisionType::WALL)
+				{
+					knightSprite->setPosition(knightSprite->getPreviousPosition());
+				}
+			});
+
+		Character* knight = new Character{ *knightSprite };
+
+		// Texturen
+		sf::Texture* tex_background = new sf::Texture{};
+		tex_background->loadFromFile("rsrc/background.png");
+		sf::Sprite* background = new sf::Sprite{*tex_background};
+		background->setScale(window.getSize().x / background->getLocalBounds().width,
+			window.getSize().y / background->getLocalBounds().height);
+
+		// Collision-Geometrie
+		sf::Vector2f window_size{ window.getSize() };
+		CollisionBox* cb_background = new CollisionBox{sf::Vector2f{(float)window_size.x, (float)window_size.y}, sf::Vector2f{0, 0}};
+		cb_background->setCollisionType(CollisionType::WALL);
+
+		CollisionBox* cs0 = new CollisionBox{ sf::Vector2f{850, 0}, sf::Vector2f{400, 135} };
+		cs0->setCollisionType(CollisionType::WALL);
+		cs0->setDrawBoundingBox(true);
+
+		CollisionBox* cs1 = new CollisionBox{ sf::Vector2f{380, 0}, sf::Vector2f{470, 800} };
+		cs1->setCollisionType(CollisionType::WALL);
+		cs1->setDrawBoundingBox(true);
+
+		CollisionManager* collision_manager = new CollisionManager{ {cb_background, knightSprite, cs0, cs1} };
+
+		// Add Scene Entities
+		scene->addEntities({ collision_manager, knight });
+
+		// Add Scene Drawables
+		scene->addDrawables({background, knight, cs0, cs1 });
+
+		// ----------
+		return scene;
+	}
+
+	Scene* Factory::create_menu_scene(sf::RenderWindow& window)
+	{
+		return nullptr;
+	}
+
+	ExpandMenu* create_combat_menu()
 	{
 		// TODO(moritz):
 		return nullptr;

@@ -12,6 +12,7 @@ namespace ProjectSpace
 		DEBUG = 0,
 		LEVEL_ONE,
 		TILEMAP,
+		COLLISION_SCENE,
 	};
 }
 

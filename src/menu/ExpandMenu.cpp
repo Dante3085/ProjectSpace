@@ -3,8 +3,7 @@
 
 namespace ProjectSpace
 {
-	ExpandMenu::ExpandMenu(std::map<Button*, std::vector<Button*>> const& buttons, 
-		sf::Vector2f const& position, InputHandler* inputHandler)
+	ExpandMenu::ExpandMenu(std::map<Button*, std::vector<Button*>> const& buttons, sf::Vector2f const& position, InputHandler* inputHandler)
 	: buttons{buttons}, position{position}
 	{
 		// VBox und ButtonMenu für die obersten Buttons

@@ -154,6 +154,15 @@ namespace ProjectSpace
 		text.setPosition(textX, textY);
 	}
 
+	void Button::setSize(sf::Vector2f const& size)
+	{
+		rectangle.setSize(size);
+
+		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
+		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
+		text.setPosition(textX, textY);
+	}
+
 	sf::Vector2f Button::getPosition() const
 	{
 		return rectangle.getPosition();

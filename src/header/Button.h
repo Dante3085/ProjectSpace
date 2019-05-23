@@ -130,6 +130,8 @@ namespace ProjectSpace
 		 */
 		void setSize(float width, float height);
 
+		void setSize(sf::Vector2f const& size);
+
 		/**
 		 * @brief      Gets the position of the Button.
 		 *

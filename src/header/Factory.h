@@ -17,11 +17,13 @@ namespace ProjectSpace
 	public:
 
 		// NOTE(moritz): Die folgenden Funktionen sind erstmal nur dafuer da den ganzen Code zum Testen zu halten.
-		static Scene* createDebugScene(sf::RenderWindow& window);
-		static Scene* createEmptyScene(sf::RenderWindow& window);
-		static Scene* createTilemapScene(sf::RenderWindow& window);
+		static Scene* create_debug_scene(sf::RenderWindow& window);
+		static Scene* create_empty_scene(sf::RenderWindow& window);
+		static Scene* create_tilemap_scene(sf::RenderWindow& window);
+		static Scene* create_collision_scene(sf::RenderWindow& window);
+		static Scene* create_menu_scene(sf::RenderWindow& window);
 
-		static ExpandMenu* createCombatMenu();
+		static ExpandMenu* create_combat_menu();
 
 	private:
 		Factory() {}

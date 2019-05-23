@@ -43,6 +43,13 @@ namespace ProjectSpace
 	{
 		return vectorMultScalar(v, 1.f / vectorLength(v));
 	}
+
+	template <class T>
+	static std::ostream& operator<<(std::ostream& stream, sf::Vector2<T> v)
+	{
+		stream << "{" << v.x << ", " << v.y << "}";
+		return stream;
+	}
 }
 
 #endif

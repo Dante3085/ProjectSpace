@@ -4,6 +4,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/VideoMode.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 #include "ButtonMenu.h"
 #include "TranslateAnimation.h"
@@ -18,6 +19,7 @@
 #include "InputHandler.h"
 #include "Scene.h"
 #include "Factory.h" 
+#include "Util.h"
 
 namespace ProjectSpace
 {
@@ -63,7 +65,7 @@ namespace ProjectSpace
 			sf::Time time = clock.restart();
 			float frameTime = time.asSeconds();
 			
-			strFrameTime.append("frameTime: ");
+			/*strFrameTime.append("frameTime: ");
 			strFrameTime.append(std::to_string(frameTime));
 			strFrameTime.append(" ");
 			strFrameTime.append("fps: ");
@@ -72,10 +74,12 @@ namespace ProjectSpace
 
 			if (counter == 10)
 			{
-				// std::cout << strFrameTime;
+				std::cout << strFrameTime;
 				strFrameTime.clear();
 				counter = 0;
-			}
+			}*/
+
+			std::cout << sf::Mouse::getPosition() << "\n";
 
 			// This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen. Ist wohl ziemlich wichtig in SFML.)
 			sf::Event event;
@@ -126,10 +130,11 @@ namespace ProjectSpace
 		window.setFramerateLimit(60);
 
 		// Creating Levels
-		scenes[EScene::DEBUG] = Factory::createDebugScene(window);
-		scenes[EScene::LEVEL_ONE] = Factory::createEmptyScene(window);
-		scenes[EScene::TILEMAP] = Factory::createTilemapScene(window);
-		currentScene = scenes[EScene::DEBUG];
+		scenes[EScene::DEBUG] = Factory::create_debug_scene(window);
+		scenes[EScene::LEVEL_ONE] = Factory::create_empty_scene(window);
+		scenes[EScene::TILEMAP] = Factory::create_tilemap_scene(window);
+		scenes[EScene::COLLISION_SCENE] = Factory::create_collision_scene(window);
+		currentScene = scenes[EScene::COLLISION_SCENE];
 
 		// Fps Counter of the Game.
 		FpsCounter* fpsCounter = new FpsCounter{"rsrc/fonts/arial.ttf"};
@@ -154,23 +159,28 @@ namespace ProjectSpace
 		Button* btn3 = new Button{[this]()
 		{
 			setCurrentScene(EScene::DEBUG);
-		}, window, "Debug Level"};
+		}, window, "Debug Scene"};
 
 		Button* btn4 = new Button{[this]()
 		{
 			setCurrentScene(EScene::LEVEL_ONE);
-		}, window, "Level 1"};
+		}, window, "Scene 1"};
 
 		Button* btn5 = new Button{ [this]()
 		{
 			setCurrentScene(EScene::TILEMAP);
-		}, window, "Tilemap Level" };
+		}, window, "Tilemap Scene" };
 
-		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5});
+		Button* btn6 = new Button{ [this]()
+		{
+			setCurrentScene(EScene::COLLISION_SCENE);
+		}, window, "Collision Scene" };
+
+		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6});
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
-		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5}, globalInputHandler};
+		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6}, globalInputHandler};
 
 		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 1.f / 15};
 		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}, 1.f / 15};

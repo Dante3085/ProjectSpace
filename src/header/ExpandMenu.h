@@ -34,6 +34,8 @@ namespace ProjectSpace
 		void move(sf::Vector2f v) override;
 
 	private:
+		
+	private:
 		std::map<Button*, std::vector<Button*>> buttons;
 		std::vector<ButtonMenu> buttonMenus;
 		std::vector<VBox> vboxs;
@@ -41,6 +43,32 @@ namespace ProjectSpace
 		std::vector<TranslateAnimation> tBackwardAnims;
 		sf::Vector2f position;
 	};
+
+	/*class ExpandMenu : public MenuElement
+	{
+	public:
+		ExpandMenu();
+
+	private:
+		class Node
+		{
+		public:
+			Node(std::vector<Button*> buttons);
+
+			// Sets given Node to Button on the given index.
+			// Does nothing if buttonIndex is invalid.
+			void setNode(int buttonIndex, Node& node);
+
+		private:
+			std::map<Button*, Node> nodes;
+			ButtonMenu buttonMenu;
+			VBox vbox;
+			TranslateAnimation translateAnimation;
+		};
+
+	private:
+		Node root;
+	};*/
 }
 
 #endif

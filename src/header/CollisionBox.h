@@ -25,7 +25,7 @@ namespace ProjectSpace
 		 * @param[in]  size      The size
 		 * @param[in]  position  The position
 		 */
-		CollisionBox(sf::Vector2f size = sf::Vector2f{50, 50}, sf::Vector2f position = sf::Vector2f{0, 0});
+		CollisionBox(sf::Vector2f position = sf::Vector2f{0, 0}, sf::Vector2f size = sf::Vector2f{50, 50});
 
 		/**
 		 * @brief      Returns whether or not this CollisionBox collides with the given Collidable.

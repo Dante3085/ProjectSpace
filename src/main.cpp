@@ -82,6 +82,8 @@ using namespace ProjectSpace;
 
  - Game Instanz als Singleton
 
+ - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
+
 */
 
 /* USEFULL LINKS
@@ -109,7 +111,7 @@ using namespace ProjectSpace;
 
 int main()
 {
-	Game g{ "ProjectSpace" };
+	Game g{ "ProjectSpace", WindowStyle::FULLSCREEN };
 	g.start();
 
 	return 0;
