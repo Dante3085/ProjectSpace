@@ -85,4 +85,57 @@ namespace ProjectSpace
 	{
 		return shape;
 	}
+	void CollisionShape::move(sf::Vector2f const& v)
+	{
+		shape.move(v);
+
+		if (shape.getPointCount() == 2)
+		{
+			lines[0]->create(shape.getPoint(0), shape.getPoint(1));
+		}
+
+		else if (shape.getPointCount() > 2)
+		{
+			for (int i = 0; i < shape.getPointCount() - 1; ++i)
+			{
+				lines[i]->create(shape.getPoint(i), shape.getPoint(i + 1));
+			}
+			// Ziehe zuletzt noch Linie vom letzten zum ersten Punkt.
+			lines[lines.size() - 1]->create(shape.getPoint(shape.getPointCount() - 1), shape.getPoint(0));
+		}
+	}
+	void CollisionShape::setPosition(sf::Vector2f const& v)
+	{
+		shape.setPosition(v);
+
+		if (shape.getPointCount() == 2)
+		{
+			lines[0]->create(shape.getPoint(0), shape.getPoint(1));
+		}
+
+		else if (shape.getPointCount() > 2)
+		{
+			for (int i = 0; i < shape.getPointCount() - 1; ++i)
+			{
+				lines[i]->create(shape.getPoint(i), shape.getPoint(i + 1));
+			}
+			// Ziehe zuletzt noch Linie vom letzten zum ersten Punkt.
+			lines[lines.size() - 1]->create(shape.getPoint(shape.getPointCount() - 1), shape.getPoint(0));
+		}
+	}
+
+	void CollisionShape::setOutlineThickness(float thickness)
+	{
+		shape.setOutlineThickness(thickness);	
+	}
+
+	void CollisionShape::setFillColor(sf::Color const& color)
+	{
+		shape.setFillColor(color);
+	}
+
+	void CollisionShape::setOutlineColor(sf::Color const& color)
+	{
+		shape.setOutlineColor(color);
+	}
 }

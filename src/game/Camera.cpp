@@ -12,10 +12,10 @@ namespace ProjectSpace
 
 	void Camera::update(sf::Time time)
 	{
-		sf::FloatRect playerBounds{player.getGlobalBounds()};
-		// Plus, weil Kamera mittig bewegt werden muss, nicht die Spielfigur.
-		view.setCenter(sf::Vector2f{playerBounds.left + (playerBounds.width / 2.f), playerBounds.top + (playerBounds.height / 2.f)});
-		window.setView(view);
+		//sf::FloatRect playerBounds{player.getGlobalBounds()};
+		//// Plus, weil Kamera mittig bewegt werden muss, nicht die Spielfigur.
+		//view.setCenter(sf::Vector2f{playerBounds.left + (playerBounds.width / 2.f), playerBounds.top + (playerBounds.height / 2.f)});
+		//window.setView(view);
 	}
 
 	sf::View const& Camera::getView() const

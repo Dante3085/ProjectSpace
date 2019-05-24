@@ -24,6 +24,13 @@ namespace ProjectSpace
 		sf::Shape const& getShape() const override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+		void move(sf::Vector2f const& v);
+		void setPosition(sf::Vector2f const& v);
+
+		void setOulineThickness(float thickness);
+		void setFillColor(sf::Color const& color);
+		void setOutlineColor(sf::Color const& color);
+
 	private:
 		CollisionBox cb;
 		CollisionShape cs;

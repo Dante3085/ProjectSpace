@@ -19,10 +19,11 @@
 #include "EAnimation.h"
 #include "Animation.h"
 #include "CollisionShape.h"
+#include "LayerCollidable.h"
 
 namespace ProjectSpace
 {
-	class AnimatedSprite : public sf::Drawable, public Entity, public Collidable
+	class AnimatedSprite : public sf::Drawable, public Entity
 	{
 	public:
 
@@ -33,14 +34,6 @@ namespace ProjectSpace
 		 * @param[in]  speed  Pixels per Second that this AnimatedSprite moves (NICHT IMPLEMENTIERT)
 		 */
 		AnimatedSprite(sf::Vector2f position);
-
-		/**
-		 * @brief      Uses CollisionShape for CollisionDetection.
-		 *
-		 * @param[in]  position         The position
-		 * @param[in]  collisionPoints  The collision points
-		 */
-		AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> collisionPoints);
 
 		/**
 		 * @brief      Draws this AnimatedSprite on given RenderTarget. Makes following Syntax possible: RenderTarget.draw(AnimatedSprite)
@@ -72,9 +65,6 @@ namespace ProjectSpace
 		 */
 		void addAnimation(EAnimation name, Animation* animation);
 
-		sf::FloatRect getGlobalBounds() const override;
-		sf::Shape const& getShape() const override;
-		bool collidesWith(Collidable const* partner) const override;
 		sf::Vector2f getPreviousPosition() const;
 		float getSpeed();
 		void setSpeed(float speed);
@@ -98,6 +88,7 @@ namespace ProjectSpace
 		const sf::Transform& getInverseTransform() const;
 
 		sf::Sprite* getSprite();
+		LayerCollidable* getLayerCollidable();
 
 	private:
 		/**
@@ -108,14 +99,14 @@ namespace ProjectSpace
 		void playAnimation(sf::Time time);
 
 		sf::Sprite sprite; 							 // Displays a frame of this AnimatedSprite at any given moment in time.
-		sf::RectangleShape shape;
-		CollisionShape collisionShape;
 		std::map<EAnimation, Animation*> animations; // Contains all Animations registered on this AnimatedSprite by name.
 		EAnimation currentAnimation; 				 // Name of the current Animation of this AnimatedSprite.
 		int frameIndex; 							 // Stores on which frame of the current Animation the AnimatedSprite is currently on.
 		float elapsedSeconds; 						 // For tracking time when updating frames.
 		float speed; 								 // Pixels per Second.
 		sf::Vector2f previousPosition;
+
+		LayerCollidable layerCollidable;
 	};
 }
 

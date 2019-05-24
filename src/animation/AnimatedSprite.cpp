@@ -10,68 +10,26 @@ namespace ProjectSpace
 {
 	AnimatedSprite::AnimatedSprite(sf::Vector2f position)
 		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }
+		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{}}
 	{
 		sprite.setPosition(position);
 		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
 		sprite.setScale(2, 2);
 
-		shape.setOutlineThickness(2);
-		shape.setOutlineColor(sf::Color{ 30,144,255 });
-		shape.setFillColor(sf::Color{ 0, 0, 0, 0 });
-
-		// Lines of SpriteBox
-		sf::FloatRect rect = sprite.getGlobalBounds();
-
-		sf::Vector2f upperLeft = sf::Vector2f{ rect.left, rect.top };
-		sf::Vector2f upperRight{ upperLeft.x + rect.width, upperLeft.y };
-		sf::Vector2f lowerRight{ upperRight.x, upperLeft.y + rect.height };
-		sf::Vector2f lowerLeft{ upperLeft.x, lowerRight.y };
-
-		lines.push_back(new Line2F{ upperLeft, upperRight });
-		lines.push_back(new Line2F{ upperRight, lowerRight });
-		lines.push_back(new Line2F{ lowerRight, lowerLeft });
-		lines.push_back(new Line2F{ lowerLeft, upperLeft });
-	}
-
-	AnimatedSprite::AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> collisionPoints)
-	: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }
-	{
-		sprite.setPosition(position);
-		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
-		sprite.setScale(2, 2);
-
-		
+		layerCollidable.setOulineThickness(2);
+		layerCollidable.setOutlineColor(sf::Color{ 30,144,255 });
+		layerCollidable.setFillColor(sf::Color{ 0, 0, 0, 0 });
+		layerCollidable.setPosition(position);
 	}
 
 	void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(sprite);
-
-		if (drawBoundingBox)
-		{
-			target.draw(shape);
-		}
+		target.draw(layerCollidable);
 	}
 
 	void AnimatedSprite::update(sf::Time time)
 	{
-		// update RectangleShape that describes the Sprite's bounds.
-		sf::FloatRect rect = sprite.getGlobalBounds();
-		shape.setSize(sf::Vector2f{ rect.width, rect.height });
-		shape.setPosition(rect.left, rect.top);
-
-		sf::Vector2f upperLeft = sf::Vector2f{ rect.left, rect.top };
-		sf::Vector2f upperRight{ upperLeft.x + rect.width, upperLeft.y };
-		sf::Vector2f lowerRight{ upperRight.x, upperLeft.y + rect.height };
-		sf::Vector2f lowerLeft{ upperLeft.x, lowerRight.y };
-
-		lines[0]->create(upperLeft, upperRight);
-		lines[1]->create(upperRight, lowerRight);
-		lines[2]->create(lowerRight, lowerLeft);
-		lines[3]->create(lowerLeft, upperLeft);
-
 		playAnimation(time);
 	}
 
@@ -114,22 +72,6 @@ namespace ProjectSpace
 		elapsedSeconds += time.asSeconds();
 	}
 
-	bool AnimatedSprite::collidesWith(Collidable const* partner) const
-	{
-		// return sprite.getGlobalBounds().intersects(partner->getGlobalBounds());
-		return false;
-	}
-
-	sf::FloatRect AnimatedSprite::getGlobalBounds() const
-	{
-		return sprite.getGlobalBounds();
-	}
-
-	sf::Shape const& AnimatedSprite::getShape() const
-	{
-		return shape;
-	}
-
 	sf::Vector2f AnimatedSprite::getPreviousPosition() const
 	{
 		return previousPosition;
@@ -138,11 +80,13 @@ namespace ProjectSpace
 	void AnimatedSprite::setPosition(float x, float y)
 	{
 		sprite.setPosition(x, y);
+		layerCollidable.setPosition(sf::Vector2f{ x, y });
 	}
 
 	void AnimatedSprite::setPosition(sf::Vector2f const& position)
 	{
 		sprite.setPosition(position);
+		layerCollidable.setPosition(position);
 	}
 
 	void AnimatedSprite::setRotation(float angle)
@@ -194,12 +138,14 @@ namespace ProjectSpace
 	{
 		previousPosition = sf::Vector2f{sprite.getPosition()};
 		sprite.move(x, y); 
+		layerCollidable.move(sf::Vector2f{x, y});
 	}
 
 	void AnimatedSprite::move(const sf::Vector2f& offset) 			 
 	{ 
 		previousPosition = sf::Vector2f{ sprite.getPosition() };
 		sprite.move(offset); 
+		layerCollidable.move(offset);
 	}
 
 	void AnimatedSprite::rotate(float angle) 						 
@@ -230,5 +176,10 @@ namespace ProjectSpace
 	sf::Sprite* AnimatedSprite::getSprite()
 	{
 		return &sprite;
+	}
+
+	LayerCollidable* AnimatedSprite::getLayerCollidable()
+	{
+		return &layerCollidable;
 	}
 }

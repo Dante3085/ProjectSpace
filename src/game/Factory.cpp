@@ -79,7 +79,6 @@ namespace ProjectSpace
 		midnightSprite->addAnimation(EAnimation::IDLE, midnightAnim);
 		midnightSprite->setAnimation(EAnimation::IDLE);
 		midnightSprite->scale(1.2f, 1.2f);
-		midnightSprite->setDrawBoundingBox(true);
 
 		AnimatedSprite * knightSprite = new AnimatedSprite{ sf::Vector2f{1000, 500} };
 		knightSprite->addAnimation(EAnimation::IDLE, knightIdleAnim);
@@ -88,9 +87,9 @@ namespace ProjectSpace
 		knightSprite->addAnimation(EAnimation::RIGHT, knightRightRunAnim);
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
 		knightSprite->setAnimation(EAnimation::IDLE);
-		knightSprite->setDrawBoundingBox(true);
-
-		knightSprite->setCollisionHandler([knightSprite](Collidable* partner)
+		knightSprite->getLayerCollidable()->setCollisionType(CollisionType::WALL);
+	 
+		knightSprite->getLayerCollidable()->setCollisionHandler([knightSprite](Collidable* partner)
 		{
 			if (partner->getCollisionType() == CollisionType::WALL)
 			{
@@ -174,7 +173,7 @@ namespace ProjectSpace
 		windowBoundsBox->setCollisionType(CollisionType::WALL);
 		windowBoundsBox->setDrawBoundingBox(true);
 
-		CollisionManager* collisionManager = new CollisionManager{ {windowBoundsBox, knightSprite, triangle, 
+		CollisionManager* collisionManager = new CollisionManager{ {windowBoundsBox, triangle, knightSprite->getLayerCollidable(),
 			triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube, threeDCube2, threeDCube3} };
 
 		InputHandler * inputHandler = new InputHandler{};
@@ -343,15 +342,15 @@ namespace ProjectSpace
 		knightSprite->addAnimation(EAnimation::RIGHT, knightRightRunAnim);
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
 		knightSprite->setAnimation(EAnimation::IDLE);
-		knightSprite->setDrawBoundingBox(true);
+		knightSprite->getLayerCollidable()->setCollisionType(CollisionType::WALL);
 
-		knightSprite->setCollisionHandler([knightSprite](Collidable * partner)
+		knightSprite->getLayerCollidable()->setCollisionHandler([knightSprite](Collidable * partner)
+		{
+			if (partner->getCollisionType() == CollisionType::WALL)
 			{
-				if (partner->getCollisionType() == CollisionType::WALL)
-				{
-					knightSprite->setPosition(knightSprite->getPreviousPosition());
-				}
-			});
+				knightSprite->setPosition(knightSprite->getPreviousPosition());
+			}
+		});
 
 		Character* knight = new Character{ *knightSprite };
 
@@ -378,7 +377,7 @@ namespace ProjectSpace
 		cs1->setCollisionType(CollisionType::WALL);
 		cs1->setDrawBoundingBox(true);
 
-		CollisionManager* collision_manager = new CollisionManager{ {cb_background, knightSprite, cs0, cs1} };
+		CollisionManager* collision_manager = new CollisionManager{ {cb_background, knightSprite->getLayerCollidable(), cs0, cs1} };
 
 		// Add Scene Entities
 		scene->addEntities({ collision_manager, knight });

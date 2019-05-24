@@ -24,8 +24,12 @@ namespace ProjectSpace
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		sf::Shape const& getShape() const override;
 
-		void setPoint(int index, sf::Vector2f const& p);
-		void setAllPoints(std::vector<sf::Vector2f> const&);
+		void move(sf::Vector2f const& v);
+		void setPosition(sf::Vector2f const& v);
+
+		void setOutlineThickness(float thickness);
+		void setFillColor(sf::Color const& color);
+		void setOutlineColor(sf::Color const& color);
 
 	private:
 		sf::ConvexShape shape;

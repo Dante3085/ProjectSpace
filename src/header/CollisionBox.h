@@ -46,6 +46,13 @@ namespace ProjectSpace
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		sf::Shape const& getShape() const override;
 
+		void move(sf::Vector2f const& v);
+		void setPosition(sf::Vector2f const& v);
+
+		void setOutlineThickness(float thickness);
+		void setFillColor(sf::Color const& color);
+		void setOutlineColor(sf::Color const& color);
+
 	private:
 		sf::RectangleShape box;
 	};

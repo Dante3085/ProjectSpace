@@ -30,4 +30,34 @@ namespace ProjectSpace
 		target.draw(cb);
 		target.draw(cs);
 	}
+
+	void LayerCollidable::move(sf::Vector2f const& v)
+	{
+		cb.move(v);
+		cs.move(v);
+	}
+
+	void LayerCollidable::setPosition(sf::Vector2f const& v)
+	{
+		cb.setPosition(v);
+		cs.setPosition(v);
+	}
+
+	void LayerCollidable::setOulineThickness(float thickness)
+	{
+		cb.setOutlineThickness(thickness);
+		cs.setOutlineThickness(thickness);
+	}
+
+	void LayerCollidable::setFillColor(sf::Color const& color)
+	{
+		cb.setFillColor(color);
+		cs.setFillColor(color);
+	}
+
+	void LayerCollidable::setOutlineColor(sf::Color const& color)
+	{
+		cb.setOutlineColor(color);
+		cs.setOutlineColor(color);
+	}
 }

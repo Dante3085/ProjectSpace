@@ -62,4 +62,29 @@ namespace ProjectSpace
 	{
 		return box;
 	}
+
+	void CollisionBox::move(sf::Vector2f const& v)
+	{
+		box.move(v);
+	}
+
+	void CollisionBox::setPosition(sf::Vector2f const& v)
+	{
+		box.setPosition(v);
+	}
+
+	void CollisionBox::setOutlineThickness(float thickness)
+	{
+		box.setOutlineThickness(thickness);
+	}
+
+	void CollisionBox::setFillColor(sf::Color const& color)
+	{
+		box.setFillColor(color);
+	}
+
+	void CollisionBox::setOutlineColor(sf::Color const& color)
+	{
+		box.setOutlineColor(color);
+	}
 }
