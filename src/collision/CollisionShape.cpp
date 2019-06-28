@@ -40,7 +40,7 @@ namespace ProjectSpace
 			// obige lines korrekt.
 	}
 
-	bool CollisionShape::collidesWith(Collidable const* partner) const
+	bool CollisionShape::collidesWith(Collidable const* partner)
 	{
 		for (Line2F* l1 : this->lines)
 		{

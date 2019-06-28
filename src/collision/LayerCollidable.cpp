@@ -6,12 +6,23 @@ namespace ProjectSpace
 		std::vector<sf::Vector2f> points)
 		: cb{position, size}, cs{points}
 	{
-
 	}
 
-	bool LayerCollidable::collidesWith(Collidable const* partner) const
+	bool LayerCollidable::collidesWith(Collidable const* partner)
 	{
-		return cb.collidesWith(partner) ? cs.collidesWith(partner) : false;
+		if (cb.collidesWith(partner))
+		{
+			cb.setOutlineColor(sf::Color{ 255, 0, 0 });
+			if (cs.collidesWith(partner))
+			{
+				return true;
+			}
+		}
+		else
+		{
+			cb.setOutlineColor(sf::Color{ 0, 0, 255 });
+			return false;
+		}
 	}
 
 	sf::FloatRect LayerCollidable::getGlobalBounds() const

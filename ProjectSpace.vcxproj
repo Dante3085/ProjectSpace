@@ -91,6 +91,7 @@
     <ClInclude Include="src\menu\TextBox.h" />
     <ClInclude Include="src\menu\VBox.h" />
     <ClInclude Include="src\rpg\Character.h" />
+    <ClInclude Include="src\test.h" />
     <ClInclude Include="src\Util.h" />
   </ItemGroup>
   <ItemGroup>

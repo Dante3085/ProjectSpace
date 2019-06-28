@@ -8,9 +8,9 @@
 
 namespace ProjectSpace
 {
-	AnimatedSprite::AnimatedSprite(sf::Vector2f position)
+	AnimatedSprite::AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> const& points)
 		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{}}
+		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}, points}
 	{
 		sprite.setPosition(position);
 		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });

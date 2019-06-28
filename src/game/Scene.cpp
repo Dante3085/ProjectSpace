@@ -17,7 +17,7 @@ namespace ProjectSpace
 	{
 		for (Entity* e : entities)
 		{
-			e->update(time);
+			e->update(time);  
 		}
 	}
 

@@ -13,17 +13,18 @@ namespace ProjectSpace
 		box.setFillColor(sf::Color{0, 0, 0, 0});
 
 			// Linien der CollisionBox abspeichern.
+		sf::Vector2f upperLeft{ position.x, position.y };
 		sf::Vector2f upperRight{position.x + size.x, position.y};
+		sf::Vector2f lowerRight{ position.x + size.x, position.y + size.y };
 		sf::Vector2f lowerLeft{position.x, position.y + size.y};
-		sf::Vector2f lowerRight{position.x + size.x, position.y + size.y};
 
-		lines.push_back(new Line2F{position, upperRight});
+		lines.push_back(new Line2F{upperLeft, upperRight});
 		lines.push_back(new Line2F{upperRight, lowerRight});
 		lines.push_back(new Line2F{lowerRight, lowerLeft});
-		lines.push_back(new Line2F{lowerLeft, position});
+		lines.push_back(new Line2F{lowerLeft, upperLeft});
 	}
 
-	bool CollisionBox::collidesWith(Collidable const* partner) const
+	bool CollisionBox::collidesWith(Collidable const* partner)
 	{
 		// return box.getGlobalBounds().intersects(partner->getGlobalBounds());
 
@@ -66,11 +67,35 @@ namespace ProjectSpace
 	void CollisionBox::move(sf::Vector2f const& v)
 	{
 		box.move(v);
+
+		sf::FloatRect bounds = box.getGlobalBounds();
+
+		sf::Vector2f upperLeft{ bounds.left, bounds.top };
+		sf::Vector2f upperRight{ bounds.left + bounds.width, bounds.top };
+		sf::Vector2f lowerRight{ bounds.left + bounds.width, bounds.top + bounds.height };
+		sf::Vector2f lowerLeft{ bounds.left, bounds.top + bounds.height };
+
+		lines[0]->create(upperLeft, upperRight);
+		lines[1]->create(upperRight, lowerRight);
+		lines[2]->create(lowerRight, lowerLeft);
+		lines[3]->create(lowerLeft, upperLeft);
 	}
 
 	void CollisionBox::setPosition(sf::Vector2f const& v)
 	{
 		box.setPosition(v);
+
+		sf::FloatRect bounds = box.getGlobalBounds();
+
+		sf::Vector2f upperLeft{ bounds.left, bounds.top };
+		sf::Vector2f upperRight{ bounds.left + bounds.width, bounds.top };
+		sf::Vector2f lowerRight{ bounds.left + bounds.width, bounds.top + bounds.height };
+		sf::Vector2f lowerLeft{ bounds.left, bounds.top + bounds.height };
+
+		lines[0]->create(upperLeft, upperRight);
+		lines[1]->create(upperRight, lowerRight);
+		lines[2]->create(lowerRight, lowerLeft);
+		lines[3]->create(lowerLeft, upperLeft);
 	}
 
 	void CollisionBox::setOutlineThickness(float thickness)

@@ -34,7 +34,7 @@ namespace ProjectSpace
 		 *
 		 * @return     True if this CollisionBox collides with the given Collidable, otherwise false.
 		 */
-		bool collidesWith(Collidable const* partner) const;
+		bool collidesWith(Collidable const* partner) override;
 
 		/**
 		 * @brief      Behaviour of this CollisionBox upon colliding with the given Collidable.

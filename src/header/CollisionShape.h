@@ -18,7 +18,7 @@ namespace ProjectSpace
 	public:
 		CollisionShape(std::vector<sf::Vector2f> points = {});
 
-		bool collidesWith(Collidable const* partner) const;
+		bool collidesWith(Collidable const* partner) override;
 		void handleCollision(Collidable* partner);
 		sf::FloatRect getGlobalBounds() const;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

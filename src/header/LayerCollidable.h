@@ -19,7 +19,7 @@ namespace ProjectSpace
 		LayerCollidable(sf::Vector2f position = sf::Vector2f{ 0, 0 }, sf::Vector2f size = sf::Vector2f{ 50, 50 },
 			std::vector<sf::Vector2f> points = {});
 
-		bool collidesWith(Collidable const* partner) const override;
+		bool collidesWith(Collidable const* partner) override;
 		sf::FloatRect getGlobalBounds() const override;
 		sf::Shape const& getShape() const override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

@@ -226,7 +226,7 @@ namespace ProjectSpace
 		ExpandMenu* expandMenu = new ExpandMenu
 		{ 
 			{
-				{expand0, {expand00, expand01}},
+				{expand0, {expand00, expand01, expand1}},
 				{expand1, {}},
 				{expand2, {}},
 				{expand3, {}}
@@ -335,16 +335,23 @@ namespace ProjectSpace
 		Animation* knightRightRunAnim = new Animation{ "rsrc/knight_right_run.png", 84, 84, 0, 0, 6, 0.1f };
 		Animation* knightDownRunAnim = new Animation{ "rsrc/knight_down_run.png", 84, 84, 0, 0, 5, 0.1f };
 
-		AnimatedSprite* knightSprite = new AnimatedSprite{ sf::Vector2f{900, 220} };
+		AnimatedSprite* knightSprite = new AnimatedSprite{ sf::Vector2f{900, 220},  {sf::Vector2f{900, 220}, sf::Vector2f{950, 220}, sf::Vector2f{900, 300}} };
 		knightSprite->addAnimation(EAnimation::IDLE, knightIdleAnim);
 		knightSprite->addAnimation(EAnimation::LEFT, knightLeftRunAnim);
 		knightSprite->addAnimation(EAnimation::UP, knightUpRunAnim);
 		knightSprite->addAnimation(EAnimation::RIGHT, knightRightRunAnim);
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
 		knightSprite->setAnimation(EAnimation::IDLE);
-		knightSprite->getLayerCollidable()->setCollisionType(CollisionType::WALL);
 
-		knightSprite->getLayerCollidable()->setCollisionHandler([knightSprite](Collidable * partner)
+		Animation* facesAnimation = new Animation{"rsrc/faces.png", 300, 500, 0, 0, 6, 0.5f};
+		AnimatedSprite* facesSprite = new AnimatedSprite{ sf::Vector2f{1000, 1000} };
+		facesSprite->addAnimation(EAnimation::IDLE, facesAnimation);
+		facesSprite->setAnimation(EAnimation::IDLE);
+
+		LayerCollidable* knightLayerCollidable = knightSprite->getLayerCollidable();
+		knightLayerCollidable->setCollisionType(CollisionType::WALL);
+
+		knightLayerCollidable->setCollisionHandler([knightSprite](Collidable * partner)
 		{
 			if (partner->getCollisionType() == CollisionType::WALL)
 			{
@@ -380,10 +387,10 @@ namespace ProjectSpace
 		CollisionManager* collision_manager = new CollisionManager{ {cb_background, knightSprite->getLayerCollidable(), cs0, cs1} };
 
 		// Add Scene Entities
-		scene->addEntities({ collision_manager, knight });
+		scene->addEntities({ collision_manager, knight, facesSprite });
 
 		// Add Scene Drawables
-		scene->addDrawables({background, knight, cs0, cs1 });
+		scene->addDrawables({background, knight, cs0, cs1, facesSprite });
 
 		// ----------
 		return scene;

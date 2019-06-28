@@ -23,7 +23,7 @@ namespace ProjectSpace
 
 		for (sf::RectangleShape const& shape : tiles)
 		{
-			target.draw(shape);
+			target.draw(shape); 
 		}
 	}
 	

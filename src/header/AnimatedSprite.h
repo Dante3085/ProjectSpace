@@ -33,7 +33,7 @@ namespace ProjectSpace
 		 * @param[in]  position      Initial position of the AnimatedSprite
 		 * @param[in]  speed  Pixels per Second that this AnimatedSprite moves (NICHT IMPLEMENTIERT)
 		 */
-		AnimatedSprite(sf::Vector2f position);
+		AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> const& points = {});
 
 		/**
 		 * @brief      Draws this AnimatedSprite on given RenderTarget. Makes following Syntax possible: RenderTarget.draw(AnimatedSprite)

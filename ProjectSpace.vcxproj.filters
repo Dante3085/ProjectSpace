@@ -74,6 +74,7 @@
     <ClInclude Include="src\header\VBox.h" />
     <ClInclude Include="src\header\WindowStyle.h" />
     <ClInclude Include="src\header\LayerCollidable.h" />
+    <ClInclude Include="src\test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />

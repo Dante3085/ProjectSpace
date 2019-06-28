@@ -38,7 +38,7 @@ namespace ProjectSpace
 		 *
 		 * @return     true if the given Collidable collides with this Collidable, otherwise false.
 		 */
-		virtual bool collidesWith(Collidable const* partner) const = 0;
+		virtual bool collidesWith(Collidable const* partner) = 0;
 
 		/**
 		 * @brief      Behaviour of this Collidable upon colliding with the given Collidable.
