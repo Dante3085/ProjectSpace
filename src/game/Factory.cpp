@@ -25,6 +25,7 @@
 #include "Character.h"
 #include "InputHandler.h"
 #include "Camera.h"
+#include "MenuGroup.h"
 
 namespace ProjectSpace
 {
@@ -176,19 +177,6 @@ namespace ProjectSpace
 		CollisionManager* collisionManager = new CollisionManager{ {windowBoundsBox, triangle, knightSprite->getLayerCollidable(),
 			triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube, threeDCube2, threeDCube3} };
 
-		InputHandler * inputHandler = new InputHandler{};
-
-		inputHandler->storeKeyState(sf::Keyboard::Space, false);
-		inputHandler->add([fadeAnimation, inputHandler]()
-		{
-			/*if (!inputHandler->wasKeyPressed(sf::Keyboard::Space) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-			{
-				fadeAnimation->start();
-			}
-
-			inputHandler->storeKeyState(sf::Keyboard::Space, sf::Keyboard::isKeyPressed(sf::Keyboard::Space));*/
-		});
-
 		Button* expand0 = new Button
 		{
 			[](){}, window, "expand0"
@@ -223,6 +211,63 @@ namespace ProjectSpace
 			[](){}, window, "expand3"
 		};		
 
+		Button* groupBtn0 = new Button
+		{
+			[]() {}, window, "GroupBtn0"
+		};
+		groupBtn0->setPosition(100, 100);
+
+		Button* groupBtn1 = new Button
+		{
+			[]() {}, window, "GroupBtn1"
+		};
+		groupBtn1->setPosition(200, 200);
+
+		Button* groupBtn2 = new Button
+		{
+			[]() {}, window, "GroupBtn1"
+		};
+		groupBtn2->setPosition(500, 600);
+
+		MenuGroup* menuGroup = new MenuGroup{ sf::Vector2f{1000, 1000} };
+		menuGroup->addMenuElement(groupBtn0);
+		menuGroup->addMenuElement(groupBtn1);
+		menuGroup->addMenuElement(groupBtn2);
+
+		InputHandler* inputHandler = new InputHandler{};
+
+		inputHandler->storeKeyState(sf::Keyboard::Space, false);
+		inputHandler->storeKeyState(sf::Keyboard::Up, false);
+		inputHandler->add([fadeAnimation, inputHandler, menuGroup]()
+			{
+				/*if (!inputHandler->wasKeyPressed(sf::Keyboard::Space) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				{
+					fadeAnimation->start();
+				}
+
+				inputHandler->storeKeyState(sf::Keyboard::Space, sf::Keyboard::isKeyPressed(sf::Keyboard::Space));*/
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+				{
+					menuGroup->move(0, -20);
+				}
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+				{
+					menuGroup->move(20, 0);
+				}
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+				{
+					menuGroup->move(0, 20);
+				}
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+				{
+					menuGroup->move(-20, 0);
+				}
+			});
+
 		ExpandMenu* expandMenu = new ExpandMenu
 		{ 
 			{
@@ -235,10 +280,11 @@ namespace ProjectSpace
 
 		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
-		scene->addEntities({ inputHandler, knight, collisionManager, expandMenu, fadeAnimation });
 
-		scene->addDrawables({ backgroundSprite, knight, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube, 
-			threeDCube2, threeDCube3 });
+		scene->addEntities({ inputHandler, knight, collisionManager, fadeAnimation, menuGroup });
+
+		scene->addDrawables({ backgroundSprite, knight, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
+			threeDCube2, threeDCube3, menuGroup });
 
 		return scene;
 	}

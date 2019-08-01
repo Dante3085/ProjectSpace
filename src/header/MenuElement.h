@@ -3,6 +3,8 @@
 #define MENU_ELEMENT_H
 
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 
 #include "Entity.h"
 

@@ -34,6 +34,16 @@ namespace ProjectSpace
 		return sf::Vector2f{ v.x * scalar, v.y * scalar };
 	}
 
+	static sf::Vector2f operator*(sf::Vector2f const& v, float scalar)
+	{
+		return sf::Vector2f{ v.x * scalar, v.y * scalar };
+	}
+
+	static sf::Vector2f operator-(sf::Vector2f const& v1, sf::Vector2f v2)
+	{
+		return sf::Vector2f{ v1.x - v2.x, v1.y - v2.y };
+	}
+
 	static float scalarProduct(sf::Vector2f const& v1, sf::Vector2f const& v2)
 	{
 		return (v1.x * v2.x) + (v1.y * v2.y);

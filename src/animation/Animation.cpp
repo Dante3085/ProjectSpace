@@ -5,7 +5,7 @@ namespace ProjectSpace
 {
 	Animation::Animation(std::string spriteSheetPath, int frameWidth, int frameHeight, int yRow, int xColumn, 
 		int numFrames, float frameDelay)
-		: spriteSheet{spriteSheet}, frameDelay{frameDelay}, frames{std::vector<sf::IntRect>{}}
+		: frameDelay{frameDelay}
 	{
 		spriteSheet.loadFromFile(spriteSheetPath);
 
