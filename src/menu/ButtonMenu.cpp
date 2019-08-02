@@ -6,7 +6,7 @@ namespace ProjectSpace
 {
 	ButtonMenu::ButtonMenu(InputHandler* inputHandler)
 	: buttons{}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
-	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, btnPress{2}
+	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, btnPress{2}, logger{&Log::getInstance()}
 	{
 		inputHandler->storeKeyState(keyForward, false);
 		inputHandler->storeKeyState(keyBackward, false);
@@ -15,7 +15,7 @@ namespace ProjectSpace
 
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler) 
 	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
-	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, btnPress{2}
+	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, btnPress{2}, logger{ &Log::getInstance() }
 	{
 		buttons[selected]->select();
 		inputHandler->storeKeyState(keyForward, false);
@@ -27,7 +27,7 @@ namespace ProjectSpace
 	// Ich bin aber zu faul mir etwas anderes auszudenken.
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
 		sf::Keyboard::Key keyForward, sf::Keyboard::Key keyBackward, sf::Keyboard::Key keyPress)
-	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{keyForward}, keyBackward{keyBackward}, keyPress{keyPress}
+	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{keyForward}, keyBackward{keyBackward}, keyPress{keyPress}, logger{ &Log::getInstance() }
 	{
 		buttons[selected]->select();
 		inputHandler->storeKeyState(keyForward, false);
@@ -81,12 +81,16 @@ namespace ProjectSpace
 	{
 		buttons[selected]->unselect();
 		buttons[selected = (selected + 1) == buttons.size() ? 0 : selected + 1]->select();
+
+		// logger->add("ButtonMenu::forward()");
 	}
 
 	void ButtonMenu::backward()
 	{
 		buttons[selected]->unselect();
 		buttons[selected = (selected - 1) == -1 ? (buttons.size() - 1) : selected - 1]->select();
+
+		// logger->add("ButtonMenu::backward()");
 	}
 
 	void ButtonMenu::select(int index)

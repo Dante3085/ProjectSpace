@@ -20,6 +20,7 @@
 #include "Scene.h"
 #include "Factory.h" 
 #include "Util.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -79,7 +80,7 @@ namespace ProjectSpace
 				counter = 0;
 			}*/
 
-			std::cout << sf::Mouse::getPosition() << "\n";
+			// std::cout << sf::Mouse::getPosition() << "\n";
 
 			// This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen. Ist wohl ziemlich wichtig in SFML.)
 			sf::Event event;
@@ -112,6 +113,9 @@ namespace ProjectSpace
 
 			++counter;
 		}
+
+		Log* logger = &Log::getInstance();
+		logger->writeToFile("stdlog.txt", true);
 	}
 
 	void Game::setCurrentScene(EScene scene)

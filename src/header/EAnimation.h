@@ -13,6 +13,7 @@ enum class EAnimation
 	UP,
 	RIGHT,
 	DOWN,
+	ATTACK
 };
 
 #endif

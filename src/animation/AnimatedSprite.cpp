@@ -10,7 +10,8 @@ namespace ProjectSpace
 {
 	AnimatedSprite::AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> const& points)
 		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}, points}
+		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}, points},
+		logger{&Log::getInstance()}
 	{
 		sprite.setPosition(position);
 		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
@@ -38,13 +39,15 @@ namespace ProjectSpace
 		// Do nothing if Animation is already set.
 		if (currentAnimation == name)
 		{
+			// logger->add("@AnimatedSprite::setAnimation(): Given Animation is already set.", true, -1);
 			return;
 		}
 
 		// Do nothing if Animation is not known to this AnimatedSprite.
 		else if (animations.count(name) == 0)
 		{
-			std::cout << "@AnimatedSprite::setAnimation(): Given Animation is not known to this AnimatedSprite." << std::endl;
+			logger->add("@AnimatedSprite::setAnimation(): Given Animation is not known to this AnimatedSprite.",
+				true, -2);
 			return;
 		}
 

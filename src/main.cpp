@@ -1,9 +1,6 @@
 
 #include "Game.h"
-#include "Util.h"
-#include <iostream>
-#include <stdio.h>
-#include "test.h"
+#include "Log.h"
 
 using namespace ProjectSpace;
 
@@ -121,6 +118,6 @@ int main()
 {
     Game g{ "ProjectSpace", WindowStyle::FULLSCREEN };
     g.start();
- 
+
     return 0;
 }

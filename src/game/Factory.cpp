@@ -87,7 +87,7 @@ namespace ProjectSpace
 		knightSprite->addAnimation(EAnimation::UP, knightUpRunAnim);
 		knightSprite->addAnimation(EAnimation::RIGHT, knightRightRunAnim);
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
-		knightSprite->setAnimation(EAnimation::IDLE);
+		knightSprite->setAnimation(EAnimation::ATTACK);
 		knightSprite->getLayerCollidable()->setCollisionType(CollisionType::WALL);
 	 
 		knightSprite->getLayerCollidable()->setCollisionHandler([knightSprite](Collidable* partner)
