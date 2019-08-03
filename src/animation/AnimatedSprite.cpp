@@ -47,7 +47,7 @@ namespace ProjectSpace
 		else if (animations.count(name) == 0)
 		{
 			logger->add("@AnimatedSprite::setAnimation(): Given Animation is not known to this AnimatedSprite.",
-				true, -2);
+				true, LogType::ERR);
 			return;
 		}
 

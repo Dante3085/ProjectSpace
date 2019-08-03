@@ -116,8 +116,23 @@ using namespace ProjectSpace;
 
 int main()
 {
-    Game g{ "ProjectSpace", WindowStyle::FULLSCREEN };
-    g.start();
+    /*Game g{ "ProjectSpace", WindowStyle::FULLSCREEN };
+    g.start();*/
+
+	Log* l = &Log::getInstance();
+	
+	for (int i = 0; i < 100; ++i)
+	{
+		if (i % 2 == 0)
+		{
+			l->add("Schlimmer Error mit Stacktrace", false, LogType::ERR, true, true);
+		}
+		else
+		{
+			l->add("Warnung ohne Stacktrace", false, LogType::WARNING);
+		}
+	}
+	l->writeToFile("stdlog.txt", true);
 
     return 0;
 }
