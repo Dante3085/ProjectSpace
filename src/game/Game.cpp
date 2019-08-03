@@ -20,19 +20,19 @@
 #include "Scene.h"
 #include "Factory.h" 
 #include "Util.h"
-#include "Log.h"
 
 namespace ProjectSpace
 {
 	Game::Game(std::string windowTitle, WindowStyle style)
 	: window{sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style},
-	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, windowHeight{(float)sf::VideoMode::getDesktopMode().height}
+	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, 
+		windowHeight{(float)sf::VideoMode::getDesktopMode().height}, logger{&Log::getInstance()}
 	{
 		init();
 	}
 
 	Game::Game(unsigned int screenWidth, unsigned int screenHeight, std::string windowTitle, WindowStyle style) 
-	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}
+	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}, logger{&Log::getInstance()}
 	{
 		init();
 	}
@@ -114,7 +114,6 @@ namespace ProjectSpace
 			++counter;
 		}
 
-		Log* logger = &Log::getInstance();
 		logger->writeToFile("stdlog.txt", true);
 	}
 
@@ -122,7 +121,7 @@ namespace ProjectSpace
 	{
 		if (scenes.count(scene) == 0)
 		{
-			std::cout << "@Game::setCurrentScene(): Given scene is not known to Game." << std::endl;
+			logger->add("Given scene is not known to Game.", true, LogLevel::ERR, true);
 			return;
 		}
 
@@ -180,11 +179,22 @@ namespace ProjectSpace
 			setCurrentScene(EScene::COLLISION_SCENE);
 		}, window, "Collision Scene" };
 
-		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6});
+		Button* btnDisableLogging = new Button{ [this]()
+		{
+			logger->disable();
+		}, window, "DisableLogging" };
+
+		Button* btnEnableLogging = new Button{ [this]()
+		{
+			logger->enable();
+		}, window, "EnableLogging" };
+
+		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6, btnEnableLogging, btnDisableLogging});
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
-		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6}, globalInputHandler};
+		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6, btnEnableLogging, btnDisableLogging}, 
+			globalInputHandler};
 
 		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 1.f / 15};
 		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}, 1.f / 15};

@@ -26,6 +26,7 @@
 #include "InputHandler.h"
 #include "Camera.h"
 #include "MenuGroup.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -225,7 +226,11 @@ namespace ProjectSpace
 
 		Button* groupBtn2 = new Button
 		{
-			[]() {}, window, "GroupBtn1"
+			[]() 
+		{
+			Log* l = &Log::getInstance();
+			l->add("groupBtn2", true, LogLevel::STATUS, true);
+		}, window, "GroupBtn1"
 		};
 		groupBtn2->setPosition(500, 600);
 

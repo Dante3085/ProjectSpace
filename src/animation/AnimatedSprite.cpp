@@ -39,15 +39,13 @@ namespace ProjectSpace
 		// Do nothing if Animation is already set.
 		if (currentAnimation == name)
 		{
-			// logger->add("@AnimatedSprite::setAnimation(): Given Animation is already set.", true, -1);
 			return;
 		}
 
 		// Do nothing if Animation is not known to this AnimatedSprite.
 		else if (animations.count(name) == 0)
 		{
-			logger->add("@AnimatedSprite::setAnimation(): Given Animation is not known to this AnimatedSprite.",
-				true, LogType::ERR);
+			logger->add("Given Animation is not known to this AnimatedSprite.", true, LogLevel::ERR, true);
 			return;
 		}
 

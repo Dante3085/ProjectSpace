@@ -1,5 +1,6 @@
 
 #include "Animation.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {
