@@ -85,16 +85,12 @@ namespace ProjectSpace
 	{
 		buttons[selected]->unselect();
 		buttons[selected = (selected + 1) == buttons.size() ? 0 : selected + 1]->select();
-
-		logger->add("forward()", true, LogLevel::STATUS, true);
 	}
 
 	void ButtonMenu::backward()
 	{
 		buttons[selected]->unselect();
 		buttons[selected = (selected - 1) == -1 ? (buttons.size() - 1) : selected - 1]->select();
-
-		logger->add("backward()", true, LogLevel::STATUS, true);
 	}
 
 	void ButtonMenu::select(int index)

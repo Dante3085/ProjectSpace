@@ -3,7 +3,8 @@
 
 namespace ProjectSpace
 {
-	CollisionManager::CollisionManager(std::vector<Collidable*> collidables) : collidables{collidables} {}
+	CollisionManager::CollisionManager(std::vector<Collidable*> collidables) 
+		: collidables{ collidables } {}
 
 	void CollisionManager::update(sf::Time time)
 	{

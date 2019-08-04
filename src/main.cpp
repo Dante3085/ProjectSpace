@@ -116,23 +116,12 @@ using namespace ProjectSpace;
 
 int main()
 {
-    /*Game g{ "ProjectSpace", WindowStyle::FULLSCREEN };
+   /* Game g{ "ProjectSpace", WindowStyle::DEFAULT };
     g.start();*/
 
-	Log* l = &Log::getInstance();
-	
-	for (int i = 0; i < 100; ++i)
-	{
-		if (i % 2 == 0)
-		{
-			l->add("Schlimmer Error mit Stacktrace", false, LogType::ERR, true, true);
-		}
-		else
-		{
-			l->add("Warnung ohne Stacktrace", false, LogType::WARNING);
-		}
-	}
-	l->writeToFile("stdlog.txt", true);
+	Log::getInstance() << LogOption::PRINT_TO_CONSOLE;
+	Log::getInstance() << LogOption::TIMESTAMP << "\n" << LogLevel::ERR << "Nicht erlaubter Index." << LogOption::END;
 
+	std::cin.get();
     return 0;
 }

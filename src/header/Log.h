@@ -7,9 +7,16 @@
 #include <algorithm>
 #include <boost/stacktrace.hpp>
 
+#include "Logable.h"
+
 /*
 _CRT_SECURE_NO_WARNINGS ist wegen C's Time Funktionen eingeschaltet
 https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
+
+TODO: Mit <<operator. Verarbeitung von beliebigen Daten. Kein Log* für mehrere Aufrufe, sondern
+      einfach <<operator erneut aufrufen. Log::getInstance() << "dasdasdasd" << object << Log::trace << std::endl
+
+TODO: Log in separatem Thread.
 */
 
 namespace ProjectSpace
@@ -19,6 +26,15 @@ namespace ProjectSpace
 		STATUS,
 		WARNING,
 		ERR
+	};
+
+	enum class LogOption
+	{
+		STACKTRACE,
+		TIMESTAMP,
+		PRINT_TO_CONSOLE,
+		END,
+		WRITE_TO_FILE
 	};
 
 	class Log
@@ -97,6 +113,8 @@ namespace ProjectSpace
 						st.insert(it + 1, '\t');
 					}
 				}*/
+
+				// Indent the whole stacktrace.
 				replaceAll(st, "\n", "\n\t");
 
 				newEntry.append("\n\t");
@@ -125,7 +143,7 @@ namespace ProjectSpace
 			}
 
 			// Append new LogEntry to the log.
-			log.append(newEntry);
+			logString.append(newEntry);
 
 			++numberOfLogs;
 		}
@@ -137,12 +155,12 @@ namespace ProjectSpace
 				return;
 
 			// Only sets capacity of string to 0. Might want to free allocated memory.
-			log.clear();
+			logString.clear();
 			numberOfLogs = 0;
 		}
 
 		// Writes all LogEntries into to the given file.
-		void writeToFile(std::string const& pathToFile = "stdlog.txt", bool overwriteExistingContents = false)
+		void writeToFile(std::string const& pathToFile = "", bool overwriteExistingContents = false)
 		{
 			if (disabled)
 				return;
@@ -154,11 +172,13 @@ namespace ProjectSpace
 				return;
 			}
 
+			/* TODO: Wenn pathToFile leer ist, immer zu Logfile das
+			   aktuelles Datum als Namen hat loggen.*/
 			// Overwrite existing file contents if necessary.
 			if (overwriteExistingContents)
 			{
 				std::ofstream out(pathToFile);
-				out << log;
+				out << logString;
 				out.close();
 			}
 
@@ -166,7 +186,7 @@ namespace ProjectSpace
 			else
 			{
 				std::ofstream out(pathToFile, std::ofstream::app);
-				out << log;
+				out << logString;
 				out.close();
 			}
 		}
@@ -177,7 +197,7 @@ namespace ProjectSpace
 			if (disabled)
 				return;
 
-			std::cout << log << std::endl;
+			std::cout << logString << std::endl;
 		}
 
 		// Returns number of LogEntries.
@@ -197,7 +217,7 @@ namespace ProjectSpace
 
 			str.append(" | Logging enabled.\n");
 
-			log.append(str);
+			logString.append(str);
 			std::cout << str;
 
 			disabled = false;
@@ -215,7 +235,7 @@ namespace ProjectSpace
 			str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
 			str.append(" | Logging disabled.\n");
 
-			log.append(str);
+			logString.append(str);
 			std::cout << str;
 
 			disabled = true;
@@ -227,11 +247,136 @@ namespace ProjectSpace
 		// Mache es unmöglich den Zuweisungsoperator aufzurufen.
 		void operator=(Log const&) = delete;
 
+		// ----- Ab hier operator<< Stream Ansatz Funktionen. ------
+
+		Log& operator<<(Logable const& l)
+		{
+			std::string temp = l.toString();
+
+			if (printNextEntryToConsole)
+			{
+				tempLogEntry.append(temp);
+			}
+
+			logString.append(temp);
+			return *this;
+		}
+
+		Log& operator<<(std::string const& s)
+		{
+			if (printNextEntryToConsole)
+			{
+				tempLogEntry.append(s);
+			}
+
+			logString.append(s);
+			return *this;
+		}
+
+		Log& operator<<(LogOption const& lo)
+		{
+			std::string temp = "";
+
+			switch (lo)
+			{
+			case LogOption::STACKTRACE:
+			{
+				temp = boost::stacktrace::to_string(boost::stacktrace::stacktrace());
+				replaceAll(temp, "\n", "\n\t");
+				temp.insert(temp.begin(), '\n');
+				break;
+			}
+			case LogOption::TIMESTAMP:
+			{
+				time_t now = time(NULL);
+				temp.append(ctime(&now));
+
+				// TODO: War \n nicht nur am Ende. Warum dann von begin bis end ?
+				temp.erase(std::remove(temp.begin(), temp.end(), '\n'), temp.end());
+				break;
+			}
+			case LogOption::WRITE_TO_FILE:
+			{
+				// TODO: Nicht Funktion aufrufen, sondern hier direkt implementieren.
+				writeToFile();
+				break;
+			}
+			case LogOption::PRINT_TO_CONSOLE:
+			{
+				printNextEntryToConsole = true;
+				break;
+			}
+			case LogOption::END:
+			{
+				if (printNextEntryToConsole)
+				{
+					std::cout << tempLogEntry << std::endl;
+					tempLogEntry.clear();
+					printNextEntryToConsole = false;
+				}
+				break;
+			}
+			default:
+			{
+				temp.append("Unknown LogOption");
+			}
+			}
+
+			if (printNextEntryToConsole)
+			{
+				tempLogEntry.append(temp);
+			}
+
+			logString.append(temp);
+			return *this;
+		}
+
+		Log& operator<<(LogLevel const& ll)
+		{
+			std::string temp;
+
+			switch (ll)
+			{
+			case LogLevel::STATUS:
+			{
+				temp.append("STATUS | ");
+				break;
+			}
+			case LogLevel::WARNING:
+			{
+				temp.append("WARNING | ");
+				break;
+			}
+			case LogLevel::ERR:
+			{
+				temp.append("ERROR | ");
+				break;
+			}
+			default:
+			{
+				temp.append("Unknown LogLevel | ");
+			}
+			}
+
+			if (printNextEntryToConsole)
+			{
+				tempLogEntry.append(temp);
+			}
+
+			logString.append(temp);
+			return *this;
+		}
+
 	private:
-		Log() : log{ "LOGFILE\n\n" }, numberOfLogs{ 0 }, disabled{false} {}
+		Log() : logString{ "LOGFILE\n\n" }, numberOfLogs{ 0 }, disabled{false},
+			printNextEntryToConsole{ false }, tempLogEntry{""} {}
+		~Log()
+		{
+			// TODO: Write log to file before Object gets destroyed.
+		}
 
 		// All LogEntries in a signle string.
-		std::string log;
+		std::string logString;
 
 		int numberOfLogs;
 
@@ -241,6 +386,16 @@ namespace ProjectSpace
 		*/
 		bool disabled;
 
+		// ----- Ab hier operator<< Stream Ansatz Variablen. ------
+
+		/* Stores if the next LogEntry will be printed to console.
+		*/
+		bool printNextEntryToConsole;
+
+		/* Stores a LogEntry temporarily. */
+		std::string tempLogEntry;
+
+	private:
 		// Replaces all occurences of "from" in "str" to "to".
 		void replaceAll(std::string& str, std::string const& from, std::string const& to)
 		{

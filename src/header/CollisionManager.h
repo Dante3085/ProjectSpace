@@ -7,6 +7,7 @@
 
 #include "Entity.h"
 #include "Collidable.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {

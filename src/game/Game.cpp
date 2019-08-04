@@ -179,21 +179,11 @@ namespace ProjectSpace
 			setCurrentScene(EScene::COLLISION_SCENE);
 		}, window, "Collision Scene" };
 
-		Button* btnDisableLogging = new Button{ [this]()
-		{
-			logger->disable();
-		}, window, "DisableLogging" };
-
-		Button* btnEnableLogging = new Button{ [this]()
-		{
-			logger->enable();
-		}, window, "EnableLogging" };
-
-		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6, btnEnableLogging, btnDisableLogging});
+		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6});
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
-		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6, btnEnableLogging, btnDisableLogging}, 
+		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6}, 
 			globalInputHandler};
 
 		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 1.f / 15};
