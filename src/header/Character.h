@@ -10,10 +10,11 @@
 
 #include "Entity.h"
 #include "AnimatedSprite.h"
+#include "Logable.h"
 
 namespace ProjectSpace
 {
-	class Character : public Entity, public sf::Drawable
+	class Character : public Entity, public sf::Drawable, public Logable
 	{
 	public:
 
@@ -43,6 +44,19 @@ namespace ProjectSpace
 		void setIntelligence(int intelligence);
 
 		void setMovementKeys(std::map<EDirection, sf::Keyboard::Key> movementKeys);
+
+		std::string toString() const override
+		{
+			std::string s = "Str: ";
+			s.append(std::to_string(strength));
+			s.append("Def: ");
+			s.append(std::to_string(defense));
+			s.append("Agi: ");
+			s.append(std::to_string(agility));
+			s.append("Int: ");
+			s.append(std::to_string(intelligence));
+			return s;
+		}
 
 	private:
 		AnimatedSprite& animSprite;

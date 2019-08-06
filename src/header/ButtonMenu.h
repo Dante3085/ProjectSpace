@@ -9,7 +9,6 @@
 #include "Entity.h"
 #include "InputHandler.h"
 #include "Button.h"
-#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -59,8 +58,6 @@ namespace ProjectSpace
 		unsigned int btnForward;		// ControllerButton for selecting the next Button in this ButtonMenu.
 		unsigned int btnBackward;		// ControllerButton for selecting the previous Button in this ButtonMenu.
 		unsigned int btnPress;			// ControllerButton for pressing the currently selected Button in this ButtonMenu.
-
-		Log* logger;
 	};
 }
 

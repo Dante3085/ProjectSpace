@@ -1,6 +1,6 @@
 
 #include "InputHandler.h"
-#include <stdexcept>
+#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -26,7 +26,8 @@ namespace ProjectSpace
 	{
 		if (keyStates.count(key) == 0)
 		{
-			throw std::invalid_argument{"@InputHandler::getKeyState(): Given key's state is not stored."};
+			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given key's state is not stored."
+				<< lo::STACKTRACE << lo::END;
 		}
 		return keyStates[key];
 	}

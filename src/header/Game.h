@@ -12,7 +12,6 @@
 #include "EScene.h"
 #include "Scene.h"
 #include "WindowStyle.h"
-#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -70,8 +69,6 @@ namespace ProjectSpace
 
 		std::vector<Entity*> globalEntities; 		// Entities that get updated independent of any specific Scene.
 		std::vector<sf::Drawable*> globalDrawables;	// sf::Drawables that get drawn independent of any specific Scene.
-
-		Log* logger;
 	};
 }
 

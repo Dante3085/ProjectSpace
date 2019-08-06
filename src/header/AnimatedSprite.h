@@ -20,7 +20,6 @@
 #include "Animation.h"
 #include "CollisionShape.h"
 #include "LayerCollidable.h"
-#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -108,8 +107,6 @@ namespace ProjectSpace
 		sf::Vector2f previousPosition;
 
 		LayerCollidable layerCollidable;
-
-		Log* logger;
 	};
 }
 

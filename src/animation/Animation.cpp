@@ -45,7 +45,7 @@ namespace ProjectSpace
 	{
 		if (frameDelay <= 0)
 		{
-			std::cout << "@Animation::setFrameDelay(" << frameDelay << "): Invalid frameDelay." << std::endl;
+			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Invalid FrameDelay." << lo::STACKTRACE << lo::END;
 			return;
 		}
 		this->frameDelay = frameDelay;
@@ -54,7 +54,9 @@ namespace ProjectSpace
 	sf::IntRect const& Animation::operator[](int index) const
 	{
 		if (index < 0 || index >= frames.size())
-			std::cout << "@Animation::operator[" << index << "]: Invalid Index." << std::endl;
+		{
+			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Invalid Index." << lo::STACKTRACE << lo::END;
+		}
 		return frames[index];	
 	}
 }

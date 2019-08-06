@@ -20,19 +20,20 @@
 #include "Scene.h"
 #include "Factory.h" 
 #include "Util.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {
 	Game::Game(std::string windowTitle, WindowStyle style)
 	: window{sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style},
 	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, 
-		windowHeight{(float)sf::VideoMode::getDesktopMode().height}, logger{&Log::getInstance()}
+		windowHeight{(float)sf::VideoMode::getDesktopMode().height}
 	{
 		init();
 	}
 
 	Game::Game(unsigned int screenWidth, unsigned int screenHeight, std::string windowTitle, WindowStyle style) 
-	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}, logger{&Log::getInstance()}
+	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}
 	{
 		init();
 	}
@@ -113,15 +114,14 @@ namespace ProjectSpace
 
 			++counter;
 		}
-
-		logger->writeToFile("stdlog.txt", true);
 	}
 
 	void Game::setCurrentScene(EScene scene)
 	{
 		if (scenes.count(scene) == 0)
 		{
-			logger->add("Given scene is not known to Game.", true, LogLevel::ERR, true);
+			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given scene is not known to Game."
+			<< lo::STACKTRACE << lo::END;
 			return;
 		}
 

@@ -5,13 +5,13 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include "Util.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {
 	AnimatedSprite::AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> const& points)
 		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}, points},
-		logger{&Log::getInstance()}
+		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}, points}
 	{
 		sprite.setPosition(position);
 		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
@@ -45,7 +45,8 @@ namespace ProjectSpace
 		// Do nothing if Animation is not known to this AnimatedSprite.
 		else if (animations.count(name) == 0)
 		{
-			logger->add("Given Animation is not known to this AnimatedSprite.", true, LogLevel::ERR, true);
+			Log::getInstance() << lo::PTC << ll::ERR << "Given Animation is not known to this AnimatedSprite."
+			<< lo::STACKTRACE << lo::END;
 			return;
 		}
 

@@ -2,8 +2,6 @@
 #include "Game.h"
 #include "Log.h"
 
-using namespace ProjectSpace;
-
 /* TODO
 
  - Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
@@ -116,11 +114,13 @@ using namespace ProjectSpace;
 
 int main()
 {
-   /* Game g{ "ProjectSpace", WindowStyle::DEFAULT };
+	using namespace ProjectSpace;
+
+    /*Game g{ "ProjectSpace", WindowStyle::DEFAULT };
     g.start();*/
 
-	Log::getInstance() << LogOption::PRINT_TO_CONSOLE;
-	Log::getInstance() << LogOption::TIMESTAMP << "\n" << LogLevel::ERR << "Nicht erlaubter Index." << LogOption::END;
+	Log::getInstance().defaultLog("Das ist ein default LogEntry!", ll::STATUS);
+	Log::getInstance() << lo::WTF;
 
 	std::cin.get();
     return 0;

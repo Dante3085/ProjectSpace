@@ -1,13 +1,14 @@
 
 #include "ButtonMenu.h"
 #include <stdexcept>
+#include "Log.h"
 
 namespace ProjectSpace
 {
 	ButtonMenu::ButtonMenu(InputHandler* inputHandler)
 	: buttons{}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
 	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, 
-		btnPress{2}, logger{&Log::getInstance()}
+		btnPress{2}
 	{
 		inputHandler->storeKeyState(keyForward, false);
 		inputHandler->storeKeyState(keyBackward, false);
@@ -17,7 +18,7 @@ namespace ProjectSpace
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler) 
 	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
 	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, 
-		btnPress{2}, logger{ &Log::getInstance() }
+		btnPress{2}
 	{
 		buttons[selected]->select();
 		inputHandler->storeKeyState(keyForward, false);
@@ -30,7 +31,7 @@ namespace ProjectSpace
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
 		sf::Keyboard::Key keyForward, sf::Keyboard::Key keyBackward, sf::Keyboard::Key keyPress)
 	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{keyForward}, 
-		keyBackward{keyBackward}, keyPress{keyPress}, logger{ &Log::getInstance() }
+		keyBackward{keyBackward}, keyPress{keyPress}
 	{
 		buttons[selected]->select();
 		inputHandler->storeKeyState(keyForward, false);
@@ -41,7 +42,7 @@ namespace ProjectSpace
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
 		unsigned int btnForward, unsigned int btnBackward, unsigned int btnPress)
 	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, btnForward{btnForward}, 
-		btnBackward{btnBackward}, btnPress{btnPress}, logger{&Log::getInstance()}
+		btnBackward{btnBackward}, btnPress{btnPress}
 	{
 		buttons[selected]->select();
 		inputHandler->storeKeyState(keyForward, false);
@@ -97,9 +98,7 @@ namespace ProjectSpace
 	{
 		if (index < 0 || index >= buttons.size())
 		{
-			std::string errorMessage = "Invalid Index: ";
-			errorMessage.append(std::to_string(index));
-			logger->add(errorMessage, true, LogLevel::ERR, true);
+			Log::getInstance() << lo::PTC << ll::ERR << "Invalid Index" << lo::STACKTRACE << lo::END;
 			return;
 		}
 

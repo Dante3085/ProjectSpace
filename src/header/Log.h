@@ -13,29 +13,38 @@
 _CRT_SECURE_NO_WARNINGS ist wegen C's Time Funktionen eingeschaltet
 https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
 
-TODO: Mit <<operator. Verarbeitung von beliebigen Daten. Kein Log* für mehrere Aufrufe, sondern
-      einfach <<operator erneut aufrufen. Log::getInstance() << "dasdasdasd" << object << Log::trace << std::endl
-
-TODO: Log in separatem Thread.
+TODO: Log in separatem Thread ?
+TODO: Stream-Operator für Zahlentypen.
+TODO: Im Destruktor von Log Logeinträge in Datei schreiben, um Data Loss zu verhindern.
+      Problem IO-Exceptions.
 */
 
 namespace ProjectSpace
 {
 	enum class LogLevel
 	{
-		STATUS,
-		WARNING,
-		ERR
+		STATUS,  // Mark LogEntry as a Status LogEntry. Status LogEntries exist for general logging. Low priority.
+		WARNING, // Mark LogEntry as Warning LogEntry. Warning LogEntries exist for issues that don't break the program, but should be looked at. Mid Priority.
+		ERR      // Mark LogEntry as Error LogEntry. Error LogEntries exist for issues that break the program and need to be looked at immediately. High priority.
 	};
+	using ll = LogLevel;
 
 	enum class LogOption
 	{
-		STACKTRACE,
-		TIMESTAMP,
-		PRINT_TO_CONSOLE,
-		END,
-		WRITE_TO_FILE
+		ENABLE,     // Enable all Logging functionality.
+		DISABLE,    // Disable all Logging functionality(After disabling, LogOption::ENABLE and LogOption::DISABLE are still processed.)
+		STACKTRACE, // Append Stacktrace to LogEntry.
+		TIMESTAMP,  // Append Timestamp to LogEntry.
+		PTC,        // Print next LogEntry to console. End of LogEntry is signaled with LogOption::END.
+		END,        // Signal end of LogEntry.
+		WTF,        // Write Log(Set of all LogEntries) to the LogFile.
+		APPEND,     // Append to existing file contents on LogOption::WTF(Write to file).
+		OVERWRITE,  // Overwrite existing file contents on LogOption::WTF(Write to file).
+		FILENAME,   // Set Logfile name(i.e. Path to Logfile).
+		RESET,      // Reset the Log to it's initial state(Remove all LogEntries and reset variables to their initial state.)
+		CLEAR       // Remove all LogEntries.
 	};
+	using lo = LogOption;
 
 	class Log
 	{
@@ -50,207 +59,48 @@ namespace ProjectSpace
 			return singleton;
 		}
 
-		// Appends the given LogEntry to the Log.
-		void add(std::string const& logMessage, bool printToConsole = false, LogLevel logLevel = LogLevel::STATUS,
-			bool stacktrace = false, bool newLine = true)
-		{
-			if (disabled)
-				return;
-
-			std::string newEntry = "";
-
-			// Append marker for LogLevel.
-			switch (logLevel)
-			{
-				// Normal Status LogEntry for logging anything.
-			case LogLevel::STATUS:
-				newEntry.append("STATUS | ");
-				break;
-
-				/* Warning LogEntry for things that don't break the program,
-				   but should be looked at.
-				*/
-			case LogLevel::WARNING:
-				newEntry.append("WARNING | ");
-				break;
-
-				/* Error LogEntry for things that break the program
-				   and need to be dealt with immediately.
-				*/
-			case LogLevel::ERR:
-				newEntry.append("ERROR | ");
-				break;
-			}
-
-			// Append current timestamp.
-			time_t now = time(NULL);
-			newEntry.append(ctime(&now));
-			newEntry.erase(std::remove(newEntry.begin(), newEntry.end(), '\n'), newEntry.end());
-
-			// Append Log Message.
-			newEntry.append(" | ");
-			newEntry.append(logMessage);
-
-			// Append Stacktrace if necessary.
-			if (stacktrace)
-			{
-				std::string st = boost::stacktrace::to_string(boost::stacktrace::stacktrace());
-
-				/* Look for newLines and put an indent after them,
-				 * so that it's easy to see to which LogEntry the
-				 * Stacktrace belongs. Because of iterating over 
-				 * every char of the stacktrace string, this is noticeably slow.
-				 * Defining the BOOST_STACKTRACE_USE_WINDBG_CACHED
-				 * preprocessor macro helps by caching though.
-				 * With the macro defined producing the same or similar
-				 * stacktrace(s) is very fast. I am not sure about completely
-				 * different stacktraces.
-				*/
-				/*for (std::string::iterator it = st.begin(); it != st.end() - 1; ++it)
-				{
-					if (*it == '\n')
-					{
-						st.insert(it + 1, '\t');
-					}
-				}*/
-
-				// Indent the whole stacktrace.
-				replaceAll(st, "\n", "\n\t");
-
-				newEntry.append("\n\t");
-				newEntry.append(st);
-
-				// -----
-				/*newEntry.append("\n");
-				for (boost::stacktrace::frame const& f : boost::stacktrace::stacktrace())
-				{
- 					std::string frameAsString = boost::stacktrace::to_string(f);
-					frameAsString.append("\n\t");
-					newEntry.append(frameAsString);
-				}*/
-			}
-
-			// Append new line character at the end if necessary.
-			if (newLine)
-			{
-				newEntry.append("\n");
-			}
-
-			// Print finished LogEntry to console if necessary.
-			if (printToConsole)
-			{
-				std::cout << newEntry;
-			}
-
-			// Append new LogEntry to the log.
-			logString.append(newEntry);
-
-			++numberOfLogs;
-		}
-
-		// Removes every LogEntry.
-		void clear()
-		{
-			if (disabled)
-				return;
-
-			// Only sets capacity of string to 0. Might want to free allocated memory.
-			logString.clear();
-			numberOfLogs = 0;
-		}
-
-		// Writes all LogEntries into to the given file.
-		void writeToFile(std::string const& pathToFile = "", bool overwriteExistingContents = false)
-		{
-			if (disabled)
-				return;
-
-			// Don't do anything if no LogEntries exist.
-			if (numberOfLogs == 0)
-			{
-				std::cout << "There are no logs. Nothing written to file." << std::endl;
-				return;
-			}
-
-			/* TODO: Wenn pathToFile leer ist, immer zu Logfile das
-			   aktuelles Datum als Namen hat loggen.*/
-			// Overwrite existing file contents if necessary.
-			if (overwriteExistingContents)
-			{
-				std::ofstream out(pathToFile);
-				out << logString;
-				out.close();
-			}
-
-			// Else append to existing file contents.
-			else
-			{
-				std::ofstream out(pathToFile, std::ofstream::app);
-				out << logString;
-				out.close();
-			}
-		}
-
-		// Prints all LogEntries to the console.
-		void printToConsole()
-		{
-			if (disabled)
-				return;
-
-			std::cout << logString << std::endl;
-		}
-
-		// Returns number of LogEntries.
-		int getNumberOfLogs()
-		{
-			return numberOfLogs;
-		}
-
-		// Enables all logging functionality.
-		void enable()
-		{
-			std::string str = "";
-
-			time_t now = time(NULL);
-			str.append(ctime(&now));
-			str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
-
-			str.append(" | Logging enabled.\n");
-
-			logString.append(str);
-			std::cout << str;
-
-			disabled = false;
-		}
-
-		/* Disables all logging functionality except getting 
-		   the current number of LogEntries.
-		*/
-		void disable()
-		{
-			std::string str = "";
-
-			time_t now = time(NULL);
-			str.append(ctime(&now));
-			str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
-			str.append(" | Logging disabled.\n");
-
-			logString.append(str);
-			std::cout << str;
-
-			disabled = true;
-		}
-
 		// Mache es unmöglich den Kopierkonstruktor aufzurufen.
 		Log(Log const&) = delete;
 
 		// Mache es unmöglich den Zuweisungsoperator aufzurufen.
 		void operator=(Log const&) = delete;
 
-		// ----- Ab hier operator<< Stream Ansatz Funktionen. ------
+		/* Appends a LogEntry with a timestamp, stacktrace, the given message and loglevel
+		   and prints it to the console.
+		*/
+		void defaultLog(std::string const& message, LogLevel logLevel)
+		{
+			*this << lo::PTC << logLevel << lo::TIMESTAMP << message << lo::STACKTRACE << lo::END;
+		}
+
+		// Soll nur Zahlentypen zulassen.
+		template< typename T, 
+	    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
+		Log& operator<<(T const& t)
+		{
+			if (disabled)
+			{
+				return *this;
+			}
+
+			std::string temp = std::to_string(t);
+
+			if (printNextEntryToConsole)
+			{
+				tempLogEntry.append(temp);
+			}
+
+			logString.append(temp);
+			return *this;
+		}
 
 		Log& operator<<(Logable const& l)
 		{
+			if (disabled)
+			{
+				return *this;
+			}
+
 			std::string temp = l.toString();
 
 			if (printNextEntryToConsole)
@@ -264,77 +114,166 @@ namespace ProjectSpace
 
 		Log& operator<<(std::string const& s)
 		{
-			if (printNextEntryToConsole)
+			if (disabled)
 			{
-				tempLogEntry.append(s);
+				return *this;
 			}
 
-			logString.append(s);
+			if (setFilename)
+			{
+				logFileName = s;
+				setFilename = false;
+			}
+			else
+			{
+				if (printNextEntryToConsole)
+				{
+					tempLogEntry.append(s);
+				}
+
+				logString.append(s);
+			}
 			return *this;
 		}
 
 		Log& operator<<(LogOption const& lo)
 		{
-			std::string temp = "";
-
-			switch (lo)
+			if (lo == LogOption::ENABLE || lo == LogOption::DISABLE)
 			{
-			case LogOption::STACKTRACE:
-			{
-				temp = boost::stacktrace::to_string(boost::stacktrace::stacktrace());
-				replaceAll(temp, "\n", "\n\t");
-				temp.insert(temp.begin(), '\n');
-				break;
-			}
-			case LogOption::TIMESTAMP:
-			{
+				std::string temp{};
 				time_t now = time(NULL);
 				temp.append(ctime(&now));
+				// temp.erase(std::remove(temp.begin(), temp.end(), '\n'), temp.end());
+				temp.erase(temp.size() - 1);
+				temp.append(" ");
 
-				// TODO: War \n nicht nur am Ende. Warum dann von begin bis end ?
-				temp.erase(std::remove(temp.begin(), temp.end(), '\n'), temp.end());
-				break;
+				if (lo == LogOption::ENABLE)
+				{
+					disabled = false;
+					temp.append("Logging Enabled\n");
+				}
+				else if (lo == LogOption::DISABLE)
+				{
+					disabled = true;
+					temp.append("Logging Disabled\n");
+				}
+
+				std::cout << temp;
+				logString.append(temp);
 			}
-			case LogOption::WRITE_TO_FILE:
+			else
 			{
-				// TODO: Nicht Funktion aufrufen, sondern hier direkt implementieren.
-				writeToFile();
-				break;
-			}
-			case LogOption::PRINT_TO_CONSOLE:
-			{
-				printNextEntryToConsole = true;
-				break;
-			}
-			case LogOption::END:
-			{
+				if (disabled)
+				{
+					return *this;
+				}
+
+				std::string temp{};
+				switch (lo)
+				{
+				case LogOption::STACKTRACE:
+				{
+					temp = boost::stacktrace::to_string(boost::stacktrace::stacktrace());
+					replaceAll(temp, "\n", "\n\t");
+					temp.insert(temp.begin(), '\n');
+					temp.insert(temp.begin() + 1, '\t');
+					temp.erase(temp.end() - 1);
+					break;
+				}
+				case LogOption::TIMESTAMP:
+				{
+					time_t now = time(NULL);
+					temp.append(ctime(&now));
+					temp.erase(temp.size() - 1);
+					temp.append(" | ");
+					break;
+				}
+				case LogOption::PTC:
+				{
+					printNextEntryToConsole = true;
+					break;
+				}
+				case LogOption::END:
+				{
+					if (printNextEntryToConsole)
+					{
+						std::cout << tempLogEntry;
+						tempLogEntry.clear();
+						printNextEntryToConsole = false;
+					}
+					break;
+				}
+				case LogOption::WTF:
+				{
+					if (appendToFile)
+					{
+						std::ofstream out(logFileName, std::ofstream::app);
+						out << logString;
+						out.close();
+					}
+					else
+					{
+						std::ofstream out(logFileName);
+						out << logString;
+						out.close();
+					}
+					break;
+				}
+				case LogOption::APPEND:
+				{
+					appendToFile = true;
+					break;
+				}
+				case LogOption::OVERWRITE:
+				{
+					appendToFile = false;
+					break;
+				}
+				case LogOption::FILENAME:
+				{
+					setFilename = true;
+					break;
+				}
+				case LogOption::RESET:
+				{
+					logString.clear();
+					disabled = false;
+					printNextEntryToConsole = false;
+					tempLogEntry.clear();
+					appendToFile = true;
+					logFileName = "stdlog.txt";
+					break;
+				}
+				case LogOption::CLEAR:
+				{
+					logString.clear();
+					tempLogEntry.clear();
+					break;
+				}
+				default:
+				{
+					temp.append("Unknown LogOption.");
+				}
+				}
+
 				if (printNextEntryToConsole)
 				{
-					std::cout << tempLogEntry << std::endl;
-					tempLogEntry.clear();
-					printNextEntryToConsole = false;
+					tempLogEntry.append(temp);
 				}
-				break;
-			}
-			default:
-			{
-				temp.append("Unknown LogOption");
-			}
-			}
 
-			if (printNextEntryToConsole)
-			{
-				tempLogEntry.append(temp);
+				logString.append(temp);
 			}
-
-			logString.append(temp);
 			return *this;
 		}
 
 		Log& operator<<(LogLevel const& ll)
 		{
-			std::string temp;
+			if (disabled)
+			{
+				return *this;
+			}
 
+			std::string temp;
 			switch (ll)
 			{
 			case LogLevel::STATUS:
@@ -368,32 +307,28 @@ namespace ProjectSpace
 		}
 
 	private:
-		Log() : logString{ "LOGFILE\n\n" }, numberOfLogs{ 0 }, disabled{false},
-			printNextEntryToConsole{ false }, tempLogEntry{""} {}
+		Log() : logString{ "" }, disabled{false},
+			printNextEntryToConsole{ false }, tempLogEntry{""},
+			appendToFile{ true }, logFileName{"stdlog.txt"},
+			setFilename{false} {}
+
 		~Log()
 		{
-			// TODO: Write log to file before Object gets destroyed.
+			
 		}
 
-		// All LogEntries in a signle string.
 		std::string logString;
-
-		int numberOfLogs;
-
-		/* Controls if add, writeToFile and printToConsole are enabled.
-		   In short for turning logging on and off without removing 
-		   logging code all over the project.
-		*/
 		bool disabled;
-
-		// ----- Ab hier operator<< Stream Ansatz Variablen. ------
-
-		/* Stores if the next LogEntry will be printed to console.
-		*/
 		bool printNextEntryToConsole;
 
-		/* Stores a LogEntry temporarily. */
+		/* Falls nächster Logeintrag auf Konsole geprinted werden soll, muss das Ergebnis
+		   der verschiedenen Stream-Operatoren als ein Logeintrag in einem string festgehalten
+		   werden.
+	    */
 		std::string tempLogEntry;
+		bool appendToFile;
+		std::string logFileName;
+		bool setFilename;
 
 	private:
 		// Replaces all occurences of "from" in "str" to "to".
