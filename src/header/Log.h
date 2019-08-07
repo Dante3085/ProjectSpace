@@ -19,6 +19,8 @@ TODO: Write to file in destructor ? Possible IO-Exceptions.
 TODO: Serialize Log Object ?
 TODO: Log verbosity(low, medium, high). On low, only error LogEntries are printed.
 TODO: Logging channels(Animation channel, Combat channel, Scene channel, ...). Mute channels to only get desired LogEntries.
+TODO: Limit Log for duplicate LogEntries.
+TODO: LogRotation: Have 2 or more Logs. After certain size or time save log. (https://en.wikipedia.org/wiki/Log_rotation)
 */
 
 namespace ProjectSpace
@@ -62,10 +64,10 @@ namespace ProjectSpace
 			return singleton;
 		}
 
-		// Mache es unmöglich den Kopierkonstruktor aufzurufen.
+		// Make it impossible to call Copy Constructor.
 		Log(Log const&) = delete;
 
-		// Mache es unmöglich den Zuweisungsoperator aufzurufen.
+		// Make it impossible to call assignment operator.
 		void operator=(Log const&) = delete;
 
 		/* Appends a LogEntry with a timestamp, stacktrace, the given message and loglevel
@@ -255,7 +257,7 @@ namespace ProjectSpace
 				}
 				case LogOption::EXIT:
 				{
-					// TODO: Log Objekt persistent speichern.
+					// TODO: Serialize Log Object.
 
 					*this << lo::PTC << lo::TIMESTAMP << "Exiting program due to unsalvageable state. Press Enter to exit...\n" << lo::END;
 					std::cin.get();
@@ -335,9 +337,8 @@ namespace ProjectSpace
 		bool disabled;
 		bool printNextEntryToConsole;
 
-		/* Falls nächster Logeintrag auf Konsole geprinted werden soll, muss das Ergebnis
-		   der verschiedenen Stream-Operatoren als ein Logeintrag in einem string festgehalten
-		   werden.
+		/* If next LogEntry is to be printed on console, the result of all the stream-operators
+		   has to be stored as a LogEntry in one string.
 	    */
 		std::string tempLogEntry;
 		bool appendToFile;
