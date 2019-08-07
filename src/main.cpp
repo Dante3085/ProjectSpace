@@ -119,8 +119,6 @@ int main()
     /*Game g{ "ProjectSpace", WindowStyle::DEFAULT };
     g.start();*/
 
-	Log* l = &Log::getInstance();
-
 	Log::getInstance() << lo::PTC << ll::WARNING << lo::TIMESTAMP << "This is a warning !" << lo::STACKTRACE << lo::WTF << lo::END;
 	/* Output to console and file...
 
