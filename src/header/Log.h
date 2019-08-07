@@ -17,6 +17,8 @@ https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-
 TODO: Seperate Thread for Logging ?
 TODO: Write to file in destructor ? Possible IO-Exceptions.
 TODO: Serialize Log Object ?
+TODO: Log verbosity(low, medium, high). On low, only error LogEntries are printed.
+TODO: Logging channels(Animation channel, Combat channel, Scene channel, ...). Mute channels to only get desired LogEntries.
 */
 
 namespace ProjectSpace
@@ -69,7 +71,7 @@ namespace ProjectSpace
 		/* Appends a LogEntry with a timestamp, stacktrace, the given message and loglevel
 		   and prints it to the console.
 		*/
-		void defaultLog(std::string const& message, LogLevel const& logLevel)
+		void defaultLog(std::string const& message, LogLevel logLevel)
 		{
 			*this << lo::PTC << logLevel << lo::TIMESTAMP << message << lo::STACKTRACE << lo::END;
 		}
@@ -77,7 +79,7 @@ namespace ProjectSpace
 		// Only allow numeric types.
 		template< typename T, 
 	    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-		Log& operator<<(T const& t)
+		Log& operator<<(T t)
 		{
 			if (disabled)
 			{
@@ -137,7 +139,7 @@ namespace ProjectSpace
 			return *this;
 		}
 
-		Log& operator<<(LogOption const& lo)
+		Log& operator<<(LogOption lo)
 		{
 			if (lo == LogOption::ENABLE || lo == LogOption::DISABLE)
 			{
@@ -278,7 +280,7 @@ namespace ProjectSpace
 			return *this;
 		}
 
-		Log& operator<<(LogLevel const& ll)
+		Log& operator<<(LogLevel ll)
 		{
 			if (disabled)
 			{
