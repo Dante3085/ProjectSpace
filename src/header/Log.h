@@ -11,6 +11,7 @@
 
 /*
 _CRT_SECURE_NO_WARNINGS is defined because of C's Time functions.
+BOOST_STACKTRACE_USE_WINDBG_CACHED is defined to make boost::stacktrace creation faster.
 https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
 
 TODO: Seperate Thread for Logging ?
@@ -68,7 +69,7 @@ namespace ProjectSpace
 		/* Appends a LogEntry with a timestamp, stacktrace, the given message and loglevel
 		   and prints it to the console.
 		*/
-		void defaultLog(std::string const& message, LogLevel logLevel)
+		void defaultLog(std::string const& message, LogLevel const& logLevel)
 		{
 			*this << lo::PTC << logLevel << lo::TIMESTAMP << message << lo::STACKTRACE << lo::END;
 		}
