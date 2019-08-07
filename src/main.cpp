@@ -119,8 +119,10 @@ int main()
     /*Game g{ "ProjectSpace", WindowStyle::DEFAULT };
     g.start();*/
 
-	Log::getInstance().defaultLog("Das ist ein default LogEntry!", ll::STATUS);
-	Log::getInstance() << lo::WTF;
+	Log::getInstance() << LogOption::PTC << LogLevel::WARNING << LogOption::TIMESTAMP << "This is a warning!" << LogOption::STACKTRACE
+		<< LogOption::END << LogOption::WTF;
+
+	Log::getInstance() << lo::DISABLE;
 
 	std::cin.get();
     return 0;

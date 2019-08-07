@@ -55,7 +55,7 @@ namespace ProjectSpace
 	{
 		if (index < 0 || index >= frames.size())
 		{
-			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Invalid Index." << lo::STACKTRACE << lo::END;
+			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Invalid Index." << lo::STACKTRACE << lo::END << lo::EXIT;
 		}
 		return frames[index];	
 	}

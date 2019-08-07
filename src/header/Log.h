@@ -10,13 +10,12 @@
 #include "Logable.h"
 
 /*
-_CRT_SECURE_NO_WARNINGS ist wegen C's Time Funktionen eingeschaltet
+_CRT_SECURE_NO_WARNINGS is defined because of C's Time functions.
 https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
 
-TODO: Log in separatem Thread ?
-TODO: Im Destruktor von Log Logeinträge in Datei schreiben, um Data Loss zu verhindern.
-      Problem IO-Exceptions.
-TODO: Log als persistentes Objekt speichern.
+TODO: Seperate Thread for Logging ?
+TODO: Write to file in destructor ? Possible IO-Exceptions.
+TODO: Serialize Log Object ?
 */
 
 namespace ProjectSpace
@@ -74,7 +73,7 @@ namespace ProjectSpace
 			*this << lo::PTC << logLevel << lo::TIMESTAMP << message << lo::STACKTRACE << lo::END;
 		}
 
-		// Soll nur Zahlentypen zulassen.
+		// Only allow numeric types.
 		template< typename T, 
 	    typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 		Log& operator<<(T const& t)
