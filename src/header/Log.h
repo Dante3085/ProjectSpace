@@ -14,9 +14,9 @@ _CRT_SECURE_NO_WARNINGS ist wegen C's Time Funktionen eingeschaltet
 https://docs.microsoft.com/de-de/cpp/c-runtime-library/security-features-in-the-crt?view=vs-2019
 
 TODO: Log in separatem Thread ?
-TODO: Stream-Operator für Zahlentypen.
 TODO: Im Destruktor von Log Logeinträge in Datei schreiben, um Data Loss zu verhindern.
       Problem IO-Exceptions.
+TODO: Log als persistentes Objekt speichern.
 */
 
 namespace ProjectSpace
@@ -42,7 +42,8 @@ namespace ProjectSpace
 		OVERWRITE,  // Overwrite existing file contents on LogOption::WTF(Write to file).
 		FILENAME,   // Set Logfile name(i.e. Path to Logfile).
 		RESET,      // Reset the Log to it's initial state(Remove all LogEntries and reset variables to their initial state.)
-		CLEAR       // Remove all LogEntries.
+		CLEAR,      // Remove all LogEntries.
+		EXIT        // Write log to file/Save log then exit the program. For situations when it doesn't make sense to keep the program running.
 	};
 	using lo = LogOption;
 
@@ -248,6 +249,17 @@ namespace ProjectSpace
 				{
 					logString.clear();
 					tempLogEntry.clear();
+					break;
+				}
+				case LogOption::EXIT:
+				{
+					// TODO: Log Objekt persistent speichern.
+
+					*this << lo::PTC << lo::TIMESTAMP << "Exiting program due to unsalvageable state. Press Enter to exit...\n" << lo::END;
+					std::cin.get();
+					*this << lo::WTF;
+					exit(1);
+
 					break;
 				}
 				default:
