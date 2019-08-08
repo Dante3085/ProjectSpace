@@ -6,6 +6,8 @@
 #include <fstream>
 #include <algorithm>
 #include <boost/stacktrace.hpp>
+#include <utility>
+#include <unordered_map>
 
 #include "Logable.h"
 
@@ -27,6 +29,7 @@ namespace ProjectSpace
 {
 	enum class LogLevel
 	{
+		INVALID = -1,
 		STATUS,  // Mark LogEntry as a Status LogEntry. Status LogEntries exist for general logging. Low priority.
 		WARNING, // Mark LogEntry as Warning LogEntry. Warning LogEntries exist for issues that don't break the program, but should be looked at. Mid Priority.
 		ERR      // Mark LogEntry as Error LogEntry. Error LogEntries exist for issues that break the program and need to be looked at immediately. High priority.
@@ -35,6 +38,7 @@ namespace ProjectSpace
 
 	enum class LogOption
 	{
+		INVALID = -1,
 		ENABLE,     // Enable all Logging functionality.
 		DISABLE,    // Disable all Logging functionality(After disabling, LogOption::ENABLE and LogOption::DISABLE are still processed.)
 		STACKTRACE, // Append Stacktrace to LogEntry.
@@ -47,6 +51,8 @@ namespace ProjectSpace
 		FILENAME,   // Set Logfile name(i.e. Path to Logfile).
 		RESET,      // Reset the Log to it's initial state(Remove all LogEntries and reset variables to their initial state.)
 		CLEAR,      // Remove all LogEntries.
+		CH_STD,     // Log to Standard Channel.
+		CH_ANIM,    // Log to Animation Channel.
 		EXIT        // Write log to file/Save log then exit the program. For situations when it doesn't make sense to keep the program running.
 	};
 	using lo = LogOption;
@@ -95,7 +101,7 @@ namespace ProjectSpace
 				tempLogEntry.append(temp);
 			}
 
-			logString.append(temp);
+			channels[activeChannel].first.append(temp);
 			return *this;
 		}
 
@@ -113,7 +119,7 @@ namespace ProjectSpace
 				tempLogEntry.append(temp);
 			}
 
-			logString.append(temp);
+			channels[activeChannel].first.append(temp);
 			return *this;
 		}
 
@@ -126,7 +132,7 @@ namespace ProjectSpace
 
 			if (setFilename)
 			{
-				logFileName = s;
+				channels[activeChannel].second = s;
 				setFilename = false;
 			}
 			else
@@ -136,7 +142,7 @@ namespace ProjectSpace
 					tempLogEntry.append(s);
 				}
 
-				logString.append(s);
+				channels[activeChannel].first.append(s);
 			}
 			return *this;
 		}
@@ -164,7 +170,7 @@ namespace ProjectSpace
 				}
 
 				std::cout << temp;
-				logString.append(temp);
+				channels[activeChannel].first.append(temp);
 			}
 			else
 			{
@@ -212,14 +218,14 @@ namespace ProjectSpace
 				{
 					if (appendToFile)
 					{
-						std::ofstream out(logFileName, std::ofstream::app);
-						out << logString;
+						std::ofstream out(channels[activeChannel].second, std::ofstream::app);
+						out << channels[activeChannel].first;
 						out.close();
 					}
 					else
 					{
-						std::ofstream out(logFileName);
-						out << logString;
+						std::ofstream out(channels[activeChannel].second);
+						out << channels[activeChannel].first;
 						out.close();
 					}
 					break;
@@ -241,27 +247,42 @@ namespace ProjectSpace
 				}
 				case LogOption::RESET:
 				{
-					logString.clear();
+					channels[activeChannel].first.clear();
 					disabled = false;
 					printNextEntryToConsole = false;
 					tempLogEntry.clear();
 					appendToFile = true;
-					logFileName = "stdlog.txt";
 					break;
 				}
 				case LogOption::CLEAR:
 				{
-					logString.clear();
+					channels[activeChannel].first.clear();
 					tempLogEntry.clear();
+					break;
+				}
+				case LogOption::CH_STD:
+				{
+					activeChannel = 0;
+					break;
+				}
+				case LogOption::CH_ANIM:
+				{
+					activeChannel = 1;
 					break;
 				}
 				case LogOption::EXIT:
 				{
-					// TODO: Serialize Log Object.
+					// TODO: Serialize Log Object?
 
 					*this << lo::PTC << lo::TIMESTAMP << "Exiting program due to unsalvageable state. Press Enter to exit...\n" << lo::END;
 					std::cin.get();
-					*this << lo::WTF;
+
+					// 2 nicht harcoden. vector mit size ?
+					for (int i = 0; i < 2; ++i)
+					{
+						activeChannel = i;
+						*this << lo::WTF;
+					}
 					exit(1);
 
 					break;
@@ -277,7 +298,7 @@ namespace ProjectSpace
 					tempLogEntry.append(temp);
 				}
 
-				logString.append(temp);
+				channels[activeChannel].first.append(temp);
 			}
 			return *this;
 		}
@@ -318,22 +339,32 @@ namespace ProjectSpace
 				tempLogEntry.append(temp);
 			}
 
-			logString.append(temp);
+			channels[activeChannel].first.append(temp);
 			return *this;
 		}
 
 	private:
-		Log() : logString{ "" }, disabled{false},
-			printNextEntryToConsole{ false }, tempLogEntry{""},
-			appendToFile{ true }, logFileName{"stdlog.txt"},
-			setFilename{false} {}
+		Log() : 
+			disabled{ false }, printNextEntryToConsole{ false }, tempLogEntry{ "" }, appendToFile{ true },
+			setFilename{ false }, activeChannel{0}
+		{
+			// The standard logging channel is initially always turned on.
+			channels[0].first = "";
+			channels[0].second = "stdLogChannel.txt";
+
+			channels[1].first = "";
+			channels[1].second = "animationLogChannel.txt";
+		}
 
 		~Log()
 		{
 			
 		}
 
-		std::string logString;
+		/* A channel consists of a logString that contains all LogEntries and a logFileName.
+		*/
+		std::pair<std::string, std::string> channels[2];
+		unsigned int activeChannel; // Holds which channel is currently being written to.
 		bool disabled;
 		bool printNextEntryToConsole;
 
@@ -342,11 +373,11 @@ namespace ProjectSpace
 	    */
 		std::string tempLogEntry;
 		bool appendToFile;
-		std::string logFileName;
 		bool setFilename;
 
+
 	private:
-		// Replaces all occurences of "from" in "str" to "to".
+		// Replaces all occurences of "from" in "str" with "to".
 		void replaceAll(std::string& str, std::string const& from, std::string const& to)
 		{
 			if (from.empty())

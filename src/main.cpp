@@ -117,23 +117,10 @@ int main()
 	using namespace ProjectSpace;
 
     /*Game g{ "ProjectSpace", WindowStyle::DEFAULT };
-    g.start();*/
+    g.start();	*/
 
-	Log::getInstance() << lo::PTC << ll::WARNING << lo::TIMESTAMP << "This is a warning !" << lo::STACKTRACE << lo::WTF << lo::END;
-	/* Output to console and file...
-
-	WARNING | Wed Aug  7 19:33:08 2019 | This is a warning !
-         0# boost::stacktrace::basic_stacktrace<std::allocator<boost::stacktrace::frame> >::init at C:\Programming\Libraries\boost_1_70_0\boost\stacktrace\stacktrace.hpp:75
-         1# boost::stacktrace::basic_stacktrace<std::allocator<boost::stacktrace::frame> >::basic_stacktrace<std::allocator<boost::stacktrace::frame> > at C:\Programming\Libraries\boost_1_70_0\boost\stacktrace\stacktrace.hpp:126
-         2# ProjectSpace::Log::operator<< at C:\Programming\Projekte\ProjectSpace\src\header\Log.h:177
-         3# main at C:\Programming\Projekte\ProjectSpace\src\main.cpp:124
-         4# invoke_main at d:\agent\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:79
-         5# __scrt_common_main_seh at d:\agent\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:288
-         6# __scrt_common_main at d:\agent\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_common.inl:331
-         7# mainCRTStartup at d:\agent\_work\1\s\src\vctools\crt\vcstartup\src\startup\exe_main.cpp:17
-         8# BaseThreadInitThunk in KERNEL32
-         9# RtlUserThreadStart in ntdll
-	*/
+	Log::getInstance() << lo::CH_ANIM << "Ich werde beim EXIT mitgelogt, obwohl der standard channel aktiv ist."
+		<< lo::CH_STD << "Dies ist ein Logeintrag im Standardchannel" << lo::EXIT;
 
 	std::cin.get();
     return 0;
