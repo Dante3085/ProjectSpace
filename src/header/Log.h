@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <boost/stacktrace.hpp>
 #include <utility>
-#include <unordered_map>
+#include <array>
 
 #include "Logable.h"
 
@@ -275,14 +275,13 @@ namespace ProjectSpace
 					// TODO: Serialize Log Object?
 
 					*this << lo::PTC << lo::TIMESTAMP << "Exiting program due to unsalvageable state. Press Enter to exit...\n" << lo::END;
-					std::cin.get();
 
-					// 2 nicht harcoden. vector mit size ?
-					for (int i = 0; i < 2; ++i)
+					for (int i = 0; i < channels.size(); ++i)
 					{
 						activeChannel = i;
 						*this << lo::WTF;
 					}
+					std::cin.get();
 					exit(1);
 
 					break;
@@ -363,7 +362,7 @@ namespace ProjectSpace
 
 		/* A channel consists of a logString that contains all LogEntries and a logFileName.
 		*/
-		std::pair<std::string, std::string> channels[2];
+		std::array<std::pair<std::string, std::string>, 2> channels;
 		unsigned int activeChannel; // Holds which channel is currently being written to.
 		bool disabled;
 		bool printNextEntryToConsole;

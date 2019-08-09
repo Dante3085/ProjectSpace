@@ -26,7 +26,7 @@
 #include "InputHandler.h"
 #include "Camera.h"
 #include "MenuGroup.h"
-#include "Log.h"
+#include "TranslateAnimation2.h"
 
 namespace ProjectSpace
 {
@@ -214,33 +214,34 @@ namespace ProjectSpace
 
 		Button* groupBtn0 = new Button
 		{
-			[]() {}, window, "GroupBtn0"
+			[knightDownRunAnim] ()
+		{
+		}, window, "GroupBtn0"
 		};
 		groupBtn0->setPosition(100, 100);
+		TranslateAnimation2* ta2 = new TranslateAnimation2{ groupBtn0, {300, 300}, {600, 500}, 1000 };
 
 		Button* groupBtn1 = new Button
 		{
-			[]() {}, window, "GroupBtn1"
+			[ta2]() 
+		{
+			ta2->start();
+		}, window, "GroupBtn1"
 		};
 		groupBtn1->setPosition(200, 200);
 
 		Button* groupBtn2 = new Button
 		{
-			[]() 
-		{
-			Log* l = &Log::getInstance();
-			l->add("groupBtn2", true, LogLevel::STATUS, true);
-		}, window, "GroupBtn1"
+			[]() {}, window, "GroupBtn1"
 		};
 		groupBtn2->setPosition(500, 600);
 
 		MenuGroup* menuGroup = new MenuGroup{ sf::Vector2f{1000, 1000} };
-		menuGroup->addMenuElement(groupBtn0);
 		menuGroup->addMenuElement(groupBtn1);
 		menuGroup->addMenuElement(groupBtn2);
 
 		InputHandler* inputHandler = new InputHandler{};
-
+		
 		inputHandler->storeKeyState(sf::Keyboard::Space, false);
 		inputHandler->storeKeyState(sf::Keyboard::Up, false);
 		inputHandler->add([fadeAnimation, inputHandler, menuGroup]()
@@ -286,10 +287,10 @@ namespace ProjectSpace
 		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
 
-		scene->addEntities({ inputHandler, knight, collisionManager, fadeAnimation, menuGroup });
+		scene->addEntities({ inputHandler, collisionManager, fadeAnimation, menuGroup, ta2, groupBtn0 });
 
-		scene->addDrawables({ backgroundSprite, knight, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
-			threeDCube2, threeDCube3, menuGroup });
+		scene->addDrawables({ backgroundSprite, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
+			threeDCube2, threeDCube3, menuGroup, groupBtn0 });
 
 		return scene;
 	}
@@ -410,8 +411,6 @@ namespace ProjectSpace
 			}
 		});
 
-		Character* knight = new Character{ *knightSprite };
-
 		// Texturen
 		sf::Texture* tex_background = new sf::Texture{};
 		tex_background->loadFromFile("rsrc/background.png");
@@ -438,10 +437,10 @@ namespace ProjectSpace
 		CollisionManager* collision_manager = new CollisionManager{ {cb_background, knightSprite->getLayerCollidable(), cs0, cs1} };
 
 		// Add Scene Entities
-		scene->addEntities({ collision_manager, knight, facesSprite });
+		scene->addEntities({ collision_manager, knightSprite, facesSprite });
 
 		// Add Scene Drawables
-		scene->addDrawables({background, knight, cs0, cs1, facesSprite });
+		scene->addDrawables({background, knightSprite, cs0, cs1, facesSprite });
 
 		// ----------
 		return scene;
