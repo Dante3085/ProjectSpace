@@ -7,6 +7,7 @@
 
 #include "Entity.h"
 #include "Button.h"
+#include "Log.h"
 
 namespace ProjectSpace
 {
@@ -27,7 +28,7 @@ namespace ProjectSpace
 		 * @param[in]  velocityModifier Scalar multiplied with distance vector between MenuElement and to. This will dictate the step
 		 * the MenuElement is moved each update.
 		 */
-		TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float velocityModifier = 1.f / 20.f);
+		TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to);
 
 		/**
 		 * @brief      Updates the TranslateAnimation each frame.
@@ -113,12 +114,17 @@ namespace ProjectSpace
 		MenuElement* menuElement;	// The MenuElement that the TranslateAnimation will work on.
 		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.
 		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
+		float minDistance;          /* The threshold at which the Translation process is stopped
+									   and the menuElement's position just gets set to "to". */
 		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
-		bool finished;				// Stores whether TranslateAnimation has successfully translated it's MenuElement 
-									// to the end position.
+		bool finished;				/* Stores whether TranslateAnimation has successfully translated it's MenuElement 
+									   to the end position. */
 		
-		sf::Vector2f velocity;
-		float velocityModifier;
+		float velocityModifier;       // The factor with which the velocity decreases each tick.
+		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
+		sf::Vector2f minVelocity;     // The threshold at which the velocity is reset to its initial value.
+
+		Log* log;
 	};
 }
 
