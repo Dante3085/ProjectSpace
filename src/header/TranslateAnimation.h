@@ -3,6 +3,7 @@
 #define TRANSLATE_ANIMATION
 
 #include <iostream>
+#include <functional>
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
@@ -11,6 +12,50 @@
 
 namespace ProjectSpace
 {
+	enum Easing
+	{
+		BACK_EASE_IN,
+		BACK_EASE_OUT,
+		BACK_EASE_IN_OUT,
+
+		BOUNCE_EASE_IN,
+		BOUNCE_EASE_OUT,
+		BOUNCE_EASE_IN_OUT,
+
+		CIRC_EASE_IN,
+		CIRC_EASE_OUT,
+		CIRC_EASE_IN_OUT,
+
+		CUBIC_EASE_IN,
+		CUBIC_EASE_OUT,
+		CUBIC_EASE_IN_OUT,
+
+		ELASTIC_EASE_IN,
+		ELASTIC_EASE_OUT,
+		ELASTIC_EASE_IN_OUT,
+
+		EXPO_EASE_IN,
+		EXPO_EASE_OUT,
+		EXPO_EASE_IN_OUT,
+
+		LINEAR_EASE_NONE,
+		LINEAR_EASE_IN,
+		LINEAR_EASE_OUT,
+		LINEAR_EASE_IN_OUT,
+
+		QUAD_EASE_IN,
+		QUAD_EASE_OUT,
+		QUAD_EASE_IN_OUT,
+
+		QUINT_EASE_IN,
+		QUINT_EASE_OUT,
+		QUINT_EASE_IN_OUT,
+
+		SINE_EASE_IN,
+		SINE_EASE_OUT,
+		SINE_EASE_IN_OUT,
+	};
+
 	/**
 	 * @brief      Class for smoothly translating MenuElements from one point in 2D-Space to another.
 	 */
@@ -36,6 +81,8 @@ namespace ProjectSpace
 		 * @param[in]  time  The time that has passed since last update call.
 		 */
 		void update(sf::Time time) override;
+
+		void setEasing(Easing easing);
 
 		/**
 		 * @brief      Sets the TranslateAnimation to update when update() is called.
@@ -116,32 +163,14 @@ namespace ProjectSpace
 		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
 		float duration;
 		float elapsedTime;
-		float minDistance;          /* The threshold at which the Translation process is stopped
-									   and the menuElement's position just gets set to "to". */
 		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
 		bool finished;				/* Stores whether TranslateAnimation has successfully translated it's MenuElement
 									   to the end position. */
 
-		float velocityModifier;       // The factor with which the velocity decreases each tick.
 		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
-		sf::Vector2f minVelocity;     // The threshold at which the velocity is reset to its initial value.
+		std::function<float(float t, float b, float c, float d)> easingFunction;
 
 		Log* log;
-
-	private:
-
-		/*
-			t: elapsedTime (same unit as duration)
-			b: startValue
-			c: Difference between endValue and startValue
-			d: duration
-		*/
-		float easeInOut(float t, float b, float c, float d)
-		{
-			if ((t /= d / 2) < 1) return ((c / 2) * (t * t)) + b;
-			return -c / 2 * (((t - 2) * (--t)) - 1) + b;
-
-		}
 	};
 }
 

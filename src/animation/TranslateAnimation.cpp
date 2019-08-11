@@ -3,80 +3,155 @@
 #include "Util.h"
 #include <math.h>
 #include "Log.h"
+#include "Easing.h"
+
+#include <SFML/Window/Mouse.hpp>
 
 namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
-		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, minDistance{ 0.1f }, doUpdate{ false }, finished{ false },
-		  velocityModifier{ 1.0f / 20.0f }, currentVelocity{ (to - menuElement->getPosition()) * velocityModifier }, 
-		minVelocity{ 10, 0 }, log{ &Log::getInstance() }
+		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false }, finished{ false },
+		currentVelocity{ -1, -1 }, easingFunction{elastic_easeOut}, log{ &Log::getInstance() }
 	{
 		menuElement->setPosition(from);
 	}
 
-	//void TranslateAnimation::update(sf::Time time)
-	//{
-	//	if (doUpdate)
-	//	{
-	//		// Compute distance between current position of menuElement and goal position.
-	//		float distance = vectorLength(to - menuElement->getPosition());
-
-	//		/* If distance is smaller than a minimum,  just place menuElement at goal position
-	//		   and stop the process.
-	//		*/
-	//		if (distance < minDistance)
-	//		{
-	//			menuElement->setPosition(to);
-	//			doUpdate = false;
-	//			finished = true;
-	//			currentVelocity = (to - menuElement->getPosition()) * velocityModifier;
-
-	//			return;
-	//		}
-
-	//		/* Move the menuElement relative to it's current position by the current velocity.
-	//		*/
-	//		menuElement->move(currentVelocity);
-
-	//		// Decrease velocity with each tick.
-	//		currentVelocity *= 0.8f;
-
-	//		static sf::Vector2f minVelocity{ 10.f, 10.f };
-
-	//		// If velocity is smaller than a minimum, reset it to it's initial value.
-	//		if (abs(currentVelocity.x) < minVelocity.x || abs(currentVelocity.y) < minVelocity.y)
-	//		{
-	//			currentVelocity = (to - menuElement->getPosition()) * velocityModifier;
-	//		}
-	//	}
-	//}
-
 	void TranslateAnimation::update(sf::Time time)
 	{
+		// TODO: Mitten in einer anderen TranslateAnimation aufnehmen.
+
 		if (!doUpdate)
 			return;
 
-		currentVelocity.x = easeInOut(elapsedTime, from.x, to.x - from.x, duration);
-		currentVelocity.y = easeInOut(elapsedTime, from.y, to.y - from.y, duration);
+		currentVelocity.x = easingFunction(elapsedTime, from.x, to.x - from.x, duration);
+		currentVelocity.y = easingFunction(elapsedTime, from.y, to.y - from.y, duration);
+		*log << "{" << currentVelocity.x << ", " << currentVelocity.y << "}\n";
 
-		menuElement->move(currentVelocity);
+		menuElement->setPosition(currentVelocity);
 
 		elapsedTime += time.asMilliseconds();
-		std::cout << elapsedTime << "\n";
 
 		if (elapsedTime > duration)
 		{
 			elapsedTime = 0;
 			doUpdate = false;
+			finished = true;
 			return;
+		}
+	}
+
+	void TranslateAnimation::setEasing(Easing easing)
+	{
+		switch(easing)
+		{
+			case Easing::BACK_EASE_IN:
+			easingFunction = back_easeIn;
+			break;
+			case Easing::BACK_EASE_OUT:
+			easingFunction = back_easeOut;
+			break;
+			case Easing::BACK_EASE_IN_OUT:
+			easingFunction = back_easeInOut;
+			break;
+
+			case Easing::BOUNCE_EASE_IN:
+			easingFunction = bounce_easeIn;
+			break;
+			case Easing::BOUNCE_EASE_OUT:
+			easingFunction = bounce_easeOut;
+			break;
+			case Easing::BOUNCE_EASE_IN_OUT:
+			easingFunction = bounce_easeInOut;
+			break;
+
+			case Easing::CIRC_EASE_IN:
+			easingFunction = circ_easeIn;
+			break;
+			case Easing::CIRC_EASE_OUT:
+			easingFunction = circ_easeOut;
+			break;
+			case Easing::CIRC_EASE_IN_OUT:
+			easingFunction = circ_easeInOut;
+			break;
+
+			case Easing::CUBIC_EASE_IN:
+			easingFunction = cubic_easeIn;
+			break;
+			case Easing::CUBIC_EASE_OUT:
+			easingFunction = cubic_easeOut;
+			break;
+			case Easing::CUBIC_EASE_IN_OUT:
+			easingFunction = cubic_easeInOut;
+			break;
+
+			case Easing::ELASTIC_EASE_IN:
+			easingFunction = elastic_easeIn;
+			break;
+			case Easing::ELASTIC_EASE_OUT:
+			easingFunction = elastic_easeOut;
+			break;
+			case Easing::ELASTIC_EASE_IN_OUT:
+			easingFunction = elastic_easeInOut;
+			break;
+
+			case Easing::EXPO_EASE_IN:
+			easingFunction = expo_easeIn;
+			break;
+			case Easing::EXPO_EASE_OUT:
+			easingFunction = expo_easeOut;
+			break;
+			case Easing::EXPO_EASE_IN_OUT:
+			easingFunction = expo_easeInOut;
+			break;
+
+			case Easing::LINEAR_EASE_NONE:
+			easingFunction = linear_easeNone;
+			break;
+			case Easing::LINEAR_EASE_IN:
+			easingFunction = linear_easeIn;
+			break;
+			case Easing::LINEAR_EASE_OUT:
+			easingFunction = linear_easeOut;
+			break;
+			case Easing::LINEAR_EASE_IN_OUT:
+			easingFunction = linear_easeInOut;
+			break;
+
+			case Easing::QUAD_EASE_IN:
+			easingFunction = quad_easeIn;
+			break;
+			case Easing::QUAD_EASE_OUT:
+			easingFunction = quad_easeOut;
+			break;
+			case Easing::QUAD_EASE_IN_OUT:
+			easingFunction = quad_easeInOut;
+			break;
+
+			case Easing::QUINT_EASE_IN:
+			easingFunction = quint_easeIn;
+			break;
+			case Easing::QUINT_EASE_OUT:
+			easingFunction = quint_easeOut;
+			break;
+			case Easing::QUINT_EASE_IN_OUT:
+			easingFunction = quint_easeInOut;
+			break;
+
+			case Easing::SINE_EASE_IN:
+			easingFunction = sine_easeIn;
+			break;
+			case Easing::SINE_EASE_OUT:
+			easingFunction = sine_easeOut;
+			break;
+			case Easing::SINE_EASE_IN_OUT:
+			easingFunction = sine_easeInOut;
+			break;
 		}
 	}
 
 	void TranslateAnimation::start()
 	{
 		doUpdate = true;
-		currentVelocity.x = easeInOut(elapsedTime, from.x, to.x - from.x, duration);
-		currentVelocity.y = easeInOut(elapsedTime, from.y, to.y - from.y, duration);
 	}
 
 	void TranslateAnimation::pause()

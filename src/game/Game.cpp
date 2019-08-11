@@ -189,8 +189,11 @@ namespace ProjectSpace
 			globalInputHandler};
 
 
-		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{300, 400}, sf::Vector2f{1000, 300}, 1000};
-		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{1000, 300}, sf::Vector2f{300, 400}, 1000};
+		menuForward = new TranslateAnimation{ btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-5, 50}, 300 };
+		menuForward->setEasing(Easing::BACK_EASE_OUT);
+
+		menuBackward = new TranslateAnimation{ btnBox, sf::Vector2f{-5, 50}, sf::Vector2f{-250, 50}, 300 };
+		menuBackward->setEasing(Easing::BACK_EASE_IN);
 
 		btn2->setOnPressed([this, menuBackward, menuForward]()
 		{

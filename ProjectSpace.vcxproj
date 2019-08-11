@@ -58,6 +58,7 @@
     <ClInclude Include="src\header\CollisionType.h" />
     <ClInclude Include="src\header\ConcreteLogable.h" />
     <ClInclude Include="src\header\EAnimation.h" />
+    <ClInclude Include="src\header\Easing.h" />
     <ClInclude Include="src\header\Entity.h" />
     <ClInclude Include="src\header\EScene.h" />
     <ClInclude Include="src\header\ExpandMenu.h" />
@@ -208,7 +209,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Libraries\boost_1_70_0;C:\Programming\Projekte\ProjectSpace\src\header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;Y:\Programming\Libraries\boost_1_70_0;C:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Libraries\boost_1_70_0</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BOOST_STACKTRACE_USE_WINDBG_CACHED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -243,7 +244,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Libraries\boost_1_70_0;C:\Programming\Projekte\ProjectSpace\src\header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;Y:\Programming\Libraries\boost_1_70_0;C:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Libraries\boost_1_70_0</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BOOST_STACKTRACE_USE_WINDBG_CACHED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
