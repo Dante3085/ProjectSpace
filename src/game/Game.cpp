@@ -114,6 +114,8 @@ namespace ProjectSpace
 
 			++counter;
 		}
+
+		Log::getInstance() << lo::FLUSH;
 	}
 
 	void Game::setCurrentScene(EScene scene)
@@ -186,8 +188,9 @@ namespace ProjectSpace
 		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6}, 
 			globalInputHandler};
 
-		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-10, 50}, 1.f / 15};
-		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{-10, 50}, sf::Vector2f{-250, 50}, 1.f / 15};
+
+		menuForward = new TranslateAnimation{btnBox, sf::Vector2f{300, 400}, sf::Vector2f{1000, 300}, 1000};
+		menuBackward = new TranslateAnimation{btnBox, sf::Vector2f{1000, 300}, sf::Vector2f{300, 400}, 1000};
 
 		btn2->setOnPressed([this, menuBackward, menuForward]()
 		{

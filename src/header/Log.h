@@ -53,6 +53,8 @@ namespace ProjectSpace
 		CLEAR,      // Remove all LogEntries.
 		CH_STD,     // Log to Standard Channel.
 		CH_ANIM,    // Log to Animation Channel.
+		CH_COMB,    // Log to Combat Channel.
+		FLUSH,      // Write every logging channel to file.
 		EXIT        // Write log to file/Save log then exit the program. For situations when it doesn't make sense to keep the program running.
 	};
 	using lo = LogOption;
@@ -270,17 +272,27 @@ namespace ProjectSpace
 					activeChannel = 1;
 					break;
 				}
-				case LogOption::EXIT:
+				case LogOption::CH_COMB:
 				{
-					// TODO: Serialize Log Object?
-
-					*this << lo::PTC << lo::TIMESTAMP << "Exiting program due to unsalvageable state. Press Enter to exit...\n" << lo::END;
-
+					activeChannel = 2;
+					break;
+				}
+				case LogOption::FLUSH:
+				{
 					for (int i = 0; i < channels.size(); ++i)
 					{
 						activeChannel = i;
 						*this << lo::WTF;
 					}
+
+					break;
+				}
+				case LogOption::EXIT:
+				{
+					// TODO: Serialize Log Object?
+
+					*this << lo::PTC << lo::TIMESTAMP << "Exiting program due to unsalvageable state. Press Enter to exit...\n" << lo::END
+						  << lo::FLUSH;
 					std::cin.get();
 					exit(1);
 
@@ -349,10 +361,13 @@ namespace ProjectSpace
 		{
 			// The standard logging channel is initially always turned on.
 			channels[0].first = "";
-			channels[0].second = "stdLogChannel.txt";
+			channels[0].second = "log/stdLogChannel.txt";
 
 			channels[1].first = "";
-			channels[1].second = "animationLogChannel.txt";
+			channels[1].second = "log/animationLogChannel.txt";
+
+			channels[2].first = "";
+			channels[2].second = "log/combatLogChannel.txt";
 		}
 
 		~Log()
@@ -362,7 +377,7 @@ namespace ProjectSpace
 
 		/* A channel consists of a logString that contains all LogEntries and a logFileName.
 		*/
-		std::array<std::pair<std::string, std::string>, 2> channels;
+		std::array<std::pair<std::string, std::string>, 3> channels;
 		unsigned int activeChannel; // Holds which channel is currently being written to.
 		bool disabled;
 		bool printNextEntryToConsole;

@@ -99,7 +99,6 @@ namespace ProjectSpace
 			}
 		});
 
-		Character* knight = new Character{*knightSprite};
 
 		FadeAnimation * fadeAnimation = new FadeAnimation{ knightSprite->getSprite(), 255, 0, 1};
 

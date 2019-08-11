@@ -7,6 +7,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <functional>
+#include <string>
 
 #include "Entity.h"
 #include "AnimatedSprite.h"
@@ -17,7 +18,8 @@ namespace ProjectSpace
 	class Character : public Logable
 	{
 	public:
-		Character(AnimatedSprite& animSprite, int strength = 0, int defense = 0, int agility = 0, int intelligence = 0);
+		Character(int strength = 0, int defense = 0, int agility = 0, int intelligence = 0, 
+			std::string const& name = "UNKNOKWN");
 
 
 		int getStrength();
@@ -28,6 +30,7 @@ namespace ProjectSpace
 		void setAgility(int agility);
 		int getIntelligence();
 		void setIntelligence(int intelligence);
+		std::string const& getName();
 
 		std::string toString() const override;
 
@@ -36,6 +39,7 @@ namespace ProjectSpace
 		int defense;
 		int agility;
 		int intelligence;
+		std::string name;
 	};
 }
 

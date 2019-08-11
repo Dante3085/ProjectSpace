@@ -31,9 +31,9 @@ namespace ProjectSpace
 			portrait->setFillColor(sf::Color(32,178,170));
 			portraits.push_back(portrait);
 
-			anims.push_back(new TranslateAnimation{portrait, portraitPos, portraits[i - 1]->getPosition()});
+			anims.push_back(new TranslateAnimation{portrait, portraitPos, portraits[i - 1]->getPosition(), 1000});
 		}
-		anims.insert(anims.begin(), new TranslateAnimation{firstPortrait, firstPortrait->getPosition(), portraits[portraits.size() - 1]->getPosition()});
+		anims.insert(anims.begin(), new TranslateAnimation{firstPortrait, firstPortrait->getPosition(), portraits[portraits.size() - 1]->getPosition(), 1000});
 
 			// Calculate BattleOrder width and height.
 		width = portraits[0]->getWidth();

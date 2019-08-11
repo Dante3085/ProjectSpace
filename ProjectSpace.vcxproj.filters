@@ -74,7 +74,14 @@
     <ClInclude Include="src\header\VBox.h" />
     <ClInclude Include="src\header\WindowStyle.h" />
     <ClInclude Include="src\header\LayerCollidable.h" />
-    <ClInclude Include="src\test.h" />
+    <ClInclude Include="src\header\Mover.h" />
+    <ClInclude Include="src\header\MenuGroup.h" />
+    <ClInclude Include="src\header\Log.h" />
+    <ClInclude Include="src\header\Logable.h" />
+    <ClInclude Include="src\header\ConcreteLogable.h" />
+    <ClInclude Include="src\Array.h" />
+    <ClInclude Include="src\header\TranslateAnimation2.h" />
+    <ClInclude Include="src\header\TurnBasedCombat.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />

@@ -5,8 +5,8 @@
 
 namespace ProjectSpace
 {
-	Character::Character(AnimatedSprite& animSprite, int strength, int defense, int agility, int intelligence)
-	: strength{strength}, defense{defense}, agility{agility}, intelligence{intelligence}
+	Character::Character(int strength, int defense, int agility, int intelligence, std::string const& name)
+	: strength{strength}, defense{defense}, agility{agility}, intelligence{intelligence}, name{name}
 	{
 
 	}
@@ -51,16 +51,22 @@ namespace ProjectSpace
 		this->intelligence = intelligence;
 	}
 
+	std::string const& Character::getName()
+	{
+		return name;
+	}
+
 	std::string Character::toString() const 
 	{
-		std::string s = "Str: ";
+		std::string s = "{Str: ";
 		s.append(std::to_string(strength));
-		s.append("Def: ");
+		s.append(" Def: ");
 		s.append(std::to_string(defense));
-		s.append("Agi: ");
+		s.append(" Agi: ");
 		s.append(std::to_string(agility));
-		s.append("Int: ");
+		s.append(" Int: ");
 		s.append(std::to_string(intelligence));
+		s.append("}");
 		return s;
 	}
 }

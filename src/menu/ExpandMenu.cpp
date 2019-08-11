@@ -54,8 +54,8 @@ namespace ProjectSpace
 		for (int i = 1; i < vboxs.size(); ++i)
 		{
 			vboxs[i].setPosition(position);
-			tForwardAnims.push_back(TranslateAnimation{&vboxs[i], position, sf::Vector2f{position.x + vboxs[0].getWidth() + 5, position.y}});
-			tBackwardAnims.push_back(TranslateAnimation{&vboxs[i], sf::Vector2f{position.x + vboxs[0].getWidth() + 5, position.y}, position});
+			tForwardAnims.push_back(TranslateAnimation{ &vboxs[i], position, sf::Vector2f{position.x + vboxs[0].getWidth() + 5, position.y}, 1000 });
+			tBackwardAnims.push_back(TranslateAnimation{ &vboxs[i], sf::Vector2f{position.x + vboxs[0].getWidth() + 5, position.y}, position, 1000 });
 		}
 	}
 

@@ -24,6 +24,7 @@
     <ClInclude Include="src\animation\EAnimation.h" />
     <ClInclude Include="src\animation\FadeAnimation.h" />
     <ClInclude Include="src\animation\TranslateAnimation.h" />
+    <ClInclude Include="src\Array.h" />
     <ClInclude Include="src\collision\Collidable.h" />
     <ClInclude Include="src\collision\CollisionBox.h" />
     <ClInclude Include="src\collision\CollisionManager.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="src\header\CollisionManager.h" />
     <ClInclude Include="src\header\CollisionShape.h" />
     <ClInclude Include="src\header\CollisionType.h" />
+    <ClInclude Include="src\header\ConcreteLogable.h" />
     <ClInclude Include="src\header\EAnimation.h" />
     <ClInclude Include="src\header\Entity.h" />
     <ClInclude Include="src\header\EScene.h" />
@@ -68,7 +70,11 @@
     <ClInclude Include="src\header\LayerCollidable.h" />
     <ClInclude Include="src\header\Line2D.h" />
     <ClInclude Include="src\header\Line2f.h" />
+    <ClInclude Include="src\header\Log.h" />
+    <ClInclude Include="src\header\Logable.h" />
     <ClInclude Include="src\header\MenuElement.h" />
+    <ClInclude Include="src\header\MenuGroup.h" />
+    <ClInclude Include="src\header\Mover.h" />
     <ClInclude Include="src\header\Portrait.h" />
     <ClInclude Include="src\header\SAT.h" />
     <ClInclude Include="src\header\Scene.h" />
@@ -76,6 +82,8 @@
     <ClInclude Include="src\header\TextBox.h" />
     <ClInclude Include="src\header\Tilemap.h" />
     <ClInclude Include="src\header\TranslateAnimation.h" />
+    <ClInclude Include="src\header\TranslateAnimation2.h" />
+    <ClInclude Include="src\header\TurnBasedCombat.h" />
     <ClInclude Include="src\header\Util.h" />
     <ClInclude Include="src\header\VBox.h" />
     <ClInclude Include="src\header\WindowStyle.h" />
@@ -91,7 +99,6 @@
     <ClInclude Include="src\menu\TextBox.h" />
     <ClInclude Include="src\menu\VBox.h" />
     <ClInclude Include="src\rpg\Character.h" />
-    <ClInclude Include="src\test.h" />
     <ClInclude Include="src\Util.h" />
   </ItemGroup>
   <ItemGroup>
@@ -201,7 +208,8 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Projekte\ProjectSpace\src\header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Libraries\boost_1_70_0;C:\Programming\Projekte\ProjectSpace\src\header</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BOOST_STACKTRACE_USE_WINDBG_CACHED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -235,7 +243,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Projekte\ProjectSpace\src\header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Programming\Libraries\SFML-2.5.1\include;C:\Programming\Libraries\SFML-2.5.1\include;Y:\Programming\Projekte\ProjectSpace\src\header;C:\Programming\Libraries\boost_1_70_0;C:\Programming\Projekte\ProjectSpace\src\header</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;BOOST_STACKTRACE_USE_WINDBG_CACHED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

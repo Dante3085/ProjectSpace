@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <math.h>
+#include <vector>
 
 #include "Line2F.h"
 
@@ -58,6 +59,18 @@ namespace ProjectSpace
 	static std::ostream& operator<<(std::ostream& stream, sf::Vector2<T> v)
 	{
 		stream << "{" << v.x << ", " << v.y << "}";
+		return stream;
+	}
+
+	template <class T>
+	static std::ostream& operator<<(std::ostream& stream, std::vector<T> v)
+	{
+		stream << "{ ";
+		for (T& t : v)
+		{
+			stream << t << " ";
+		}
+		stream << "}";
 		return stream;
 	}
 }

@@ -28,7 +28,7 @@ namespace ProjectSpace
 		 * @param[in]  velocityModifier Scalar multiplied with distance vector between MenuElement and to. This will dictate the step
 		 * the MenuElement is moved each update.
 		 */
-		TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to);
+		TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float duration);
 
 		/**
 		 * @brief      Updates the TranslateAnimation each frame.
@@ -96,7 +96,7 @@ namespace ProjectSpace
 		MenuElement* getMenuElement() const;
 
 		/**
-		 * @brief      Returns whether or not the TranslateAnimation has successfully translated 
+		 * @brief      Returns whether or not the TranslateAnimation has successfully translated
 		 * 			   it's MenuElement to the end position.
 		 *
 		 * @return     True if the MenuElement is at the end position, otherwise false.
@@ -114,17 +114,34 @@ namespace ProjectSpace
 		MenuElement* menuElement;	// The MenuElement that the TranslateAnimation will work on.
 		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.
 		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
+		float duration;
+		float elapsedTime;
 		float minDistance;          /* The threshold at which the Translation process is stopped
 									   and the menuElement's position just gets set to "to". */
 		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
-		bool finished;				/* Stores whether TranslateAnimation has successfully translated it's MenuElement 
+		bool finished;				/* Stores whether TranslateAnimation has successfully translated it's MenuElement
 									   to the end position. */
-		
+
 		float velocityModifier;       // The factor with which the velocity decreases each tick.
 		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
 		sf::Vector2f minVelocity;     // The threshold at which the velocity is reset to its initial value.
 
 		Log* log;
+
+	private:
+
+		/*
+			t: elapsedTime (same unit as duration)
+			b: startValue
+			c: Difference between endValue and startValue
+			d: duration
+		*/
+		float easeInOut(float t, float b, float c, float d)
+		{
+			if ((t /= d / 2) < 1) return ((c / 2) * (t * t)) + b;
+			return -c / 2 * (((t - 2) * (--t)) - 1) + b;
+
+		}
 	};
 }
 
