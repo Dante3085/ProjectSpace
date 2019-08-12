@@ -1,6 +1,6 @@
 TODO: Ideen und Dinge, die ich umsetzen will.
  
-- Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
+ - Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
 
  - Speicherverwaltung
 
@@ -14,11 +14,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - TextBox
 
- - Logger
-
- - Exception Handling
-
- - Kamera (SFML "Views")
+ - Fix Camera
 
  - (Vorschlag) Aufteilung der Quelldateien in Unterordner. Die Klassen "Animation" und "AnimatedSprite" in Ordner "Sprites".
    Die Klassen "Textbox", "Button", ... in den Ordner GUI. Darueber kann man sich im Team nochmal unterhalten.
@@ -33,11 +29,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - BattleOrder Anzeige (Vergleiche Final Fantasy 10)
 
- - Debugger
-
  - Collision Detection: Unterscheiden, mit was kollidiert wurde (Mauer => Charakter stoppen; Sumpf => Charakter verlangsamen; ...)
-
- - Polygon Collision Detection: Line Intersection
 
  - Line2D: intersects(Line2D) Funktion, anstatt mit operator==
 
@@ -73,8 +65,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Tilemap mit VertexArray. Anzahl der sf::Drawable::draw calls bestimmt Performance. VertexArrays können in einem draw call gezeichnet werden.
    (https://www.sfml-dev.org/tutorials/2.5/graphics-vertex-array.php)
-
- - Game Instanz als Singleton
 
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
