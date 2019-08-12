@@ -75,3 +75,5 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Graph Plotter: Graphen im Spiel zum Debuggen anzeigen.
  - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen können (Linien, Punkte, Dreiecke, ...)
+
+ - Log Archive functionality to store certain logs longer and protect them from being deleted.
