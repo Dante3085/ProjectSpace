@@ -125,14 +125,12 @@ namespace ProjectSpace
 
 	float HBox::getWidth() const
 	{
-		float width = menuElements[0]->getWidth();
-		for (MenuElement* m : menuElements)
+		float width = 0;
+		for (MenuElement const* m : menuElements)
 		{
-			if (width < m->getWidth())
-			{
-				width = m->getWidth();
-			}
+			width += m->getWidth();
 		}
+		width += (menuElements.size() - 1) * spacing;
 		return width;
 	}
 

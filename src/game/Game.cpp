@@ -116,6 +116,7 @@ namespace ProjectSpace
 		}
 
 		Log::getInstance() << lo::FLUSH;
+
 	}
 
 	void Game::setCurrentScene(EScene scene)
@@ -148,7 +149,7 @@ namespace ProjectSpace
 		InputHandler* globalInputHandler = new InputHandler{};
 
 		// These 4 instances make up a global ButtonMenu (independent of any specific Scene).
-		VBox* btnBox = new VBox{};
+		HBox* btnBox = new HBox{};
 		TranslateAnimation* menuForward;
 		TranslateAnimation* menuBackward;
 		ButtonMenu* buttonMenu;
@@ -188,12 +189,12 @@ namespace ProjectSpace
 		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6}, 
 			globalInputHandler};
 
-
-		menuForward = new TranslateAnimation{ btnBox, sf::Vector2f{-250, 50}, sf::Vector2f{-5, 50}, 300 };
+		float btnBoxWidth = btnBox->getWidth();
+		menuForward = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
 		menuForward->setEasing(Easing::BACK_EASE_OUT);
 
-		menuBackward = new TranslateAnimation{ btnBox, sf::Vector2f{-5, 50}, sf::Vector2f{-250, 50}, 300 };
-		menuBackward->setEasing(Easing::BACK_EASE_IN);
+		menuBackward = new TranslateAnimation{ btnBox, sf::Vector2f{-5, 50}, sf::Vector2f{-250-btnBoxWidth, 50}, 200 };
+		menuBackward->setEasing(Easing::QUAD_EASE_IN);
 
 		btn2->setOnPressed([this, menuBackward, menuForward]()
 		{

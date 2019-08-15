@@ -6,7 +6,6 @@
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-#include "Tilemap.h"
 #include "ExpandMenu.h"
 #include "BattleMenu.h"
 #include "TextBox.h"
@@ -313,64 +312,6 @@ namespace ProjectSpace
 	Scene* Factory::create_tilemap_scene(sf::RenderWindow & window)
 	{
 		Scene* scene = new Scene();
-
-		sf::Texture* left = new sf::Texture{};
-		left->loadFromFile("rsrc/generic-rpg/tiles/left-tile.png");
-
-		sf::Texture* topLeftCorner = new sf::Texture{};
-		topLeftCorner->loadFromFile("rsrc/generic-rpg/tiles/top-left-tile.png");
-
-		sf::Texture* top = new sf::Texture{};
-		top->loadFromFile("rsrc/generic-rpg/tiles/top-tile.png");
-
-		sf::Texture* topRightCorner = new sf::Texture{};
-		topRightCorner->loadFromFile("rsrc/generic-rpg/tiles/top-right-tile.png");
-
-		sf::Texture* right = new sf::Texture{};
-		right->loadFromFile("rsrc/generic-rpg/tiles/right-tile.png");
-
-		sf::Texture* bottomRightCorner = new sf::Texture{};
-		bottomRightCorner->loadFromFile("rsrc/generic-rpg/tiles/bottom-right-tile.png");
-
-		sf::Texture* bottom = new sf::Texture{};
-		bottom->loadFromFile("rsrc/generic-rpg/tiles/bottom-tile.png");
-
-		sf::Texture* bottomLeftCorner = new sf::Texture{};
-		bottomLeftCorner->loadFromFile("rsrc/generic-rpg/tiles/bottom-left-tile.png");
-
-		sf::Texture* blank = new sf::Texture{};
-		blank->loadFromFile("rsrc/generic-rpg/tiles/generic-rpg-tile71.png");
-
-		Tilemap* ground = new Tilemap{ sf::Vector2f{0, 0}, sf::Vector2f{64, 64}, std::map<char, sf::Texture*>
-		{
-			{'0', left},
-			{'1', topLeftCorner},
-			{'2', top},
-			{'3', topRightCorner},
-			{'4', right},
-			{'5', bottomRightCorner},
-			{'6', bottom},
-			{'7', bottomLeftCorner},
-			{'8', blank},
-		} };
-
-		ground->loadFromFile("tilemaps/ground.txt");
-
-		sf::Texture* tree = new sf::Texture{};
-		tree->loadFromFile("rsrc/generic-rpg/props_decorations/generic-rpg-tree01.png");
-
-		Tilemap* trees = new Tilemap{ sf::Vector2f{0, 0}, sf::Vector2f{100, 160}, std::map<char, sf::Texture*>
-		{
-			{'t', tree},
-		} };
-
-		trees->loadFromFile("tilemaps/trees.txt");
-
-		/*// create the tilemap from the level definition
-		Tilemap* map = new Tilemap{};
-		map->load("rsrc/TilesetGrass/overworld_tileset_grass.png", sf::Vector2u{ 16, 16 }, "tilemaps/ground.txt", 192, 336);*/
-
-		scene->addDrawables({ ground, trees });
 
 		return scene;
 	}

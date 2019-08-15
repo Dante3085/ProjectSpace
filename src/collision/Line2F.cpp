@@ -37,21 +37,17 @@ namespace ProjectSpace
 			v1 = (l2.positionVector.x + (l2.directionVector.x * v2) - positionVector.x) / directionVector.x;
 		}
 		
-		// Soll Rechnungen abfangen, wie "irgendwas / 0", bei denen sowieso keine Kollision bei rumkommen würde.
-		// Warum dies dann immer funktioniert, ist mir selbst nicht ganz klar, da ich nicht völlig durchdacht habe wohin dieses
-		// Verfahren bei jeder Möglichkeit führt.
+		/* Soll Rechnungen abfangen, wie "irgendwas / 0", bei denen sowieso keine Kollision bei rumkommen würde.
+		   Warum dies dann immer funktioniert, ist mir selbst nicht ganz klar, da ich nicht völlig durchdacht habe wohin dieses
+		   Verfahren bei jeder Möglichkeit führt.*/
 		if (isinf(v1) || isinf(v2)
 			|| isnan(v1) || isnan(v2))
 		{
 			return false;
 		}
 
-		/*std::cout << intersection << ", " << intersection2 << std::endl;
-		std::cout << "v1: " << v1 << ", v2: " << v2 << std::endl;
-		std::cout << "this Line2F: " << *this << ", l2: " << l2 << std::endl << "------------------" << std::endl;*/
-
-		// Sind v1, v2 kleiner 0 bzw. groesser 1, produzieren sie einen Schnittpunkt außerhalb der Punktgrenzen der beiden Geraden.
-		// Für uns also keinen Schnittpunkt.
+		/* Sind v1, v2 kleiner 0 bzw. groesser 1, produzieren sie einen Schnittpunkt außerhalb der Punktgrenzen der beiden Geraden.
+		   Für uns also keinen Schnittpunkt.*/
 		if (v1 < 0 || v1 > 1 || v2 < 0 || v2 > 1)
 		{
 			return false;

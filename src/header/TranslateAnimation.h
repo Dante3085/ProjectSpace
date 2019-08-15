@@ -169,6 +169,7 @@ namespace ProjectSpace
 
 		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
 		std::function<float(float t, float b, float c, float d)> easingFunction;
+		bool ignorePauseElapsedTime;
 
 		Log* log;
 	};

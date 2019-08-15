@@ -77,3 +77,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen können (Linien, Punkte, Dreiecke, ...)
 
  - Log Archive functionality to store certain logs longer and protect them from being deleted.
+
+ - TranslateAnimation: Sudden and very large change of position when going from one TranslateAnimation to another with start and stop.
+
+ - Graphics Settings für RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.

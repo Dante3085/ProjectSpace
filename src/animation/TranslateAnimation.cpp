@@ -11,7 +11,7 @@ namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
 		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false }, finished{ false },
-		currentVelocity{ -1, -1 }, easingFunction{elastic_easeOut}, log{ &Log::getInstance() }
+		currentVelocity{ -1, -1 }, easingFunction{ elastic_easeOut }, ignorePauseElapsedTime{false}, log{ &Log::getInstance() }
 	{
 		menuElement->setPosition(from);
 	}
@@ -25,7 +25,6 @@ namespace ProjectSpace
 
 		currentVelocity.x = easingFunction(elapsedTime, from.x, to.x - from.x, duration);
 		currentVelocity.y = easingFunction(elapsedTime, from.y, to.y - from.y, duration);
-		*log << "{" << currentVelocity.x << ", " << currentVelocity.y << "}\n";
 
 		menuElement->setPosition(currentVelocity);
 
@@ -156,6 +155,10 @@ namespace ProjectSpace
 
 	void TranslateAnimation::pause()
 	{
+		if (doUpdate)
+		{
+			ignorePauseElapsedTime = true;
+		}
 		doUpdate = false;
 	}
 
