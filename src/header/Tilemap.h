@@ -22,14 +22,15 @@ namespace ProjectSpace
 		TileMap(std::string const& tilesetPath)
 		{
 			tileset.loadFromFile(tilesetPath);
+			vertices.setPrimitiveType(sf::PrimitiveType::Quads);
 		}
 
 		/*
 		name: Refers to the region/image of the tileset that is defined by the following 4 texture coordiantes(1 Quad).
 		upperLeft:  UpperLeft corner of Quad that defines the image being taken from the tileset.
-		upperRight: UpperRight corner of Quad that defines the image being taken from the tileset.
-		lowerRight: LowerRight corner of Quad that defines the image being taken from the tileset.
-		lowerLeft:  LowerLeft corner of Quad that defines the image being taken from the tileset.
+		upperRight: UpperRight corner of Quad.
+		lowerRight: LowerRight corner of Quad.
+		lowerLeft:  LowerLeft corner of Quad.
 		*/
 		void registerTileImage(std::string const& name, sf::Vector2f const& upperLeft, sf::Vector2f const& upperRight,
 			                   sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
@@ -41,17 +42,23 @@ namespace ProjectSpace
 			textureCoordinates.push_back(lowerLeft);
 
 			tileImages[name] = textureCoordinates;
-
 			vertices.setPrimitiveType(sf::PrimitiveType::Quads);
 		}
 
+		/*
+		tileImage: Refers to a tileImage previously registered with registerTileImage().
+		upperLeft:  UpperLeft corner of Quad that defines the region of the window/RenderTarget that will be covered by the given tileImage.
+		upperRight: UpperRight corner.
+		lowerRight: LowerRight corner.
+		lowerLeft:  LowerLeft corner.
+		*/
 		void addTile(std::string const& tileImage, sf::Vector2f const& upperLeft, sf::Vector2f const& upperRight,
 			         sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
 		{
 			if (tileImages.count(tileImage) == 0)
 			{
-				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given tileImage was not registered to this TileMap. Returning..."
-					               << lo::STACKTRACE << lo::END;
+				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given tileImage '" << tileImage << "' was not registered to this TileMap. Returning..."
+					<< lo::STACKTRACE << lo::END;
 				return;
 			}
 
@@ -59,6 +66,39 @@ namespace ProjectSpace
 
 			sf::Vertex vertexUpperLeft{upperLeft, tileImageCoords[0]};
 			sf::Vertex vertexUpperRight{upperRight, tileImageCoords[1]};
+			sf::Vertex vertexLowerRight{ lowerRight, tileImageCoords[2] };
+			sf::Vertex vertexLowerLeft{ lowerLeft, tileImageCoords[3] };
+
+			vertices.append(vertexUpperLeft);
+			vertices.append(vertexUpperRight);
+			vertices.append(vertexLowerRight);
+			vertices.append(vertexLowerLeft);
+		}
+
+		/*
+		tileImage: Refers to a tileImage previously registered with registerTileImage().
+		upperLeft: UpperLeft corner of Quad that defines the region of the window/RenderTarget that will be covered by the given tileImage.
+		Other 3 corners are taken from the texture coordinates of the tileImage. That means the tileImage will be displayed at upperLeft
+		without any scaling.
+		*/
+		void addTile(std::string const& tileImage, sf::Vector2f const& upperLeft)
+		{
+			if (tileImages.count(tileImage) == 0)
+			{
+				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given tileImage '" << tileImage << "' was not registered to this TileMap. Returning..."
+					<< lo::STACKTRACE << lo::END;
+				return;
+			}
+
+			std::vector<sf::Vector2f> tileImageCoords = tileImages[tileImage];
+
+			sf::Vector2f upperRight{ upperLeft.x + (tileImageCoords[1].x - tileImageCoords[0].x), upperLeft.y};
+			sf::Vector2f lowerRight{upperRight.x, upperRight.y +(tileImageCoords[2].y - tileImageCoords[1].y)};
+			sf::Vector2f lowerLeft{upperLeft.x, lowerRight.y};
+
+
+			sf::Vertex vertexUpperLeft{ upperLeft, tileImageCoords[0] };
+			sf::Vertex vertexUpperRight{ upperRight, tileImageCoords[1] };
 			sf::Vertex vertexLowerRight{ lowerRight, tileImageCoords[2] };
 			sf::Vertex vertexLowerLeft{ lowerLeft, tileImageCoords[3] };
 

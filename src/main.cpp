@@ -17,14 +17,13 @@ int main()
 		sf::Vector2f{ 32, 32 }, sf::Vector2f{ 0, 32 });
 
 	t.registerTileImage("water", sf::Vector2f{ 32, 0 }, sf::Vector2f{ 64, 0 },
-		sf::Vector2f{ 64, 64 }, sf::Vector2f{ 32, 64 });
+		sf::Vector2f{ 64, 32 }, sf::Vector2f{ 32, 32 });
 
-	for (int i = 0; i < 100; ++i)
-	{
-			t.addTile("water", sf::Vector2f(64 * i, 64 * i), sf::Vector2f(96 * i, 64 * i),
-				sf::Vector2f(96 * i, 96 * i), sf::Vector2f(64 * i, 96 * i));
-	}
-	t.addTile("grass", sf::Vector2f{ 0, 0 }, sf::Vector2f{ 100, 200 }, sf::Vector2f{ 300, 200 }, sf::Vector2f{ 50, 50 });
+	t.addTile("water", sf::Vector2f{ 0, 0 });
+	t.addTile("water", sf::Vector2f{ 32, 0 });
+	t.addTile("grass", sf::Vector2f{ 32, 32 });
+	t.addTile("water", sf::Vector2f{ 100, 323 });
+	t.addTile("grass", sf::Vector2f{ 789, 500 });
 
 	sf::RenderWindow window{ sf::VideoMode{1920, 1080}, "Vertex tests" };
 
