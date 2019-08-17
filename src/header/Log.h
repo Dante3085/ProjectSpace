@@ -372,7 +372,7 @@ namespace ProjectSpace
 
 		~Log()
 		{
-			
+			*this << LogOption::FLUSH;
 		}
 
 		/* A channel consists of a logString that contains all LogEntries and a logFileName.

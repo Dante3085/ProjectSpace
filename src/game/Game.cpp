@@ -114,9 +114,6 @@ namespace ProjectSpace
 
 			++counter;
 		}
-
-		Log::getInstance() << lo::FLUSH;
-
 	}
 
 	void Game::setCurrentScene(EScene scene)
@@ -133,7 +130,7 @@ namespace ProjectSpace
 
 	void Game::init()
 	{
-		window.setFramerateLimit(60);
+		// window.setFramerateLimit(60);
 
 		// Creating Levels
 		scenes[EScene::DEBUG] = Factory::create_debug_scene(window);
