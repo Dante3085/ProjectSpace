@@ -24,8 +24,23 @@ namespace ProjectSpace
 	public:
 		TileMap(std::string const& tilesetPath)
 		{
-			tileset.loadFromFile(tilesetPath);
+			if (!tileset.loadFromFile(tilesetPath))
+			{
+				std::string msg = "Couldn't load tileset from given path: ";
+				msg.append(tilesetPath);
+				Log::getInstance().defaultLog(msg, ll::WARNING);
+			}
 			vertices.setPrimitiveType(sf::PrimitiveType::Quads);
+		}
+
+		void setTileset(std::string const& tilesetPath)
+		{
+			if (!tileset.loadFromFile(tilesetPath))
+			{
+				std::string msg = "Couldn't load tileset from given path: ";
+				msg.append(tilesetPath);
+				Log::getInstance().defaultLog(msg, ll::WARNING);
+			}
 		}
 
 		/*
@@ -38,6 +53,14 @@ namespace ProjectSpace
 		void registerTileImage(std::string const& name, sf::Vector2f upperLeft, sf::Vector2f upperRight,
 			sf::Vector2f lowerRight, sf::Vector2f lowerLeft)
 		{
+			if (tileImages.count(name) == 1)
+			{
+				std::string msg = "This Tilemap already has a tileImage with the given name: '";
+				msg.append(name);
+				msg.append("' Overriding...");
+				Log::getInstance().defaultLog(msg, ll::WARNING);
+			}
+
 			std::vector<sf::Vector2f> textureCoordinates;
 			textureCoordinates.push_back(upperLeft);
 			textureCoordinates.push_back(upperRight);
@@ -427,7 +450,73 @@ namespace ProjectSpace
 					}
 					else if (numOpenBrackets == 4)
 					{
-						Log::getInstance().defaultLog("4 coordinates with TILES not yet supported", ll::WARNING);
+						sf::Vector2f upperLeft;
+						sf::Vector2f upperRight;
+						sf::Vector2f lowerRight;
+						sf::Vector2f lowerLeft;
+
+						std::string x = "";
+						std::string y = "";
+						int counter = 0;
+						bool appendToX = false;
+						bool appendToY = false;
+						bool checkForComma = true;
+						for (char const& c : line)
+						{
+							if (c == '(')
+							{
+								appendToX = true;
+								checkForComma = true;
+								continue;
+							}
+							else if (c == ')')
+							{
+								appendToY = false;
+								checkForComma = false;
+
+								switch (counter++)
+								{
+								case 0:
+									upperLeft.x = std::stoi(x);
+									upperLeft.y = std::stoi(y);
+									break;
+								case 1:
+									upperRight.x = std::stoi(x);
+									upperRight.y = std::stoi(y);
+									break;
+								case 2:
+									lowerRight.x = std::stoi(x);
+									lowerRight.y = std::stoi(y);
+									break;
+								case 3:
+									lowerLeft.x = std::stoi(x);
+									lowerLeft.y = std::stoi(y);
+									addTiles(numTiles, tileImageName, upperLeft, upperRight, lowerRight, lowerLeft);
+									break;
+								}
+								x = "";
+								y = "";
+							}
+
+							if (checkForComma)
+							{
+								if (c == ',')
+								{
+									appendToX = false;
+									appendToY = true;
+									continue;
+								}
+							}
+
+							if (appendToX)
+							{
+								x += c;
+							}
+							else if (appendToY)
+							{
+								y += c;
+							}
+						}
 					}
 					else
 					{

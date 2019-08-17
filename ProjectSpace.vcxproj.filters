@@ -121,5 +121,6 @@
   <ItemGroup>
     <Text Include="tilemaps\sfml_tilemap.txt" />
     <Text Include="TODO.txt" />
+    <Text Include="tilemaps\test_tilemap.txt" />
   </ItemGroup>
 </Project>

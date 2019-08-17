@@ -130,14 +130,14 @@ namespace ProjectSpace
 
 	void Game::init()
 	{
-		// window.setFramerateLimit(60);
+		window.setFramerateLimit(60);
 
 		// Creating Levels
 		scenes[EScene::DEBUG] = Factory::create_debug_scene(window);
 		scenes[EScene::LEVEL_ONE] = Factory::create_empty_scene(window);
 		scenes[EScene::TILEMAP] = Factory::create_tilemap_scene(window);
 		scenes[EScene::COLLISION_SCENE] = Factory::create_collision_scene(window);
-		currentScene = scenes[EScene::COLLISION_SCENE];
+		currentScene = scenes[EScene::TILEMAP];
 
 		// Fps Counter of the Game.
 		FpsCounter* fpsCounter = new FpsCounter{"rsrc/fonts/arial.ttf"};

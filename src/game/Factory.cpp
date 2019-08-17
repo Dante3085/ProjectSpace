@@ -314,7 +314,7 @@ namespace ProjectSpace
 	{
 		Scene* scene = new Scene();
 
-		TileMap* t = new TileMap{"rsrc/SNES - Chrono Trigger - Mountains.png"};
+		TileMap* t = new TileMap{"Y:/OneDrive/Programmierung/Assets/ChronoTrigger/maps/SNES - Chrono Trigger - Court Room.gif"};
 		t->loadFromFile("tilemaps/test_tilemap.txt");
 
 		scene->addDrawable(t);
