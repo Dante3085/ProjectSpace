@@ -24,7 +24,6 @@
     <ClInclude Include="src\animation\EAnimation.h" />
     <ClInclude Include="src\animation\FadeAnimation.h" />
     <ClInclude Include="src\animation\TranslateAnimation.h" />
-    <ClInclude Include="src\Array.h" />
     <ClInclude Include="src\collision\Collidable.h" />
     <ClInclude Include="src\collision\CollisionBox.h" />
     <ClInclude Include="src\collision\CollisionManager.h" />
@@ -70,7 +69,7 @@
     <ClInclude Include="src\header\InputHandler.h" />
     <ClInclude Include="src\header\LayerCollidable.h" />
     <ClInclude Include="src\header\Line2D.h" />
-    <ClInclude Include="src\header\Line2f.h" />
+    <ClInclude Include="src\header\Line2F.h" />
     <ClInclude Include="src\header\Log.h" />
     <ClInclude Include="src\header\Logable.h" />
     <ClInclude Include="src\header\MenuElement.h" />
@@ -136,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="rsrc\1_magicspell_spritesheet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="tilemaps\sfml_tilemap.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

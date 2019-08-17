@@ -26,6 +26,7 @@
 #include "Camera.h"
 #include "MenuGroup.h"
 #include "TranslateAnimation2.h"
+#include "Tilemap.h"
 
 namespace ProjectSpace
 {
@@ -312,6 +313,11 @@ namespace ProjectSpace
 	Scene* Factory::create_tilemap_scene(sf::RenderWindow & window)
 	{
 		Scene* scene = new Scene();
+
+		TileMap* t = new TileMap{"rsrc/SNES - Chrono Trigger - Mountains.png"};
+		t->loadFromFile("tilemaps/test_tilemap.txt");
+
+		scene->addDrawable(t);
 
 		return scene;
 	}

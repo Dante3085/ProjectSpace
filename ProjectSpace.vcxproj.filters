@@ -61,7 +61,6 @@
     <ClInclude Include="src\header\HBox.h" />
     <ClInclude Include="src\header\InputHandler.h" />
     <ClInclude Include="src\header\Line2D.h" />
-    <ClInclude Include="src\header\Line2f.h" />
     <ClInclude Include="src\header\MenuElement.h" />
     <ClInclude Include="src\header\Portrait.h" />
     <ClInclude Include="src\header\SAT.h" />
@@ -79,9 +78,10 @@
     <ClInclude Include="src\header\Log.h" />
     <ClInclude Include="src\header\Logable.h" />
     <ClInclude Include="src\header\ConcreteLogable.h" />
-    <ClInclude Include="src\Array.h" />
     <ClInclude Include="src\header\TranslateAnimation2.h" />
     <ClInclude Include="src\header\TurnBasedCombat.h" />
+    <ClInclude Include="src\header\Easing.h" />
+    <ClInclude Include="src\header\Line2F.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -117,5 +117,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="rsrc\1_magicspell_spritesheet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="tilemaps\sfml_tilemap.txt" />
   </ItemGroup>
 </Project>

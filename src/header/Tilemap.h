@@ -36,7 +36,7 @@ namespace ProjectSpace
 		lowerLeft:  LowerLeft corner of Quad.
 		*/
 		void registerTileImage(std::string const& name, sf::Vector2f const& upperLeft, sf::Vector2f const& upperRight,
-			                   sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
+			sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
 		{
 			std::vector<sf::Vector2f> textureCoordinates;
 			textureCoordinates.push_back(upperLeft);
@@ -56,7 +56,7 @@ namespace ProjectSpace
 		lowerLeft:  LowerLeft corner.
 		*/
 		void addTile(std::string const& tileImage, sf::Vector2f const& upperLeft, sf::Vector2f const& upperRight,
-			         sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
+			sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
 		{
 			if (tileImages.count(tileImage) == 0)
 			{
@@ -67,8 +67,8 @@ namespace ProjectSpace
 
 			std::vector<sf::Vector2f> tileImageCoords = tileImages[tileImage];
 
-			sf::Vertex vertexUpperLeft{upperLeft, tileImageCoords[0]};
-			sf::Vertex vertexUpperRight{upperRight, tileImageCoords[1]};
+			sf::Vertex vertexUpperLeft{ upperLeft, tileImageCoords[0] };
+			sf::Vertex vertexUpperRight{ upperRight, tileImageCoords[1] };
 			sf::Vertex vertexLowerRight{ lowerRight, tileImageCoords[2] };
 			sf::Vertex vertexLowerLeft{ lowerLeft, tileImageCoords[3] };
 
@@ -95,9 +95,9 @@ namespace ProjectSpace
 
 			std::vector<sf::Vector2f> tileImageCoords = tileImages[tileImage];
 
-			sf::Vector2f upperRight{ upperLeft.x + (tileImageCoords[1].x - tileImageCoords[0].x), upperLeft.y};
-			sf::Vector2f lowerRight{upperRight.x, upperRight.y +(tileImageCoords[2].y - tileImageCoords[1].y)};
-			sf::Vector2f lowerLeft{upperLeft.x, lowerRight.y};
+			sf::Vector2f upperRight{ upperLeft.x + (tileImageCoords[1].x - tileImageCoords[0].x), upperLeft.y };
+			sf::Vector2f lowerRight{ upperRight.x, upperRight.y + (tileImageCoords[2].y - tileImageCoords[1].y) };
+			sf::Vector2f lowerLeft{ upperLeft.x, lowerRight.y };
 
 
 			sf::Vertex vertexUpperLeft{ upperLeft, tileImageCoords[0] };
@@ -203,7 +203,128 @@ namespace ProjectSpace
 				}
 				else if (type == "TILE")
 				{
-					// TODO: Nur mit leftUpper und mit allen Ecken bzw. Scaling.
+					int indexFirstComma = line.find(',');
+					std::string tileImageName = line.substr(indexOpenCurlyBracket + 1, indexFirstComma - (indexOpenCurlyBracket + 1));
+					line.erase(0, indexFirstComma + 1);
+
+					int numOpenBrackets = std::count(line.begin(), line.end(), '(');
+
+					if (numOpenBrackets == 1)
+					{
+						sf::Vector2f upperLeft;
+
+						std::string x = "";
+						std::string y = "";
+						int counter = 0;
+						bool appendToX = false;
+						bool appendToY = false;
+						for (char const& c : line)
+						{
+							if (c == '(')
+							{
+								appendToX = true;
+								continue;
+							}
+							else if (c == ')')
+							{
+								appendToY = false;
+								upperLeft.x = std::stoi(x);
+								upperLeft.y = std::stoi(y);
+								addTile(tileImageName, upperLeft);
+							}
+
+							if (c == ',')
+							{
+								appendToX = false;
+								appendToY = true;
+								continue;
+							}
+
+							if (appendToX)
+							{
+								x += c;
+							}
+							else if (appendToY)
+							{
+								y += c;
+							}
+						}
+					}
+					else if (numOpenBrackets == 4)
+					{
+						sf::Vector2f upperLeft;
+						sf::Vector2f upperRight;
+						sf::Vector2f lowerRight;
+						sf::Vector2f lowerLeft;
+
+						std::string x = "";
+						std::string y = "";
+						int counter = 0;
+						bool appendToX = false;
+						bool appendToY = false;
+						bool checkForComma = true;
+						for (char const& c : line)
+						{
+							if (c == '(')
+							{
+								appendToX = true;
+								checkForComma = true;
+								continue;
+							}
+							else if (c == ')')
+							{
+								appendToY = false;
+								checkForComma = false;
+
+								switch (counter++)
+								{
+								case 0:
+									upperLeft.x = std::stoi(x);
+									upperLeft.y = std::stoi(y);
+									break;
+								case 1:
+									upperRight.x = std::stoi(x);
+									upperRight.y = std::stoi(y);
+									break;
+								case 2:
+									lowerRight.x = std::stoi(x);
+									lowerRight.y = std::stoi(y);
+									break;
+								case 3:
+									lowerLeft.x = std::stoi(x);
+									lowerLeft.y = std::stoi(y);
+									addTile(tileImageName, upperLeft, upperRight, lowerRight, lowerLeft);
+									break;
+								}
+								x = "";
+								y = "";
+							}
+
+							if (checkForComma)
+							{
+								if (c == ',')
+								{
+									appendToX = false;
+									appendToY = true;
+									continue;
+								}
+							}
+
+							if (appendToX)
+							{
+								x += c;
+							}
+							else if (appendToY)
+							{
+								y += c;
+							}
+						}
+					}
+					else
+					{
+						Log::getInstance().defaultLog("Illegal number of '(' in string", ll::WARNING);
+						return;
+					}
 				}
 				else
 				{
