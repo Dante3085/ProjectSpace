@@ -35,8 +35,8 @@ namespace ProjectSpace
 		lowerRight: LowerRight corner of Quad.
 		lowerLeft:  LowerLeft corner of Quad.
 		*/
-		void registerTileImage(std::string const& name, sf::Vector2f const& upperLeft, sf::Vector2f const& upperRight,
-			sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
+		void registerTileImage(std::string const& name, sf::Vector2f upperLeft, sf::Vector2f upperRight,
+			sf::Vector2f lowerRight, sf::Vector2f lowerLeft)
 		{
 			std::vector<sf::Vector2f> textureCoordinates;
 			textureCoordinates.push_back(upperLeft);
@@ -55,8 +55,8 @@ namespace ProjectSpace
 		lowerRight: LowerRight corner.
 		lowerLeft:  LowerLeft corner.
 		*/
-		void addTile(std::string const& tileImage, sf::Vector2f const& upperLeft, sf::Vector2f const& upperRight,
-			sf::Vector2f const& lowerRight, sf::Vector2f const& lowerLeft)
+		void addTile(std::string const& tileImage, sf::Vector2f upperLeft, sf::Vector2f upperRight,
+			sf::Vector2f lowerRight, sf::Vector2f lowerLeft)
 		{
 			if (tileImages.count(tileImage) == 0)
 			{
@@ -84,7 +84,7 @@ namespace ProjectSpace
 		Other 3 corners are taken from the texture coordinates of the tileImage. That means the tileImage will be displayed at upperLeft
 		without any scaling.
 		*/
-		void addTile(std::string const& tileImage, sf::Vector2f const& upperLeft)
+		void addTile(std::string const& tileImage, sf::Vector2f upperLeft)
 		{
 			if (tileImages.count(tileImage) == 0)
 			{
@@ -111,8 +111,61 @@ namespace ProjectSpace
 			vertices.append(vertexLowerLeft);
 		}
 
+		void addTiles(int num, std::string const& tileImage, sf::Vector2f upperLeft, sf::Vector2f upperRight,
+			sf::Vector2f lowerRight, sf::Vector2f lowerLeft)
+		{
+			if (tileImages.count(tileImage) == 0)
+			{
+				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given tileImage '" << tileImage << "' was not registered to this TileMap. Returning..."
+					<< lo::STACKTRACE << lo::END;
+				return;
+			}
+			else if (num <= 0)
+			{
+				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given number of tiles to add is invalid: " << num << ". Returning..."
+					<< lo::STACKTRACE << lo::END;
+			}
+
+			float tileWidth = upperRight.x - upperLeft.x;
+			for (int i = 0; i < num; ++i)
+			{
+				addTile(tileImage, upperLeft, upperRight, lowerRight, lowerLeft);
+				upperLeft.x += tileWidth;
+				upperRight.x += tileWidth;
+				lowerRight.x += tileWidth;
+				lowerLeft.x += tileWidth;
+			}
+		}
+
+		void addTiles(int num, std::string const& tileImage, sf::Vector2f upperLeft)
+		{
+			if (tileImages.count(tileImage) == 0)
+			{
+				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given tileImage '" << tileImage << "' was not registered to this TileMap. Returning..."
+					<< lo::STACKTRACE << lo::END;
+				return;
+			}
+			else if (num <= 0)
+			{
+				Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given number of tiles to add is invalid: " << num <<". Returning..."
+					<< lo::STACKTRACE << lo::END;
+			}
+
+			std::vector<sf::Vector2f> tileImageCoords = tileImages[tileImage];
+			float tileWidth = (tileImageCoords[1].x - tileImageCoords[0].x);
+
+			for (int i = 0; i < num; ++i)
+			{
+				addTile(tileImage, upperLeft);
+				upperLeft.x += tileWidth;
+			}
+		}
+
 		/*
-		Registers tileImages and adds tiles from information given by file.
+		Registers tileImages and adds tiles from information given by file. Format...
+		TILE-IMAGE{name, (x1, y1), (x2, y2), (x3, y3), (x4, y4)} for registering a tileImage.
+		TILE{name, (x1, y1), (x2, y2), (x3, y3), (x4, y4)} or
+		TILE{name, (x1, y1)} for adding a tile.
 		*/
 		void loadFromFile(std::string const& filename)
 		{
@@ -320,6 +373,62 @@ namespace ProjectSpace
 							}
 						}
 					}
+				}
+				else if (type == "TILES")
+				{
+					int indexFirstComma = line.find(',');
+					std::string tileImageName = line.substr(indexOpenCurlyBracket + 1, indexFirstComma - (indexOpenCurlyBracket + 1));
+					line.erase(0, indexFirstComma + 1);
+
+					int numTiles = std::stoi(line.substr(0, line.find(',')));
+					int numOpenBrackets = std::count(line.begin(), line.end(), '(');
+
+					if (numOpenBrackets == 1)
+					{
+						sf::Vector2f upperLeft;
+
+						std::string x = "";
+						std::string y = "";
+						int counter = 0;
+						bool appendToX = false;
+						bool appendToY = false;
+						for (char const& c : line)
+						{
+							if (c == '(')
+							{
+								appendToX = true;
+								continue;
+							}
+							else if (c == ')')
+							{
+								appendToY = false;
+								upperLeft.x = std::stoi(x);
+								upperLeft.y = std::stoi(y);
+								
+								addTiles(numTiles, tileImageName, upperLeft);
+							}
+
+							if (c == ',')
+							{
+								appendToX = false;
+								appendToY = true;
+								continue;
+							}
+
+							if (appendToX)
+							{
+								x += c;
+							}
+							else if (appendToY)
+							{
+								y += c;
+							}
+						}
+					}
+					else if (numOpenBrackets == 4)
+					{
+						Log::getInstance().defaultLog("4 coordinates with TILES not yet supported", ll::WARNING);
+					}
 					else
 					{
 						Log::getInstance().defaultLog("Illegal number of '(' in string", ll::WARNING);
@@ -332,7 +441,6 @@ namespace ProjectSpace
 					return;
 				}
 			}
-
 		}
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override
