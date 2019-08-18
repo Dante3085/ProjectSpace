@@ -10,8 +10,8 @@
 namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
-		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false }, finished{ false },
-		currentVelocity{ -1, -1 }, easingFunction{ elastic_easeOut }, ignorePauseElapsedTime{false}, log{ &Log::getInstance() }
+		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
+		currentVelocity{ -1, -1 }, easingFunction{ elastic_easeOut }, log{ &Log::getInstance() }
 	{
 		menuElement->setPosition(from);
 	}
@@ -34,7 +34,6 @@ namespace ProjectSpace
 		{
 			elapsedTime = 0;
 			doUpdate = false;
-			finished = true;
 			return;
 		}
 	}
@@ -150,23 +149,18 @@ namespace ProjectSpace
 
 	void TranslateAnimation::start()
 	{
+		elapsedTime = 0;
 		doUpdate = true;
 	}
 
 	void TranslateAnimation::pause()
 	{
-		if (doUpdate)
-		{
-			ignorePauseElapsedTime = true;
-		}
 		doUpdate = false;
 	}
 
 	void TranslateAnimation::reset()
 	{
-		// menuElement->setPosition(from);
-		doUpdate = false;
-		finished = false;
+		// TODO
 	}
 
 	sf::Vector2f TranslateAnimation::getFrom() const
@@ -199,9 +193,14 @@ namespace ProjectSpace
 		return menuElement;
 	}
 
-	bool TranslateAnimation::isFinished() const
+	float TranslateAnimation::getDuration() const
 	{
-		return finished;
+		return duration;
+	}
+
+	void TranslateAnimation::setDuration(float duration)
+	{
+		this->duration = duration;
 	}
 
 	bool TranslateAnimation::isUpdating() const

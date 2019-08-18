@@ -147,8 +147,6 @@ namespace ProjectSpace
 
 		// These 4 instances make up a global ButtonMenu (independent of any specific Scene).
 		HBox* btnBox = new HBox{};
-		TranslateAnimation* menuForward;
-		TranslateAnimation* menuBackward;
 		ButtonMenu* buttonMenu;
 
 		// Creating Menu
@@ -187,41 +185,48 @@ namespace ProjectSpace
 			globalInputHandler};
 
 		float btnBoxWidth = btnBox->getWidth();
-		menuForward = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
-		menuForward->setEasing(Easing::BACK_EASE_OUT);
+		TranslateAnimation* menuTa;
+		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
+		menuTa->setEasing(Easing::BACK_EASE_OUT);
 
-		menuBackward = new TranslateAnimation{ btnBox, sf::Vector2f{-5, 50}, sf::Vector2f{-250-btnBoxWidth, 50}, 200 };
-		menuBackward->setEasing(Easing::QUAD_EASE_IN);
-
-		btn2->setOnPressed([this, menuBackward, menuForward]()
+		btn2->setOnPressed([btnBoxWidth, menuTa]()
 		{
-			menuForward->pause();
-			menuBackward->start();
+				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
+				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
+				menuTa->setEasing(Easing::QUAD_EASE_IN);
+				menuTa->start();
 		});
 
 		// Setting up input handler
-		globalInputHandler->storeKeyState(sf::Keyboard::F1, false);
-		globalInputHandler->storeKeyState(sf::Keyboard::Tab, false);
-		globalInputHandler->add([this, menuBackward, menuForward, globalInputHandler, fpsCounter]()
+		using key = sf::Keyboard;
+		globalInputHandler->storeKeyState(key::F1, false);
+		globalInputHandler->storeKeyState(key::Tab, false);
+		globalInputHandler->storeKeyState(key::E, false);
+		globalInputHandler->storeKeyState(key::R, false);
+		globalInputHandler->add([this, menuTa, btnBoxWidth, globalInputHandler, fpsCounter]()
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			if (key::isKeyPressed(key::Escape))
 			{
 				window.close();
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+			if (!globalInputHandler->wasKeyPressed(key::E) && key::isKeyPressed(key::E))
 			{
-				menuBackward->pause();
-				menuForward->start();
+				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
+				menuTa->setTo(sf::Vector2f{ -5, 50 });
+				menuTa->setEasing(Easing::BACK_EASE_OUT);
+				menuTa->start();
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+			if (!globalInputHandler->wasKeyPressed(key::R) && key::isKeyPressed(key::R))
 			{
-				menuForward->pause();
-				menuBackward->start();
+				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
+				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
+				menuTa->setEasing(Easing::QUAD_EASE_IN);
+				menuTa->start();
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::F1) && !globalInputHandler->wasKeyPressed(sf::Keyboard::F1))
+			if (key::isKeyPressed(key::F1) && !globalInputHandler->wasKeyPressed(key::F1))
 			{
 				if (fpsCounter->isHidden())
 				{
@@ -233,11 +238,13 @@ namespace ProjectSpace
 				}
 			}
 
-			globalInputHandler->storeKeyState(sf::Keyboard::F1, sf::Keyboard::isKeyPressed(sf::Keyboard::F1));
-			globalInputHandler->storeKeyState(sf::Keyboard::F1, sf::Keyboard::isKeyPressed(sf::Keyboard::Tab));
+			globalInputHandler->storeKeyState(key::F1, key::isKeyPressed(key::F1));
+			globalInputHandler->storeKeyState(key::F1, key::isKeyPressed(key::Tab));
+			globalInputHandler->storeKeyState(key::E, key::isKeyPressed(key::E));
+			globalInputHandler->storeKeyState(key::R, key::isKeyPressed(key::R));
 		});
 
-		globalEntities = {fpsCounter, globalInputHandler, btnBox, menuForward, menuBackward, buttonMenu};
+		globalEntities = {fpsCounter, globalInputHandler, btnBox, menuTa, buttonMenu};
 		globalDrawables = {fpsCounter, btnBox};
 	}
 }

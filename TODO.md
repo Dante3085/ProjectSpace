@@ -56,8 +56,16 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - automatic makefile.
 
- - InputHandler::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
-   Dabei ist es der letzte gespeicherte. Das ist etwas uneindeutig.
+ - InputHandler
+   - ::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
+     Dabei ist es der letzte gespeicherte. Das ist etwas uneindeutig.
+
+   - Aufwand, um auf einmaligen key press zu checken ist zu groß. Store Key State vor handler function.
+     In handler function auf vorher nicht, jetzt schon gedrückt prüfen und am Ende der handler function key Key State
+     speichern.
+
+   - InputHandling überdenken: Globaler InputHandler auf dem InputEvents registriert werden können.
+
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
 
@@ -75,6 +83,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen können (Linien, Punkte, Dreiecke, ...)
  - Log Archive functionality to store certain logs longer and protect them from being deleted.
 
- - TranslateAnimation: Sudden and very large change of position when going from one TranslateAnimation to another with start and stop.
+ - TranslateAnimation: Smoothe Hin- und Zurückanimation innerhalb der Klasse lösen. Jetzt durch setzen der Startposition
+   auf aktuelle Position des Menüelements außerhalb der Klasse in globalem InputHandler.
 
  - Graphics Settings für RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
