@@ -1,6 +1,8 @@
 TODO: Ideen und Dinge, die ich umsetzen will.
+
+ - Das gesamte Projekt Ã¼berdenken. Interklassenstruktur. Struktur einzelner Klassen. Welche Dinge benÃ¶tige ich eigentlich. Was ist     eigentlich mein Zielzustand. Konkrete Idee eines nicht unbedingt fertigen Zustand des Spiels, aber Meilensteins.
  
- - Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
+ - WÃ¤hrend eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
 
  - Speicherverwaltung
 
@@ -25,7 +27,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Das gesamte Programm ruckelt in regelmaessigen Abstaenden.
 
- - Menue Buttons per Controller steuern können.
+ - Menue Buttons per Controller steuern kÃ¶nnen.
 
  - BattleOrder Anzeige (Vergleiche Final Fantasy 10)
 
@@ -43,12 +45,12 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Seperating Axis Theorem.
 
- - Pufferbereich in Kollision, um Kollision nicht ständig auszulösen.
+ - Pufferbereich in Kollision, um Kollision nicht stÃ¤ndig auszulÃ¶sen.
 
  - View Kamera
 
- - Menü, dass sich auf veränderndem View der Kamera immer an derselben Stelle öffnet und schließt.
-   (Camera View abhängige Elemente, nicht Default View abhängig)
+ - MenÃ¼, dass sich auf verÃ¤nderndem View der Kamera immer an derselben Stelle Ã¶ffnet und schlieÃŸt.
+   (Camera View abhÃ¤ngige Elemente, nicht Default View abhÃ¤ngig)
 
  - Schnelleres Kompilieren: Trennung auf h und cpp (Bedarfsgerechtes Kompilieren mit make)
 
@@ -57,26 +59,26 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - InputHandler::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
    Dabei ist es der letzte gespeicherte. Das ist etwas uneindeutig.
 
- - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
-   Andererseits signalisiert der Parameter die Absicht vernünftig
+ - Window der Anwedung global verfÃ¼gbar machen, damit nicht immer Ã¼ber Parameter Ã¼bergeben werden muss.
+   Andererseits signalisiert der Parameter die Absicht vernÃ¼nftig
 
  - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
  die Camera aber nicht mehr geupdatet wird.
 
- - Tilemap: Funktion, um mehrere Tiles mit einem Aufruf zu zeichnen. Mit Stretching. Code aufräumen. Zu viel wiederholter Code an mehreren Stellen.
+ - Tilemap: Funktion, um mehrere Tiles mit einem Aufruf zu zeichnen. Mit Stretching. Code aufrÃ¤umen. Zu viel wiederholter Code an mehreren Stellen.
 
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
  - Final Fantasy 7 Textvariation:
  	- Text in Textbox: Normale Leute sprechen
- 	- Weißer Text ohne Textbox: Gedanken eines Charakters
- 	- Grauer Text ohne Textbox: Charakter hört andere Stimme in Gedanken/Kopf.
+ 	- WeiÃŸer Text ohne Textbox: Gedanken eines Charakters
+ 	- Grauer Text ohne Textbox: Charakter hÃ¶rt andere Stimme in Gedanken/Kopf.
 
  - Graph Plotter: Graphen im Spiel zum Debuggen anzeigen.
- - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen können (Linien, Punkte, Dreiecke, ...)
+ - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen kÃ¶nnen (Linien, Punkte, Dreiecke, ...)
 
  - Log Archive functionality to store certain logs longer and protect them from being deleted.
 
  - TranslateAnimation: Sudden and very large change of position when going from one TranslateAnimation to another with start and stop.
 
- - Graphics Settings für RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
+ - Graphics Settings fÃ¼r RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
