@@ -64,7 +64,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
  die Camera aber nicht mehr geupdatet wird.
 
-
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
  - Final Fantasy 7 Textvariation:
@@ -74,7 +73,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Graph Plotter: Graphen im Spiel zum Debuggen anzeigen.
  - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen können (Linien, Punkte, Dreiecke, ...)
-
  - Log Archive functionality to store certain logs longer and protect them from being deleted.
 
  - TranslateAnimation: Sudden and very large change of position when going from one TranslateAnimation to another with start and stop.
