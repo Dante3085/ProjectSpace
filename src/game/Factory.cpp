@@ -314,11 +314,17 @@ namespace ProjectSpace
 	{
 		Scene* scene = new Scene();
 
-		TileMap* t = new TileMap{"Y:/OneDrive/Programmierung/Assets/ChronoTrigger/maps/SNES - Chrono Trigger - Court Room.gif"};
-		t->loadFromFile("tilemaps/test_tilemap.txt");
+		TileMap* t = new TileMap{"rsrc/endOfTime.png"};
+		t->loadFromFile("tilemaps/chronoTrigger_endOfTime.txt");
 
-		scene->addDrawable(t);
+		Animation* cronoDownIdle = new Animation{"rsrc/CronoDownIdle.png", 16, 35, 0, 0, 3, 1.f};
+		AnimatedSprite* crono = new AnimatedSprite{ sf::Vector2f{500, 500} };
+		crono->addAnimation(EAnimation::IDLE, cronoDownIdle);
+		crono->setAnimation(EAnimation::IDLE);
 
+		scene->addEntities({crono});
+		scene->addDrawables({ t, crono });
+		
 		return scene;
 	}
 

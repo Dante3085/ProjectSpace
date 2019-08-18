@@ -57,13 +57,15 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - InputHandler::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
    Dabei ist es der letzte gespeicherte. Das ist etwas uneindeutig.
 
+- Proper InputHandling: Mover Klasse, die n beliebige Objekte aufnimmt und jedes Frame entsprechende Bewegungseingaben checkt.
+
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
 
  - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
  die Camera aber nicht mehr geupdatet wird.
 
- - Tilemap: Funktion, um mehrere Tiles mit einem Aufruf zu zeichnen. Mit Stretching. Code aufräumen. Zu viel wiederholter Code an mehreren Stellen.
+ - Tilemap: Code aufräumen. Zu viel wiederholter Code in loadFromFile() .txt file parsing.
 
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
@@ -80,3 +82,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - TranslateAnimation: Sudden and very large change of position when going from one TranslateAnimation to another with start and stop.
 
  - Graphics Settings für RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
+
+ - AnimatedSprite: Add Frames by hand like TileMap does it. Removes need to properly space images in Spritesheet.
+   Frames hinzufügen, die zwischen sich leeren Platz haben. Spacing.
