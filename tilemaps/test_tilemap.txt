@@ -1,4 +1,2 @@
-TILE-IMAGE{endOfTimeForeground, (11, 80), (554, 80), (554, 504), (11, 504)}
-TILE-IMAGE{endOfTimeBackground, (5, 610), (260, 610), (260, 820), (5, 820)}
-TILE{endOfTimeBackground, (0, 0), (3240, 0), (3240, 2160), (0, 2160)}
-TILE{endOfTimeForeground, (100, 100), (1000, 100), (1000, 1000), (100, 1000)}
+TILE-IMAGE{court, (2, 2), (257, 2), (257, 324), (2, 324)}
+TILE{court, (0, 0), (1920, 0), (1920, 1080), (0, 1080)}

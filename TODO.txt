@@ -1,8 +1,8 @@
 TODO: Ideen und Dinge, die ich umsetzen will.
 
- - Das gesamte Projekt Ã¼berdenken. Interklassenstruktur. Struktur einzelner Klassen. Welche Dinge benÃ¶tige ich eigentlich. Was ist     eigentlich mein Zielzustand. Konkrete Idee eines nicht unbedingt fertigen Zustand des Spiels, aber Meilensteins.
+ - Das gesamte Projekt Überdenken. Interklassenstruktur. Struktur einzelner Klassen. Welche Dinge benötige ich eigentlich. Was ist eigentlich mein Zielzustand. Konkrete Idee eines nicht unbedingt fertigen Zustand des Spiels, aber Meilensteins.
  
- - WÃ¤hrend eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
+ - Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
 
  - Speicherverwaltung
 
@@ -27,7 +27,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Das gesamte Programm ruckelt in regelmaessigen Abstaenden.
 
- - Menue Buttons per Controller steuern kÃ¶nnen.
+ - Menue Buttons per Controller steuern können.
 
  - BattleOrder Anzeige (Vergleiche Final Fantasy 10)
 
@@ -45,12 +45,12 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Seperating Axis Theorem.
 
- - Pufferbereich in Kollision, um Kollision nicht stÃ¤ndig auszulÃ¶sen.
+ - Pufferbereich in Kollision, um Kollision nicht ständig auszulösen.
 
  - View Kamera
 
- - MenÃ¼, dass sich auf verÃ¤nderndem View der Kamera immer an derselben Stelle Ã¶ffnet und schlieÃŸt.
-   (Camera View abhÃ¤ngige Elemente, nicht Default View abhÃ¤ngig)
+ - Menü, dass sich auf veränderndem View der Kamera immer an derselben Stelle öffnet und schließt.
+   (Camera View abhängige Elemente, nicht Default View abhängig)
 
  - Schnelleres Kompilieren: Trennung auf h und cpp (Bedarfsgerechtes Kompilieren mit make)
 
@@ -58,45 +58,25 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - InputHandler::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
    Dabei ist es der letzte gespeicherte. Das ist etwas uneindeutig.
-
-<<<<<<< HEAD
-- Proper InputHandling: Mover Klasse, die n beliebige Objekte aufnimmt und jedes Frame entsprechende Bewegungseingaben checkt.
-
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
-=======
- - Window der Anwedung global verfÃ¼gbar machen, damit nicht immer Ã¼ber Parameter Ã¼bergeben werden muss.
-   Andererseits signalisiert der Parameter die Absicht vernÃ¼nftig
->>>>>>> origin/developer
 
  - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
  die Camera aber nicht mehr geupdatet wird.
 
-<<<<<<< HEAD
- - Tilemap: Code aufräumen. Zu viel wiederholter Code in loadFromFile() .txt file parsing.
-=======
- - Tilemap: Funktion, um mehrere Tiles mit einem Aufruf zu zeichnen. Mit Stretching. Code aufrÃ¤umen. Zu viel wiederholter Code an mehreren Stellen.
->>>>>>> origin/developer
 
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
  - Final Fantasy 7 Textvariation:
  	- Text in Textbox: Normale Leute sprechen
- 	- WeiÃŸer Text ohne Textbox: Gedanken eines Charakters
- 	- Grauer Text ohne Textbox: Charakter hÃ¶rt andere Stimme in Gedanken/Kopf.
+ 	- Weißer Text ohne Textbox: Gedanken eines Charakters
+ 	- Grauer Text ohne Textbox: Charakter hört andere Stimme in Gedanken/Kopf.
 
  - Graph Plotter: Graphen im Spiel zum Debuggen anzeigen.
- - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen kÃ¶nnen (Linien, Punkte, Dreiecke, ...)
+ - Debug Drawing: Im Spiel zum Debuggen primitive Geometrie einfach zeichnen können (Linien, Punkte, Dreiecke, ...)
 
  - Log Archive functionality to store certain logs longer and protect them from being deleted.
 
  - TranslateAnimation: Sudden and very large change of position when going from one TranslateAnimation to another with start and stop.
 
-<<<<<<< HEAD
  - Graphics Settings für RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
-
- - AnimatedSprite: Add Frames by hand like TileMap does it. Removes need to properly space images in Spritesheet.
-   Frames hinzufügen, die zwischen sich leeren Platz haben. Spacing.
-=======
- - Graphics Settings fÃ¼r RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
->>>>>>> origin/developer
