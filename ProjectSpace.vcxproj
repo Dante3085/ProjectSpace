@@ -67,6 +67,7 @@
     <ClInclude Include="src\header\Game.h" />
     <ClInclude Include="src\header\HBox.h" />
     <ClInclude Include="src\header\InputHandler.h" />
+    <ClInclude Include="src\header\InsideTheSelf.h" />
     <ClInclude Include="src\header\LayerCollidable.h" />
     <ClInclude Include="src\header\Line2D.h" />
     <ClInclude Include="src\header\Line2F.h" />
@@ -82,7 +83,6 @@
     <ClInclude Include="src\header\TextBox.h" />
     <ClInclude Include="src\header\Tilemap.h" />
     <ClInclude Include="src\header\TranslateAnimation.h" />
-    <ClInclude Include="src\header\TranslateAnimation2.h" />
     <ClInclude Include="src\header\TurnBasedCombat.h" />
     <ClInclude Include="src\header\Util.h" />
     <ClInclude Include="src\header\VBox.h" />
@@ -139,7 +139,11 @@
   <ItemGroup>
     <Text Include="tilemaps\sfml_tilemap.txt" />
     <Text Include="tilemaps\test_tilemap.txt" />
-    <Text Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="README.md" />
+    <None Include="TODO.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -2,46 +2,73 @@
 #ifndef BATTLE_ORDER_H
 #define BATTLE_ORDER_H
 
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <queue>
-#include <algorithm>
-#include <iostream>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 
-#include "Character.h"
-#include "TranslateAnimation.h"
+#include "Entity.h"
+
 #include "MenuElement.h"
+#include "Character.h"
 #include "Portrait.h"
+#include "TranslateAnimation.h"
+#include <vector>
+#include "Util.h"
 
 namespace ProjectSpace
 {
-	class BattleOrder : public MenuElement
+	class BattleOrder : public Entity, public sf::Drawable
 	{
 	public:
-		BattleOrder(std::vector<Character*> characters, sf::Vector2f position = sf::Vector2f{0, 0}, 
-			float spacing = 0, float cycleDuration = 0.5f);
-		~BattleOrder();
+		BattleOrder(std::vector<Character*> characters, sf::Vector2f const& position = sf::Vector2f{ 0, 0 })
+			: position{position}, characters {characters}, doUpdate{false}
+		{
 
-		void update(sf::Time time) override;
-		void cycle();
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-		float getWidth() const override;
-		float getHeight() const override;
-		sf::Vector2f getPosition() const override;
-		void setPosition(float x, float y) override;
-		void setPosition(sf::Vector2f v) override;
-		void move(float x, float y) override;
-		void move(sf::Vector2f v) override;
+			Portrait* p = new Portrait{};
+			p->setPosition(position);
+			tas.push_back(new TranslateAnimation{ p, position, position + sf::Vector2f{0, 100}, 1000 });
+			for (int i = 1; i < characters.size(); ++i)
+			{
+				p = new Portrait{};
+				p->setPosition(tas[i - 1]->getMenuElement()->getPosition() + sf::Vector2f{ 0, 100 });
+				tas.push_back(new TranslateAnimation{ p, p->getPosition(), p->getPosition() + sf::Vector2f{0, 100}, 1000 });
+			}
+		}
+
+		void cycle()
+		{
+			doUpdate = true;
+			for (TranslateAnimation* ta : tas)
+			{
+				ta->start();
+			}
+		}
+
+		void update(sf::Time time) override
+		{
+			if (doUpdate)
+			{
+				for (TranslateAnimation* ta : tas)
+				{
+					ta->update(time);
+				}
+			}
+		}
+
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override
+		{
+			for (TranslateAnimation* ta : tas)
+			{
+				target.draw(*ta->getMenuElement());
+			}
+		}
 
 	private:
 		sf::Vector2f position;
-		std::queue<Character*> characters;
-		std::vector<Portrait*> portraits;
-		std::vector<TranslateAnimation*> anims;
-		float spacing;
+		std::vector<Character*> characters;
+		std::vector<TranslateAnimation*> tas;
 
-		float width;
-		float height;
+		bool doUpdate;
 	};
 }
 

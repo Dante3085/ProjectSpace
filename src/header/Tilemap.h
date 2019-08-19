@@ -189,6 +189,8 @@ namespace ProjectSpace
 		TILE-IMAGE{name, (x1, y1), (x2, y2), (x3, y3), (x4, y4)} for registering a tileImage.
 		TILE{name, (x1, y1), (x2, y2), (x3, y3), (x4, y4)} or
 		TILE{name, (x1, y1)} for adding a tile.
+		TILES{name, numberOfTiles, (x1, y1), (x2, y2), (x3, y3), (x4, y4)} or
+		TILES{name, numberOfTiles, (x1, y1)} to add multiple tiles at once.
 		*/
 		void loadFromFile(std::string const& filename)
 		{

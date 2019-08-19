@@ -78,10 +78,10 @@
     <ClInclude Include="src\header\Log.h" />
     <ClInclude Include="src\header\Logable.h" />
     <ClInclude Include="src\header\ConcreteLogable.h" />
-    <ClInclude Include="src\header\TranslateAnimation2.h" />
     <ClInclude Include="src\header\TurnBasedCombat.h" />
     <ClInclude Include="src\header\Easing.h" />
     <ClInclude Include="src\header\Line2F.h" />
+    <ClInclude Include="src\header\InsideTheSelf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -120,7 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="tilemaps\sfml_tilemap.txt" />
-    <Text Include="TODO.txt" />
     <Text Include="tilemaps\test_tilemap.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TODO.md" />
+    <None Include="README.md" />
+    <None Include=".gitignore" />
   </ItemGroup>
 </Project>

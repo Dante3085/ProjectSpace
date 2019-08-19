@@ -25,8 +25,6 @@
 #include "InputHandler.h"
 #include "Camera.h"
 #include "MenuGroup.h"
-#include "TranslateAnimation2.h"
-#include "Tilemap.h"
 
 namespace ProjectSpace
 {
@@ -77,12 +75,12 @@ namespace ProjectSpace
 		fireSprite->setDrawBoundingBox(true);
 		fireSprite->setCollisionType(CollisionType::ATTACK);*/
 
-		AnimatedSprite * midnightSprite = new AnimatedSprite{ sf::Vector2f{850, 850} };
+		AnimatedSprite* midnightSprite = new AnimatedSprite{ sf::Vector2f{850, 850} };
 		midnightSprite->addAnimation(EAnimation::IDLE, midnightAnim);
 		midnightSprite->setAnimation(EAnimation::IDLE);
 		midnightSprite->scale(1.2f, 1.2f);
 
-		AnimatedSprite * knightSprite = new AnimatedSprite{ sf::Vector2f{1000, 500} };
+		AnimatedSprite* knightSprite = new AnimatedSprite{ sf::Vector2f{1000, 500} };
 		knightSprite->addAnimation(EAnimation::IDLE, knightIdleAnim);
 		knightSprite->addAnimation(EAnimation::LEFT, knightLeftRunAnim);
 		knightSprite->addAnimation(EAnimation::UP, knightUpRunAnim);
@@ -90,62 +88,62 @@ namespace ProjectSpace
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
 		knightSprite->setAnimation(EAnimation::IDLE);
 		knightSprite->getLayerCollidable()->setCollisionType(CollisionType::WALL);
-	 
+
 		knightSprite->getLayerCollidable()->setCollisionHandler([knightSprite](Collidable* partner)
-		{
-			if (partner->getCollisionType() == CollisionType::WALL)
 			{
-				knightSprite->setPosition(knightSprite->getPreviousPosition());
-			}
-		});
+				if (partner->getCollisionType() == CollisionType::WALL)
+				{
+					knightSprite->setPosition(knightSprite->getPreviousPosition());
+				}
+			});
 
 
-		FadeAnimation * fadeAnimation = new FadeAnimation{ knightSprite->getSprite(), 255, 0, 1};
+		FadeAnimation* fadeAnimation = new FadeAnimation{ knightSprite->getSprite(), 255, 0, 1 };
 
-		Camera * camera = new Camera{ *knightSprite, window, sf::Vector2f{200, 200} };
+		Camera* camera = new Camera{ *knightSprite, window, sf::Vector2f{200, 200} };
 
-		CollisionBox * cb4 = new CollisionBox{ sf::Vector2f{200, 50}, sf::Vector2f{1950, 1500} };
+		CollisionBox* cb4 = new CollisionBox{ sf::Vector2f{200, 50}, sf::Vector2f{1950, 1500} };
 		cb4->setCollisionType(CollisionType::WALL);
 		cb4->setDrawBoundingBox(true);
 
-		CollisionShape * triangle = new CollisionShape{ {sf::Vector2f{100, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
+		CollisionShape* triangle = new CollisionShape{ {sf::Vector2f{100, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
 		triangle->setDrawBoundingBox(true);
 		triangle->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * triangle2 = new CollisionShape{ {sf::Vector2f{150, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
+		CollisionShape* triangle2 = new CollisionShape{ {sf::Vector2f{150, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
 		triangle2->setDrawBoundingBox(true);
 		triangle2->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * triangle3 = new CollisionShape{ {sf::Vector2f{200, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
+		CollisionShape* triangle3 = new CollisionShape{ {sf::Vector2f{200, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
 		triangle3->setDrawBoundingBox(true);
 		triangle3->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * triangle4 = new CollisionShape{ {sf::Vector2f{300, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
+		CollisionShape* triangle4 = new CollisionShape{ {sf::Vector2f{300, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
 		triangle4->setDrawBoundingBox(true);
 		triangle4->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * triangle5 = new CollisionShape{ {sf::Vector2f{400, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
+		CollisionShape* triangle5 = new CollisionShape{ {sf::Vector2f{400, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
 		triangle5->setDrawBoundingBox(true);
 		triangle5->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * triangle6 = new CollisionShape{ {sf::Vector2f{500, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
+		CollisionShape* triangle6 = new CollisionShape{ {sf::Vector2f{500, 100}, sf::Vector2f{300, 300}, sf::Vector2f{100, 300}} };
 		triangle6->setDrawBoundingBox(true);
 		triangle6->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * rectangle = new CollisionShape{ {sf::Vector2f{500, 300}, sf::Vector2f{700, 300}, sf::Vector2f{700, 500}, sf::Vector2f{500, 500}} };
+		CollisionShape* rectangle = new CollisionShape{ {sf::Vector2f{500, 300}, sf::Vector2f{700, 300}, sf::Vector2f{700, 500}, sf::Vector2f{500, 500}} };
 		rectangle->setDrawBoundingBox(true);
 		rectangle->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * smallDiamant = new CollisionShape{ {sf::Vector2f{300, 700}, sf::Vector2f{400, 800}, sf::Vector2f{300, 900}, sf::Vector2f{200, 800}} };
+		CollisionShape* smallDiamant = new CollisionShape{ {sf::Vector2f{300, 700}, sf::Vector2f{400, 800}, sf::Vector2f{300, 900}, sf::Vector2f{200, 800}} };
 		smallDiamant->setDrawBoundingBox(true);
 		smallDiamant->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * bigDiamant = new CollisionShape{ {sf::Vector2f{1400, 600}, sf::Vector2f{1700, 900}, sf::Vector2f{1700, 1000}, sf::Vector2f{1400, 1300},
+		CollisionShape* bigDiamant = new CollisionShape{ {sf::Vector2f{1400, 600}, sf::Vector2f{1700, 900}, sf::Vector2f{1700, 1000}, sf::Vector2f{1400, 1300},
 		sf::Vector2f{1100, 1000}, sf::Vector2f{1100, 900}} };
 		bigDiamant->setDrawBoundingBox(true);
 		bigDiamant->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * threeDCube = new CollisionShape{ {sf::Vector2f{2300, 600}, sf::Vector2f{2400, 500}, sf::Vector2f{2400, 700}, sf::Vector2f{2300, 800},
+		CollisionShape* threeDCube = new CollisionShape{ {sf::Vector2f{2300, 600}, sf::Vector2f{2400, 500}, sf::Vector2f{2400, 700}, sf::Vector2f{2300, 800},
 		sf::Vector2f{2300, 600}, sf::Vector2f{2500, 600}, sf::Vector2f{2600, 500}, sf::Vector2f{2400, 500},
 		sf::Vector2f{2400, 700}, sf::Vector2f{2600, 700}, sf::Vector2f{2500, 800}, sf::Vector2f{2500, 600},
 		sf::Vector2f{2500, 600}, sf::Vector2f{2600, 500}, sf::Vector2f{2600, 700}, sf::Vector2f{2500, 800},
@@ -153,7 +151,7 @@ namespace ProjectSpace
 		threeDCube->setDrawBoundingBox(true);
 		threeDCube->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * threeDCube2 = new CollisionShape{ {sf::Vector2f{2500, 600}, sf::Vector2f{2400, 500}, sf::Vector2f{2400, 700}, sf::Vector2f{2300, 800},
+		CollisionShape* threeDCube2 = new CollisionShape{ {sf::Vector2f{2500, 600}, sf::Vector2f{2400, 500}, sf::Vector2f{2400, 700}, sf::Vector2f{2300, 800},
 		sf::Vector2f{2300, 600}, sf::Vector2f{2500, 600}, sf::Vector2f{2600, 500}, sf::Vector2f{2400, 500},
 		sf::Vector2f{2400, 700}, sf::Vector2f{2600, 700}, sf::Vector2f{2500, 800}, sf::Vector2f{2500, 600},
 		sf::Vector2f{2500, 600}, sf::Vector2f{2600, 500}, sf::Vector2f{2600, 700}, sf::Vector2f{2500, 800},
@@ -161,7 +159,7 @@ namespace ProjectSpace
 		threeDCube2->setDrawBoundingBox(true);
 		threeDCube2->setCollisionType(CollisionType::WALL);
 
-		CollisionShape * threeDCube3 = new CollisionShape{ {sf::Vector2f{2800, 600}, sf::Vector2f{2400, 500}, sf::Vector2f{2400, 700}, sf::Vector2f{2300, 800},
+		CollisionShape* threeDCube3 = new CollisionShape{ {sf::Vector2f{2800, 600}, sf::Vector2f{2400, 500}, sf::Vector2f{2400, 700}, sf::Vector2f{2300, 800},
 		sf::Vector2f{2300, 600}, sf::Vector2f{2500, 600}, sf::Vector2f{2600, 500}, sf::Vector2f{2400, 500},
 		sf::Vector2f{2400, 700}, sf::Vector2f{2600, 700}, sf::Vector2f{2500, 800}, sf::Vector2f{2500, 600},
 		sf::Vector2f{2500, 600}, sf::Vector2f{2600, 500}, sf::Vector2f{2600, 700}, sf::Vector2f{2500, 800},
@@ -179,52 +177,50 @@ namespace ProjectSpace
 
 		Button* expand0 = new Button
 		{
-			[](){}, window, "expand0"
+			[]() {}, window, "expand0"
 		};
 
 		sf::Vector2f newSize{ 50, 50 };
 
 		Button* expand00 = new Button
 		{
-			[](){}, window, "e"
+			[]() {}, window, "e"
 		};
 		expand00->setSize(newSize);
 
 		Button* expand01 = new Button
 		{
-			[](){}, window, "e"
+			[]() {}, window, "e"
 		};
 		expand01->setSize(newSize);
 
 		Button* expand1 = new Button
 		{
-			[](){}, window, "expand1"
+			[]() {}, window, "expand1"
 		};
 
 		Button* expand2 = new Button
 		{
-			[](){}, window, "expand2"
+			[]() {}, window, "expand2"
 		};
 
 		Button* expand3 = new Button
 		{
-			[](){}, window, "expand3"
-		};		
+			[]() {}, window, "expand3"
+		};
 
 		Button* groupBtn0 = new Button
 		{
-			[knightDownRunAnim] ()
+			[knightDownRunAnim]()
 		{
 		}, window, "GroupBtn0"
 		};
 		groupBtn0->setPosition(100, 100);
-		TranslateAnimation2* ta2 = new TranslateAnimation2{ groupBtn0, {300, 300}, {600, 500}, 1000 };
 
 		Button* groupBtn1 = new Button
 		{
-			[ta2]() 
+			[]()
 		{
-			ta2->start();
 		}, window, "GroupBtn1"
 		};
 		groupBtn1->setPosition(200, 200);
@@ -240,7 +236,7 @@ namespace ProjectSpace
 		menuGroup->addMenuElement(groupBtn2);
 
 		InputHandler* inputHandler = new InputHandler{};
-		
+
 		inputHandler->storeKeyState(sf::Keyboard::Space, false);
 		inputHandler->storeKeyState(sf::Keyboard::Up, false);
 		inputHandler->add([fadeAnimation, inputHandler, menuGroup]()
@@ -274,7 +270,7 @@ namespace ProjectSpace
 			});
 
 		ExpandMenu* expandMenu = new ExpandMenu
-		{ 
+		{
 			{
 				{expand0, {expand00, expand01, expand1}},
 				{expand1, {}},
@@ -286,7 +282,7 @@ namespace ProjectSpace
 		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
 
-		scene->addEntities({ inputHandler, collisionManager, fadeAnimation, menuGroup, ta2, groupBtn0 });
+		scene->addEntities({ inputHandler, collisionManager, fadeAnimation, menuGroup, groupBtn0 });
 
 		scene->addDrawables({ backgroundSprite, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
 			threeDCube2, threeDCube3, menuGroup, groupBtn0 });
@@ -294,7 +290,7 @@ namespace ProjectSpace
 		return scene;
 	}
 
-	Scene* Factory::create_empty_scene(sf::RenderWindow & window)
+	Scene* Factory::create_empty_scene(sf::RenderWindow& window)
 	{
 		Scene* scene = new Scene();
 
@@ -310,14 +306,58 @@ namespace ProjectSpace
 		return scene;
 	}
 
-	Scene* Factory::create_tilemap_scene(sf::RenderWindow & window)
+	Scene* Factory::create_tilemap_scene(sf::RenderWindow& window)
 	{
 		Scene* scene = new Scene();
 
-		TileMap* t = new TileMap{"Y:/OneDrive/Programmierung/Assets/ChronoTrigger/maps/SNES - Chrono Trigger - Court Room.gif"};
-		t->loadFromFile("tilemaps/test_tilemap.txt");
+		/*	TileMap* t = new TileMap{"Y:/OneDrive/Programmierung/Assets/ChronoTrigger/maps/SNES - Chrono Trigger - Court Room.gif"};
+			t->loadFromFile("tilemaps/test_tilemap.txt");*/
 
-		scene->addDrawable(t);
+		Character* c1 = new Character{};
+		Character* c2 = new Character{};
+		Character* c3 = new Character{};
+		BattleOrder* battleOrder = new BattleOrder{ std::vector<Character*>{c1, c2, c3}, sf::Vector2f{200, 200} };
+
+		Button* btn = new Button{ []()
+		{
+			std::cout << "I am a Button" << std::endl;
+		}, window, "Button" };
+		btn->setPosition(1000, 1000);
+
+		sf::Vector2f btnPos = btn->getPosition();
+		TranslateAnimation* ta = new TranslateAnimation{ btn, btnPos, btnPos * 2, 1000 };
+
+		using key = sf::Keyboard;
+		InputHandler* inputHandler = new InputHandler{};
+		inputHandler->storeKeyState(key::F, false);
+		inputHandler->storeKeyState(key::B, false);
+		inputHandler->storeKeyState(key::Space, false);
+		inputHandler->add([ta, inputHandler, battleOrder]()
+			{
+				if (!inputHandler->wasKeyPressed(key::F) && key::isKeyPressed(key::F))
+				{
+					ta->setFrom(ta->getMenuElement()->getPosition());
+					ta->setTo(sf::Vector2f{ 1000, 1000 });
+					ta->start();
+				}
+				else if (!inputHandler->wasKeyPressed(key::B) && key::isKeyPressed(key::B))
+				{
+					ta->setFrom(ta->getMenuElement()->getPosition());
+					ta->setTo(sf::Vector2f{ 1000, 500 });
+					ta->start();
+				}
+				else if (!inputHandler->wasKeyPressed(key::Space) && key::isKeyPressed(key::Space))
+				{
+					battleOrder->cycle();
+				}
+
+				inputHandler->storeKeyState(key::F, key::isKeyPressed(key::F));
+				inputHandler->storeKeyState(key::B, key::isKeyPressed(key::B));
+				inputHandler->storeKeyState(key::Space, key::isKeyPressed(key::Space));
+			});
+
+		scene->addEntities({inputHandler, btn, ta, battleOrder});
+		scene->addDrawables({ btn, battleOrder });
 
 		return scene;
 	}
@@ -341,7 +381,7 @@ namespace ProjectSpace
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
 		knightSprite->setAnimation(EAnimation::IDLE);
 
-		Animation* facesAnimation = new Animation{"rsrc/faces.png", 300, 500, 0, 0, 6, 0.5f};
+		Animation* facesAnimation = new Animation{ "rsrc/faces.png", 300, 500, 0, 0, 6, 0.5f };
 		AnimatedSprite* facesSprite = new AnimatedSprite{ sf::Vector2f{1000, 1000} };
 		facesSprite->addAnimation(EAnimation::IDLE, facesAnimation);
 		facesSprite->setAnimation(EAnimation::IDLE);
@@ -349,24 +389,24 @@ namespace ProjectSpace
 		LayerCollidable* knightLayerCollidable = knightSprite->getLayerCollidable();
 		knightLayerCollidable->setCollisionType(CollisionType::WALL);
 
-		knightLayerCollidable->setCollisionHandler([knightSprite](Collidable * partner)
-		{
-			if (partner->getCollisionType() == CollisionType::WALL)
+		knightLayerCollidable->setCollisionHandler([knightSprite](Collidable* partner)
 			{
-				knightSprite->setPosition(knightSprite->getPreviousPosition());
-			}
-		});
+				if (partner->getCollisionType() == CollisionType::WALL)
+				{
+					knightSprite->setPosition(knightSprite->getPreviousPosition());
+				}
+			});
 
 		// Texturen
 		sf::Texture* tex_background = new sf::Texture{};
 		tex_background->loadFromFile("rsrc/background.png");
-		sf::Sprite* background = new sf::Sprite{*tex_background};
+		sf::Sprite* background = new sf::Sprite{ *tex_background };
 		background->setScale(window.getSize().x / background->getLocalBounds().width,
 			window.getSize().y / background->getLocalBounds().height);
 
 		// Collision-Geometrie
 		sf::Vector2f window_size{ window.getSize() };
-		CollisionBox* cb_background = new CollisionBox{sf::Vector2f{(float)window_size.x, (float)window_size.y}, sf::Vector2f{0, 0}};
+		CollisionBox* cb_background = new CollisionBox{ sf::Vector2f{(float)window_size.x, (float)window_size.y}, sf::Vector2f{0, 0} };
 		cb_background->setCollisionType(CollisionType::WALL);
 
 		CollisionShape* cs0 = new CollisionShape{ {sf::Vector2f{690, 0}, sf::Vector2f{1240, 0}, sf::Vector2f{1240, 130},
@@ -375,7 +415,7 @@ namespace ProjectSpace
 		cs0->setDrawBoundingBox(true);
 
 		CollisionShape* cs1 = new CollisionShape{ {sf::Vector2f{800, 590}, sf::Vector2f{1130, 590}, sf::Vector2f{1130, 760}, sf::Vector2f{1190, 807},
-												  sf::Vector2f{1115, 1060}, sf::Vector2f{1000, 1150}, sf::Vector2f{830, 1150}, sf::Vector2f{830, 1317}, 
+												  sf::Vector2f{1115, 1060}, sf::Vector2f{1000, 1150}, sf::Vector2f{830, 1150}, sf::Vector2f{830, 1317},
 												  sf::Vector2f{540, 1290}, sf::Vector2f{480, 1030}, sf::Vector2f{370, 1035}, sf::Vector2f{370, 917}} };
 		cs1->setCollisionType(CollisionType::WALL);
 		cs1->setDrawBoundingBox(true);
@@ -386,7 +426,7 @@ namespace ProjectSpace
 		scene->addEntities({ collision_manager, knightSprite, facesSprite });
 
 		// Add Scene Drawables
-		scene->addDrawables({background, knightSprite, cs0, cs1, facesSprite });
+		scene->addDrawables({ background, knightSprite, cs0, cs1, facesSprite });
 
 		// ----------
 		return scene;
