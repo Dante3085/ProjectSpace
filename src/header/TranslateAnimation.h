@@ -142,13 +142,9 @@ namespace ProjectSpace
 		 */
 		MenuElement* getMenuElement() const;
 
-		/**
-		 * @brief      Returns whether or not the TranslateAnimation has successfully translated
-		 * 			   it's MenuElement to the end position.
-		 *
-		 * @return     True if the MenuElement is at the end position, otherwise false.
-		 */
-		bool isFinished() const;
+		float getDuration() const;
+
+		void setDuration(float duration);
 
 		bool isUpdating() const;
 
@@ -164,12 +160,9 @@ namespace ProjectSpace
 		float duration;
 		float elapsedTime;
 		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
-		bool finished;				/* Stores whether TranslateAnimation has successfully translated it's MenuElement
-									   to the end position. */
 
 		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
 		std::function<float(float t, float b, float c, float d)> easingFunction;
-		bool ignorePauseElapsedTime;
 
 		Log* log;
 	};
