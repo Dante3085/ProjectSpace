@@ -4,7 +4,7 @@
 
 namespace ProjectSpace
 {
-	Animation::Animation(std::string spriteSheetPath, int frameWidth, int frameHeight, int yRow, int xColumn, 
+	Animation::Animation(std::string const& spriteSheetPath, int frameWidth, int frameHeight, int yRow, int xColumn, 
 		int numFrames, float frameDelay)
 		: frameDelay{frameDelay}
 	{
@@ -24,6 +24,19 @@ namespace ProjectSpace
 			}
 			frames.push_back(sf::Rect<int>{ xColumn++ * frameWidth, yRow * frameHeight, frameWidth, frameHeight});
 		}
+	}
+
+	Animation::Animation(std::string const& spriteSheetPath, float frameDelay)
+		: frameDelay{frameDelay}
+	{
+		spriteSheet.loadFromFile(spriteSheetPath);
+	}
+
+	void Animation::setAnimation(std::vector<sf::Rect<int>> const& frames, float frameDelay)
+	{
+		this->frames.clear();
+		this->frames = frames;
+		frameDelay = frameDelay;
 	}
 
 	sf::Texture const& Animation::getSpriteSheet() const
