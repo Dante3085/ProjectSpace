@@ -26,7 +26,7 @@ namespace ProjectSpace
 	void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(sprite);
-		target.draw(layerCollidable);
+		// target.draw(layerCollidable);
 	}
 
 	void AnimatedSprite::update(sf::Time time)

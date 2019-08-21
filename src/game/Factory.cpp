@@ -25,6 +25,7 @@
 #include "InputHandler.h"
 #include "Camera.h"
 #include "MenuGroup.h"
+#include "Tilemap.h"
 
 namespace ProjectSpace
 {
@@ -310,8 +311,17 @@ namespace ProjectSpace
 	{
 		Scene* scene = new Scene();
 
-		/*	TileMap* t = new TileMap{"Y:/OneDrive/Programmierung/Assets/ChronoTrigger/maps/SNES - Chrono Trigger - Court Room.gif"};
-			t->loadFromFile("tilemaps/test_tilemap.txt");*/
+		TileMap* t = new TileMap{"rsrc/SNES - Chrono Trigger - Court Room.gif"};
+		t->loadFromFile("tilemaps/milestone1_tilemap.txt");
+
+		Animation* cronoWalkDown = new Animation{"rsrc/CronoTransparentBackground.png"};
+		cronoWalkDown->setAnimation({ sf::IntRect{130, 15, 15, 33}, {150, 17, 16, 31}, {171, 14, 17, 34},
+									  {193, 15, 15, 33}, {213, 17, 16, 31} }, 0.5f);
+
+		AnimatedSprite* crono = new AnimatedSprite{ sf::Vector2f{1000, 200}, {} };
+		crono->addAnimation(EAnimation::DOWN, cronoWalkDown);
+		crono->setAnimation(EAnimation::DOWN);
+		crono->setScale(10, 10);
 
 		Character* c1 = new Character{};
 		Character* c2 = new Character{};
@@ -356,8 +366,8 @@ namespace ProjectSpace
 				inputHandler->storeKeyState(key::Space, key::isKeyPressed(key::Space));
 			});
 
-		scene->addEntities({inputHandler, btn, ta, battleOrder});
-		scene->addDrawables({ btn, battleOrder });
+		scene->addEntities({inputHandler, btn, ta, battleOrder, crono});
+		scene->addDrawables({ t, btn, battleOrder, crono });
 
 		return scene;
 	}

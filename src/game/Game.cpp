@@ -21,6 +21,7 @@
 #include "Factory.h" 
 #include "Util.h"
 #include "Log.h"
+#include "DebugScene.h"
 
 namespace ProjectSpace
 {
@@ -133,11 +134,12 @@ namespace ProjectSpace
 		window.setFramerateLimit(60);
 
 		// Creating Levels
-		scenes[EScene::DEBUG] = Factory::create_debug_scene(window);
+		// scenes[EScene::DEBUG] = Factory::create_debug_scene(window);
+		scenes[EScene::DEBUG] = new DebugScene{window};
 		scenes[EScene::LEVEL_ONE] = Factory::create_empty_scene(window);
 		scenes[EScene::TILEMAP] = Factory::create_tilemap_scene(window);
 		scenes[EScene::COLLISION_SCENE] = Factory::create_collision_scene(window);
-		currentScene = scenes[EScene::TILEMAP];
+		currentScene = scenes[EScene::DEBUG];
 
 		// Fps Counter of the Game.
 		FpsCounter* fpsCounter = new FpsCounter{"rsrc/fonts/arial.ttf"};
@@ -186,7 +188,7 @@ namespace ProjectSpace
 
 		float btnBoxWidth = btnBox->getWidth();
 		TranslateAnimation* menuTa;
-		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
+		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 200 };
 		menuTa->setEasing(Easing::BACK_EASE_OUT);
 
 		btn2->setOnPressed([btnBoxWidth, menuTa]()
@@ -222,7 +224,7 @@ namespace ProjectSpace
 			{
 				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-				menuTa->setEasing(Easing::QUAD_EASE_IN);
+				menuTa->setEasing(Easing::LINEAR_EASE_IN);
 				menuTa->start();
 			}
 

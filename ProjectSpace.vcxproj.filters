@@ -82,6 +82,52 @@
     <ClInclude Include="src\header\Easing.h" />
     <ClInclude Include="src\header\Line2F.h" />
     <ClInclude Include="src\header\InsideTheSelf.h" />
+    <ClInclude Include="src\include\AnimatedSprite.h" />
+    <ClInclude Include="src\include\Animation.h" />
+    <ClInclude Include="src\include\BattleMenu.h" />
+    <ClInclude Include="src\include\BattleOrder.h" />
+    <ClInclude Include="src\include\Button.h" />
+    <ClInclude Include="src\include\ButtonMenu.h" />
+    <ClInclude Include="src\include\Camera.h" />
+    <ClInclude Include="src\include\Character.h" />
+    <ClInclude Include="src\include\Collidable.h" />
+    <ClInclude Include="src\include\CollisionBox.h" />
+    <ClInclude Include="src\include\CollisionManager.h" />
+    <ClInclude Include="src\include\CollisionShape.h" />
+    <ClInclude Include="src\include\CollisionType.h" />
+    <ClInclude Include="src\include\ConcreteLogable.h" />
+    <ClInclude Include="src\include\EAnimation.h" />
+    <ClInclude Include="src\include\Easing.h" />
+    <ClInclude Include="src\include\Entity.h" />
+    <ClInclude Include="src\include\EScene.h" />
+    <ClInclude Include="src\include\ExpandMenu.h" />
+    <ClInclude Include="src\include\Factory.h" />
+    <ClInclude Include="src\include\FadeAnimation.h" />
+    <ClInclude Include="src\include\FpsCounter.h" />
+    <ClInclude Include="src\include\Game.h" />
+    <ClInclude Include="src\include\HBox.h" />
+    <ClInclude Include="src\include\InputHandler.h" />
+    <ClInclude Include="src\include\LayerCollidable.h" />
+    <ClInclude Include="src\include\Line2D.h" />
+    <ClInclude Include="src\include\Line2F.h" />
+    <ClInclude Include="src\include\Log.h" />
+    <ClInclude Include="src\include\Logable.h" />
+    <ClInclude Include="src\include\MenuElement.h" />
+    <ClInclude Include="src\include\MenuGroup.h" />
+    <ClInclude Include="src\include\Portrait.h" />
+    <ClInclude Include="src\include\SAT.h" />
+    <ClInclude Include="src\include\Scene.h" />
+    <ClInclude Include="src\include\Slider.h" />
+    <ClInclude Include="src\include\TextBox.h" />
+    <ClInclude Include="src\include\Tilemap.h" />
+    <ClInclude Include="src\include\TranslateAnimation.h" />
+    <ClInclude Include="src\include\TurnBasedCombat.h" />
+    <ClInclude Include="src\include\Util.h" />
+    <ClInclude Include="src\include\VBox.h" />
+    <ClInclude Include="src\include\WindowStyle.h" />
+    <ClInclude Include="src\include\ChronoTriggerScene.h" />
+    <ClInclude Include="src\include\StringParser.h" />
+    <ClInclude Include="src\include\DebugScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
@@ -111,7 +157,6 @@
     <ClCompile Include="src\animation\Animation.cpp" />
     <ClCompile Include="src\animation\FadeAnimation.cpp" />
     <ClCompile Include="src\animation\TranslateAnimation.cpp" />
-    <ClCompile Include="src\game\Tilemap.cpp" />
     <ClCompile Include="src\menu\ExpandMenu.cpp" />
     <ClCompile Include="src\collision\LayerCollidable.cpp" />
   </ItemGroup>
@@ -120,11 +165,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="tilemaps\sfml_tilemap.txt" />
-    <Text Include="tilemaps\test_tilemap.txt" />
+    <Text Include="tilemaps\milestone1_tilemap.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO.md" />
     <None Include="README.md" />
     <None Include=".gitignore" />
+    <None Include="src\include\desktop.ini" />
   </ItemGroup>
 </Project>
