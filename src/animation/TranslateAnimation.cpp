@@ -203,6 +203,11 @@ namespace ProjectSpace
 		this->duration = duration;
 	}
 
+	float TranslateAnimation::getElapsedTime() const
+	{
+		return elapsedTime;
+	}
+
 	bool TranslateAnimation::isUpdating() const
 	{
 		return doUpdate;
