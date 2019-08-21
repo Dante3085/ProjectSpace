@@ -87,3 +87,11 @@ TODO: Ideen und Dinge, die ich umsetzen will.
    auf aktuelle Position des Menüelements außerhalb der Klasse in globalem InputHandler.
 
  - Graphics Settings für RenderWindow in settings.ini speichern und beim Starten des Programms einfach laden => Mehrere Konstruktoren vermeiden.
+
+ - Tilemap: 
+   - file parsing with Regular Expressions.
+   - addTile(name, pos, scale) Funktion und auch in loadFromFile() abfragen. Soll Tile an gegebener Position mit gegebenem
+     Skalierungsfaktor anzeigen.
+
+ - AnimatedSprite:
+   - Problem: Anzeige des gesamten Spritesheets bevor das erste Mal auf das nächste Frame gewechselt wird.
