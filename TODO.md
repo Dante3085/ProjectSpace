@@ -1,8 +1,6 @@
 TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Das gesamte Projekt Überdenken. Interklassenstruktur. Struktur einzelner Klassen. Welche Dinge benötige ich eigentlich. Was ist eigentlich mein Zielzustand. Konkrete Idee eines nicht unbedingt fertigen Zustand des Spiels, aber Meilensteins.
- 
- - Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
 
  - Speicherverwaltung
 
@@ -95,3 +93,12 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - AnimatedSprite:
    - Problem: Anzeige des gesamten Spritesheets bevor das erste Mal auf das nächste Frame gewechselt wird.
+   - Enum zum hinzufügen von Animationen nicht unbedingt nötig. String geht auch. Allerdings dann schwerer
+     bei AnimatedSprite::setAnimation() herauszufinden, welche Animationen man setzen kann.
+
+  - Animation:
+    - Während eine Animation abgespielt wird, tritt an immer derselben Stelle ein Ruckler auf.
+	- Problem: Spritesheet hat viele Bilder, die viele verschiedene Animationen bilden können.
+	  Allerdings kann ein Animationsobjekt nur gleichzeitig eine Animation speichern.
+	  Folge ist, dass für verschiedene Animationen aus demselben Spritesheet mehrere Animationsobjekte
+	  mit demselben Spritesheet erstellt werden müssen.
