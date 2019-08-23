@@ -36,7 +36,7 @@ namespace ProjectSpace
 	{
 		this->frames.clear();
 		this->frames = frames;
-		frameDelay = frameDelay;
+		this->frameDelay = frameDelay;
 	}
 
 	sf::Texture const& Animation::getSpriteSheet() const

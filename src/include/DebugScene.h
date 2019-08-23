@@ -14,7 +14,7 @@ namespace ProjectSpace
 	{
 	public:
 		DebugScene(sf::RenderWindow& window)
-			: window{window}, btn{window, "DebugScene"}, btnAnim{&btn}
+			: Scene{window}, btn{ window, "DebugScene" }, btnAnim{ &btn }
 		{
 			btnAnim.setDuration(500);
 			btnAnim.setEasing(Easing::BACK_EASE_OUT);
@@ -50,8 +50,6 @@ namespace ProjectSpace
 		}
 
 	private:
-		sf::RenderWindow& window;
-
 		Button btn;
 		TranslateAnimation btnAnim;
 		InputHandler inputHandler;

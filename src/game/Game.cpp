@@ -22,6 +22,7 @@
 #include "Util.h"
 #include "Log.h"
 #include "DebugScene.h"
+#include "ChronoTriggerScene.h"
 
 namespace ProjectSpace
 {
@@ -133,13 +134,12 @@ namespace ProjectSpace
 	{
 		window.setFramerateLimit(60);
 
-		// Creating Levels
-		// scenes[EScene::DEBUG] = Factory::create_debug_scene(window);
+		// Creating Scenes
 		scenes[EScene::DEBUG] = new DebugScene{window};
+		scenes[EScene::CHRONO_TRIGGER] = new ChronoTriggerScene{ window };
 		scenes[EScene::LEVEL_ONE] = Factory::create_empty_scene(window);
-		scenes[EScene::TILEMAP] = Factory::create_tilemap_scene(window);
 		scenes[EScene::COLLISION_SCENE] = Factory::create_collision_scene(window);
-		currentScene = scenes[EScene::DEBUG];
+		currentScene = scenes[EScene::CHRONO_TRIGGER];
 
 		// Fps Counter of the Game.
 		FpsCounter* fpsCounter = new FpsCounter{"rsrc/fonts/arial.ttf"};
@@ -148,7 +148,7 @@ namespace ProjectSpace
 		InputHandler* globalInputHandler = new InputHandler{};
 
 		// These 4 instances make up a global ButtonMenu (independent of any specific Scene).
-		HBox* btnBox = new HBox{};
+		VBox* btnBox = new VBox{};
 		ButtonMenu* buttonMenu;
 
 		// Creating Menu
@@ -171,8 +171,8 @@ namespace ProjectSpace
 
 		Button* btn5 = new Button{ [this]()
 		{
-			setCurrentScene(EScene::TILEMAP);
-		}, window, "Tilemap Scene" };
+			setCurrentScene(EScene::CHRONO_TRIGGER);
+		}, window, "ChronoTrigger Scene" };
 
 		Button* btn6 = new Button{ [this]()
 		{
@@ -188,7 +188,7 @@ namespace ProjectSpace
 
 		float btnBoxWidth = btnBox->getWidth();
 		TranslateAnimation* menuTa;
-		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 200 };
+		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
 		menuTa->setEasing(Easing::BACK_EASE_OUT);
 
 		btn2->setOnPressed([btnBoxWidth, menuTa]()

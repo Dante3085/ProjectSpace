@@ -3,6 +3,12 @@
 
 namespace ProjectSpace
 {
+	Scene::Scene(sf::RenderWindow& window)
+		: window{window}
+	{
+
+	}
+
 	void Scene::update(sf::Time time)
 	{
 		for (Entity* e : entities)

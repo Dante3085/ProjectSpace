@@ -9,18 +9,11 @@
 
 namespace ProjectSpace
 {
-	AnimatedSprite::AnimatedSprite(sf::Vector2f position, std::vector<sf::Vector2f> const& points)
+	AnimatedSprite::AnimatedSprite(sf::Vector2f position)
 		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}, points}
+		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}}
 	{
 		sprite.setPosition(position);
-		sprite.setTextureRect(sf::IntRect{ 0, 0, 100, 100 });
-		sprite.setScale(2, 2);
-
-		layerCollidable.setOulineThickness(2);
-		layerCollidable.setOutlineColor(sf::Color{ 30,144,255 });
-		layerCollidable.setFillColor(sf::Color{ 0, 0, 0, 0 });
-		layerCollidable.setPosition(position);
 	}
 
 	void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -51,7 +44,8 @@ namespace ProjectSpace
 		}
 
 		currentAnimation = name;
-		sprite.setTexture(animations[name]->getSpriteSheet());
+		sprite.setTexture(animations[currentAnimation]->getSpriteSheet());
+		sprite.setTextureRect((*animations[currentAnimation])[0]);
 		elapsedSeconds = 0;
 		frameIndex = 0;
 	}

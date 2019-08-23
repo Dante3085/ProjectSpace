@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Time.hpp>
 #include <vector>
 
@@ -17,7 +18,8 @@ namespace ProjectSpace
 	class Scene : public Entity, public sf::Drawable
 	{
 	public:
-		
+		Scene(sf::RenderWindow& window);
+
 		/**
 		 * @brief      Destroys all Entities of this Scene.
 		 */
@@ -65,6 +67,9 @@ namespace ProjectSpace
 		 * @param[in]  drawables  The drawables.
 		 */
 		void addDrawables(std::vector<sf::Drawable*> drawables);
+
+	protected:
+		sf::RenderWindow& window; // Reference to RenderWindow of the whole Application.
 
 	private:
 		std::vector<Entity*> entities; 		  // Entities of this Scene.

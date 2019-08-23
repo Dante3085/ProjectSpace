@@ -31,7 +31,7 @@ namespace ProjectSpace
 {
 	Scene* Factory::create_debug_scene(sf::RenderWindow& window)
 	{
-		Scene* scene = new Scene();
+		Scene* scene = new Scene(window);
 
 		Animation* spellAnim = new Animation{ "rsrc/1_magicspell_spritesheet.png", 100, 100, 0, 0, 75, 0.05f };
 		Animation* magicAnim = new Animation{ "rsrc/2_magic8_spritesheet.png", 100, 100, 0, 0, 61, 0.05f };
@@ -293,7 +293,7 @@ namespace ProjectSpace
 
 	Scene* Factory::create_empty_scene(sf::RenderWindow& window)
 	{
-		Scene* scene = new Scene();
+		Scene* scene = new Scene(window);
 
 		sf::Texture* background = new sf::Texture{};
 		background->loadFromFile("rsrc/dark_castle_interior.png");
@@ -309,7 +309,7 @@ namespace ProjectSpace
 
 	Scene* Factory::create_tilemap_scene(sf::RenderWindow& window)
 	{
-		Scene* scene = new Scene();
+		Scene* scene = new Scene(window);
 
 		TileMap* t = new TileMap{"rsrc/SNES - Chrono Trigger - Court Room.gif"};
 		t->loadFromFile("tilemaps/milestone1_tilemap.txt");
@@ -318,7 +318,7 @@ namespace ProjectSpace
 		cronoWalkDown->setAnimation({ sf::IntRect{130, 15, 15, 33}, {150, 17, 16, 31}, {171, 14, 17, 34},
 									  {193, 15, 15, 33}, {213, 17, 16, 31} }, 0.5f);
 
-		AnimatedSprite* crono = new AnimatedSprite{ sf::Vector2f{1000, 200}, {} };
+		AnimatedSprite* crono = new AnimatedSprite{ sf::Vector2f{1000, 200}};
 		crono->addAnimation(EAnimation::DOWN, cronoWalkDown);
 		crono->setAnimation(EAnimation::DOWN);
 		crono->setScale(10, 10);
@@ -374,7 +374,7 @@ namespace ProjectSpace
 
 	Scene* Factory::create_collision_scene(sf::RenderWindow& window)
 	{
-		Scene* scene = new Scene{};
+		Scene* scene = new Scene{window};
 
 		// Spielercharakter
 		Animation* knightIdleAnim = new Animation{ "rsrc/knight_idle.png", 84, 84, 0, 0, 4, 0.15f };
@@ -383,7 +383,7 @@ namespace ProjectSpace
 		Animation* knightRightRunAnim = new Animation{ "rsrc/knight_right_run.png", 84, 84, 0, 0, 6, 0.1f };
 		Animation* knightDownRunAnim = new Animation{ "rsrc/knight_down_run.png", 84, 84, 0, 0, 5, 0.1f };
 
-		AnimatedSprite* knightSprite = new AnimatedSprite{ sf::Vector2f{900, 220},  {sf::Vector2f{900, 220}, sf::Vector2f{950, 220}, sf::Vector2f{900, 300}} };
+		AnimatedSprite* knightSprite = new AnimatedSprite{ sf::Vector2f{900, 220} };
 		knightSprite->addAnimation(EAnimation::IDLE, knightIdleAnim);
 		knightSprite->addAnimation(EAnimation::LEFT, knightLeftRunAnim);
 		knightSprite->addAnimation(EAnimation::UP, knightUpRunAnim);

@@ -10,6 +10,7 @@ namespace ProjectSpace
 	enum class EScene
 	{
 		DEBUG = 0,
+		CHRONO_TRIGGER,
 		LEVEL_ONE,
 		TILEMAP,
 		COLLISION_SCENE,
