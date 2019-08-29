@@ -189,13 +189,13 @@ namespace ProjectSpace
 		float btnBoxWidth = btnBox->getWidth();
 		TranslateAnimation* menuTa;
 		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
-		menuTa->setEasing(Easing::BACK_EASE_OUT);
+		menuTa->setEasingFunction(Easing::back_easeOut);
 
 		btn2->setOnPressed([btnBoxWidth, menuTa]()
 		{
 				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-				menuTa->setEasing(Easing::QUAD_EASE_IN);
+				menuTa->setEasingFunction(Easing::quad_easeIn);
 				menuTa->start();
 		});
 
@@ -216,7 +216,7 @@ namespace ProjectSpace
 			{
 				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
 				menuTa->setTo(sf::Vector2f{ -5, 50 });
-				menuTa->setEasing(Easing::BACK_EASE_OUT);
+				menuTa->setEasingFunction(Easing::back_easeOut);
 				menuTa->start();
 			}
 
@@ -224,7 +224,7 @@ namespace ProjectSpace
 			{
 				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-				menuTa->setEasing(Easing::LINEAR_EASE_IN);
+				menuTa->setEasingFunction(Easing::linear_easeIn);
 				menuTa->start();
 			}
 

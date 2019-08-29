@@ -15,15 +15,14 @@
 #include <vector>
 
 #include "Entity.h"
+#include "Fadeable.h"
 #include "Collidable.h"
 #include "EAnimation.h"
 #include "Animation.h"
-#include "CollisionShape.h"
-#include "LayerCollidable.h"
 
 namespace ProjectSpace
 {
-	class AnimatedSprite : public sf::Drawable, public Entity
+	class AnimatedSprite : public sf::Drawable, public Entity, public Fadeable
 	{
 	public:
 
@@ -65,7 +64,8 @@ namespace ProjectSpace
 		 */
 		void addAnimation(EAnimation name, Animation* animation);
 
-		sf::Vector2f getPreviousPosition() const;
+		void setColor(sf::Color const& color) override;
+
 		float getSpeed();
 		void setSpeed(float speed);
 		void setPosition(float x, float y);
@@ -87,9 +87,6 @@ namespace ProjectSpace
 		const sf::Transform& getTransform() const;
 		const sf::Transform& getInverseTransform() const;
 
-		sf::Sprite* getSprite();
-		LayerCollidable* getLayerCollidable();
-
 	private:
 		/**
 		 * @brief      Plays the current Animation of this AnimatedSprite. Updates the current Animation's frames.
@@ -104,9 +101,6 @@ namespace ProjectSpace
 		int frameIndex; 							 // Stores on which frame of the current Animation the AnimatedSprite is currently on.
 		float elapsedSeconds; 						 // For tracking time when updating frames.
 		float speed; 								 // Pixels per Second.
-		sf::Vector2f previousPosition;
-
-		LayerCollidable layerCollidable;
 	};
 }
 

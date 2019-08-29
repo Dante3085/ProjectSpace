@@ -1,38 +1,30 @@
 
 #include "FadeAnimation.h"
+#include <iostream>
 
 namespace ProjectSpace
 {
-	FadeAnimation::FadeAnimation(sf::Sprite* sprite, int startAlpha, int endAlpha, float alphaModifier) 
-		: sprite{ sprite }, startAlpha{ startAlpha }, endAlpha{ endAlpha }, 
-		 doUpdate{ false }, alphaVelocity((endAlpha - startAlpha) * alphaModifier) {}
-
-	/*void FadeAnimation::update(sf::Time time)
-	{
-		if (doUpdate)
-		{
-			if (color.a > 0)
-			{
-				color.a -= amount;
-				sprite->setColor(color);
-			}
-			elapsedSeconds += time.asSeconds();
-		}
-	}*/
+	FadeAnimation::FadeAnimation(Fadeable& fadeable, int startAlpha, int endAlpha, int durationInMilliseconds)
+		: fadeable{ fadeable }, startAlpha{ startAlpha }, endAlpha{ endAlpha }, durationInMilliseconds{ durationInMilliseconds },
+		elapsedMilliseconds{ 0 }, doUpdate{ false }, easingFunction{ Easing::sine_easeInOut }
+	{}
 
 	void FadeAnimation::update(sf::Time time)
 	{
-		if (doUpdate)
-		{
-			sf::Color fadeColor = sprite->getColor();
-			fadeColor.a += alphaVelocity;
-			sprite->setColor(fadeColor);
-			alphaVelocity *= 0.8f;
+		if (!doUpdate)
+			return;
 
-			if (fadeColor.a == 0)
-			{
-				doUpdate = false;
-			}
+		sf::Color c( 255, 255, 255, -1 );
+		c.a = easingFunction(elapsedMilliseconds, startAlpha, endAlpha - startAlpha, durationInMilliseconds);
+		fadeable.setColor(c);
+
+		elapsedMilliseconds += time.asMilliseconds();
+		if (elapsedMilliseconds >= durationInMilliseconds)
+		{
+			fadeable.setColor(sf::Color(255, 255, 255, 0));
+			elapsedMilliseconds = 0;
+			doUpdate = false;
+			return;
 		}
 	}
 
@@ -41,10 +33,15 @@ namespace ProjectSpace
 		doUpdate = true;
 	}
 
-	void FadeAnimation::refresh()
+	void FadeAnimation::reset()
 	{
-		/*color.a = 255;
-		sprite->setColor(color);
-		elapsedSeconds = 0;*/
+		doUpdate = false;
+		elapsedMilliseconds = 0;
+		fadeable.setColor(sf::Color( 255, 255, 255, startAlpha ));
+	}
+
+	void FadeAnimation::setEasingFunction(Easing::EasingFunction easingFunction)
+	{
+		this->easingFunction = easingFunction;
 	}
 }

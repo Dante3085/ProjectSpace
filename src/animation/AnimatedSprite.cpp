@@ -10,8 +10,7 @@
 namespace ProjectSpace
 {
 	AnimatedSprite::AnimatedSprite(sf::Vector2f position)
-		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, 
-		  previousPosition{ sprite.getPosition() }, layerCollidable{position, sf::Vector2f{100, 100}}
+		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, speed{0}
 	{
 		sprite.setPosition(position);
 	}
@@ -19,7 +18,6 @@ namespace ProjectSpace
 	void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(sprite);
-		// target.draw(layerCollidable);
 	}
 
 	void AnimatedSprite::update(sf::Time time)
@@ -55,6 +53,11 @@ namespace ProjectSpace
 		animations[name] = animation;
 	}
 
+	void AnimatedSprite::setColor(sf::Color const& color)
+	{
+		sprite.setColor(color);
+	}
+
 	void AnimatedSprite::playAnimation(sf::Time time)
 	{
 		Animation* currentAnim = animations[currentAnimation];
@@ -68,21 +71,14 @@ namespace ProjectSpace
 		elapsedSeconds += time.asSeconds();
 	}
 
-	sf::Vector2f AnimatedSprite::getPreviousPosition() const
-	{
-		return previousPosition;
-	}
-
 	void AnimatedSprite::setPosition(float x, float y)
 	{
 		sprite.setPosition(x, y);
-		layerCollidable.setPosition(sf::Vector2f{ x, y });
 	}
 
 	void AnimatedSprite::setPosition(sf::Vector2f const& position)
 	{
 		sprite.setPosition(position);
-		layerCollidable.setPosition(position);
 	}
 
 	void AnimatedSprite::setRotation(float angle)
@@ -132,16 +128,12 @@ namespace ProjectSpace
 
 	void AnimatedSprite::move(float x, float y) 					 
 	{
-		previousPosition = sf::Vector2f{sprite.getPosition()};
 		sprite.move(x, y); 
-		layerCollidable.move(sf::Vector2f{x, y});
 	}
 
 	void AnimatedSprite::move(const sf::Vector2f& offset) 			 
 	{ 
-		previousPosition = sf::Vector2f{ sprite.getPosition() };
 		sprite.move(offset); 
-		layerCollidable.move(offset);
 	}
 
 	void AnimatedSprite::rotate(float angle) 						 
@@ -167,15 +159,5 @@ namespace ProjectSpace
 	const sf::Transform& AnimatedSprite::getInverseTransform() const 
 	{ 
 		return sprite.getInverseTransform(); 
-	}
-
-	sf::Sprite* AnimatedSprite::getSprite()
-	{
-		return &sprite;
-	}
-
-	LayerCollidable* AnimatedSprite::getLayerCollidable()
-	{
-		return &layerCollidable;
 	}
 }
