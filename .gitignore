@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# other visual studio stuff that i don't need in the repo
+*.sln
+*.vcxproj*
+
 # User-specific files
 *.suo
 *.user
