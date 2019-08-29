@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# random stuff that i don't want to commit
+rsrc/*
+
 # other visual studio stuff that i don't need in the repo
 *.sln
 *.vcxproj*
