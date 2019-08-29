@@ -88,18 +88,9 @@ namespace ProjectSpace
 		knightSprite->addAnimation(EAnimation::RIGHT, knightRightRunAnim);
 		knightSprite->addAnimation(EAnimation::DOWN, knightDownRunAnim);
 		knightSprite->setAnimation(EAnimation::IDLE);
-		knightSprite->getLayerCollidable()->setCollisionType(CollisionType::WALL);
-
-		knightSprite->getLayerCollidable()->setCollisionHandler([knightSprite](Collidable* partner)
-			{
-				if (partner->getCollisionType() == CollisionType::WALL)
-				{
-					knightSprite->setPosition(knightSprite->getPreviousPosition());
-				}
-			});
 
 
-		FadeAnimation* fadeAnimation = new FadeAnimation{ knightSprite->getSprite(), 255, 0, 1 };
+		// FadeAnimation* fadeAnimation = new FadeAnimation{ knightSprite->getSprite(), 255, 0, 1 };
 
 		Camera* camera = new Camera{ *knightSprite, window, sf::Vector2f{200, 200} };
 
@@ -173,7 +164,7 @@ namespace ProjectSpace
 		windowBoundsBox->setCollisionType(CollisionType::WALL);
 		windowBoundsBox->setDrawBoundingBox(true);
 
-		CollisionManager* collisionManager = new CollisionManager{ {windowBoundsBox, triangle, knightSprite->getLayerCollidable(),
+		CollisionManager* collisionManager = new CollisionManager{ {windowBoundsBox, triangle,
 			triangle2, triangle3, triangle4, triangle5, triangle6, smallDiamant, bigDiamant, threeDCube, threeDCube2, threeDCube3} };
 
 		Button* expand0 = new Button
@@ -240,15 +231,8 @@ namespace ProjectSpace
 
 		inputHandler->storeKeyState(sf::Keyboard::Space, false);
 		inputHandler->storeKeyState(sf::Keyboard::Up, false);
-		inputHandler->add([fadeAnimation, inputHandler, menuGroup]()
+		inputHandler->add([inputHandler, menuGroup]()
 			{
-				/*if (!inputHandler->wasKeyPressed(sf::Keyboard::Space) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-				{
-					fadeAnimation->start();
-				}
-
-				inputHandler->storeKeyState(sf::Keyboard::Space, sf::Keyboard::isKeyPressed(sf::Keyboard::Space));*/
-
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 				{
 					menuGroup->move(0, -20);
@@ -283,7 +267,7 @@ namespace ProjectSpace
 		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
 
 
-		scene->addEntities({ inputHandler, collisionManager, fadeAnimation, menuGroup, groupBtn0 });
+		scene->addEntities({ inputHandler, collisionManager, menuGroup, groupBtn0 });
 
 		scene->addDrawables({ backgroundSprite, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
 			threeDCube2, threeDCube3, menuGroup, groupBtn0 });
@@ -396,17 +380,6 @@ namespace ProjectSpace
 		facesSprite->addAnimation(EAnimation::IDLE, facesAnimation);
 		facesSprite->setAnimation(EAnimation::IDLE);
 
-		LayerCollidable* knightLayerCollidable = knightSprite->getLayerCollidable();
-		knightLayerCollidable->setCollisionType(CollisionType::WALL);
-
-		knightLayerCollidable->setCollisionHandler([knightSprite](Collidable* partner)
-			{
-				if (partner->getCollisionType() == CollisionType::WALL)
-				{
-					knightSprite->setPosition(knightSprite->getPreviousPosition());
-				}
-			});
-
 		// Texturen
 		sf::Texture* tex_background = new sf::Texture{};
 		tex_background->loadFromFile("rsrc/background.png");
@@ -430,7 +403,7 @@ namespace ProjectSpace
 		cs1->setCollisionType(CollisionType::WALL);
 		cs1->setDrawBoundingBox(true);
 
-		CollisionManager* collision_manager = new CollisionManager{ {cb_background, knightSprite->getLayerCollidable(), cs0, cs1} };
+		CollisionManager* collision_manager = new CollisionManager{ {cb_background, cs0, cs1} };
 
 		// Add Scene Entities
 		scene->addEntities({ collision_manager, knightSprite, facesSprite });
