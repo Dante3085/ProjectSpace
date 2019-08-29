@@ -6,56 +6,13 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 
+#include "Easing.h"
 #include "Entity.h"
 #include "Button.h"
 #include "Log.h"
 
 namespace ProjectSpace
 {
-	enum Easing
-	{
-		BACK_EASE_IN,
-		BACK_EASE_OUT,
-		BACK_EASE_IN_OUT,
-
-		BOUNCE_EASE_IN,
-		BOUNCE_EASE_OUT,
-		BOUNCE_EASE_IN_OUT,
-
-		CIRC_EASE_IN,
-		CIRC_EASE_OUT,
-		CIRC_EASE_IN_OUT,
-
-		CUBIC_EASE_IN,
-		CUBIC_EASE_OUT,
-		CUBIC_EASE_IN_OUT,
-
-		ELASTIC_EASE_IN,
-		ELASTIC_EASE_OUT,
-		ELASTIC_EASE_IN_OUT,
-
-		EXPO_EASE_IN,
-		EXPO_EASE_OUT,
-		EXPO_EASE_IN_OUT,
-
-		LINEAR_EASE_NONE,
-		LINEAR_EASE_IN,
-		LINEAR_EASE_OUT,
-		LINEAR_EASE_IN_OUT,
-
-		QUAD_EASE_IN,
-		QUAD_EASE_OUT,
-		QUAD_EASE_IN_OUT,
-
-		QUINT_EASE_IN,
-		QUINT_EASE_OUT,
-		QUINT_EASE_IN_OUT,
-
-		SINE_EASE_IN,
-		SINE_EASE_OUT,
-		SINE_EASE_IN_OUT,
-	};
-
 	/**
 	 * @brief      Class for smoothly translating MenuElements from one point in 2D-Space to another.
 	 */
@@ -83,7 +40,7 @@ namespace ProjectSpace
 		 */
 		void update(sf::Time time) override;
 
-		void setEasing(Easing easing);
+		void setEasingFunction(Easing::EasingFunction easingFunction);
 
 		/**
 		 * @brief      Sets the TranslateAnimation to update when update() is called.
@@ -165,7 +122,7 @@ namespace ProjectSpace
 		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
 
 		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
-		std::function<float(float t, float b, float c, float d)> easingFunction;
+		Easing::EasingFunction easingFunction;
 
 		Log* log;
 	};

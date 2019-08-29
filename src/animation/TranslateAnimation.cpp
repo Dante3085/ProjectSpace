@@ -11,7 +11,7 @@ namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
 		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
-		currentVelocity{ -1, -1 }, easingFunction{ elastic_easeOut }, log{ &Log::getInstance() }
+		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, log{ &Log::getInstance() }
 	{
 		menuElement->setPosition(from);
 	}
@@ -38,113 +38,9 @@ namespace ProjectSpace
 		}
 	}
 
-	void TranslateAnimation::setEasing(Easing easing)
+	void TranslateAnimation::setEasingFunction(Easing::EasingFunction easingFunction)
 	{
-		switch(easing)
-		{
-			case Easing::BACK_EASE_IN:
-			easingFunction = back_easeIn;
-			break;
-			case Easing::BACK_EASE_OUT:
-			easingFunction = back_easeOut;
-			break;
-			case Easing::BACK_EASE_IN_OUT:
-			easingFunction = back_easeInOut;
-			break;
-
-			case Easing::BOUNCE_EASE_IN:
-			easingFunction = bounce_easeIn;
-			break;
-			case Easing::BOUNCE_EASE_OUT:
-			easingFunction = bounce_easeOut;
-			break;
-			case Easing::BOUNCE_EASE_IN_OUT:
-			easingFunction = bounce_easeInOut;
-			break;
-
-			case Easing::CIRC_EASE_IN:
-			easingFunction = circ_easeIn;
-			break;
-			case Easing::CIRC_EASE_OUT:
-			easingFunction = circ_easeOut;
-			break;
-			case Easing::CIRC_EASE_IN_OUT:
-			easingFunction = circ_easeInOut;
-			break;
-
-			case Easing::CUBIC_EASE_IN:
-			easingFunction = cubic_easeIn;
-			break;
-			case Easing::CUBIC_EASE_OUT:
-			easingFunction = cubic_easeOut;
-			break;
-			case Easing::CUBIC_EASE_IN_OUT:
-			easingFunction = cubic_easeInOut;
-			break;
-
-			case Easing::ELASTIC_EASE_IN:
-			easingFunction = elastic_easeIn;
-			break;
-			case Easing::ELASTIC_EASE_OUT:
-			easingFunction = elastic_easeOut;
-			break;
-			case Easing::ELASTIC_EASE_IN_OUT:
-			easingFunction = elastic_easeInOut;
-			break;
-
-			case Easing::EXPO_EASE_IN:
-			easingFunction = expo_easeIn;
-			break;
-			case Easing::EXPO_EASE_OUT:
-			easingFunction = expo_easeOut;
-			break;
-			case Easing::EXPO_EASE_IN_OUT:
-			easingFunction = expo_easeInOut;
-			break;
-
-			case Easing::LINEAR_EASE_NONE:
-			easingFunction = linear_easeNone;
-			break;
-			case Easing::LINEAR_EASE_IN:
-			easingFunction = linear_easeIn;
-			break;
-			case Easing::LINEAR_EASE_OUT:
-			easingFunction = linear_easeOut;
-			break;
-			case Easing::LINEAR_EASE_IN_OUT:
-			easingFunction = linear_easeInOut;
-			break;
-
-			case Easing::QUAD_EASE_IN:
-			easingFunction = quad_easeIn;
-			break;
-			case Easing::QUAD_EASE_OUT:
-			easingFunction = quad_easeOut;
-			break;
-			case Easing::QUAD_EASE_IN_OUT:
-			easingFunction = quad_easeInOut;
-			break;
-
-			case Easing::QUINT_EASE_IN:
-			easingFunction = quint_easeIn;
-			break;
-			case Easing::QUINT_EASE_OUT:
-			easingFunction = quint_easeOut;
-			break;
-			case Easing::QUINT_EASE_IN_OUT:
-			easingFunction = quint_easeInOut;
-			break;
-
-			case Easing::SINE_EASE_IN:
-			easingFunction = sine_easeIn;
-			break;
-			case Easing::SINE_EASE_OUT:
-			easingFunction = sine_easeOut;
-			break;
-			case Easing::SINE_EASE_IN_OUT:
-			easingFunction = sine_easeInOut;
-			break;
-		}
+		this->easingFunction = easingFunction;
 	}
 
 	void TranslateAnimation::start()
