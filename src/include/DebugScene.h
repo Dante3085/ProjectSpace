@@ -17,7 +17,7 @@ namespace ProjectSpace
 			: Scene{window}, btn{ window, "DebugScene" }, btnAnim{ &btn }
 		{
 			btnAnim.setDuration(500);
-			btnAnim.setEasing(Easing::BACK_EASE_OUT);
+			btnAnim.setEasingFunction(Easing::back_easeOut);
 
 			addEntities({ &btn, &btnAnim });
 			addDrawables({&btn});

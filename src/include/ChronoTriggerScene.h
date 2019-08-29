@@ -4,6 +4,7 @@
 #include "Tilemap.h"
 #include "Animation.h"
 #include "AnimatedSprite.h"
+#include "FadeAnimation.h"
 
 namespace ProjectSpace
 {
@@ -17,8 +18,9 @@ namespace ProjectSpace
 			cronoWalkUp{ "rsrc/CronoTransparentBackground.png" },
 			cronoWalkRight{ "rsrc/CronoTransparentBackground.png" },
 			cronoWalkDown{"rsrc/CronoTransparentBackground.png"},
-			wWasDown{false}, aWasDown{false}, sWasDown{false}, dWasDown{false},
-			crono{sf::Vector2f{200, 200}}
+			crono{ sf::Vector2f{200, 200} }, cronoSpeed{8},
+			wWasDown{false}, aWasDown{false}, sWasDown{false}, dWasDown{false}, spaceWasDown{false},
+			rWasDown{false}, fadeAnimation{crono, 255, 0, 1000}
 		{
 			tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -40,7 +42,7 @@ namespace ProjectSpace
 			crono.setAnimation(EAnimation::IDLE);
 			crono.setScale(6, 6);
 
-			Scene::addEntities({&crono});
+			Scene::addEntities({&crono, &fadeAnimation});
 			Scene::addDrawables({&tilemap, &crono});
 		}
 
@@ -49,7 +51,7 @@ namespace ProjectSpace
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{
 				crono.setAnimation(EAnimation::UP);
-				crono.move(0, -5);
+				crono.move(0, -cronoSpeed);
 			}
 			else if (wWasDown)
 			{
@@ -59,7 +61,7 @@ namespace ProjectSpace
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
 				crono.setAnimation(EAnimation::LEFT);
-				crono.move(-5, 0);
+				crono.move(-cronoSpeed, 0);
 			}
 			else if (aWasDown)
 			{
@@ -69,7 +71,7 @@ namespace ProjectSpace
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			{
 				crono.setAnimation(EAnimation::DOWN);
-				crono.move(0, 5);
+				crono.move(0, cronoSpeed);
 			}
 			else if (sWasDown)
 			{
@@ -79,17 +81,29 @@ namespace ProjectSpace
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
 				crono.setAnimation(EAnimation::RIGHT);
-				crono.move(5, 0);
+				crono.move(cronoSpeed, 0);
 			}
 			else if (dWasDown)
 			{
 				crono.setAnimation(EAnimation::IDLE);
 			}
 
+			if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				fadeAnimation.start();
+			}
+
+			if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+			{
+				fadeAnimation.reset();
+			}
+
 			wWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 			aWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 			sWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
 			dWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+			spaceWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+			rWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::R);
 
 			Scene::update(time);
 		}
@@ -104,9 +118,15 @@ namespace ProjectSpace
 		Animation cronoWalkDown;
 		AnimatedSprite crono;
 
+		int cronoSpeed;
+
 		bool wWasDown;
 		bool aWasDown;
 		bool sWasDown;
 		bool dWasDown;
+		bool spaceWasDown;
+		bool rWasDown;
+
+		FadeAnimation fadeAnimation;
 	};
 }
