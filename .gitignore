@@ -6,6 +6,11 @@
 # random stuff that i don't want to commit
 rsrc/*
 
+# linux project specific files
+makefile
+*.o
+bin*
+
 # other visual studio stuff that i don't need in the repo
 *.sln
 *.vcxproj*
