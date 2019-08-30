@@ -17,91 +17,64 @@
 #include "Entity.h"
 #include "Fadeable.h"
 #include "Collidable.h"
+#include "Translatable.h"
 #include "EAnimation.h"
 #include "Animation.h"
 
 namespace ProjectSpace
 {
-	class AnimatedSprite : public sf::Drawable, public Entity, public Fadeable
-	{
-	public:
+    class AnimatedSprite : public sf::Drawable, public Entity, public Fadeable, public Translatable
+    {
+    public:
 
-		/**
-		 * @brief      Uses Rectangle for CollisionDetection.
-		 *
-		 * @param[in]  position      Initial position of the AnimatedSprite
-		 * @param[in]  speed  Pixels per Second that this AnimatedSprite moves (NICHT IMPLEMENTIERT)
-		 */
-		AnimatedSprite(sf::Vector2f position);
+        AnimatedSprite(sf::Vector2f position);
 
-		/**
-		 * @brief      Draws this AnimatedSprite on given RenderTarget. Makes following Syntax possible: RenderTarget.draw(AnimatedSprite)
-		 *
-		 * @param      target  The RenderTarget (Usually sf::RenderWindow)
-		 * @param[in]  states  The states (No idea what that is ;D)
-		 */
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+        void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+        void update(sf::Time time) override;
 
-		/**
-		 * @brief      Updates this AnimatedSprite every frame.
-		 *
-		 * @param[in]  time  Time that passed since last update call.
-		 */
-		void update(sf::Time time) override;
+        void setPosition(sf::Vector2f const &position) override;
+        void setPosition(float x, float y) override;
+        void move(sf::Vector2f const &by) override;
+        void move(float byX, float byY) override;
+        sf::Vector2f getPosition() const override;
+        float getX() const override;
+        float getY() const override;
+        sf::Vector2f getSize() const override;
+        float getWidth() const override;
+        float getHeight() const override;
 
-		/**
-		 * @brief      Sets the animation.
-		 *
-		 * @param[in]  name  The name of the Animation that the caller wants to set.
-		 */
-		void setAnimation(EAnimation name);
+        void setAnimation(EAnimation name);
+        void addAnimation(EAnimation name, Animation *animation);
+        void setColor(sf::Color const &color) override;
+        void setRotation(float angle);
+        void setScale(float factorX, float factorY);
+        void setScale(const sf::Vector2f &factors);
+        void setOrigin(float x, float y);
+        void setOrigin(const sf::Vector2f &origin);
+        float getRotation() const;
+        const sf::Vector2f &getScale() const;
+        const sf::Vector2f &getOrigin() const;
+        void rotate(float angle);
+        void scale(float factorX, float factorY);
+        void scale(const sf::Vector2f &factor);
+        const sf::Transform &getTransform() const;
+        const sf::Transform &getInverseTransform() const;
 
-		/**
-		 * @brief      Adds an animation.
-		 *
-		 * @param[in]  name       Identifies the given Animation object.
-		 * @param      animation  New Animation.
-		 */
-		void addAnimation(EAnimation name, Animation* animation);
+    private:
+        /**
+         * @brief      Plays the current Animation of this AnimatedSprite. Updates the current Animation's frames.
+         *
+         * @param[in]  time  Time given by update method. So, time since last update call.
+         */
+        void playAnimation(sf::Time time);
 
-		void setColor(sf::Color const& color) override;
-
-		float getSpeed();
-		void setSpeed(float speed);
-		void setPosition(float x, float y);
-		void setPosition(sf::Vector2f const& position);
-		void setRotation(float angle);
-		void setScale(float factorX, float factorY);
-		void setScale(const sf::Vector2f& factors);
-		void setOrigin(float x, float y);
-		void setOrigin(const sf::Vector2f& origin);
-		const sf::Vector2f& getPosition() const;
-		float getRotation() const;
-		const sf::Vector2f& getScale() const;
-		const sf::Vector2f& getOrigin() const;
-		void move(float x, float y);
-		void move(const sf::Vector2f& offset);
-		void rotate(float angle);
-		void scale(float factorX, float factorY);
-		void scale(const sf::Vector2f& factor);
-		const sf::Transform& getTransform() const;
-		const sf::Transform& getInverseTransform() const;
-
-	private:
-		/**
-		 * @brief      Plays the current Animation of this AnimatedSprite. Updates the current Animation's frames.
-		 *
-		 * @param[in]  time  Time given by update method. So, time since last update call.
-		 */
-		void playAnimation(sf::Time time);
-
-		sf::Sprite sprite; 							 // Displays a frame of this AnimatedSprite at any given moment in time.
-		std::map<EAnimation, Animation*> animations; // Contains all Animations registered on this AnimatedSprite by name.
-		EAnimation currentAnimation; 				 // Name of the current Animation of this AnimatedSprite.
-		int frameIndex; 							 // Stores on which frame of the current Animation the AnimatedSprite is currently on.
-		float elapsedSeconds; 						 // For tracking time when updating frames.
-		float speed; 								 // Pixels per Second.
-	};
+        sf::Sprite sprite; 							 // Displays a frame of this AnimatedSprite at any given moment in time.
+        std::map<EAnimation, Animation *> animations; // Contains all Animations registered on this AnimatedSprite by name.
+        EAnimation currentAnimation; 				 // Name of the current Animation of this AnimatedSprite.
+        int frameIndex; 							 // Stores on which frame of the current Animation the AnimatedSprite is currently on.
+        float elapsedSeconds; 						 // For tracking time when updating frames.
+        float speed; 								 // Pixels per Second.
+    };
 }
 
 #endif

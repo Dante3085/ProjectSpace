@@ -4,9 +4,6 @@
 
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
 #include <string>
 
 #include "MenuElement.h"
@@ -19,68 +16,21 @@ namespace ProjectSpace
 	class FpsCounter : public MenuElement
 	{
 	public:
-
-		/**
-		 * @brief      Constructs the FPSCounter with the given Font at the given Position.
-		 *
-		 * @param[in]  fontPath  The font path.
-		 * @param[in]  x         X-Coordinate
-		 * @param[in]  y         Y-Coordinate
-		 */
 		FpsCounter(std::string fontPath, int x = 0, int y = 0);
 
-		/**
-		 * @brief      Updates the displayed Text of the FPSCounter each Frame.
-		 *
-		 * @param[in]  time  The time
-		 */
 		void update(sf::Time time) override;
-
-		/**
-		 * @brief      For drawing the FpsCounter to the screen.
-		 *
-		 * @param      target  The target
-		 * @param[in]  states  The states
-		 */
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-		/**
-		 * @brief      Gets the position of the FpsCounter.
-		 *
-		 * @return     The position.
-		 */
-		sf::Vector2f getPosition() const;
-
-		/**
-		 * @brief      Gets the width of the FpsCounter.
-		 *
-		 * @return     The width.
-		 */
+		void setPosition(sf::Vector2f const& position) override;
+		void setPosition(float x, float y) override;
+		void move(sf::Vector2f const& by) override;
+		void move(float byX, float byY) override;
+		sf::Vector2f getPosition() const override;
+		float getX() const override;
+		float getY() const override;
+		sf::Vector2f getSize() const override;
 		float getWidth() const;
-
-		/**
-		 * @brief      Gets the height of the FpsCounter.
-		 *
-		 * @return     The height.
-		 */
 		float getHeight() const;
-
-		/**
-		 * @brief      Sets the position.
-		 *
-		 * @param[in]  x     { parameter_description }
-		 * @param[in]  y     { parameter_description }
-		 */
-		void setPosition(float x, float y);
-
-		/**
-		 * @brief      Sets the position of the FpsCounter.
-		 *
-		 * @param[in]  v     { parameter_description }
-		 */
-		void setPosition(sf::Vector2f v);
-		void move(float x, float y);
-		void move(sf::Vector2f v);
 
 		void setHide(bool hide);
 		bool isHidden();

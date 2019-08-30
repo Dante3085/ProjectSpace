@@ -9,155 +9,179 @@
 
 namespace ProjectSpace
 {
-	AnimatedSprite::AnimatedSprite(sf::Vector2f position)
-		: currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, speed{0}
-	{
-		sprite.setPosition(position);
-	}
+    AnimatedSprite::AnimatedSprite(sf::Vector2f position)
+        : currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, speed{0}
+    {
+        sprite.setPosition(position);
+    }
 
-	void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		target.draw(sprite);
-	}
+    void AnimatedSprite::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        target.draw(sprite);
+    }
 
-	void AnimatedSprite::update(sf::Time time)
-	{
-		playAnimation(time);
-	}
+    void AnimatedSprite::update(sf::Time time)
+    {
+        playAnimation(time);
+    }
 
-	void AnimatedSprite::setAnimation(EAnimation name)
-	{
-		// Do nothing if Animation is already set.
-		if (currentAnimation == name)
-		{
-			return;
-		}
+    void AnimatedSprite::setPosition(sf::Vector2f const &position) 
+    {
+    	sprite.setPosition(position);
+    }
 
-		// Do nothing if Animation is not known to this AnimatedSprite.
-		else if (animations.count(name) == 0)
-		{
-			Log::getInstance() << lo::PTC << ll::ERR << "Given Animation is not known to this AnimatedSprite."
-			<< lo::STACKTRACE << lo::END;
-			return;
-		}
+    void AnimatedSprite::setPosition(float x, float y) 
+    {
+    	sprite.setPosition(x, y);
+    }
+    void AnimatedSprite::move(sf::Vector2f const &by) 
+    {
+    	sprite.move(by);
+    }
+    void AnimatedSprite::move(float byX, float byY) 
+    {
+    	sprite.move(byX, byY);
+    }
 
-		currentAnimation = name;
-		sprite.setTexture(animations[currentAnimation]->getSpriteSheet());
-		sprite.setTextureRect((*animations[currentAnimation])[0]);
-		elapsedSeconds = 0;
-		frameIndex = 0;
-	}
+    sf::Vector2f AnimatedSprite::getPosition() const 
+    {
+    	return sprite.getPosition();
+    }
 
-	void AnimatedSprite::addAnimation(EAnimation name, Animation* animation)
-	{
-		animations[name] = animation;
-	}
+    float AnimatedSprite::getX() const 
+    {
+    	return sprite.getPosition().x;
+    }
 
-	void AnimatedSprite::setColor(sf::Color const& color)
-	{
-		sprite.setColor(color);
-	}
+    float AnimatedSprite::getY() const 
+    {
+    	return sprite.getPosition().y;
+    }
 
-	void AnimatedSprite::playAnimation(sf::Time time)
-	{
-		Animation* currentAnim = animations[currentAnimation];
+    sf::Vector2f AnimatedSprite::getSize() const 
+    {
+    	sf::FloatRect bounds = sprite.getGlobalBounds();
+    	return sf::Vector2f{bounds.width, bounds.height};
+    }
 
-		if (elapsedSeconds >= currentAnim->getFrameDelay())
-		{
-			frameIndex = (frameIndex + 1) == currentAnim->size() ? 0 : ++frameIndex;
-			sprite.setTextureRect((*currentAnim)[frameIndex]);
-			elapsedSeconds = 0;
-		}
-		elapsedSeconds += time.asSeconds();
-	}
+    float AnimatedSprite::getWidth() const 
+    {
+    	return sprite.getGlobalBounds().width;
+    }
 
-	void AnimatedSprite::setPosition(float x, float y)
-	{
-		sprite.setPosition(x, y);
-	}
+    float AnimatedSprite::getHeight() const 
+    {
+    	return sprite.getGlobalBounds().height;
+    }
 
-	void AnimatedSprite::setPosition(sf::Vector2f const& position)
-	{
-		sprite.setPosition(position);
-	}
+    void AnimatedSprite::setAnimation(EAnimation name)
+    {
+        // Do nothing if Animation is already set.
+        if (currentAnimation == name)
+        {
+            return;
+        }
 
-	void AnimatedSprite::setRotation(float angle)
-	{
-		sprite.setRotation(angle);
-	}
+        // Do nothing if Animation is not known to this AnimatedSprite.
+        else if (animations.count(name) == 0)
+        {
+            Log::getInstance() << lo::PTC << ll::ERR << "Given Animation is not known to this AnimatedSprite."
+                               << lo::STACKTRACE << lo::END;
+            return;
+        }
 
-	void AnimatedSprite::setScale(float factorX, float factorY)
-	{
-		sprite.setScale(factorX, factorY);
-	}
+        currentAnimation = name;
+        sprite.setTexture(animations[currentAnimation]->getSpriteSheet());
+        sprite.setTextureRect((*animations[currentAnimation])[0]);
+        elapsedSeconds = 0;
+        frameIndex = 0;
+    }
 
-	void AnimatedSprite::setScale(const sf::Vector2f & factors)
-	{
-		sprite.setScale(factors);
-	}
+    void AnimatedSprite::addAnimation(EAnimation name, Animation *animation)
+    {
+        animations[name] = animation;
+    }
 
-	void AnimatedSprite::setOrigin(float x, float y)
-	{
-		sprite.setOrigin(x, y);
-	}
+    void AnimatedSprite::setColor(sf::Color const &color)
+    {
+        sprite.setColor(color);
+    }
 
-	void AnimatedSprite::setOrigin(const sf::Vector2f & origin)
-	{
-		sprite.setOrigin(origin);
-	}
+    void AnimatedSprite::playAnimation(sf::Time time)
+    {
+        Animation *currentAnim = animations[currentAnimation];
 
-	const sf::Vector2f& AnimatedSprite::getPosition() const
-	{
-		return sprite.getPosition();
-	}
+        if (elapsedSeconds >= currentAnim->getFrameDelay())
+        {
+            frameIndex = (frameIndex + 1) == currentAnim->size() ? 0 : ++frameIndex;
+            sprite.setTextureRect((*currentAnim)[frameIndex]);
+            elapsedSeconds = 0;
+        }
+        elapsedSeconds += time.asSeconds();
+    }
 
-	float AnimatedSprite::getRotation() const 						 
-	{ 
-		return sprite.getRotation(); 
-	}
+    void AnimatedSprite::setRotation(float angle)
+    {
+        sprite.setRotation(angle);
+    }
 
-	const sf::Vector2f& AnimatedSprite::getScale() const 			 
-	{ 
-		return sprite.getScale(); 
-	}
+    void AnimatedSprite::setScale(float factorX, float factorY)
+    {
+        sprite.setScale(factorX, factorY);
+    }
 
-	const sf::Vector2f& AnimatedSprite::getOrigin() const 			 
-	{ 
-		return sprite.getOrigin(); 
-	}
+    void AnimatedSprite::setScale(const sf::Vector2f &factors)
+    {
+        sprite.setScale(factors);
+    }
 
-	void AnimatedSprite::move(float x, float y) 					 
-	{
-		sprite.move(x, y); 
-	}
+    void AnimatedSprite::setOrigin(float x, float y)
+    {
+        sprite.setOrigin(x, y);
+    }
 
-	void AnimatedSprite::move(const sf::Vector2f& offset) 			 
-	{ 
-		sprite.move(offset); 
-	}
+    void AnimatedSprite::setOrigin(const sf::Vector2f &origin)
+    {
+        sprite.setOrigin(origin);
+    }
 
-	void AnimatedSprite::rotate(float angle) 						 
-	{ 
-		sprite.rotate(angle); 
-	}
+    float AnimatedSprite::getRotation() const
+    {
+        return sprite.getRotation();
+    }
 
-	void AnimatedSprite::scale(float factorX, float factorY) 		 
-	{ 
-		sprite.scale(factorX, factorY); 
-	}
+    const sf::Vector2f &AnimatedSprite::getScale() const
+    {
+        return sprite.getScale();
+    }
 
-	void AnimatedSprite::scale(const sf::Vector2f& factor) 			 
-	{ 
-		sprite.scale(factor); 
-	}
+    const sf::Vector2f &AnimatedSprite::getOrigin() const
+    {
+        return sprite.getOrigin();
+    }
 
-	const sf::Transform& AnimatedSprite::getTransform() const 		 
-	{ 
-		return sprite.getTransform(); 
-	}
+    void AnimatedSprite::rotate(float angle)
+    {
+        sprite.rotate(angle);
+    }
 
-	const sf::Transform& AnimatedSprite::getInverseTransform() const 
-	{ 
-		return sprite.getInverseTransform(); 
-	}
+    void AnimatedSprite::scale(float factorX, float factorY)
+    {
+        sprite.scale(factorX, factorY);
+    }
+
+    void AnimatedSprite::scale(const sf::Vector2f &factor)
+    {
+        sprite.scale(factor);
+    }
+
+    const sf::Transform &AnimatedSprite::getTransform() const
+    {
+        return sprite.getTransform();
+    }
+
+    const sf::Transform &AnimatedSprite::getInverseTransform() const
+    {
+        return sprite.getInverseTransform();
+    }
 }

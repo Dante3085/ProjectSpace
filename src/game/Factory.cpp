@@ -48,11 +48,6 @@ namespace ProjectSpace
 		sf::Texture* background = new sf::Texture{};
 		background->loadFromFile("rsrc/cyberpunk-street.png");
 
-		TextBox* textBox = new TextBox{ "rsrc/blueBackground.png", "Das ist ein laengerer TestText. Bla dasdsad dasdddddddddddddddddddddddddddddd ddddddddddddddddddddddddddasddddddddddd dddddddddddddddddddddddddddddddddddddddddddddasd dddddddddddddddddddddddddddddddddddddddddddddddddddddddasdddddddddddddd ddddddddddddddddddddddddddddddddddddddddd",
-		sf::Vector2f{1000, 1000}, sf::Vector2f{100, 1750} };
-		textBox->setOpacity(200);
-		textBox->setPadding(50);
-
 		sf::Sprite* backgroundSprite = new sf::Sprite{ *background };
 		backgroundSprite->setScale(window.getSize().x / backgroundSprite->getLocalBounds().width,
 			window.getSize().y / backgroundSprite->getLocalBounds().height);
@@ -223,7 +218,7 @@ namespace ProjectSpace
 		};
 		groupBtn2->setPosition(500, 600);
 
-		MenuGroup* menuGroup = new MenuGroup{ sf::Vector2f{1000, 1000} };
+		MenuGroup* menuGroup = new MenuGroup{};
 		menuGroup->addMenuElement(groupBtn1);
 		menuGroup->addMenuElement(groupBtn2);
 
@@ -254,22 +249,9 @@ namespace ProjectSpace
 				}
 			});
 
-		ExpandMenu* expandMenu = new ExpandMenu
-		{
-			{
-				{expand0, {expand00, expand01, expand1}},
-				{expand1, {}},
-				{expand2, {}},
-				{expand3, {}}
-			}, sf::Vector2f{200, 100}, inputHandler
-		};
-
-		BattleMenu* battleMenu = new BattleMenu{ sf::Vector2f{1000, 500}, inputHandler, window };
-
-
 		scene->addEntities({ inputHandler, collisionManager, menuGroup, groupBtn0 });
 
-		scene->addDrawables({ backgroundSprite, expandMenu, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
+		scene->addDrawables({ backgroundSprite, windowBoundsBox, smallDiamant, bigDiamant, threeDCube,
 			threeDCube2, threeDCube3, menuGroup, groupBtn0 });
 
 		return scene;
@@ -319,7 +301,7 @@ namespace ProjectSpace
 		btn->setPosition(1000, 1000);
 
 		sf::Vector2f btnPos = btn->getPosition();
-		TranslateAnimation* ta = new TranslateAnimation{ btn, btnPos, btnPos * 2, 1000 };
+		TranslateAnimation* ta = new TranslateAnimation{ *btn, btnPos, btnPos * 2, 1000 };
 
 		using key = sf::Keyboard;
 		InputHandler* inputHandler = new InputHandler{};
@@ -330,13 +312,13 @@ namespace ProjectSpace
 			{
 				if (!inputHandler->wasKeyPressed(key::F) && key::isKeyPressed(key::F))
 				{
-					ta->setFrom(ta->getMenuElement()->getPosition());
+					ta->setFrom(ta->getTranslatable().getPosition());
 					ta->setTo(sf::Vector2f{ 1000, 1000 });
 					ta->start();
 				}
 				else if (!inputHandler->wasKeyPressed(key::B) && key::isKeyPressed(key::B))
 				{
-					ta->setFrom(ta->getMenuElement()->getPosition());
+					ta->setFrom(ta->getTranslatable().getPosition());
 					ta->setTo(sf::Vector2f{ 1000, 500 });
 					ta->start();
 				}
@@ -417,12 +399,6 @@ namespace ProjectSpace
 
 	Scene* Factory::create_menu_scene(sf::RenderWindow& window)
 	{
-		return nullptr;
-	}
-
-	ExpandMenu* create_combat_menu()
-	{
-		// TODO(moritz):
 		return nullptr;
 	}
 }

@@ -179,7 +179,14 @@ namespace ProjectSpace
 			setCurrentScene(EScene::COLLISION_SCENE);
 		}, window, "Collision Scene" };
 
-		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6});
+		Button* b0 = new Button{ [this]() {}, window, "b0" };
+		Button* b1 = new Button{ [this]() {}, window, "b1" };
+		Button* b2 = new Button{ [this]() {}, window, "b2" };
+		Button* b3 = new Button{ [this]() {}, window, "b3" };
+		VBox* vbox = new VBox{ {b2, b3}, sf::Vector2f{0, 0}, 5 };
+		HBox* hbox = new HBox{ {b0, b1, vbox}, sf::Vector2f{0, 0}, 5 };
+
+		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6, hbox});
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
@@ -188,12 +195,11 @@ namespace ProjectSpace
 
 		float btnBoxWidth = btnBox->getWidth();
 		TranslateAnimation* menuTa;
-		menuTa = new TranslateAnimation{ btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
-		menuTa->setEasingFunction(Easing::back_easeOut);
+		menuTa = new TranslateAnimation{ *btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
 
 		btn2->setOnPressed([btnBoxWidth, menuTa]()
 		{
-				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
+				menuTa->setFrom(menuTa->getTranslatable().getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
 				menuTa->setEasingFunction(Easing::quad_easeIn);
 				menuTa->start();
@@ -214,17 +220,17 @@ namespace ProjectSpace
 
 			if (!globalInputHandler->wasKeyPressed(key::E) && key::isKeyPressed(key::E))
 			{
-				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
+				menuTa->setFrom(menuTa->getTranslatable().getPosition());
 				menuTa->setTo(sf::Vector2f{ -5, 50 });
-				menuTa->setEasingFunction(Easing::back_easeOut);
+				menuTa->setEasingFunction(Easing::sine_easeInOut);
 				menuTa->start();
 			}
 
 			if (!globalInputHandler->wasKeyPressed(key::R) && key::isKeyPressed(key::R))
 			{
-				menuTa->setFrom(menuTa->getMenuElement()->getPosition());
+				menuTa->setFrom(menuTa->getTranslatable().getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-				menuTa->setEasingFunction(Easing::linear_easeIn);
+				menuTa->setEasingFunction(Easing::sine_easeInOut);
 				menuTa->start();
 			}
 

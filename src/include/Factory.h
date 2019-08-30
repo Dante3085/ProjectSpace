@@ -23,8 +23,6 @@ namespace ProjectSpace
 		static Scene* create_collision_scene(sf::RenderWindow& window);
 		static Scene* create_menu_scene(sf::RenderWindow& window);
 
-		static ExpandMenu* create_combat_menu();
-
 	private:
 		Factory() {}
 	};

@@ -14,7 +14,7 @@ namespace ProjectSpace
 	{
 	public:
 		DebugScene(sf::RenderWindow& window)
-			: Scene{window}, btn{ window, "DebugScene" }, btnAnim{ &btn }
+			: Scene{window}, btn{ window, "DebugScene" }, btnAnim{ btn }
 		{
 			btnAnim.setDuration(500);
 			btnAnim.setEasingFunction(Easing::back_easeOut);
@@ -30,14 +30,14 @@ namespace ProjectSpace
 		{
 			if (!inputHandler.wasKeyPressed(sf::Keyboard::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
-				btnAnim.setFrom(btnAnim.getMenuElement()->getPosition());
+				btnAnim.setFrom(btnAnim.getTranslatable().getPosition());
 				btnAnim.setTo(sf::Vector2f{ 100, 100 });
 				// btnAnim.setDuration(500 - btnAnim.getElapsedTime());
 				btnAnim.start();
 			}
 			else if (!inputHandler.wasKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
-				btnAnim.setFrom(btnAnim.getMenuElement()->getPosition());
+				btnAnim.setFrom(btnAnim.getTranslatable().getPosition());
 				btnAnim.setTo(sf::Vector2f{ 1000, 0 });
 				// btnAnim.setDuration(500 - btnAnim.getElapsedTime());
 				btnAnim.start();

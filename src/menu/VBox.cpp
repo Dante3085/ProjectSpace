@@ -1,156 +1,192 @@
 
 #include "VBox.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {
-	VBox::VBox(float spacing) : position{0, 0}, spacing{spacing}, needsUpdate{true}, hidden{false} {}
+    VBox::VBox(float spacing) : bounds{0, 0, 0, 0}, spacing{spacing}, needsUpdate{true}, hidden{false} 
+	{}
 
-	VBox::VBox(std::vector<MenuElement*> menuElements, sf::Vector2f position, float spacing) 
-	: menuElements{menuElements}, position{position}, spacing{spacing}, needsUpdate{true}, hidden{false} {}
-
-	void VBox::update(sf::Time time)
+    VBox::VBox(std::vector<MenuElement *> menuElements, sf::Vector2f position, float spacing)
+        : menuElements{menuElements}, bounds{position.x, position.y, -1, -1}, spacing{spacing}, 
+		needsUpdate{true}, hidden{false} 
 	{
-		if (!hidden)
+		updateWidth();
+		updateHeight();
+	}
+
+    void VBox::update(sf::Time time)
+    {
+        if (!hidden)
+        {
+            for (MenuElement *b : menuElements)
+            {
+                b->update(time);
+            }
+        }
+    }
+
+    void VBox::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        if (!hidden)
+        {
+            for (MenuElement *m : menuElements)
+            {
+                target.draw(*m);
+            }
+        }
+    }
+
+    void VBox::setPosition(sf::Vector2f const &position)
+    {
+		bounds.left = position.x;
+		bounds.top = position.y;
+
+		updatePositions();
+    }
+
+    void VBox::setPosition(float x, float y)
+    {
+        bounds.left = x;
+        bounds.top = y;
+
+		updatePositions();
+    }
+
+    void VBox::move(sf::Vector2f const &by)
+    {
+		bounds.left += by.x;
+		bounds.top += by.y;
+
+		updatePositions();
+    }
+
+    void VBox::move(float byX, float byY)
+    {
+        bounds.left += byX;
+        bounds.top += byY;
+
+		updatePositions();
+    }
+
+    sf::Vector2f VBox::getPosition() const
+    {
+		return sf::Vector2f{bounds.left, bounds.top};
+    }
+
+    float VBox::getX() const
+    {
+		return bounds.left;
+    }
+
+    float VBox::getY() const
+    {
+		return bounds.top;
+    }
+
+    sf::Vector2f VBox::getSize() const
+    {
+    	return sf::Vector2f{getWidth(), getHeight()};
+    }
+
+    float VBox::getWidth() const
+    {
+		return bounds.width;
+    }
+
+    float VBox::getHeight() const
+    {
+		return bounds.height;
+    }
+
+    void VBox::show()
+    {
+        hidden = false;
+    }
+
+    void VBox::hide()
+    {
+        hidden = true;
+    }
+
+    bool VBox::isHidden()
+    {
+        return hidden;
+    }
+
+    void VBox::addMenuElement(MenuElement *m)
+    {
+        menuElements.push_back(m);
+		updateWidth();
+		updateHeight();
+		updatePositions();
+    }
+
+    void VBox::addMenuElements(std::vector<MenuElement *> menuElements)
+    {
+        for (MenuElement *b : menuElements)
+        {
+            this->menuElements.push_back(b);
+		}
+		updateWidth();
+		updateHeight();
+		updatePositions();
+    }
+
+    void VBox::setSpacing(float spacing)
+    {
+        this->spacing = spacing;
+		updateHeight();
+		updatePositions();
+    }
+
+	void VBox::updatePositions()
+	{
+		// Do nothing if VBox is empty.
+		if (menuElements.size() == 0)
 		{
-			for (MenuElement* b : menuElements)
-			{
-				b->update(time);
-			}
+			return;
 		}
 
-		if (needsUpdate)
+		// Position first element at upper left corner of VBox.
+		menuElements[0]->setPosition(sf::Vector2f{ bounds.left, bounds.top });
+
+		// Nothing else to do if Vbox only has 1 Element.
+		if (menuElements.size() == 1)
 		{
-			needsUpdate = false;
+			return;
+		}
 
-				// Do nothing if VBox is empty.
-			if (menuElements.size() == 0)
-			{
-				return;
-			}
-
-            	// Position first element at upper left corner of VBox.
-			menuElements[0]->setPosition(position);
-
-				// Nothing else to do if Vbox only has 1 Element.
-			if (menuElements.size() == 1)
-			{
-				return;
-			}
-
-            	// Position every element (except first) at VBox.position + previousElement.Y + spacing.
-			for (int i = 1; i < menuElements.size(); ++i)
-			{
-				menuElements[i]->setPosition(position.x, menuElements[i - 1]->getPosition().y + menuElements[i - 1]->getHeight() + spacing);
-			}
+		// Position every element (except first) at VBox.position + previousElement.Y + spacing.
+		for (int i = 1; i < menuElements.size(); ++i)
+		{
+			menuElements[i]->setPosition(bounds.left, menuElements[i - 1]->getY() + menuElements[i - 1]->getHeight() + spacing);
 		}
 	}
 
-	void VBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		if (!hidden)
-		{
-			for (MenuElement* b : menuElements)
-			{
-				target.draw(*b);
-			}
-		}
-	}
-
-	void VBox::show()
-	{
-		hidden = false;
-	}
-
-	void VBox::hide()
-	{
-		hidden = true;
-	}
-
-	bool VBox::isHidden()
-	{
-		return hidden;
-	}
-
-	void VBox::setNeedsUpdate()
-	{
-		needsUpdate = true;
-	}
-
-	void VBox::addMenuElement(MenuElement* b)
-	{
-		menuElements.push_back(b);
-	}
-
-	void VBox::addMenuElements(std::vector<MenuElement*> menuElements)
-	{
-		for (MenuElement* b : menuElements)
-		{
-			this->menuElements.push_back(b);
-		}
-	}
-
-	void VBox::setPosition(float x, float y)
-	{
-		position.x = x;
-		position.y = y;
-
-		needsUpdate = true;
-	}
-
-	void VBox::setPosition(sf::Vector2f v)
-	{
-		position = v;
-
-		needsUpdate = true;
-	}
-
-	void VBox::move(float x, float y)
-	{
-		position.x += x;
-		position.y += y;
-
-		needsUpdate = true;
-	}
-
-	void VBox::move(sf::Vector2f v)
-	{
-		position += v;
-		needsUpdate = true;
-	}
-
-	void VBox::setSpacing(float spacing)
-	{
-		this->spacing = spacing;
-	}
-
-	float VBox::getWidth() const
+	void VBox::updateWidth()
 	{
 		float width = menuElements[0]->getWidth();
-		for (MenuElement* m : menuElements)
+		float tempWidth = -1;
+		for (MenuElement const* m : menuElements)
 		{
-			if (width < m->getWidth())
+			tempWidth = m->getWidth();
+			if (width < tempWidth)
 			{
-				width = m->getWidth();
+				width = tempWidth;
 			}
 		}
-		return width;
+		bounds.width = width;
 	}
 
-	float VBox::getHeight() const
+	void VBox::updateHeight()
 	{
-		float height = menuElements[0]->getHeight();
-		for (MenuElement* m : menuElements)
+		float height = 0;
+		for (MenuElement const* m : menuElements)
 		{
-			if (height < m->getHeight())
-			{
-				height = m->getHeight();
-			}
+			height += m->getHeight();
 		}
-		return height;
-	}
-
-	sf::Vector2f VBox::getPosition() const
-	{
-		return position;
+		height += (menuElements.size() - 1) * spacing;
+		bounds.height = height;
 	}
 }

@@ -7,7 +7,7 @@
 namespace ProjectSpace
 {
 	/**
-	 * @brief      Represents a thing in the Game. Basically everything that needs updating every frame.
+	 * @brief      Abstract representation of things that need to be updatet in the game.
 	 */
 	class Entity
 	{

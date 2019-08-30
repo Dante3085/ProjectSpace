@@ -9,11 +9,11 @@
 
 namespace ProjectSpace
 {
-	TranslateAnimation::TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
-		: menuElement{ menuElement }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
+	TranslateAnimation::TranslateAnimation(Translatable& translatable, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
+		: translatable{ translatable }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
 		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, log{ &Log::getInstance() }
 	{
-		menuElement->setPosition(from);
+		translatable.setPosition(from);
 	}
 
 	void TranslateAnimation::update(sf::Time time)
@@ -26,7 +26,7 @@ namespace ProjectSpace
 		currentVelocity.x = easingFunction(elapsedTime, from.x, to.x - from.x, duration);
 		currentVelocity.y = easingFunction(elapsedTime, from.y, to.y - from.y, duration);
 
-		menuElement->setPosition(currentVelocity);
+		translatable.setPosition(currentVelocity);
 
 		elapsedTime += time.asMilliseconds();
 
@@ -79,14 +79,14 @@ namespace ProjectSpace
 		this->to = to;
 	}
 
-	void TranslateAnimation::setMenuElement(MenuElement* menuElement)
+	void TranslateAnimation::setTranslatable(Translatable& translatable)
 	{
-		this->menuElement = menuElement;
+		this->translatable = translatable;
 	}
 
-	MenuElement* TranslateAnimation::getMenuElement() const
+	Translatable& TranslateAnimation::getTranslatable() const
 	{
-		return menuElement;
+		return translatable;
 	}
 
 	float TranslateAnimation::getDuration() const

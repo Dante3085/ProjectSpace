@@ -86,6 +86,66 @@ namespace ProjectSpace
 		target.draw(text);
 	}
 
+	void Button::setPosition(sf::Vector2f const& position)
+	{
+		rectangle.setPosition(position);
+
+		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
+		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
+		text.setPosition(textX, textY);
+	}
+
+	void Button::setPosition(float x, float y)
+	{
+		rectangle.setPosition(x, y);
+
+		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
+		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
+		text.setPosition(textX, textY);
+	}
+
+	void Button::move(sf::Vector2f const& by)
+	{
+		rectangle.move(by);
+		text.move(by);
+	}
+
+	void Button::move(float byX, float byY)
+	{
+		rectangle.move(byX, byY);
+		text.move(byX, byY);
+	}
+
+	sf::Vector2f Button::getPosition() const
+	{
+		return rectangle.getPosition();
+	}
+
+	float Button::getX() const
+	{
+		return rectangle.getPosition().x;
+	}
+
+	float Button::getY() const
+	{
+		return rectangle.getPosition().y;
+	}
+
+	sf::Vector2f Button::getSize() const
+	{
+		return rectangle.getSize();
+	}
+
+	float Button::getWidth() const
+	{
+		return rectangle.getGlobalBounds().width;
+	}
+
+	float Button::getHeight() const
+	{
+		return rectangle.getGlobalBounds().height;
+	}
+
 	void Button::setOnPressed(std::function<void()> onPressed)
 	{
 		this->onPressed = onPressed;
@@ -115,36 +175,6 @@ namespace ProjectSpace
 		text.setFillColor(c);
 	}
 
-	void Button::setPosition(float x, float y)
-	{
-		rectangle.setPosition(x, y);
-
-		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
-		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
-		text.setPosition(textX, textY);
-	}
-
-	void Button::setPosition(sf::Vector2f v)
-	{
-		rectangle.setPosition(v);
-
-		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
-		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
-		text.setPosition(textX, textY);
-	}
-
-	void Button::move(float x, float y)
-	{
-		rectangle.move(x, y);
-		text.move(x, y);
-	}
-
-	void Button::move(sf::Vector2f v)
-	{
-		rectangle.move(v);
-		text.move(v);
-	}
-
 	void Button::setSize(float width, float height)
 	{
 		rectangle.setSize(sf::Vector2f(width, height));
@@ -161,21 +191,6 @@ namespace ProjectSpace
 		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
 		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
 		text.setPosition(textX, textY);
-	}
-
-	sf::Vector2f Button::getPosition() const
-	{
-		return rectangle.getPosition();
-	}
-
-	float Button::getWidth() const
-	{
-		return rectangle.getGlobalBounds().width;
-	}
-
-	float Button::getHeight() const
-	{
-		return rectangle.getGlobalBounds().height;
 	}
 
 	void Button::select() const

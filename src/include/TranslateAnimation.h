@@ -6,31 +6,31 @@
 #include <functional>
 #include <SFML/Graphics.hpp>
 
+#include "Translatable.h"
 #include "Easing.h"
 #include "Entity.h"
-#include "Button.h"
 #include "Log.h"
 
 namespace ProjectSpace
 {
 	/**
-	 * @brief      Class for smoothly translating MenuElements from one point in 2D-Space to another.
+	 * @brief      Class for smoothly translating Translatables from one point in 2D-Space to another.
 	 */
 	class TranslateAnimation : public Entity
 	{
 	public:
 
 		/**
-		 * @brief      Constructs a TranslateAnimation that can translate the given MenuElement from 'from' to 'to'.
+		 * @brief      Constructs a TranslateAnimation that can translate the given Translatable from 'from' to 'to'.
 		 *
-		 * @param      menuElement  The menu element
+		 * @param      Translatable  The Translatable.
 		 * @param[in]  from         The point in 2D-Space the TranslateAnimation will start from.
 		 * @param[in]  to           The point in 2D-Space the TranslateAnimation will end on.
 		 * from 'from' to 'to'.
-		 * @param[in]  velocityModifier Scalar multiplied with distance vector between MenuElement and to. This will dictate the step
-		 * the MenuElement is moved each update.
+		 * @param[in]  velocityModifier Scalar multiplied with distance vector between Translatable and to. This will dictate the step
+		 * the Translatable is moved each update.
 		 */
-		TranslateAnimation(MenuElement* menuElement, sf::Vector2f const& from = sf::Vector2f{0, 0},
+		TranslateAnimation(Translatable& translatable, sf::Vector2f const& from = sf::Vector2f{0, 0},
 		sf::Vector2f const& to = sf::Vector2f{50, 0}, float duration = 1000);
 
 		/**
@@ -54,7 +54,7 @@ namespace ProjectSpace
 
 		/**
 		 * @brief      Resets the Translate Animation to it's initial State, so that it can play again.
-		 * @problem    Not sure if this function should set the MenuElement to from. This function is subject to change.
+		 * @problem    Not sure if this function should set the Translatable to from. This function is subject to change.
 		 */
 		void reset();
 
@@ -87,18 +87,18 @@ namespace ProjectSpace
 		void setTo(sf::Vector2f to);
 
 		/**
-		 * @brief      Sets the MenuElement that the TranslateAnimation will translate.
+		 * @brief      Sets the Translatable that the TranslateAnimation will translate.
 		 *
-		 * @param      menuElement  The MenuElement that the TranslateAnimation will translate.
+		 * @param      Translatable  The Translatable that the TranslateAnimation will translate.
 		 */
-		void setMenuElement(MenuElement* menuElement);
+		void setTranslatable(Translatable& translatable);
 
 		/**
-		 * @brief      Gets the MenuElement that the TranslateAnimation will translate.
+		 * @brief      Gets the Translatable that the TranslateAnimation will translate.
 		 *
-		 * @return     The MenuElement that the TranslateAnimation will translate.
+		 * @return     The Translatable that the TranslateAnimation will translate.
 		 */
-		MenuElement* getMenuElement() const;
+		Translatable& getTranslatable() const;
 
 		float getDuration() const;
 
@@ -114,14 +114,14 @@ namespace ProjectSpace
 		void reverse();
 
 	private:
-		MenuElement* menuElement;	// The MenuElement that the TranslateAnimation will work on.
+		Translatable& translatable;	// The Translatable that the TranslateAnimation will work on.
 		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.
 		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
 		float duration;
 		float elapsedTime;
-		bool doUpdate;				// Controls whether TranslateAnimation is updated in update().
+		bool doUpdate;				// Controls whether TranslateAnimation updates itself.
 
-		sf::Vector2f currentVelocity; // The value with which the menuElement's position is modified each tick.
+		sf::Vector2f currentVelocity; // The value with which the Translatable's position is modified each update() call.
 		Easing::EasingFunction easingFunction;
 
 		Log* log;

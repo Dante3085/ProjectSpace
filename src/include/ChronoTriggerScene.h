@@ -5,6 +5,7 @@
 #include "Animation.h"
 #include "AnimatedSprite.h"
 #include "FadeAnimation.h"
+#include "TranslateAnimation.h"
 
 namespace ProjectSpace
 {
@@ -20,7 +21,8 @@ namespace ProjectSpace
 			cronoWalkDown{"rsrc/CronoTransparentBackground.png"},
 			crono{ sf::Vector2f{200, 200} }, cronoSpeed{8},
 			wWasDown{false}, aWasDown{false}, sWasDown{false}, dWasDown{false}, spaceWasDown{false},
-			rWasDown{false}, fadeAnimation{crono, 255, 0, 1000}
+			rWasDown{false}, fadeAnimation{crono, 255, 0, 1000},
+			translateAnimation{crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000}
 		{
 			tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -42,7 +44,9 @@ namespace ProjectSpace
 			crono.setAnimation(EAnimation::IDLE);
 			crono.setScale(6, 6);
 
-			Scene::addEntities({&crono, &fadeAnimation});
+			translateAnimation.setEasingFunction(Easing::linear_easeNone);
+
+			Scene::addEntities({&crono, &fadeAnimation, &translateAnimation});
 			Scene::addDrawables({&tilemap, &crono});
 		}
 
@@ -90,7 +94,7 @@ namespace ProjectSpace
 
 			if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
-				fadeAnimation.start();
+				translateAnimation.start();
 			}
 
 			if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
@@ -128,5 +132,6 @@ namespace ProjectSpace
 		bool rWasDown;
 
 		FadeAnimation fadeAnimation;
+		TranslateAnimation translateAnimation;
 	};
 }
