@@ -1,10 +1,5 @@
-- Conventions for this file:
-  - Write notes for every class/file like this. Name of class/file after dash without indentation followed by double colon.
-    Then every note for that class/file after a dash with an indentation of 2 spaces.
-  - KEEP := Keep a class/file with this note.
-  - TRASH := Throw a class/file with this note in the trash.
-  - TBD := To be decided. Not certain if a class/file with this note should be kept or thrown in the trash.
-  - NEW := New class/file.
+- New Folder Structure:
+  - ui
 
 - AnimatedSprite:
   - KEEP
@@ -26,12 +21,15 @@
 
 - FadeAnimation:
   - TBD
-  - Jetzt mit Fadeable Interface gelöst. Jedes Objekt, dass gefaded werden kann, muss dann setColor()
-    implementieren.
+  - Fadeable Interface: Alle Sachen, die man faden kann, müssen setColor() implementieren.
 
 - TranslateAnimation:
   - TBD
-  - Unabhängig von MenuElement machen. Soll nämlich auch AnimatedSprites von A nach B bewegen können.
+  - Mit Interface lösen (sf::Transformable, Translatable)
+
+- Translatable:
+  - NEW: Interface for 2d moveable things.
+  - Should maybe have getBounds(): sf::FloatRect
 
 - Easer:
   - TRASH
@@ -53,6 +51,7 @@
 - Util.h
   - KEEP
   - Gleiches Problem, wie bei Easing.h
+  - Umbenennung in MathUtil or VectorUtil.
 
 - InputManager
   - NEW

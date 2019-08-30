@@ -102,3 +102,8 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 	  Allerdings kann ein Animationsobjekt nur gleichzeitig eine Animation speichern.
 	  Folge ist, dass für verschiedene Animationen aus demselben Spritesheet mehrere Animationsobjekte
 	  mit demselben Spritesheet erstellt werden müssen.
+
+  - Button:
+    - Textposition steuern können.
+    - Buttongröße an Text anpassen oder Text an Buttongröße anpassen.
+    - Textur übergeben können.
