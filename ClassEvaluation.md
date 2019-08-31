@@ -73,6 +73,7 @@
     - LayerCollidable
     - Line2D
     - Line2F
+    - CollisionType
   - gui(Graphical User Interface)
     - MenuElement
     - MenuGroup
