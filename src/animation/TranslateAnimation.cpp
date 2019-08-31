@@ -1,6 +1,6 @@
 
 #include "TranslateAnimation.h"
-#include "Util.h"
+#include "MathUtil.h"
 #include <math.h>
 #include "Log.h"
 #include "Easing.h"

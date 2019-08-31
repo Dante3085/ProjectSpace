@@ -13,7 +13,7 @@
 #include "Portrait.h"
 #include "TranslateAnimation.h"
 #include <vector>
-#include "Util.h"
+#include "MathUtil.h"
 
 namespace ProjectSpace
 {

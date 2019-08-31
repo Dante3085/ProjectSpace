@@ -1,6 +1,6 @@
 
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef MATH_UTIL_H
+#define MATH_UTIL_H
 
 #include <iostream>
 #include <SFML/Graphics/Rect.hpp>
