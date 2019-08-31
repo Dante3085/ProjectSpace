@@ -107,3 +107,8 @@ TODO: Ideen und Dinge, die ich umsetzen will.
     - Textposition steuern können.
     - Buttongröße an Text anpassen oder Text an Buttongröße anpassen.
     - Textur übergeben können.
+
+  - std::vector<type> werden in einigen Teilen des Programms als Value übergeben. Beispielsweise VBox, HBox
+    Wenn sie als Referenz übergeben werden, ist es aber nicht mehr möglich den vector wie folgt zu übergeben...
+	... new VBox{{btn0, btn1, btn2}, ...}; Das hat irgendwas mit lValue, rValue zu tun. Vielleicht ist das
+	Problem das es sich dann um einen temporären, unbenannten Wert handelt.
