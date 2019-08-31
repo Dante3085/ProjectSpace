@@ -1,11 +1,8 @@
 
-#ifndef MATH_UTIL_H
-#define MATH_UTIL_H
+#pragma once
 
-#include <iostream>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <math.h>
 #include <vector>
 
 #include "Line2F.h"
@@ -27,5 +24,3 @@ namespace ProjectSpace
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, std::vector<T> v);
 }
-
-#endif

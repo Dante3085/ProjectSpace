@@ -19,7 +19,7 @@
 #include "InputHandler.h"
 #include "Scene.h"
 #include "Factory.h" 
-#include "MathUtil.h"
+#include "Util.h"
 #include "Log.h"
 #include "DebugScene.h"
 #include "ChronoTriggerScene.h"

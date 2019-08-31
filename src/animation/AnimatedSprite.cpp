@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include "MathUtil.h"
+#include "Util.h"
 #include "Log.h"
 
 namespace ProjectSpace

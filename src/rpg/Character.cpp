@@ -1,7 +1,7 @@
 
 #include "Character.h"
 #include <math.h>
-#include "MathUtil.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {

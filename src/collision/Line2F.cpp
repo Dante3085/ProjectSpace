@@ -1,6 +1,6 @@
 
 #include "Line2F.h"
-#include "MathUtil.h"
+#include "Util.h"
 #include <math.h>
 
 namespace ProjectSpace

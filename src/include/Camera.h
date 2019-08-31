@@ -10,7 +10,7 @@
 
 #include "Entity.h"
 #include "AnimatedSprite.h"
-#include "MathUtil.h"
+#include "Util.h"
 
 namespace ProjectSpace
 {
