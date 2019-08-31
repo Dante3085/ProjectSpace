@@ -186,7 +186,7 @@ namespace ProjectSpace
 		VBox* vbox = new VBox{ {b2, b3}, sf::Vector2f{0, 0}, 5 };
 		HBox* hbox = new HBox{ {b0, b1, vbox}, sf::Vector2f{0, 0}, 5 };
 
-		btnBox->addMenuElements({btn, btn2, btn3, btn4, btn5, btn6, hbox});
+		btnBox->addMenuElements({ btn, btn2, btn3, btn4, btn5, btn6, hbox });
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 

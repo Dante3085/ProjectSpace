@@ -4,15 +4,16 @@
 
 namespace ProjectSpace
 {
-    VBox::VBox(float spacing) : bounds{0, 0, 0, 0}, spacing{spacing}, needsUpdate{true}, hidden{false} 
+    VBox::VBox(float spacing) : bounds{0, 0, 0, 0}, spacing{spacing}, hidden{false} 
 	{}
 
     VBox::VBox(std::vector<MenuElement *> menuElements, sf::Vector2f position, float spacing)
         : menuElements{menuElements}, bounds{position.x, position.y, -1, -1}, spacing{spacing}, 
-		needsUpdate{true}, hidden{false} 
+		hidden{false} 
 	{
 		updateWidth();
 		updateHeight();
+		updatePositions();
 	}
 
     void VBox::update(sf::Time time)
@@ -86,7 +87,7 @@ namespace ProjectSpace
 
     sf::Vector2f VBox::getSize() const
     {
-    	return sf::Vector2f{getWidth(), getHeight()};
+    	return sf::Vector2f{bounds.width, bounds.height};
     }
 
     float VBox::getWidth() const

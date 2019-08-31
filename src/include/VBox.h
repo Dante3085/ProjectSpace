@@ -3,8 +3,6 @@
 #define VBOX_H
 
 #include <vector>
-#include <iostream>
-#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 #include "Entity.h"
@@ -35,7 +33,6 @@ namespace ProjectSpace
         void show();
         void hide();
         bool isHidden();
-        void setNeedsUpdate();
         void addMenuElement(MenuElement *m);
         void addMenuElements(std::vector<MenuElement *> menuElements);
         void setSpacing(float spacing);
@@ -49,7 +46,6 @@ namespace ProjectSpace
 		sf::FloatRect bounds;
         std::vector<MenuElement *> menuElements;
         float spacing;
-        bool needsUpdate;
         bool hidden;
     };
 }
