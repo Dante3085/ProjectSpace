@@ -1,5 +1,3 @@
-- New Folder Structure:
-  - ui
 
 - AnimatedSprite:
   - KEEP
@@ -58,3 +56,44 @@
   - Store states of all keys each frame, so that onKeyDown is easy to implement inside InputManager.
     Current solution is that user has to manually store required key state to check if it was down 
     last frame or not.
+
+- New Folder Structure:
+  - animation
+    - Animation
+    - AnimatedSprite
+    - TranslateAnimation
+    - Translatable
+    - FadeAnimation
+    - Fadeable
+  - collision
+    - Collidable
+    - CollisionBox
+    - CollisionManager
+    - CollisionShape
+    - LayerCollidable
+    - Line2D
+    - Line2F
+  - gui(Graphical User Interface)
+    - MenuElement
+    - MenuGroup
+    - VBox
+    - HBox
+    - Button
+    - ButtonMenu
+    - BattleMenu
+    - BattleOrder
+    - ExpandMenu
+    - Slider
+    - TextBox
+  - scenes
+    - ChronoTriggerScene
+    - DebugScene
+    - EScene
+    - Scene
+  - rpg
+    - Character
+    - Item
+    - Weapon
+    - Armor
+    - Magic
+    - Skill
