@@ -3,8 +3,8 @@
 
 namespace ProjectSpace
 {
-	Camera::Camera(AnimatedSprite const& player, sf::RenderWindow& window, sf::Vector2f const& size) 
-	: player{player}, window{window}, view{player.getPosition(), size} 
+	Camera::Camera(Translatable const& translatable, sf::RenderWindow& window, sf::Vector2f const& size) 
+	: translatable{translatable}, window{window}, view{translatable.getPosition(), size} 
 	{
 		// Zooms out
 		view.zoom(8.f);
@@ -12,10 +12,11 @@ namespace ProjectSpace
 
 	void Camera::update(sf::Time time)
 	{
-		//sf::FloatRect playerBounds{player.getGlobalBounds()};
-		//// Plus, weil Kamera mittig bewegt werden muss, nicht die Spielfigur.
-		//view.setCenter(sf::Vector2f{playerBounds.left + (playerBounds.width / 2.f), playerBounds.top + (playerBounds.height / 2.f)});
-		//window.setView(view);
+		// Der Zentrumspunkt des Translatable
+		sf::Vector2f translatableCenter{translatable.getX() + (translatable.getWidth() / 2.f), 
+			                            translatable.getY() + (translatable.getHeight() / 2.f)};
+		view.setCenter(translatableCenter);
+		window.setView(view);
 	}
 
 	sf::View const& Camera::getView() const

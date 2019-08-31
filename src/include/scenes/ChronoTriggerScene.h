@@ -8,6 +8,7 @@
 #include "animation/FadeAnimation.h"
 #include "animation/TranslateAnimation.h"
 #include "Scene.h"
+#include "Camera.h"
 
 namespace ProjectSpace
 {
@@ -24,7 +25,8 @@ namespace ProjectSpace
 			crono{ sf::Vector2f{200, 200} }, cronoSpeed{8},
 			wWasDown{false}, aWasDown{false}, sWasDown{false}, dWasDown{false}, spaceWasDown{false},
 			rWasDown{false}, fadeAnimation{crono, 255, 0, 1000},
-			translateAnimation{crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000}
+			translateAnimation{crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000},
+			camera{crono, window, sf::Vector2f{200, 200}}
 		{
 			tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -48,7 +50,7 @@ namespace ProjectSpace
 
 			translateAnimation.setEasingFunction(Easing::linear_easeNone);
 
-			Scene::addEntities({&crono, &fadeAnimation, &translateAnimation});
+			Scene::addEntities({&crono, &fadeAnimation, &translateAnimation, &camera});
 			Scene::addDrawables({&tilemap, &crono});
 		}
 
@@ -135,6 +137,7 @@ namespace ProjectSpace
 
 		FadeAnimation fadeAnimation;
 		TranslateAnimation translateAnimation;
+		Camera camera;
 	};
 }
 
