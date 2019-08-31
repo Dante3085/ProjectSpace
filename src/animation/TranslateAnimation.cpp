@@ -1,9 +1,11 @@
 
-#include "TranslateAnimation.h"
-#include "Util.h"
+#include "animation/TranslateAnimation.h"
+
 #include <math.h>
-#include "Log.h"
-#include "Easing.h"
+
+#include "animation/Easing.h"
+#include "utility/Util.h"
+#include "utility/Log.h"
 
 #include <SFML/Window/Mouse.hpp>
 

@@ -1,7 +1,9 @@
 
-#include "Line2F.h"
-#include "Util.h"
+#include "collision/Line2F.h"
+
 #include <math.h>
+
+#include "utility/Util.h"
 
 namespace ProjectSpace
 {

@@ -1,6 +1,7 @@
 
-#include "Animation.h"
-#include "Log.h"
+#include "animation/Animation.h"
+
+#include "utility/Log.h"
 
 namespace ProjectSpace
 {

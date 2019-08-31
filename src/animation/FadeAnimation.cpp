@@ -1,6 +1,5 @@
 
-#include "FadeAnimation.h"
-#include <iostream>
+#include "animation/FadeAnimation.h"
 
 namespace ProjectSpace
 {

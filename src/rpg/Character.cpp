@@ -1,7 +1,9 @@
 
-#include "Character.h"
+#include "rpg/Character.h"
+
 #include <math.h>
-#include "Util.h"
+
+#include "utility/Util.h"
 
 namespace ProjectSpace
 {

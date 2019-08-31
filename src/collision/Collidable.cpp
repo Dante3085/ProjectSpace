@@ -1,5 +1,5 @@
 
-#include "Collidable.h"
+#include "collision/Collidable.h"
 
 namespace ProjectSpace
 {

@@ -1,11 +1,8 @@
 
-#include "AnimatedSprite.h"
+#include "animation/AnimatedSprite.h"
 
-#include <stdio.h>
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
-#include "Util.h"
-#include "Log.h"
+#include "utility/Util.h"
+#include "utility/Log.h"
 
 namespace ProjectSpace
 {

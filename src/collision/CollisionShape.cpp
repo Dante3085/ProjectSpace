@@ -1,5 +1,5 @@
 
-#include "CollisionShape.h"
+#include "collision/CollisionShape.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 

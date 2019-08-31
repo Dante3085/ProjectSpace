@@ -1,5 +1,5 @@
 
-#include "CollisionBox.h"
+#include "collision/CollisionBox.h"
 
 namespace ProjectSpace
 {

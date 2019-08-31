@@ -8,9 +8,9 @@
 #include <vector>
 #include <map>
 
-#include "Entity.h"
-#include "EScene.h"
-#include "Scene.h"
+#include "scenes/Entity.h"
+#include "scenes/EScene.h"
+#include "scenes/Scene.h"
 #include "WindowStyle.h"
 
 namespace ProjectSpace
