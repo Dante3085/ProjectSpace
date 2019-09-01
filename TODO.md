@@ -16,26 +16,29 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Fix Camera
 
- - (Vorschlag) Aufteilung der Quelldateien in Unterordner. Die Klassen "Animation" und "AnimatedSprite" in Ordner "Sprites".
-   Die Klassen "Textbox", "Button", ... in den Ordner GUI. Darueber kann man sich im Team nochmal unterhalten.
-
  - Problem mit Button MouseEnter/MouseExit, wenn Fenster auf Monitor mit anderer Aufloesung verschoben wird.
 
  - In-Game-Console: Waehrend das Spiel laeuft Code eingeben und sachen veraendern.
 
  - Das gesamte Programm ruckelt in regelmaessigen Abstaenden.
 
- - Menue Buttons per Controller steuern können.
+ - ButtonMenu:
+   - Per Controller steuern können
+   - Cursor Texture(Fingerzeiger in FinalFantasy)
 
  - BattleOrder Anzeige (Vergleiche Final Fantasy 10)
 
- - Collision Detection: Unterscheiden, mit was kollidiert wurde (Mauer => Charakter stoppen; Sumpf => Charakter verlangsamen; ...)
-
- - Line2D: intersects(Line2D) Funktion, anstatt mit operator==
-
- - Util::FloatRect operator<<
-
- - Separating Axis Theorem for Collision Detection
+ - Collision Detection: 
+   - Kollisionsarten mit benutzerdefinierten Reaktionen ermöglichen (WALL => Stopp, POISON => Damage)
+   - Kollisionsschichten:
+     1. Per Grid oder Octtree wird erst überprüft, welche Collidables für eine Kollision überhaupt in
+	      Frage kommen. Das heißt, Grid oder Octree teilen die Spielwelt in abgesteckte Areale auf. 
+		    Es können nur Collidables miteinander kollidieren, die im selben Areal sind.
+	   2. Nachdem beschlossen ist, dass zwei Collidables im selben Areal sind, wird auf Sphere- oder
+	      Rectangle Collision geprüft.
+	   3. Nachdem beschlossen ist, dass die Spheres oder Rectangles(auch Sphere mit Rectangle) der beiden
+	      Collidables miteinander kollidieren, wird auf PixelPerfectCollision geprüft.
+   - https://github.com/SFML/SFML/wiki/Source:-Simple-Collision-Detection
 
  - Problem: Pointer vs C++-Reference: Beides ist in diesem Projekt inkonsistent verwendent.
 
@@ -51,8 +54,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
    (Camera View abhängige Elemente, nicht Default View abhängig)
 
  - Schnelleres Kompilieren: Trennung auf h und cpp (Bedarfsgerechtes Kompilieren mit make)
-
- - automatic makefile.
 
  - InputHandler
    - ::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
@@ -112,5 +113,3 @@ TODO: Ideen und Dinge, die ich umsetzen will.
     Wenn sie als Referenz übergeben werden, ist es aber nicht mehr möglich den vector wie folgt zu übergeben...
 	... new VBox{{btn0, btn1, btn2}, ...}; Das hat irgendwas mit lValue, rValue zu tun. Vielleicht ist das
 	Problem das es sich dann um einen temporären, unbenannten Wert handelt.
-
-  - #pragma once wegen anderen Compilern(z.B. g++ auf linux) rausschmeißen.
