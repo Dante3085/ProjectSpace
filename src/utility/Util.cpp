@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <string>
 
 namespace ProjectSpace
 {
@@ -55,6 +56,16 @@ namespace ProjectSpace
 	{
 		stream << "{" << v.x << ", " << v.y << "}";
 		return stream;
+	}
+
+	std::string toString(sf::Vector2f const& v)
+	{
+		std::string str{"{ "};
+		str.append(std::to_string(v.x));
+		str.append(", ");
+		str.append(std::to_string(v.y));
+		str.append("}");
+		return str;
 	}
 
 	template <class T>

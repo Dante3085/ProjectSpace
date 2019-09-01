@@ -21,6 +21,8 @@ namespace ProjectSpace
 
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, sf::Vector2<T> v);
+
+	std::string toString(sf::Vector2f const& v);
 	
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, std::vector<T> v);
