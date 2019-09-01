@@ -24,6 +24,12 @@ namespace ProjectSpace
 	
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, std::vector<T> v);
+
+	/* Fügt entsprechend der gegebenen Zeilenlänge \n in den gegebenen string ein,
+	   sodass nicht innerhalb eines Wortes umgebrochen wird. Zeilenzahl hat momentan
+	   keine Effekt.
+	*/
+	void parseString(std::string& text, int zeilenlaenge, int zeilenzahl);
 }
 
 #endif
