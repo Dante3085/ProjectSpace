@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/String.hpp>
 #include <vector>
 
 #include "collision/Line2F.h"
@@ -31,7 +32,7 @@ namespace ProjectSpace
 	   sodass nicht innerhalb eines Wortes umgebrochen wird. Zeilenzahl hat momentan
 	   keine Effekt.
 	*/
-	void parseString(std::string& text, int zeilenlaenge, int zeilenzahl);
+	void parseString(sf::String& text, int zeilenlaenge, int zeilenzahl);
 }
 
 #endif

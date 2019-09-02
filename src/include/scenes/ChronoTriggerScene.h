@@ -9,6 +9,7 @@
 #include "animation/TranslateAnimation.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "gui/TextBox.h"
 
 namespace ProjectSpace
 {
@@ -41,6 +42,7 @@ namespace ProjectSpace
 		FadeAnimation fadeAnimation;
 		TranslateAnimation translateAnimation;
 		Camera camera;
+		TextBox textBox;
 	};
 }
 

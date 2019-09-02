@@ -16,7 +16,9 @@ namespace ProjectSpace
 		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
 		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
 		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
-		camera{ crono, window, sf::Vector2f{200, 200} }
+		camera{ crono, window, sf::Vector2f{200, 200} },
+		textBox{"rsrc/BB2000-2.PNG", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik, die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik für den künstlerischen Ausdruck zu nutzen.",
+				sf::Vector2f(100,100),sf::Vector2f(200,200)}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -40,8 +42,8 @@ namespace ProjectSpace
 
 		translateAnimation.setEasingFunction(Easing::linear_easeNone);
 
-		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, &camera });
-		Scene::addDrawables({ &tilemap, &crono });
+		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, &camera, &textBox});
+		Scene::addDrawables({ &tilemap, &crono, &textBox});
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
@@ -102,7 +104,7 @@ namespace ProjectSpace
 		dWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 		spaceWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 		rWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::R);
-
+		
 		Scene::update(time);
 	}
 }

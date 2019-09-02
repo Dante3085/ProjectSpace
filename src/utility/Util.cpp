@@ -80,12 +80,12 @@ namespace ProjectSpace
 		return stream;
 	}
 
-	void parseString(std::string& text, int zeilenlaenge, int zeilenzahl)
+	void parseString(sf::String& text, int zeilenlaenge, int zeilenzahl)
 	{
 		int writer = 0;
 		int counter = 0;
 
-		for (int i = 0; i < text.size(); i++)
+		for (int i = 0; i < text.getSize(); i++)
 		{
 			if (counter < zeilenlaenge - 1)
 			{
@@ -102,5 +102,6 @@ namespace ProjectSpace
 				i = ++writer;
 			}
 		}
+
 	}
 }
