@@ -23,6 +23,8 @@ namespace ProjectSpace
 		Translatable const& translatable;
 		sf::RenderWindow& window;
 		sf::View view;
+
+		sf::Vector2f offset; // x-Axis and y-Axis offset to have the Translatable centered.
 	};
 }
 
