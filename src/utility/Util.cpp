@@ -26,21 +26,6 @@ namespace ProjectSpace
 		return sqrt(pow(v.x, 2) + pow(v.y, 2));
 	}
 
-	sf::Vector2f vectorMultScalar(sf::Vector2f const& v, float scalar)
-	{
-		return sf::Vector2f{ v.x * scalar, v.y * scalar };
-	}
-
-	sf::Vector2f operator*(sf::Vector2f const& v, float scalar)
-	{
-		return sf::Vector2f{ v.x * scalar, v.y * scalar };
-	}
-
-	sf::Vector2f operator-(sf::Vector2f const& v1, sf::Vector2f v2)
-	{
-		return sf::Vector2f{ v1.x - v2.x, v1.y - v2.y };
-	}
-
 	float scalarProduct(sf::Vector2f const& v1, sf::Vector2f const& v2)
 	{
 		return (v1.x * v2.x) + (v1.y * v2.y);
@@ -48,7 +33,7 @@ namespace ProjectSpace
 
 	sf::Vector2f normalizedVector(sf::Vector2f const& v)
 	{
-		return vectorMultScalar(v, 1.f / vectorLength(v));
+		return v * (1.f / vectorLength(v));
 	}
 
 	template <class T>
