@@ -19,6 +19,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
  - Problem mit Button MouseEnter/MouseExit, wenn Fenster auf Monitor mit anderer Aufloesung verschoben wird.
 
  - In-Game-Console: Waehrend das Spiel laeuft Code eingeben und sachen veraendern.
+   - https://github.com/Hapaxia/SelbaWard/wiki/Console-Screen
 
  - Das gesamte Programm ruckelt in regelmaessigen Abstaenden.
 
