@@ -1,10 +1,13 @@
 
 #include "scenes/Camera.h"
 
+#include "utility/Util.h"
+
 namespace ProjectSpace
 {
 	Camera::Camera(Translatable const& translatable, sf::RenderWindow& window, sf::Vector2f const& size) 
-	: translatable{translatable}, window{window}, view{translatable.getPosition(), size} 
+	: translatable{translatable}, window{window}, view{translatable.getPosition(), size},
+		offset{translatable.getWidth() / 2.f, translatable.getHeight() / 2.f}
 	{
 		// Zooms out
 		view.zoom(8.f);
@@ -12,9 +15,8 @@ namespace ProjectSpace
 
 	void Camera::update(sf::Time time)
 	{
-		// Der Zentrumspunkt des Translatable
-		sf::Vector2f translatableCenter{translatable.getX() + (translatable.getWidth() / 2.f), 
-			                            translatable.getY() + (translatable.getHeight() / 2.f)};
+		sf::Vector2f translatableCenter{translatable.getX() + offset.x, translatable.getY() + offset.y};
+
 		view.setCenter(translatableCenter);
 		window.setView(view);
 	}
