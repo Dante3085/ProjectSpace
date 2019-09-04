@@ -6,7 +6,7 @@
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, umbruchZaehler{ 0 }, waitFlag{ false }
+		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, umbruchZaehler{ 0 }, waitFlag{ false }, originalStr{str}
 	{
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
@@ -17,11 +17,15 @@ namespace ProjectSpace
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
 		text.setFillColor(sf::Color(0, 255, 190, 255));
-		parseString(this->str, (size.x / 25) + 1, size.y / 36.5);//zeilenanzahl =~ size / 36,5
+		parseString(this->str, ((size.x-padding) / 25)/* + 1*/, ((size.y-padding) / 36.5)/*-1*/);//zeilenanzahl =~ size / 36,5
 		text.setString(writtenStr);
 
 		rec.setPosition(position);
-		text.setPosition(position);
+		sf::Vector2f textPosition = position;
+		textPosition.x += padding;
+		textPosition.y += padding;
+		text.setPosition(textPosition);
+		
 	}
 
 	void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -44,7 +48,7 @@ namespace ProjectSpace
 			if (elapsedMillis > 20 && currentPos < str.getSize()) {
 				elapsedMillis = 0;
 				if (str[currentPos] == '\n') umbruchZaehler++;
-				if (umbruchZaehler >= (rec.getSize().y / 36.5) - 1) {
+				if (umbruchZaehler >= ((rec.getSize().y-padding) / 36.5) - 1) {
 					umbruchZaehler = 0;
 					writtenStr = "";
 					currentPos++;
@@ -68,9 +72,15 @@ namespace ProjectSpace
 
 	void TextBox::setPadding(float padding)
 	{
+		str = originalStr;
 		this->padding = padding;
 		text.setPosition(position.x + padding, position.y + padding);
-		parseText();
+		parseString(this->str, ((rec.getSize().x - padding) / 25)/* + 1*/, ((rec.getSize().y - padding) / 36.5)/*-1*/);//zeilenanzahl =~ size / 36,5
+		sf::Vector2f textPosition = rec.getPosition();
+		textPosition.x += padding;
+		textPosition.y += padding;
+		text.setPosition(textPosition);
+
 	}
 
 	void TextBox::parseText()

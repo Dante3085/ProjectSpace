@@ -81,6 +81,7 @@ namespace ProjectSpace
 		int currentPos;
 		int umbruchZaehler;
 		bool waitFlag;
+		sf::String originalStr;
 	};
 }
 
