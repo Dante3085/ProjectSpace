@@ -340,3 +340,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# ignore exceptions
+!rsrc/fonts/joystix_monospace.ttf
