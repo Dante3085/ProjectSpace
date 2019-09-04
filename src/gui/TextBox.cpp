@@ -6,19 +6,19 @@
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }
+		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, umbruchZaehler{0}
 	{
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
 		rec.setSize(size);
-		float scaleX = size.x / texture.getSize().x;
-		std::cout << texture.getSize().x << std::endl;
-		float scaleY = size.y / texture.getSize().y;
-		rec.setScale(scaleX, scaleY);
+		rec.setOutlineColor(sf::Color(255, 0, 0, 255));
+		rec.setOutlineThickness(5);
+
 
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
-		parseString(this->str, 20, 10);
+		text.setFillColor(sf::Color(0, 255, 190, 255));
+		parseString(this->str, (size.x / 25)+1, size.y/36.5);//zeilenanzahl =~ size / 36,5
 		text.setString(writtenStr);
 		rec.setPosition(position);
 		text.setPosition(position);
@@ -36,6 +36,12 @@ namespace ProjectSpace
 		elapsedMillis += time.asMilliseconds();
 		if (elapsedMillis > 20 && currentPos < str.getSize()) {
 			elapsedMillis = 0;
+			if (str[currentPos] == '\n') umbruchZaehler++;
+			if (umbruchZaehler >= (rec.getSize().y / 36.5)-1) { 
+				umbruchZaehler = 0;
+				writtenStr = "";
+				currentPos++;
+			}
 			writtenStr += str[currentPos++];
 			text.setString(writtenStr);
 		}

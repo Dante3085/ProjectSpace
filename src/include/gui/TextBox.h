@@ -79,6 +79,7 @@ namespace ProjectSpace
 		float padding;
 		float elapsedMillis;
 		int currentPos;
+		int umbruchZaehler;
 	};
 }
 
