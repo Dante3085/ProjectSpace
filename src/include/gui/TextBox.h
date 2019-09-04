@@ -9,7 +9,10 @@
 
 #include <iostream>
 #include <stdio.h>
+
 #include "MenuElement.h"
+#include "animation/Animation.h"
+#include "animation/AnimatedSprite.h"
 
 namespace ProjectSpace
 {
@@ -81,6 +84,9 @@ namespace ProjectSpace
 		int currentPos;
 		int umbruchZaehler;
 		bool waitFlag;
+
+		Animation cursorAnim;
+		AnimatedSprite cursor;
 	};
 }
 

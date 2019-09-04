@@ -6,13 +6,18 @@
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, umbruchZaehler{ 0 }, waitFlag{ false }
+		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, 
+		umbruchZaehler{ 0 }, waitFlag{ false }, cursorAnim{ "rsrc/cursor.png", 0.5f }, cursor{ sf::Vector2f{2000, 300} }
 	{
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
 		rec.setSize(size);
 		rec.setOutlineColor(sf::Color(255, 0, 0, 255));
 		rec.setOutlineThickness(5);
+
+		sf::Color c = rec.getFillColor();
+		c.a = 100;
+		rec.setFillColor(c);
 
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
@@ -22,12 +27,22 @@ namespace ProjectSpace
 
 		rec.setPosition(position);
 		text.setPosition(position);
+
+		cursorAnim.setAnimation({ {0, 0, 4, 1}, {5, 0, 4, 1}, {10, 0, 4, 1}, {15, 0, 4, 1} }, 0.5f);
+		cursor.addAnimation(EAnimation::IDLE, &cursorAnim);
+		cursor.setAnimation(EAnimation::IDLE);
+		cursor.setScale(10, 10);
 	}
 
 	void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(rec);
 		target.draw(text);
+
+		if (waitFlag)
+		{
+			target.draw(cursor);
+		}
 	}
 
 	void TextBox::update(sf::Time time)
@@ -35,7 +50,8 @@ namespace ProjectSpace
 
 		elapsedMillis += time.asMilliseconds();
 		if (waitFlag) {
-			if (elapsedMillis >= 2000) {
+			cursor.update(time);
+			if (elapsedMillis >= 5000) {
 				elapsedMillis = 0;
 				waitFlag = false;
 			}
