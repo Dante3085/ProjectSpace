@@ -80,6 +80,7 @@ namespace ProjectSpace
 		float elapsedMillis;
 		int currentPos;
 		int umbruchZaehler;
+		bool waitFlag;
 	};
 }
 
