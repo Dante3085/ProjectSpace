@@ -6,14 +6,14 @@
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, 
-		umbruchZaehler{ 0 }, waitFlag{ false }, cursorAnim{ "rsrc/cursor.png", 0.5f }, cursor{ sf::Vector2f{2000, 300} }
+		: originalStr{str}, str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, 
+		umbruchZaehler{ 0 }, waitFlag{ false }, charDelay{10}, cursorAnim{ "rsrc/cursor.png", 0.5f }, 
+		cursor{ sf::Vector2f{2000, 300} }, continueKey{sf::Keyboard::Space}, charWidth{25}, lineHeight{36.5}
 	{
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
 		rec.setSize(size);
 		rec.setOutlineColor(sf::Color(255, 0, 0, 255));
-		rec.setOutlineThickness(5);
 
 		sf::Color c = rec.getFillColor();
 		c.a = 100;
@@ -22,13 +22,20 @@ namespace ProjectSpace
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
 		text.setFillColor(sf::Color(0, 255, 190, 255));
-		parseString(this->str, (size.x / 25) + 1, size.y / 36.5);//zeilenanzahl =~ size / 36,5
+
+		//zeilenanzahl =~ size / 36,5
+		parseString(this->str, ((size.x-padding) / charWidth));
 		text.setString(writtenStr);
 
 		rec.setPosition(position);
 		text.setPosition(position);
 
-		cursorAnim.setAnimation({ {0, 0, 4, 1}, {5, 0, 4, 1}, {10, 0, 4, 1}, {15, 0, 4, 1} }, 0.5f);
+		sf::Vector2f textPosition = position;
+		textPosition.x += padding;
+		textPosition.y += padding;
+		text.setPosition(textPosition);
+
+		cursorAnim.setAnimation({ {0, 0, 5, 1}, {5, 0, 5, 1}, {10, 0, 5, 1}, {15, 0, 5, 1} }, 0.5f);
 		cursor.addAnimation(EAnimation::IDLE, &cursorAnim);
 		cursor.setAnimation(EAnimation::IDLE);
 		cursor.setScale(10, 10);
@@ -47,24 +54,28 @@ namespace ProjectSpace
 
 	void TextBox::update(sf::Time time)
 	{
-
 		elapsedMillis += time.asMilliseconds();
+
 		if (waitFlag) {
 			cursor.update(time);
-			if (elapsedMillis >= 5000) {
-				elapsedMillis = 0;
+			if (sf::Keyboard::isKeyPressed(continueKey))
+			{
 				waitFlag = false;
 			}
 		}
 		else {
-			if (elapsedMillis > 20 && currentPos < str.getSize()) {
+			if (elapsedMillis > charDelay && currentPos < str.getSize()) {
 				elapsedMillis = 0;
-				if (str[currentPos] == '\n') umbruchZaehler++;
-				if (umbruchZaehler >= (rec.getSize().y / 36.5) - 1) {
+				if (str[currentPos] == '\n') ++umbruchZaehler;
+				if (umbruchZaehler >= ((rec.getSize().y-padding) / lineHeight) - 1) {
 					umbruchZaehler = 0;
 					writtenStr = "";
 					currentPos++;
 					waitFlag = true;
+
+					sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
+					cursorPos.y += text.getCharacterSize();
+					cursor.setPosition(cursorPos);
 				}
 				else {
 					writtenStr += str[currentPos++];
@@ -72,7 +83,6 @@ namespace ProjectSpace
 				}
 			}
 		}
-		//	// TODO(moritz):
 	}
 
 	void TextBox::setOpacity(int opacity)
@@ -85,8 +95,15 @@ namespace ProjectSpace
 	void TextBox::setPadding(float padding)
 	{
 		this->padding = padding;
+
+		str = originalStr;
 		text.setPosition(position.x + padding, position.y + padding);
-		parseText();
+		parseString(str, ((rec.getSize().x - padding) / charWidth));
+
+		sf::Vector2f textPosition = rec.getPosition();
+		textPosition.x += padding;
+		textPosition.y += padding;
+		text.setPosition(textPosition);
 	}
 
 	void TextBox::parseText()

@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <SFML/Window/Keyboard.hpp>
 
 #include "MenuElement.h"
 #include "animation/Animation.h"
@@ -72,6 +73,7 @@ namespace ProjectSpace
 		 */
 		void parseText();
 
+		sf::String originalStr;
 		sf::String str;
 		sf::String writtenStr;
 		sf::Text text;
@@ -84,11 +86,14 @@ namespace ProjectSpace
 		int currentPos;
 		int umbruchZaehler;
 		bool waitFlag;
+		float charDelay;
+		int charWidth;
+		float lineHeight;
 
 		Animation cursorAnim;
 		AnimatedSprite cursor;
-		
-		sf::String originalStr;
+
+		sf::Keyboard::Key continueKey;
 	};
 }
 
