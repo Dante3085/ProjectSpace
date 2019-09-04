@@ -24,7 +24,7 @@ namespace ProjectSpace
 		text.setFillColor(sf::Color(0, 255, 190, 255));
 
 		//zeilenanzahl =~ size / 36,5
-		parseString(this->str, ((size.x-padding) / charWidth));
+		lineBreaker(this->str, ((size.x-padding) / charWidth));
 		text.setString(writtenStr);
 
 		rec.setPosition(position);
@@ -98,7 +98,7 @@ namespace ProjectSpace
 
 		str = originalStr;
 		text.setPosition(position.x + padding, position.y + padding);
-		parseString(str, ((rec.getSize().x - padding) / charWidth));
+		lineBreaker(str, ((rec.getSize().x - padding) / charWidth));
 
 		sf::Vector2f textPosition = rec.getPosition();
 		textPosition.x += padding;
