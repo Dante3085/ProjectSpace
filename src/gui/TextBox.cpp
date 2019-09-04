@@ -14,12 +14,12 @@ namespace ProjectSpace
 		rec.setOutlineColor(sf::Color(255, 0, 0, 255));
 		rec.setOutlineThickness(5);
 
-
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
 		text.setFillColor(sf::Color(0, 255, 190, 255));
 		parseString(this->str, (size.x / 25) + 1, size.y / 36.5);//zeilenanzahl =~ size / 36,5
 		text.setString(writtenStr);
+
 		rec.setPosition(position);
 		text.setPosition(position);
 	}

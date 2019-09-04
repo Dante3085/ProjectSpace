@@ -14,8 +14,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - TextBox
 
- - Fix Camera
-
  - Problem mit Button MouseEnter/MouseExit, wenn Fenster auf Monitor mit anderer Aufloesung verschoben wird.
 
  - In-Game-Console: Waehrend das Spiel laeuft Code eingeben und sachen veraendern.
@@ -48,10 +46,9 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Pufferbereich in Kollision, um Kollision nicht ständig auszulösen.
 
- - View Kamera
-
- - Menü, dass sich auf veränderndem View der Kamera immer an derselben Stelle öffnet und schließt.
-   (Camera View abhängige Elemente, nicht Default View abhängig)
+ - Camera
+   - Menü soll sich immer an derselben Stelle relativ zum View öffnen.
+   - Einstellmöglichkeit bei setTranslatable() einen mit Easing unterstzützen Fokuswechsel zu machen(Kameraschwenk).
 
  - Schnelleres Kompilieren: Trennung auf h und cpp (Bedarfsgerechtes Kompilieren mit make)
 
@@ -67,9 +64,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
-
- - Camera beim Scene-Wechsel irgendwie resetten, da Kameraeinstellung von der Camera einer Scene in der naechsten Scene bestehen bleibt,
- die Camera aber nicht mehr geupdatet wird.
 
  - ExpandMenu Buttonreihenfolge in oberster VBox zufaellig vertauscht
 
