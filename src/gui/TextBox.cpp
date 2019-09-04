@@ -11,8 +11,12 @@ namespace ProjectSpace
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
 		rec.setSize(size);
+		float scaleX = size.x / texture.getSize().x;
+		std::cout << texture.getSize().x << std::endl;
+		float scaleY = size.y / texture.getSize().y;
+		rec.setScale(scaleX, scaleY);
 
-		font.loadFromFile("rsrc/fonts/arial.ttf");
+		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
 		parseString(this->str, 20, 10);
 		text.setString(writtenStr);
@@ -27,10 +31,10 @@ namespace ProjectSpace
 	}
 
 	void TextBox::update(sf::Time time)
-	{	
+	{
 
 		elapsedMillis += time.asMilliseconds();
-		if (elapsedMillis > 20 && currentPos<str.getSize()) {
+		if (elapsedMillis > 20 && currentPos < str.getSize()) {
 			elapsedMillis = 0;
 			writtenStr += str[currentPos++];
 			text.setString(writtenStr);
@@ -54,7 +58,7 @@ namespace ProjectSpace
 
 	void TextBox::parseText()
 	{
-		float const recWidth = rec.getGlobalBounds().width; 
+		float const recWidth = rec.getGlobalBounds().width;
 		for (int i = 0; i < text.getString().getSize(); ++i)
 		{
 			if (text.findCharacterPos(i).x > recWidth)
