@@ -17,7 +17,7 @@ namespace ProjectSpace
 		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
 		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
-		textBox{"rsrc/BB2000-2.PNG", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik, die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik für den künstlerischen Ausdruck zu nutzen.",
+		textBox{"rsrc/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik, die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik für den künstlerischen Ausdruck zu nutzen.",
 				sf::Vector2f(600,600), sf::Vector2f(200,200)}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");

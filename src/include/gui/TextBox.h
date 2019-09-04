@@ -49,11 +49,14 @@ namespace ProjectSpace
 		 */
 		void update(sf::Time time) override;
 
+		//Textbox Funktionalität
 		void setOpacity(int opacity);
 		void setPadding(float padding);
 		void setSize(float width, float height);
 		void setSize(sf::Vector2f const& size);
+		void setTextColor(sf::Color color);
 		
+		//Overrride der Vererbung
 		void setPosition(sf::Vector2f const& position) override;
 		void setPosition(float x, float y) override;
 		void move(sf::Vector2f const& by) override;
@@ -66,12 +69,6 @@ namespace ProjectSpace
 		float getHeight() const override;
 
 	private:
-
-
-		/**
-		 * @brief      Checks if Text reaches over TextBox's edge taking padding into account and corrects for that.
-		 */
-		void parseText();
 
 		sf::String originalStr;
 		sf::String str;

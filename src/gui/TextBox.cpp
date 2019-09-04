@@ -21,8 +21,8 @@ namespace ProjectSpace
 
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
-		text.setFillColor(sf::Color(0, 255, 190, 255));
-
+		//text.setFillColor(sf::Color(0, 255, 190, 255));
+		text.setFillColor(sf::Color(255, 255, 255, 255));
 		//zeilenanzahl =~ size / 36,5
 		lineBreaker(this->str, ((size.x-padding) / charWidth));
 		text.setString(writtenStr);
@@ -112,20 +112,6 @@ namespace ProjectSpace
 		text.setPosition(textPosition);
 	}
 
-	void TextBox::parseText()
-	{
-		float const recWidth = rec.getGlobalBounds().width;
-		for (int i = 0; i < text.getString().getSize(); ++i)
-		{
-			if (text.findCharacterPos(i).x > recWidth)
-			{
-				auto str = text.getString();
-				str.insert(i, "\n");
-				text.setString(str);
-			}
-		}
-	}
-
 	void TextBox::setPosition(float x, float y)
 	{
 		position.x = x;
@@ -167,6 +153,10 @@ namespace ProjectSpace
 	void TextBox::setSize(sf::Vector2f const& size)
 	{
 		rec.setSize(size);
+	}
+
+	void TextBox::setTextColor(sf::Color color) {
+		text.setFillColor(color);
 	}
 
 	sf::Vector2f TextBox::getPosition() const
