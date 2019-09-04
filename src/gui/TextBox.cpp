@@ -6,9 +6,9 @@
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: originalStr{str}, str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, 
-		umbruchZaehler{ 0 }, waitFlag{ false }, charDelay{100}, cursorAnim{ "rsrc/cursor.png", 0.5f }, 
-		cursor{ sf::Vector2f{2000, 300} }, continueKey{sf::Keyboard::Space}, charWidth{25}, lineHeight{36.5}
+		: originalStr{ str }, str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 },
+		umbruchZaehler{ 0 }, waitFlag{ false }, charDelay{ 100 }, cursorAnim{ "rsrc/cursor.png", 0.5f },
+		cursor{ sf::Vector2f{2000, 300} }, continueKey{ sf::Keyboard::Space }, charWidth{ 25 }, lineHeight{ 36.5 }
 	{
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
@@ -24,7 +24,7 @@ namespace ProjectSpace
 		//text.setFillColor(sf::Color(0, 255, 190, 255));
 		text.setFillColor(sf::Color(255, 255, 255, 255));
 		//zeilenanzahl =~ size / 36,5
-		lineBreaker(this->str, ((size.x-padding) / charWidth));
+		lineBreaker(this->str, ((size.x - padding) / charWidth));
 		text.setString(writtenStr);
 
 		rec.setPosition(position);
@@ -56,7 +56,8 @@ namespace ProjectSpace
 	{
 		elapsedMillis += time.asMilliseconds();
 		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
-		if (waitFlag) {
+		if (waitFlag)
+		{
 			cursor.update(time);
 			if (continueKeyPressed)
 			{
@@ -64,16 +65,20 @@ namespace ProjectSpace
 				continueKeyPressed = false;
 			}
 		}
-		else {
+		else
+		{
 			float actualCharDelay = 0;
-			if (!continueKeyPressed) {
+			if (!continueKeyPressed)
+			{
 				actualCharDelay = charDelay;
 				continueKeyPressed = false;
 			}
-			if (elapsedMillis > actualCharDelay && currentPos < str.getSize()) {
+			if (elapsedMillis > actualCharDelay && currentPos < str.getSize())
+			{
 				elapsedMillis = 0;
 				if (str[currentPos] == '\n') ++umbruchZaehler;
-				if (umbruchZaehler >= ((rec.getSize().y-padding) / lineHeight) - 1) {
+				if (umbruchZaehler >= ((rec.getSize().y - padding) / lineHeight) - 1)
+				{
 					umbruchZaehler = 0;
 					writtenStr = "";
 					currentPos++;
@@ -83,7 +88,8 @@ namespace ProjectSpace
 					cursorPos.y += text.getCharacterSize();
 					cursor.setPosition(cursorPos);
 				}
-				else {
+				else
+				{
 					writtenStr += str[currentPos++];
 					text.setString(writtenStr);
 				}
@@ -155,7 +161,8 @@ namespace ProjectSpace
 		rec.setSize(size);
 	}
 
-	void TextBox::setTextColor(sf::Color color) {
+	void TextBox::setTextColor(sf::Color color)
+	{
 		text.setFillColor(color);
 	}
 
@@ -173,13 +180,16 @@ namespace ProjectSpace
 	{
 		return rec.getGlobalBounds().height;
 	}
-	float TextBox::getX() const {
+	float TextBox::getX() const
+	{
 		return rec.getPosition().x;
 	};
-	float TextBox::getY() const {
+	float TextBox::getY() const
+	{
 		return rec.getPosition().y;
 	};
-	sf::Vector2f TextBox::getSize() const {
+	sf::Vector2f TextBox::getSize() const
+	{
 		return rec.getSize();
 	};
 }

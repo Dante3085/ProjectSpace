@@ -32,7 +32,7 @@ namespace ProjectSpace
 		 * @param[in]  width        The width
 		 * @param[in]  height       The height
 		 */
-		TextBox(std::string texturePath, sf::String str, sf::Vector2f size = sf::Vector2f{100, 100}, sf::Vector2f position = sf::Vector2f{0, 0});
+		TextBox(std::string texturePath, sf::String str, sf::Vector2f size = sf::Vector2f{ 100, 100 }, sf::Vector2f position = sf::Vector2f{ 0, 0 });
 
 		/**
 		 * @brief      Draws Rectangle and Text of this TextBox(Draws this TextBox).
@@ -55,7 +55,7 @@ namespace ProjectSpace
 		void setSize(float width, float height);
 		void setSize(sf::Vector2f const& size);
 		void setTextColor(sf::Color color);
-		
+
 		//Overrride der Vererbung
 		void setPosition(sf::Vector2f const& position) override;
 		void setPosition(float x, float y) override;
