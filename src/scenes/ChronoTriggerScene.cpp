@@ -41,8 +41,10 @@ namespace ProjectSpace
 		crono.setScale(6, 6);
 
 		translateAnimation.setEasingFunction(Easing::linear_easeNone);
-
-		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, &textBox});
+		
+		textBox.setPadding(25);
+		
+		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, &camera, &textBox});
 		Scene::addDrawables({ &tilemap, &crono, &textBox});
 	}
 

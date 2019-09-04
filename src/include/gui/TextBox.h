@@ -87,6 +87,8 @@ namespace ProjectSpace
 
 		Animation cursorAnim;
 		AnimatedSprite cursor;
+		
+		sf::String originalStr;
 	};
 }
 
