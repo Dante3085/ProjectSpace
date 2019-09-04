@@ -85,14 +85,14 @@ namespace ProjectSpace
 		return stream;
 	}
 
-	void parseString(sf::String& text, int zeilenlaenge, int zeilenzahl)
+	void lineBreaker(sf::String& text, int lineLength)
 	{
 		int writer = 0;
 		int counter = 0;
 
 		for (int i = 0; i < text.getSize(); i++)
 		{
-			if (counter < zeilenlaenge - 1)
+			if (counter < lineLength - 1)
 			{
 				if (text[i] == ' ')
 				{

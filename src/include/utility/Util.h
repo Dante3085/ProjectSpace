@@ -33,7 +33,7 @@ namespace ProjectSpace
 	   sodass nicht innerhalb eines Wortes umgebrochen wird. Zeilenzahl hat momentan
 	   keine Effekt.
 	*/
-	void parseString(sf::String& text, int zeilenlaenge, int zeilenzahl);
+	void lineBreaker(sf::String& text, int lineLength);
 }
 
 #endif
