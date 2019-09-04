@@ -19,7 +19,6 @@
 #include "animation/Animation.h"
 #include "animation/Fadeable.h"
 #include "scenes/Entity.h"
-#include "collision/Collidable.h"
 
 namespace ProjectSpace
 {

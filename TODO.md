@@ -113,3 +113,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
     Wenn sie als Referenz übergeben werden, ist es aber nicht mehr möglich den vector wie folgt zu übergeben...
 	... new VBox{{btn0, btn1, btn2}, ...}; Das hat irgendwas mit lValue, rValue zu tun. Vielleicht ist das
 	Problem das es sich dann um einen temporären, unbenannten Wert handelt.
+
+  - ScrollText
+    - Horizontal scrollender Text, der ab bestimmter Grenze wieder am Anfang weiterscrollt.
+	- https://www.youtube.com/watch?v=e_pY-uGkDFA

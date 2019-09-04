@@ -95,7 +95,14 @@ namespace ProjectSpace
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 		{
-			fadeAnimation.reset();
+			if (&camera.getTranslatable() == &crono)
+			{
+				camera.setTranslatable(textBox);
+			}
+			else
+			{
+				camera.setTranslatable(crono);
+			}
 		}
 
 		wWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::W);

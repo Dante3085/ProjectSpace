@@ -17,12 +17,17 @@ namespace ProjectSpace
 		Camera(Translatable const& translatable, sf::RenderWindow& window, sf::Vector2f const& size);
 
 		void update(sf::Time time) override;
+
 		sf::View const& getView() const;
+		Translatable const& getTranslatable() const;
+		void setTranslatable(Translatable const& translatable);
 
 	private:
-		Translatable const& translatable;
+		Translatable const* translatable;
 		sf::RenderWindow& window;
 		sf::View view;
+
+		sf::Vector2f offset; // x-Axis and y-Axis offset to have the Translatable centered.
 	};
 }
 
