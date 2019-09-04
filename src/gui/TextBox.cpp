@@ -11,15 +11,13 @@ namespace ProjectSpace
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
 		rec.setSize(size);
-		float scaleX = size.x / texture.getSize().x;
-		std::cout << texture.getSize().x << std::endl;
-		float scaleY = size.y / texture.getSize().y;
-		rec.setScale(scaleX, scaleY);
+		rec.setScale(size / (sf::Vector2f)texture.getSize());
 
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
 		parseString(this->str, 20, 10);
 		text.setString(writtenStr);
+
 		rec.setPosition(position);
 		text.setPosition(position);
 	}
