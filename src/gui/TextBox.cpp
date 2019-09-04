@@ -7,7 +7,7 @@ namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
 		: originalStr{str}, str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 }, 
-		umbruchZaehler{ 0 }, waitFlag{ false }, charDelay{10}, cursorAnim{ "rsrc/cursor.png", 0.5f }, 
+		umbruchZaehler{ 0 }, waitFlag{ false }, charDelay{100}, cursorAnim{ "rsrc/cursor.png", 0.5f }, 
 		cursor{ sf::Vector2f{2000, 300} }, continueKey{sf::Keyboard::Space}, charWidth{25}, lineHeight{36.5}
 	{
 		texture.loadFromFile(texturePath);
@@ -55,16 +55,22 @@ namespace ProjectSpace
 	void TextBox::update(sf::Time time)
 	{
 		elapsedMillis += time.asMilliseconds();
-
+		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
 		if (waitFlag) {
 			cursor.update(time);
-			if (sf::Keyboard::isKeyPressed(continueKey))
+			if (continueKeyPressed)
 			{
 				waitFlag = false;
+				continueKeyPressed = false;
 			}
 		}
 		else {
-			if (elapsedMillis > charDelay && currentPos < str.getSize()) {
+			float actualCharDelay = 0;
+			if (!continueKeyPressed) {
+				actualCharDelay = charDelay;
+				continueKeyPressed = false;
+			}
+			if (elapsedMillis > actualCharDelay && currentPos < str.getSize()) {
 				elapsedMillis = 0;
 				if (str[currentPos] == '\n') ++umbruchZaehler;
 				if (umbruchZaehler >= ((rec.getSize().y-padding) / lineHeight) - 1) {
