@@ -34,5 +34,7 @@ namespace ProjectSpace
 	void Camera::setTranslatable(Translatable const& translatable)
 	{
 		this->translatable = &translatable;
+		offset.x = translatable.getWidth() / 2.f;
+		offset.y = translatable.getHeight() / 2.f;
 	}
 }
