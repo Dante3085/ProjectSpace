@@ -36,6 +36,8 @@ namespace ProjectSpace
 		{
 			elapsedTime = 0;
 			doUpdate = false;
+			translatable.setPosition(to);
+
 			return;
 		}
 	}
