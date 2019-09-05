@@ -175,14 +175,7 @@ namespace ProjectSpace
 			setCurrentScene(EScene::COLLISION_SCENE);
 		}, window, "Collision Scene" };
 
-		Button* b0 = new Button{ [this]() {}, window, "b0" };
-		Button* b1 = new Button{ [this]() {}, window, "b1" };
-		Button* b2 = new Button{ [this]() {}, window, "b2" };
-		Button* b3 = new Button{ [this]() {}, window, "b3" };
-		VBox* vbox = new VBox{ {b2, b3}, sf::Vector2f{0, 0}, 5 };
-		HBox* hbox = new HBox{ {b0, b1, vbox}, sf::Vector2f{0, 0}, 5 };
-
-		btnBox->addMenuElements({ btn, btn2, btn3, btn4, btn5, btn6, hbox });
+		btnBox->addMenuElements({ btn, btn2, btn3, btn4, btn5, btn6 });
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
@@ -191,13 +184,14 @@ namespace ProjectSpace
 
 		float btnBoxWidth = btnBox->getWidth();
 		TranslateAnimation* menuTa;
-		menuTa = new TranslateAnimation{ *btnBox, sf::Vector2f{-250-btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 300 };
+		menuTa = new TranslateAnimation{ *btnBox, sf::Vector2f{-250 - btnBoxWidth, 50}, sf::Vector2f{-5, 50}, 500 };
+		menuTa->start();
 
 		btn2->setOnPressed([btnBoxWidth, menuTa]()
 		{
 				menuTa->setFrom(menuTa->getTranslatable().getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-				menuTa->setEasingFunction(Easing::quad_easeIn);
+				menuTa->setEasingFunction(Easing::back_easeInOut);
 				menuTa->start();
 		});
 
@@ -207,30 +201,33 @@ namespace ProjectSpace
 		globalInputHandler->storeKeyState(key::Tab, false);
 		globalInputHandler->storeKeyState(key::E, false);
 		globalInputHandler->storeKeyState(key::R, false);
-		globalInputHandler->add([this, menuTa, btnBoxWidth, globalInputHandler, fpsCounter]()
+		globalInputHandler->storeKeyState(key::Tab, false);
+		globalInputHandler->add([this, menuTa, btnBoxWidth, globalInputHandler, fpsCounter, btnBox]()
 		{
 			if (key::isKeyPressed(key::Escape))
 			{
 				window.close();
 			}
 
-			if (!globalInputHandler->wasKeyPressed(key::E) && key::isKeyPressed(key::E))
+			if (!globalInputHandler->wasKeyPressed(key::Tab) && key::isKeyPressed(key::Tab))
 			{
-				menuTa->setFrom(menuTa->getTranslatable().getPosition());
-				menuTa->setTo(sf::Vector2f{ -5, 50 });
-				menuTa->setEasingFunction(Easing::sine_easeInOut);
-				menuTa->start();
+				if (menuTa->getTo() == sf::Vector2f{ -250 - btnBoxWidth, 50 })
+				{
+					menuTa->setFrom(menuTa->getTranslatable().getPosition());
+					menuTa->setTo(sf::Vector2f{ -5, 50 });
+					menuTa->setEasingFunction(Easing::back_easeInOut);
+					menuTa->start();
+				}
+				else
+				{
+					menuTa->setFrom(menuTa->getTranslatable().getPosition());
+					menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
+					menuTa->setEasingFunction(Easing::back_easeInOut);
+					menuTa->start();
+				}
 			}
 
-			if (!globalInputHandler->wasKeyPressed(key::R) && key::isKeyPressed(key::R))
-			{
-				menuTa->setFrom(menuTa->getTranslatable().getPosition());
-				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-				menuTa->setEasingFunction(Easing::sine_easeInOut);
-				menuTa->start();
-			}
-
-			if (key::isKeyPressed(key::F1) && !globalInputHandler->wasKeyPressed(key::F1))
+			if (!globalInputHandler->wasKeyPressed(key::F1) && key::isKeyPressed(key::F1))
 			{
 				if (fpsCounter->isHidden())
 				{
@@ -243,9 +240,9 @@ namespace ProjectSpace
 			}
 
 			globalInputHandler->storeKeyState(key::F1, key::isKeyPressed(key::F1));
-			globalInputHandler->storeKeyState(key::F1, key::isKeyPressed(key::Tab));
 			globalInputHandler->storeKeyState(key::E, key::isKeyPressed(key::E));
 			globalInputHandler->storeKeyState(key::R, key::isKeyPressed(key::R));
+			globalInputHandler->storeKeyState(key::Tab, key::isKeyPressed(key::Tab));
 		});
 
 		globalEntities = {fpsCounter, globalInputHandler, btnBox, menuTa, buttonMenu};

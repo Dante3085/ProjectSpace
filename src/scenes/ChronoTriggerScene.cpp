@@ -2,23 +2,29 @@
 #include "scenes/ChronoTriggerScene.h"
 
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
+
+#include "utility/Util.h"
 
 namespace ProjectSpace
 {
 	ChronoTriggerScene::ChronoTriggerScene(sf::RenderWindow& window)
-		: Scene{ window }, tilemap{ "rsrc/SNES - Chrono Trigger - Court Room.gif" },
-		cronoIdle{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkLeft{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkUp{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkRight{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkDown{ "rsrc/CronoTransparentBackground.png" },
+		: Scene{ window }, tilemap{ "rsrc/tilesets/SNES - Chrono Trigger - Court Room.gif" },
+		cronoIdle{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkLeft{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkUp{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkRight{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
 		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
 		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
 		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
-		textBox{"rsrc/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik, die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik für den künstlerischen Ausdruck zu nutzen.",
-				sf::Vector2f(600,600), sf::Vector2f(200,200)}
+		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
+		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
+		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
+		"für den künstlerischen Ausdruck zu nutzen.",
+				sf::Vector2f(1000,600), sf::Vector2f(200,200)}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -43,8 +49,11 @@ namespace ProjectSpace
 		translateAnimation.setEasingFunction(Easing::linear_easeNone);
 		
 		textBox.setPadding(25);
+		//// textBox.setPosition(1000, 1000);
+		//textBox.setPosition(sf::Vector2f{ 1000, 1000 });
+		//textBox.setSize(2000, 400);
 		
-		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, &camera, &textBox});
+		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox});
 		Scene::addDrawables({ &tilemap, &crono, &textBox});
 	}
 
@@ -92,7 +101,8 @@ namespace ProjectSpace
 
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			// translateAnimation.start();
+			/*sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
+			dd::drawRec(mousePosition, sf::Vector2f{ 100, 100 }, *this);*/
 		}
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))

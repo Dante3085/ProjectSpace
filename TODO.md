@@ -52,15 +52,12 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Schnelleres Kompilieren: Trennung auf h und cpp (Bedarfsgerechtes Kompilieren mit make)
 
- - InputHandler
-   - ::isKeyPressed() Name macht den Eindruck als ob der wirklich aktuelle Drueckzustand eines Buttons abgerufen wird.
-     Dabei ist es der letzte gespeicherte. Das ist etwas uneindeutig.
-
+ - InputSystem
    - Aufwand, um auf einmaligen key press zu checken ist zu groß. Store Key State vor handler function.
      In handler function auf vorher nicht, jetzt schon gedrückt prüfen und am Ende der handler function key Key State
      speichern.
-
    - InputHandling überdenken: Globaler InputHandler auf dem InputEvents registriert werden können.
+   - New InputSystem: https://www.gamedev.net/blogs/entry/2250186-designing-a-robust-input-handling-system-for-games/
 
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
