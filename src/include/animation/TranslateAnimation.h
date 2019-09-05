@@ -3,6 +3,7 @@
 #define TRANSLATE_ANIMATION_H
 
 #include <SFML/System/Vector2.hpp>
+#include <functional>
 
 #include "animation/Translatable.h"
 #include "animation/Easing.h"
@@ -98,12 +99,11 @@ namespace ProjectSpace
 		 */
 		Translatable& getTranslatable() const;
 
+		void setOnFinished(std::function<void()> onFinished);
+
 		float getDuration() const;
-
 		void setDuration(float duration);
-
 		float getElapsedTime() const;
-
 		bool isUpdating() const;
 
 		/**
@@ -112,15 +112,16 @@ namespace ProjectSpace
 		void reverse();
 
 	private:
-		Translatable& translatable;	// The Translatable that the TranslateAnimation will work on.
-		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.
-		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
+		Translatable& translatable;	           // The Translatable that the TranslateAnimation will work on.
+		sf::Vector2f from;			           // The point in 2D-Space the TranslateAnimation will start from.
+		sf::Vector2f to;			           // The point in 2D-Space the TranslateAnimation will end on.
 		float duration;
 		float elapsedTime;
-		bool doUpdate;				// Controls whether TranslateAnimation updates itself.
+		bool doUpdate;				           // Controls whether TranslateAnimation updates itself.
 
-		sf::Vector2f currentVelocity; // The value with which the Translatable's position is modified each update() call.
-		Easing::EasingFunction easingFunction;
+		sf::Vector2f currentVelocity;          // The value with which the Translatable's position is modified each update() call.
+		Easing::EasingFunction easingFunction; // An EasingFunction that is used to ease the Translatable's position from 'from' to 'to'.
+		std::function<void()> onFinished;
 
 		Log* log;
 	};

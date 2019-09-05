@@ -13,7 +13,7 @@ namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(Translatable& translatable, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
 		: translatable{ translatable }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
-		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, log{ &Log::getInstance() }
+		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, onFinished{ []() {} }, log{ &Log::getInstance() }
 	{
 		translatable.setPosition(from);
 	}
@@ -32,11 +32,13 @@ namespace ProjectSpace
 
 		elapsedTime += time.asMilliseconds();
 
+		// TranslateAnimation finished
 		if (elapsedTime > duration)
 		{
 			elapsedTime = 0;
 			doUpdate = false;
 			translatable.setPosition(to);
+			onFinished();
 
 			return;
 		}
@@ -91,6 +93,11 @@ namespace ProjectSpace
 	Translatable& TranslateAnimation::getTranslatable() const
 	{
 		return translatable;
+	}
+
+	void TranslateAnimation::setOnFinished(std::function<void()> onFinished)
+	{
+		this->onFinished = onFinished;
 	}
 
 	float TranslateAnimation::getDuration() const
