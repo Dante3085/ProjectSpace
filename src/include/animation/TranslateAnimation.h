@@ -31,6 +31,8 @@ namespace ProjectSpace
 		TranslateAnimation(Translatable& translatable, sf::Vector2f const& from = sf::Vector2f{0, 0},
 		sf::Vector2f const& to = sf::Vector2f{50, 0}, float duration = 1000);
 
+		TranslateAnimation();
+
 		/**
 		 * @brief      Updates the TranslateAnimation each frame.
 		 *
@@ -112,7 +114,7 @@ namespace ProjectSpace
 		void reverse();
 
 	private:
-		Translatable& translatable;	// The Translatable that the TranslateAnimation will work on.
+		Translatable* translatable;	// The Translatable that the TranslateAnimation will work on.
 		sf::Vector2f from;			// The point in 2D-Space the TranslateAnimation will start from.
 		sf::Vector2f to;			// The point in 2D-Space the TranslateAnimation will end on.
 		float duration;

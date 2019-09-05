@@ -12,23 +12,35 @@
 namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(Translatable& translatable, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
-		: translatable{ translatable }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
+		: translatable{ &translatable }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
 		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, log{ &Log::getInstance() }
 	{
 		translatable.setPosition(from);
 	}
 
+	TranslateAnimation::TranslateAnimation()
+		: translatable{nullptr}, from{0, 0}, to{50, 0}, duration{1000}, elapsedTime{0}, doUpdate{false},
+		currentVelocity{-1, -1}, easingFunction{Easing::elastic_easeOut}, log{&Log::getInstance()}
+	{
+
+	}
+
 	void TranslateAnimation::update(sf::Time time)
 	{
-		// TODO: Mitten in einer anderen TranslateAnimation aufnehmen.
-
 		if (!doUpdate)
 			return;
+
+		if (translatable == nullptr)
+		{
+			log->defaultLog("@TranslateAnimation::update(): Translatable is nullptr. Returning and blocking update...", ll::ERR);
+			doUpdate = false;
+			return;
+		}
 
 		currentVelocity.x = easingFunction(elapsedTime, from.x, to.x - from.x, duration);
 		currentVelocity.y = easingFunction(elapsedTime, from.y, to.y - from.y, duration);
 
-		translatable.setPosition(currentVelocity);
+		translatable->setPosition(currentVelocity);
 
 		elapsedTime += time.asMilliseconds();
 
@@ -83,12 +95,12 @@ namespace ProjectSpace
 
 	void TranslateAnimation::setTranslatable(Translatable& translatable)
 	{
-		this->translatable = translatable;
+		this->translatable = &translatable;
 	}
 
 	Translatable& TranslateAnimation::getTranslatable() const
 	{
-		return translatable;
+		return *translatable;
 	}
 
 	float TranslateAnimation::getDuration() const
