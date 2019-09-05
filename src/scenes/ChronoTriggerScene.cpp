@@ -9,18 +9,18 @@
 namespace ProjectSpace
 {
 	ChronoTriggerScene::ChronoTriggerScene(sf::RenderWindow& window)
-		: Scene{ window }, tilemap{ "rsrc/SNES - Chrono Trigger - Court Room.gif" },
-		cronoIdle{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkLeft{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkUp{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkRight{ "rsrc/CronoTransparentBackground.png" },
-		cronoWalkDown{ "rsrc/CronoTransparentBackground.png" },
+		: Scene{ window }, tilemap{ "rsrc/tilesets/SNES - Chrono Trigger - Court Room.gif" },
+		cronoIdle{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkLeft{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkUp{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkRight{ "rsrc/spritesheets/CronoTransparentBackground.png" },
+		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
 		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
 		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
 		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
-		textBox{"rsrc/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
+		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
 		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
 		"für den künstlerischen Ausdruck zu nutzen.",
@@ -101,11 +101,8 @@ namespace ProjectSpace
 
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			// translateAnimation.start();
 			/*sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
-			DebugDrawing::drawRec(mousePosition, sf::Vector2f{ 100, 100 }, *this);*/
-			// textBox.move(30, 0);
-			textBox.move(sf::Vector2f{ 30, 5 });
+			dd::drawRec(mousePosition, sf::Vector2f{ 100, 100 }, *this);*/
 		}
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
