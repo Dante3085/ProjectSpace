@@ -2,6 +2,9 @@
 #include "scenes/ChronoTriggerScene.h"
 
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
+
+#include "utility/Util.h"
 
 namespace ProjectSpace
 {
@@ -17,8 +20,11 @@ namespace ProjectSpace
 		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
 		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
-		textBox{"rsrc/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik, die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik für den künstlerischen Ausdruck zu nutzen.",
-				sf::Vector2f(600,600), sf::Vector2f(200,200)}
+		textBox{"rsrc/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
+		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
+		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
+		"für den künstlerischen Ausdruck zu nutzen.",
+				sf::Vector2f(1000,600), sf::Vector2f(200,200)}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -43,8 +49,11 @@ namespace ProjectSpace
 		translateAnimation.setEasingFunction(Easing::linear_easeNone);
 		
 		textBox.setPadding(25);
+		//// textBox.setPosition(1000, 1000);
+		//textBox.setPosition(sf::Vector2f{ 1000, 1000 });
+		//textBox.setSize(2000, 400);
 		
-		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, &camera, &textBox});
+		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox});
 		Scene::addDrawables({ &tilemap, &crono, &textBox});
 	}
 
@@ -93,6 +102,10 @@ namespace ProjectSpace
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			// translateAnimation.start();
+			/*sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
+			DebugDrawing::drawRec(mousePosition, sf::Vector2f{ 100, 100 }, *this);*/
+			// textBox.move(30, 0);
+			textBox.move(sf::Vector2f{ 30, 5 });
 		}
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))

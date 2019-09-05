@@ -31,6 +31,11 @@ namespace ProjectSpace
 		return sf::Vector2f{ v.x * scalar, v.y * scalar };
 	}
 
+	sf::Vector2f operator+(sf::Vector2f const& v, float scalar)
+	{
+		return sf::Vector2f{ v.x + scalar, v.y + scalar };
+	}
+
 	sf::Vector2f operator*(sf::Vector2f const& v, float scalar)
 	{
 		return sf::Vector2f{ v.x * scalar, v.y * scalar };
@@ -85,7 +90,7 @@ namespace ProjectSpace
 		return stream;
 	}
 
-	void lineBreaker(sf::String& text, int lineLength)
+	void addLineWrapping(sf::String& text, int lineLength)
 	{
 		int writer = 0;
 		int counter = 0;
@@ -108,5 +113,30 @@ namespace ProjectSpace
 			}
 		}
 
+	}
+
+	namespace DebugDrawing
+	{
+		void drawLine(sf::Vector2f const& begin, sf::Vector2f const& end, Scene& scene)
+		{
+			// TODO: Use shared pointer to avoid ressource leak.
+
+			sf::VertexArray* line = new sf::VertexArray{ sf::PrimitiveType::Lines };
+			line->append(sf::Vertex{ begin });
+			line->append(sf::Vertex{ end });
+
+			scene.addDrawable(line);
+		}
+
+		void drawRec(sf::Vector2f const& position, sf::Vector2f const& size, Scene& scene)
+		{
+			sf::VertexArray* rec = new sf::VertexArray{ sf::PrimitiveType::Quads };
+			rec->append(sf::Vertex{ position });
+			rec->append(sf::Vertex{ sf::Vector2f{position.x + size.x, position.y} });
+			rec->append(sf::Vertex{ sf::Vector2f{position.x + size.x, position.y + size.y} });
+			rec->append(sf::Vertex{ sf::Vector2f{position.x, position.y + size.y} });
+
+			scene.addDrawable(rec);
+		}
 	}
 }

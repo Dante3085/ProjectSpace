@@ -1,44 +1,42 @@
 
 #include "gui/TextBox.h"
+
 #include "utility/Util.h"
-#include <iostream>
 
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: originalStr{ str }, str{ str }, writtenStr{ "" }, position{ position }, padding{ 0 }, elapsedMillis{ 0 }, currentPos{ 0 },
-		umbruchZaehler{ 0 }, waitFlag{ false }, charDelay{ 100 }, cursorAnim{ "rsrc/cursor.png", 0.5f },
-		cursor{ sf::Vector2f{2000, 300} }, continueKey{ sf::Keyboard::Space }, charWidth{ 25 }, lineHeight{ 36.5 }
+		: originalStr{ str }, wrappedStr{ str }, writtenStr{ "" }, padding{ 0 }, elapsedMillis{ 0 }, wrappedStrCurrentCharIndex{ 0 },
+		lineBreakCounter{ 0 }, waitForContinueKey{ false }, charDelay{ 100 }, cursorAnim{ "rsrc/cursor.png", 0.5f },
+		cursor{ sf::Vector2f{0, 0} }, continueKey{ sf::Keyboard::Space }, charWidth{ 25 }, lineHeight{ 36.5 }
 	{
+		// Initialize this Textbox's background.
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
 		rec.setSize(size);
 		rec.setOutlineColor(sf::Color(255, 0, 0, 255));
+		rec.setPosition(position);
+		setOpacity(100);
 
-		sf::Color c = rec.getFillColor();
-		c.a = 100;
-		rec.setFillColor(c);
-
+		// Initialize this Textbox's text.
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
-		//text.setFillColor(sf::Color(0, 255, 190, 255));
+
+		//// Get width of A Character glyph(Glyph is a visual representation of a character).
+		//// Doesn't work
+		//charWidth = font.getGlyph(65, text.getCharacterSize(), false).bounds.width;
+
 		text.setFillColor(sf::Color(255, 255, 255, 255));
 		//zeilenanzahl =~ size / 36,5
-		lineBreaker(this->str, ((size.x - padding) / charWidth));
+		addLineWrapping(this->wrappedStr, (size.x - padding) / charWidth);
 		text.setString(writtenStr);
+		text.setPosition(position.x + padding, position.y + padding);
 
-		rec.setPosition(position);
-		text.setPosition(position);
-
-		sf::Vector2f textPosition = position;
-		textPosition.x += padding;
-		textPosition.y += padding;
-		text.setPosition(textPosition);
-
+		// Initialize this Textbox's cursor.
 		cursorAnim.setAnimation({ {0, 0, 5, 1}, {5, 0, 5, 1}, {10, 0, 5, 1}, {15, 0, 5, 1} }, 0.5f);
 		cursor.addAnimation(EAnimation::IDLE, &cursorAnim);
 		cursor.setAnimation(EAnimation::IDLE);
-		cursor.setScale(10, 10);
+		cursor.setScale(8, 8);
 	}
 
 	void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -46,7 +44,7 @@ namespace ProjectSpace
 		target.draw(rec);
 		target.draw(text);
 
-		if (waitFlag)
+		if (waitForContinueKey)
 		{
 			target.draw(cursor);
 		}
@@ -54,14 +52,17 @@ namespace ProjectSpace
 
 	void TextBox::update(sf::Time time)
 	{
+		// TODO: Make it possible to show all the text with a single button press.
+
 		elapsedMillis += time.asMilliseconds();
 		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
-		if (waitFlag)
+		
+		if (waitForContinueKey)
 		{
 			cursor.update(time);
 			if (continueKeyPressed)
 			{
-				waitFlag = false;
+				waitForContinueKey = false;
 				continueKeyPressed = false;
 			}
 		}
@@ -71,26 +72,37 @@ namespace ProjectSpace
 			if (!continueKeyPressed)
 			{
 				actualCharDelay = charDelay;
-				continueKeyPressed = false;
 			}
-			if (elapsedMillis > actualCharDelay && currentPos < str.getSize())
+			if (elapsedMillis > actualCharDelay && wrappedStrCurrentCharIndex < wrappedStr.getSize())
 			{
 				elapsedMillis = 0;
-				if (str[currentPos] == '\n') ++umbruchZaehler;
-				if (umbruchZaehler >= ((rec.getSize().y - padding) / lineHeight) - 1)
+				if (wrappedStr[wrappedStrCurrentCharIndex] == '\n')
 				{
-					umbruchZaehler = 0;
+					++lineBreakCounter;
+				}
+
+				// TODO: "((rec.getSize().y - padding) / lineHeight) - 1" sollte ja die Zeilenzahl der TextBox sein.
+				// Kann man das irgendwie in eine Member Variable gießen und über alle Funktionen aktuell halten ?
+				// Würde das folgende if etwas übersichtlicher machen.
+			
+				// Every line of this TextBox is full of text.
+				if (lineBreakCounter >= ((rec.getSize().y - padding) / lineHeight) - 1)
+				{
+					lineBreakCounter = 0;
 					writtenStr = "";
-					currentPos++;
-					waitFlag = true;
+					++wrappedStrCurrentCharIndex;
+					waitForContinueKey = true;
 
 					sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
-					cursorPos.y += text.getCharacterSize();
+
+					// Try to roughly position the cursor at 80 percent of the Character's height.
+					// So roughly at the Character's foot.
+					cursorPos.y += text.getCharacterSize() * 0.8f;
 					cursor.setPosition(cursorPos);
 				}
 				else
 				{
-					writtenStr += str[currentPos++];
+					writtenStr += wrappedStr[wrappedStrCurrentCharIndex++];
 					text.setString(writtenStr);
 				}
 			}
@@ -108,57 +120,49 @@ namespace ProjectSpace
 	{
 		this->padding = padding;
 
-		str = originalStr;
-		text.setPosition(position.x + padding, position.y + padding);
-		lineBreaker(str, ((rec.getSize().x - padding) / charWidth));
+		wrappedStr = originalStr;
+		addLineWrapping(wrappedStr, ((rec.getSize().x - padding) / charWidth));
+		text.setPosition(rec.getPosition() + padding);
 
-		sf::Vector2f textPosition = rec.getPosition();
-		textPosition.x += padding;
-		textPosition.y += padding;
-		text.setPosition(textPosition);
+		// TODO: Currently padding does not leave the same amount of space on all 4 sides.
 	}
 
 	void TextBox::setPosition(float x, float y)
 	{
-		position.x = x;
-		position.y = y;
-
-		rec.setPosition(position);
-		text.setPosition(position);
+		rec.setPosition(x, y);
+		text.setPosition(x + padding, y + padding);
 	}
 
 	void TextBox::setPosition(sf::Vector2f const& position)
 	{
-		this->position = position;
 		rec.setPosition(position);
-		text.setPosition(position);
+		text.setPosition(position + padding);
 	}
 
 	void TextBox::move(float x, float y)
 	{
-		position.x += x;
-		position.y += y;
-
-		rec.setPosition(position);
-		text.setPosition(position);
+		rec.move(x, y);
+		text.move(x, y);
 	}
 
 	void TextBox::move(sf::Vector2f const& by)
 	{
-		position += by;
-
-		rec.setPosition(position);
-		text.setPosition(position);
+		rec.move(by);
+		text.move(by);
 	}
 
 	void TextBox::setSize(float width, float height)
 	{
 		rec.setSize(sf::Vector2f(width, height));
+
+		// TODO: Reparse String so that the Text fits the new size.
 	}
 
 	void TextBox::setSize(sf::Vector2f const& size)
 	{
 		rec.setSize(size);
+
+		// TODO: Reparse String so that the Text fits the new size.
 	}
 
 	void TextBox::setTextColor(sf::Color color)
@@ -168,26 +172,29 @@ namespace ProjectSpace
 
 	sf::Vector2f TextBox::getPosition() const
 	{
-		return position;
+		return rec.getPosition();
 	}
 
 	float TextBox::getWidth() const
 	{
-		return rec.getGlobalBounds().width;
+		return rec.getSize().x;
 	}
 
 	float TextBox::getHeight() const
 	{
-		return rec.getGlobalBounds().height;
+		return rec.getSize().y;
 	}
+
 	float TextBox::getX() const
 	{
 		return rec.getPosition().x;
 	};
+
 	float TextBox::getY() const
 	{
 		return rec.getPosition().y;
 	};
+
 	sf::Vector2f TextBox::getSize() const
 	{
 		return rec.getSize();
