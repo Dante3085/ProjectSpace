@@ -25,7 +25,9 @@ namespace ProjectSpace
 		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
 		"für den künstlerischen Ausdruck zu nutzen.",
 				sf::Vector2f(1000,600), sf::Vector2f(200,200)},
-		battleOrder{ {&char1}, {&char2, &char3}, {}, sf::Vector2f{2000, 500} }
+		battleOrder{ {&char1}, {&char2, &char3}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
+		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png", 
+		"rsrc/spritesheets/singleImages/generic-rpg-vendor.png"}, sf::Vector2f{2000, 500} }
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 

@@ -80,8 +80,7 @@ namespace ProjectSpace
 
 	BattleOrder::BattleOrder(std::vector<Character*> party1, std::vector<Character*> party2,
 		std::vector<std::string> texturePaths, sf::Vector2f const& position)
-		: portraitSize{ 200, 200 }, portraitDefaultColor{ sf::Color(135,206,235, 200) }, spacing{ 10 },
-		cycleTriggered{false}
+		: portraitSize{ 200, 200 }, portraitDefaultColor{ sf::Color(135,206,235, 200) }, spacing{ 10 }
 	{
 		std::vector<Character*> allChars{ party1 };
 		for (Character*& c : party2)
@@ -92,38 +91,41 @@ namespace ProjectSpace
 				return c1->getAgility() > c2->getAgility();
 			});
 
-		Portrait* firstPortrait = new Portrait{ position, portraitSize, portraitDefaultColor };
+		Portrait* firstPortrait = new Portrait{ position, portraitSize, texturePaths[0]};
 		portraits.push_back(firstPortrait);
 
 		for (int i = 1; i < allChars.size(); ++i)
 		{
 			sf::Vector2f portraitPos{ position.x, portraits[i - 1]->getY() + portraits[i - 1]->getHeight() + spacing };
-			Portrait* portrait = new Portrait{ portraitPos, portraitSize, portraitDefaultColor };
+			Portrait* portrait = new Portrait{ portraitPos, portraitSize, texturePaths[i] };
 			portraits.push_back(portrait);
 
-			TranslateAnimation ta{ *portrait, portrait->getPosition(), portraits[i - 1]->getPosition(), 6000 };
+			TranslateAnimation ta{ *portrait, portrait->getPosition(), portraits[i - 1]->getPosition(), 1000 };
 			ta.setEasingFunction(Easing::linear_easeNone);
 			translateAnimations.push_back(ta);
 		}
 		TranslateAnimation taFirstPortrait{ *firstPortrait, firstPortrait->getPosition(), 
-			portraits[portraits.size()-1]->getPosition(), 6000 };
+			portraits[portraits.size()-1]->getPosition(), 1000 };
 		taFirstPortrait.setEasingFunction(Easing::linear_easeNone);
 		translateAnimations.push_back(taFirstPortrait);
 
-		Translatable* temp = &translateAnimations[0].getTranslatable();
-		TranslateAnimation* ta = nullptr;
-		for (int i = 0; i < translateAnimations.size() - 1; ++i)
-		{
-			ta = &translateAnimations[i];
-			ta->setOnFinished([ta, this, i]()
-				{
-					ta->setTranslatable(translateAnimations[i + 1].getTranslatable());
-				});
-		}
-		ta = &translateAnimations[translateAnimations.size() - 1];
-		ta->setOnFinished([ta, temp]()
+		translateAnimations[translateAnimations.size() - 1].setOnFinished([this]()
 			{
-				ta->setTranslatable(*temp);
+				Translatable* temp = &translateAnimations[0].getTranslatable();
+				TranslateAnimation* ta = nullptr;
+
+				for (int i = 0; i < translateAnimations.size(); ++i)
+				{
+					ta = &translateAnimations[i];
+					if (i == translateAnimations.size() - 1)
+					{
+						ta->setTranslatable(*temp);
+					}
+					else
+					{
+						ta->setTranslatable(translateAnimations[i + 1].getTranslatable());
+					}
+				}
 			});
 
 		for (Character*& c : allChars)
@@ -157,8 +159,6 @@ namespace ProjectSpace
 	// Switches to next turn(Moves every Character up one place in the queue).
 	void BattleOrder::cycle()
 	{
-		cycleTriggered = true;
-
 		Character* temp = queue.front();
 		queue.pop();
 		queue.push(temp);
