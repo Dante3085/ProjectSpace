@@ -100,15 +100,20 @@ namespace ProjectSpace
 			Portrait* portrait = new Portrait{ portraitPos, portraitSize, texturePaths[i] };
 			portraits.push_back(portrait);
 
-			TranslateAnimation ta{ *portrait, portrait->getPosition(), portraits[i - 1]->getPosition(), 1000 };
+			TranslateAnimation ta{ *portrait, portrait->getPosition(), portraits[i - 1]->getPosition(), 200 };
 			ta.setEasingFunction(Easing::linear_easeNone);
 			translateAnimations.push_back(ta);
 		}
 		TranslateAnimation taFirstPortrait{ *firstPortrait, firstPortrait->getPosition(), 
-			portraits[portraits.size()-1]->getPosition(), 1000 };
+			portraits[portraits.size()-1]->getPosition(), 200 };
 		taFirstPortrait.setEasingFunction(Easing::linear_easeNone);
 		translateAnimations.push_back(taFirstPortrait);
 
+		// Give all TranslateAnimations their next Translatable, which is the Portrait
+		// that is below each TranslateAnimation's current Portrait. In case of the last
+		// TranslateAnimation it is the Portrait at the top.
+		// This process needs to happen after the last TranslateAnimation has finished to
+		// ensure that every other TranslateAnimation has already finished.
 		translateAnimations[translateAnimations.size() - 1].setOnFinished([this]()
 			{
 				Translatable* temp = &translateAnimations[0].getTranslatable();
