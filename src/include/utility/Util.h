@@ -16,60 +16,71 @@
 namespace ProjectSpace
 {
 	// sf::Vector2<T>
+
+	// For printing sf::Vector2<T> to std::cout
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, sf::Vector2<T> const& v)
 	{
 		return stream << "{ " << v.x << ", " << v.y << " }";
 	}
 
+	// Get std::string representation of sf::Vector2<T>
 	template <class T>
 	std::string toString(sf::Vector2<T> const& v)
 	{
 		return "{ " += std::to_string(v.x) += ", " += std::to_string(v.y) += " }";
 	}
 
+	// Create a copy of v1 and divide every coordinate by the corresponding coordinate in v2
 	template <class T>
 	sf::Vector2<T> operator/(sf::Vector2<T> const& v1, sf::Vector2<T> const& v2)
 	{
 		return sf::Vector2<T>{ v1.x / v2.x, v1.y / v2.y };
 	}
 
+	// Create a copy of v and add scalar to every coordinate
 	template <class T, class U>
 	sf::Vector2<T> operator+(sf::Vector2<T> const& v, U scalar)
 	{
 		return sf::Vector2<T>{ v.x + scalar, v.y + scalar };
 	}
 
+	// Create a copy of v and subtract scalar from every coordinate
 	template <class T>
 	sf::Vector2<T> operator-(sf::Vector2<T> const& v, float scalar)
 	{
 		return sf::Vector2<T>{ v.x - scalar, v.y - scalar };
 	}
 
+	// Get the length of v
 	template <class T>
 	T vectorLength(sf::Vector2<T> const& v)
 	{
 		return sqrt(v.x * v.x + v.y * v.y);
 	}
 
+	// Get the scalarProduct of v1 and v2
 	template <class T>
 	float scalarProduct(sf::Vector2<T> const& v1, sf::Vector2<T> const& v2)
 	{
 		return v1.x * v2.x + v1.y * v2.y;
 	}
 
+	// Create a copy of v and normalize it
 	template <class T>
 	sf::Vector2<T> normalizedVector(sf::Vector2<T> const& v)
 	{
 		return v / vectorLength(v);
 	}
 
+	// For printing r to std::cout
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, sf::Rect<T> const& r)
 	{
 		return stream << "{ " << r.left << ", " << r.top << ", " << r.width << ", " << r.height << " }";
 	}
 
+	// For printing every element of v to std::cout
 	template <class T>
 	std::ostream& operator<<(std::ostream& stream, std::vector<T> v)
 	{
