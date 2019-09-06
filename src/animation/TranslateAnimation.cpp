@@ -27,7 +27,7 @@ namespace ProjectSpace
 	{
 		if (translatable == nullptr)
 		{
-			log->defaultLog("@TranslateAnimation::update(): Translatable is nullptr. Returning and blocking update...", ll::ERR);
+			log->defaultLog("@TranslateAnimation::update(): Translatable is nullptr. Exiting program...", ll::ERR);
 			*log << lo::EXIT;
 
 			/*doUpdate = false;
