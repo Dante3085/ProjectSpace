@@ -25,15 +25,17 @@ namespace ProjectSpace
 
 	void TranslateAnimation::update(sf::Time time)
 	{
-		if (!doUpdate)
-			return;
-
 		if (translatable == nullptr)
 		{
 			log->defaultLog("@TranslateAnimation::update(): Translatable is nullptr. Returning and blocking update...", ll::ERR);
-			doUpdate = false;
-			return;
+			*log << lo::EXIT;
+
+			/*doUpdate = false;
+			return;*/
 		}
+
+		if (!doUpdate)
+			return;
 
 		currentVelocity.x = easingFunction(elapsedTime, from.x, to.x - from.x, duration);
 		currentVelocity.y = easingFunction(elapsedTime, from.y, to.y - from.y, duration);
