@@ -7,8 +7,6 @@
 #include "utility/Util.h"
 #include "utility/Log.h"
 
-#include <SFML/Window/Mouse.hpp>
-
 namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(Translatable& translatable, sf::Vector2f const& from, sf::Vector2f const& to, float duration)

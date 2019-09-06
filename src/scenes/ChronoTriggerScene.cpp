@@ -24,7 +24,8 @@ namespace ProjectSpace
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
 		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
 		"für den künstlerischen Ausdruck zu nutzen.",
-				sf::Vector2f(1000,600), sf::Vector2f(200,200)}
+				sf::Vector2f(1000,600), sf::Vector2f(200,200)},
+		battleOrder{ {&char1}, {&char2, &char3}, {}, sf::Vector2f{2000, 500} }
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -53,8 +54,8 @@ namespace ProjectSpace
 		//textBox.setPosition(sf::Vector2f{ 1000, 1000 });
 		//textBox.setSize(2000, 400);
 		
-		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox});
-		Scene::addDrawables({ &tilemap, &crono, &textBox});
+		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &battleOrder});
+		Scene::addDrawables({ &tilemap, &crono, &textBox, &battleOrder});
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
@@ -103,6 +104,7 @@ namespace ProjectSpace
 		{
 			/*sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
 			dd::drawRec(mousePosition, sf::Vector2f{ 100, 100 }, *this);*/
+			battleOrder.cycle();
 		}
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))

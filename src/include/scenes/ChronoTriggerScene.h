@@ -10,6 +10,8 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "gui/TextBox.h"
+#include "gui/BattleOrder.h"
+#include "rpg/Character.h"
 
 namespace ProjectSpace
 {
@@ -43,6 +45,11 @@ namespace ProjectSpace
 		TranslateAnimation translateAnimation;
 		Camera camera;
 		TextBox textBox;
+
+		Character char1;
+		Character char2;
+		Character char3;
+		BattleOrder battleOrder;
 	};
 }
 
