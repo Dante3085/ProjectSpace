@@ -13,14 +13,14 @@ namespace ProjectSpace
 		: translatable{ &translatable }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
 		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, onFinished{ []() {} }, log{ &Log::getInstance() }
 	{
-		translatable.setPosition(from);
+		this->translatable->setPosition(from);
 	}
 
 	TranslateAnimation::TranslateAnimation()
 		: translatable{nullptr}, from{0, 0}, to{50, 0}, duration{1000}, elapsedTime{0}, doUpdate{false},
 		currentVelocity{-1, -1}, easingFunction{Easing::elastic_easeOut}, log{&Log::getInstance()}
 	{
-
+		this->translatable->setPosition(from);
 	}
 
 	void TranslateAnimation::update(sf::Time time)
