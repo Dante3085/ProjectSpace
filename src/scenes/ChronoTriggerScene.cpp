@@ -25,9 +25,9 @@ namespace ProjectSpace
 		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
 		"für den künstlerischen Ausdruck zu nutzen.",
 				sf::Vector2f(1000,600), sf::Vector2f(200,200)},
-		battleOrder{ {&char1}, {&char2, &char3}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
-		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png", 
-		"rsrc/spritesheets/singleImages/generic-rpg-vendor.png"}, sf::Vector2f{2000, 500} }
+		battleOrder{ {&char1, &char3}, {&char2}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
+		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png",
+	    "rsrc/spritesheets/singleImages/hearts-1.png"}, sf::Vector2f{2000, 500} }
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -55,6 +55,11 @@ namespace ProjectSpace
 		//// textBox.setPosition(1000, 1000);
 		//textBox.setPosition(sf::Vector2f{ 1000, 1000 });
 		//textBox.setSize(2000, 400);
+
+		rockMonumentTexture.loadFromFile("rsrc/tilesets/singleTiles/rock-monument.png");
+		rockMonument.setTexture(rockMonumentTexture);
+		rockMonument.setPosition(1000, 1000);
+		rockMonument.setScale(4, 4);
 		
 		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &battleOrder});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &battleOrder});
@@ -111,14 +116,16 @@ namespace ProjectSpace
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 		{
-			if (&camera.getTranslatable() == &crono)
+			/*if (&camera.getTranslatable() == &crono)
 			{
 				camera.setTranslatable(textBox);
 			}
 			else
 			{
 				camera.setTranslatable(crono);
-			}
+			}*/
+
+			battleOrder.setPosition(300, 1400);
 		}
 
 		wWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::W);

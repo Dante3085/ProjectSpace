@@ -2,6 +2,9 @@
 #ifndef CHRONO_TRIGGER_SCENE_H
 #define CHRONO_TRIGGER_SCENE_H
 
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
 #include "tilemap/Tilemap.h"
 #include "animation/Animation.h"
 #include "animation/AnimatedSprite.h"
@@ -49,7 +52,12 @@ namespace ProjectSpace
 		Character char1;
 		Character char2;
 		Character char3;
+		Character char4;
+		Character char5;
 		BattleOrder battleOrder;
+
+		sf::Texture rockMonumentTexture;
+		sf::Sprite rockMonument;
 	};
 }
 

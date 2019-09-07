@@ -79,6 +79,7 @@ namespace ProjectSpace
 		sf::Vector2f portraitSize;
 		sf::Color portraitDefaultColor;
 		float spacing;
+		float cycleDuration;
 	};
 }
 
