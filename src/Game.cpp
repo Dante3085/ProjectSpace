@@ -24,7 +24,7 @@
 
 namespace ProjectSpace
 {
-	Game::Game(std::string windowTitle, WindowStyle style)
+	Game::Game(std::string const& windowTitle, WindowStyle style)
 	: window{sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style},
 	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, 
 		windowHeight{(float)sf::VideoMode::getDesktopMode().height}
@@ -32,7 +32,7 @@ namespace ProjectSpace
 		init();
 	}
 
-	Game::Game(unsigned int screenWidth, unsigned int screenHeight, std::string windowTitle, WindowStyle style) 
+	Game::Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style)
 	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}
 	{
 		init();

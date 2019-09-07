@@ -27,7 +27,7 @@ namespace ProjectSpace
 		 *
 		 * @param[in]  windowTitle  Title of the Game's window.
 		 */
-		Game(std::string windowTitle, WindowStyle style = DEFAULT);
+		Game(std::string const& windowTitle, WindowStyle style = DEFAULT);
 
 		/**
 		 * @brief      Constructs a Game.
@@ -36,7 +36,7 @@ namespace ProjectSpace
 		 * @param[in]  screenHeight  Height of the Game's window.
 		 * @param[in]  windowTitle   Title of the Game's window.
 		 */
-		Game(unsigned int screenWidth, unsigned int screenHeight, std::string windowTitle, WindowStyle style = DEFAULT);
+		Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style = DEFAULT);
 
 		/**
 		 * @brief      Destroys every Scene of the Game.
