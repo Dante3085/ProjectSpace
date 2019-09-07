@@ -13,6 +13,13 @@ namespace ProjectSpace
 		inputHandler->storeKeyState(keyForward, false);
 		inputHandler->storeKeyState(keyBackward, false);
 		inputHandler->storeKeyState(keyPress, false);
+
+		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		{
+			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
+			Log::getInstance() << lo::EXIT;
+		}
+		cursorMove.setBuffer(buffer);
 	}
 
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler) 
@@ -24,6 +31,13 @@ namespace ProjectSpace
 		inputHandler->storeKeyState(keyForward, false);
 		inputHandler->storeKeyState(keyBackward, false);
 		inputHandler->storeKeyState(keyPress, false);
+
+		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		{
+			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
+			Log::getInstance() << lo::EXIT;
+		}
+		cursorMove.setBuffer(buffer);
 	}
 
 	// TODO: Ich weiß, dass ButtonMenu::ButtonMenu die keys/buttons schon setzt und ich diese hier erneut setze.
@@ -37,6 +51,13 @@ namespace ProjectSpace
 		inputHandler->storeKeyState(keyForward, false);
 		inputHandler->storeKeyState(keyBackward, false);
 		inputHandler->storeKeyState(keyPress, false);
+
+		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		{
+			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
+			Log::getInstance() << lo::EXIT;
+		}
+		cursorMove.setBuffer(buffer);
 	}
 
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
@@ -48,6 +69,13 @@ namespace ProjectSpace
 		inputHandler->storeKeyState(keyForward, false);
 		inputHandler->storeKeyState(keyBackward, false);
 		inputHandler->storeKeyState(keyPress, false);
+
+		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		{
+			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
+			Log::getInstance() << lo::EXIT;
+		}
+		cursorMove.setBuffer(buffer);
 	}
 
 	void ButtonMenu::update(sf::Time time)
@@ -57,6 +85,7 @@ namespace ProjectSpace
 			if (sf::Keyboard::isKeyPressed(keyForward))
 			{
 				forward();
+				cursorMove.play();
 			}
 		}
 
@@ -65,6 +94,7 @@ namespace ProjectSpace
 			if (sf::Keyboard::isKeyPressed(keyBackward))
 			{
 				backward();
+				cursorMove.play();
 			}
 		}
 

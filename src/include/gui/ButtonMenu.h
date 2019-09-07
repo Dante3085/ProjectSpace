@@ -4,6 +4,8 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/System/Time.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 #include <vector>
 
 #include "scenes/Entity.h"
@@ -58,6 +60,9 @@ namespace ProjectSpace
 		unsigned int btnForward;		// ControllerButton for selecting the next Button in this ButtonMenu.
 		unsigned int btnBackward;		// ControllerButton for selecting the previous Button in this ButtonMenu.
 		unsigned int btnPress;			// ControllerButton for pressing the currently selected Button in this ButtonMenu.
+
+		sf::SoundBuffer buffer;
+		sf::Sound cursorMove;
 	};
 }
 
