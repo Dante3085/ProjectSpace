@@ -27,13 +27,16 @@ namespace ProjectSpace
 		}
 
 		music->setVolume(easingFunction(elapsedMilliseconds, startVolume, endVolume - startVolume, durationInMilliseconds));
-		std::cout << music->getVolume() << "\n";
 	}
 
 	void AudioFader::start()
 	{
 		doUpdate = true;
-		music->play();
+		
+		if (music->getStatus() != sf::SoundSource::Status::Playing)
+		{
+			music->play();
+		}
 	}
 
 	void AudioFader::setMusic(sf::Music& music)
