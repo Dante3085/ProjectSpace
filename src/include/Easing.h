@@ -16,15 +16,15 @@ namespace ProjectSpace
 #define PI  3.14159265
 #endif
 
-		using EasingFunction = std::function<float(float elapsedTime, float startValue, 
-			                                       float deltaEndStartValue, float duration)>;
-
 		/*
 			t: elapsedTime (same unit as duration)
 			b: startValue
 			c: Difference between endValue and startValue
 			d: duration
 		*/
+		using EasingFunction = std::function<float(float elapsedTime, float startValue, 
+			                                       float deltaEndStartValue, float duration)>;
+
 		float back_easeIn(float t, float b, float c, float d);
 		float back_easeOut(float t, float b, float c, float d);
 		float back_easeInOut(float t, float b, float c, float d);

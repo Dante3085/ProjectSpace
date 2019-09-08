@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "scenes/Entity.h"
-#include "animation/Easing.h"
+#include "Easing.h"
 #include "animation/Fadeable.h"
 
 namespace ProjectSpace

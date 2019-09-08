@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-#include "animation/Easing.h"
+#include "Easing.h"
 #include "utility/Util.h"
 #include "utility/Log.h"
 

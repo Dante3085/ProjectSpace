@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Audio/Music.hpp>
 
 #include "tilemap/Tilemap.h"
 #include "animation/Animation.h"
@@ -15,6 +16,7 @@
 #include "gui/TextBox.h"
 #include "gui/BattleOrder.h"
 #include "rpg/Character.h"
+#include "audio/AudioFader.h"
 
 namespace ProjectSpace
 {
@@ -56,8 +58,8 @@ namespace ProjectSpace
 		Character char5;
 		BattleOrder battleOrder;
 
-		sf::Texture rockMonumentTexture;
-		sf::Sprite rockMonument;
+		sf::Music marvinTrack;
+		AudioFader audioFader;
 	};
 }
 

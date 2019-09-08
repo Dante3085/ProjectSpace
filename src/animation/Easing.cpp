@@ -1,5 +1,5 @@
 
-#include "animation/Easing.h"
+#include "Easing.h"
 
 #include <cmath>
 

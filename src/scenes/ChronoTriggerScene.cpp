@@ -27,7 +27,8 @@ namespace ProjectSpace
 				sf::Vector2f(1000,600), sf::Vector2f(200,200)},
 		battleOrder{ {&char1, &char3}, {&char2}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
 		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png",
-	    "rsrc/spritesheets/singleImages/hearts-1.png"}, sf::Vector2f{2000, 500} }
+	    "rsrc/spritesheets/singleImages/hearts-1.png"}, sf::Vector2f{2000, 500} },
+		audioFader{marvinTrack, 0, 100, 10000}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -56,12 +57,9 @@ namespace ProjectSpace
 		//textBox.setPosition(sf::Vector2f{ 1000, 1000 });
 		//textBox.setSize(2000, 400);
 
-		rockMonumentTexture.loadFromFile("rsrc/tilesets/singleTiles/rock-monument.png");
-		rockMonument.setTexture(rockMonumentTexture);
-		rockMonument.setPosition(1000, 1000);
-		rockMonument.setScale(4, 4);
+		marvinTrack.openFromFile("rsrc/audio/music/Klassik Soundtrack 1.ogg");
 		
-		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &battleOrder});
+		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &battleOrder, &audioFader});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &battleOrder});
 	}
 
@@ -116,16 +114,19 @@ namespace ProjectSpace
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 		{
-			/*if (&camera.getTranslatable() == &crono)
+			if (marvinTrack.getVolume() == 100)
 			{
-				camera.setTranslatable(textBox);
+				audioFader.setStartVolume(100);
+				audioFader.setEndVolume(0);
+				audioFader.setEasingFunction(Easing::sine_easeOut);
 			}
 			else
 			{
-				camera.setTranslatable(crono);
-			}*/
-
-			battleOrder.setPosition(300, 1400);
+				audioFader.setStartVolume(0);
+				audioFader.setEndVolume(100);
+				audioFader.setEasingFunction(Easing::sine_easeIn);
+			}
+			audioFader.start();
 		}
 
 		wWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::W);

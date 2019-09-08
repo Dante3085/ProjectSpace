@@ -6,7 +6,7 @@
 #include <functional>
 
 #include "animation/Translatable.h"
-#include "animation/Easing.h"
+#include "Easing.h"
 #include "scenes/Entity.h"
 #include "utility/Log.h"
 
