@@ -1,5 +1,5 @@
 
-#include "gui/BattleOrder.h"
+#include "gui/CombatOrder.h"
 
 #include <algorithm>
 
@@ -7,14 +7,14 @@
 
 namespace ProjectSpace
 {
-	BattleOrder::Portrait::Portrait(sf::Vector2f const& position, sf::Vector2f const& size, sf::Color const& color)
+	CombatOrder::Portrait::Portrait(sf::Vector2f const& position, sf::Vector2f const& size, sf::Color const& color)
 	{
 		shape.setPosition(position);
 		shape.setSize(size);
 		shape.setFillColor(color);
 	}
 
-	BattleOrder::Portrait::Portrait(sf::Vector2f const& position, sf::Vector2f const& size, std::string const& texturePath)
+	CombatOrder::Portrait::Portrait(sf::Vector2f const& position, sf::Vector2f const& size, std::string const& texturePath)
 	{
 		shape.setPosition(position);
 		shape.setSize(size);
@@ -23,65 +23,65 @@ namespace ProjectSpace
 		shape.setTexture(&texture);
 	}
 
-	void BattleOrder::Portrait::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	void CombatOrder::Portrait::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(shape);
 	}
 
-	void BattleOrder::Portrait::setPosition(sf::Vector2f const& position) 
+	void CombatOrder::Portrait::setPosition(sf::Vector2f const& position) 
 	{
 		shape.setPosition(position);
 	}
 
-	void BattleOrder::Portrait::setPosition(float x, float y) 
+	void CombatOrder::Portrait::setPosition(float x, float y) 
 	{
 		shape.setPosition(x, y);
 	}
 
-	void BattleOrder::Portrait::move(sf::Vector2f const& by) 
+	void CombatOrder::Portrait::move(sf::Vector2f const& by) 
 	{
 		shape.move(by);
 	}
 
-	void BattleOrder::Portrait::move(float byX, float byY) 
+	void CombatOrder::Portrait::move(float byX, float byY) 
 	{
 		shape.move(byX, byY);
 	}
 
-	sf::Vector2f BattleOrder::Portrait::getPosition() const 
+	sf::Vector2f CombatOrder::Portrait::getPosition() const 
 	{
 		return shape.getPosition();
 	}
 
-	float BattleOrder::Portrait::getX() const 
+	float CombatOrder::Portrait::getX() const 
 	{
 		return shape.getPosition().x;
 	}
 
-	float BattleOrder::Portrait::getY() const 
+	float CombatOrder::Portrait::getY() const 
 	{
 		return shape.getPosition().y;
 	}
 
-	sf::Vector2f BattleOrder::Portrait::getSize() const 
+	sf::Vector2f CombatOrder::Portrait::getSize() const 
 	{
 		return shape.getSize();
 	}
 
-	float BattleOrder::Portrait::getWidth() const 
+	float CombatOrder::Portrait::getWidth() const 
 	{
 		return shape.getSize().x;
 	}
 
-	float BattleOrder::Portrait::getHeight() const 
+	float CombatOrder::Portrait::getHeight() const 
 	{
 		return shape.getSize().y;
 	}
 
-	BattleOrder::BattleOrder(std::vector<Character*> party1, std::vector<Character*> party2,
+	CombatOrder::CombatOrder(std::vector<Character*> party1, std::vector<Character*> party2,
 		std::vector<std::string> texturePaths, sf::Vector2f const& position)
 		: portraitSize{ 200, 200 }, portraitDefaultColor{ sf::Color(135,206,235, 200) }, spacing{ 10 },
-		cycleDuration{400}
+		cycleDuration{200}
 	{
 		if ((party1.size() + party2.size()) != texturePaths.size())
 		{
@@ -148,7 +148,7 @@ namespace ProjectSpace
 			queue.push(c);
 	}
 
-	BattleOrder::~BattleOrder()
+	CombatOrder::~CombatOrder()
 	{
 		for (Portrait* p : portraits)
 		{
@@ -156,7 +156,7 @@ namespace ProjectSpace
 		}
 	}
 
-	void BattleOrder::update(sf::Time time)
+	void CombatOrder::update(sf::Time time)
 	{
 		for (TranslateAnimation& t : translateAnimations)
 		{
@@ -164,7 +164,7 @@ namespace ProjectSpace
 		}
 	}
 
-	void BattleOrder::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	void CombatOrder::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (Portrait const* p : portraits)
 		{
@@ -173,7 +173,7 @@ namespace ProjectSpace
 	}
 
 	// Switches to next turn(Moves every Character up one place in the queue).
-	void BattleOrder::cycle()
+	void CombatOrder::cycle()
 	{
 		Character* temp = queue.front();
 		queue.pop();
@@ -186,25 +186,25 @@ namespace ProjectSpace
 	}
 
 	// Returns Pointer to Character whose turn it is right now.
-	Character* BattleOrder::getCurrentCharacter()
+	Character* CombatOrder::getCurrentCharacter()
 	{
 		return queue.front();
 	}
 
-	void BattleOrder::setPosition(sf::Vector2f const& position) 
+	void CombatOrder::setPosition(sf::Vector2f const& position) 
 	{
 		sf::Vector2f shiftVector = position - translateAnimations[0].getTranslatable().getPosition();
 		move(shiftVector);
 	}
 
-	void BattleOrder::setPosition(float x, float y) 
+	void CombatOrder::setPosition(float x, float y) 
 	{
 		sf::Vector2f currentPosition = translateAnimations[0].getTranslatable().getPosition();
 		sf::Vector2f shiftVector = sf::Vector2f{ x - currentPosition.x, y - currentPosition.y };
 		move(shiftVector);
 	}
 
-	void BattleOrder::move(sf::Vector2f const& by) 
+	void CombatOrder::move(sf::Vector2f const& by) 
 	{
 		Portrait* tempPo = nullptr;
 		TranslateAnimation* tempTa = nullptr;
@@ -219,7 +219,7 @@ namespace ProjectSpace
 		}
 	}
 
-	void BattleOrder::move(float byX, float byY) 
+	void CombatOrder::move(float byX, float byY) 
 	{
 		sf::Vector2f by{ byX, byY };
 
@@ -236,26 +236,26 @@ namespace ProjectSpace
 		}
 	}
 
-	// Die Position der BattleOrder ist nicht die Position des 0ten Portraits
+	// Die Position der CombatOrder ist nicht die Position des 0ten Portraits
     // (Dessen Position ‰ndert sich ja), sondern die Position des obersten Portraits.
 	// Das heiﬂt die Position des Portraits von translateAnimations[0].
 
-	sf::Vector2f BattleOrder::getPosition() const 
+	sf::Vector2f CombatOrder::getPosition() const 
 	{
 		return translateAnimations[0].getTranslatable().getPosition();
 	}
 
-	float BattleOrder::getX() const 
+	float CombatOrder::getX() const 
 	{
 		return translateAnimations[0].getTranslatable().getX();
 	}
 
-	float BattleOrder::getY() const 
+	float CombatOrder::getY() const 
 	{
 		return translateAnimations[0].getTranslatable().getY();
 	}
 
-	sf::Vector2f BattleOrder::getSize() const 
+	sf::Vector2f CombatOrder::getSize() const 
 	{
 		int numPortraits = portraits.size();
 		float height = numPortraits * portraitSize.y + (numPortraits - 1) * spacing;
@@ -263,12 +263,12 @@ namespace ProjectSpace
 		return sf::Vector2f{ portraitSize.x, height };
 	}
 
-	float BattleOrder::getWidth() const 
+	float CombatOrder::getWidth() const 
 	{
 		return portraitSize.x;
 	}
 	
-	float BattleOrder::getHeight() const 
+	float CombatOrder::getHeight() const 
 	{
 		return getSize().y;
 	}

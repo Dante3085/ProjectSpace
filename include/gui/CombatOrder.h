@@ -17,12 +17,12 @@
 
 namespace ProjectSpace
 {
-	class BattleOrder : public MenuElement
+	class CombatOrder : public MenuElement
 	{
 	public:
-		BattleOrder(std::vector<Character*> party1, std::vector<Character*> party2, 
+		CombatOrder(std::vector<Character*> party1, std::vector<Character*> party2, 
 			std::vector<std::string> texturePaths, sf::Vector2f const& = sf::Vector2f{0, 0});
-		~BattleOrder();
+		~CombatOrder();
 
 		void update(sf::Time time) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

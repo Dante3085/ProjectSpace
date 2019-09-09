@@ -69,6 +69,9 @@ namespace ProjectSpace
 
 		std::vector<Entity*> globalEntities; 		// Entities that get updated independent of any specific Scene.
 		std::vector<sf::Drawable*> globalDrawables;	// sf::Drawables that get drawn independent of any specific Scene.
+
+		bool freeze;
+		bool f2LastFrame;
 	};
 }
 

@@ -25,10 +25,11 @@ namespace ProjectSpace
 		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
 		"für den künstlerischen Ausdruck zu nutzen.",
 				sf::Vector2f(1000,600), sf::Vector2f(200,200)},
-		battleOrder{ {&char1, &char3}, {&char2}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
+		combatOrder{ {&char1, &char3}, {&char2, &char4}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
 		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png",
-	    "rsrc/spritesheets/singleImages/hearts-1.png"}, sf::Vector2f{2000, 500} },
-		audioFader{marvinTrack, 0, 100, 10000}
+	    "rsrc/spritesheets/singleImages/hearts-1.png",
+	    "rsrc/spritesheets/singleImages/sensei.png"}, sf::Vector2f{2000, 500} },
+		audioFader{marvinTrack, 0, 100, 3000}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -59,8 +60,8 @@ namespace ProjectSpace
 
 		marvinTrack.openFromFile("rsrc/audio/music/Klassik Soundtrack 1.ogg");
 		
-		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &battleOrder, &audioFader});
-		Scene::addDrawables({ &tilemap, &crono, &textBox, &battleOrder});
+		Scene::addEntities({ &crono, &fadeAnimation, &camera, &textBox, &combatOrder, &audioFader});
+		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder });
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
@@ -107,9 +108,7 @@ namespace ProjectSpace
 
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			/*sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
-			dd::drawRec(mousePosition, sf::Vector2f{ 100, 100 }, *this);*/
-			battleOrder.cycle();
+			combatOrder.cycle();
 		}
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))

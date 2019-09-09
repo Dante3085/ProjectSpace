@@ -14,7 +14,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "gui/TextBox.h"
-#include "gui/BattleOrder.h"
+#include "gui/CombatOrder.h"
 #include "rpg/Character.h"
 #include "audio/AudioFader.h"
 
@@ -56,7 +56,7 @@ namespace ProjectSpace
 		Character char3;
 		Character char4;
 		Character char5;
-		BattleOrder battleOrder;
+		CombatOrder combatOrder;
 
 		sf::Music marvinTrack;
 		AudioFader audioFader;
