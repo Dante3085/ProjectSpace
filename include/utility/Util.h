@@ -94,6 +94,7 @@ namespace ProjectSpace
 
 	// Inserts \n into text according to given lineLength, so that text wraps in between words.
 	void addLineWrapping(sf::String& text, int lineLength);
+	std::vector<sf::String> addTextWrapping(sf::String const& original, int lineLength, float textHeight, float lineHeight);
 
 	namespace DebugDrawing
 	{

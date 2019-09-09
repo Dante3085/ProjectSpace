@@ -5,6 +5,61 @@
 
 namespace ProjectSpace
 {
+	std::vector<sf::String> addTextWrapping(sf::String const& original, int lineLength, float textHeight, float lineHeight)
+	{
+		int writer = 0;
+		int counter = 0;
+		int numberLines = textHeight / lineHeight - 1;
+		sf::String text = original;
+		for (int i = 0; i < text.getSize(); i++)
+		{
+			if (counter < lineLength - 1)
+			{
+				if (text[i] == ' ')
+				{
+					writer = i;
+				}
+				counter++;
+			}
+			else
+			{
+				text[writer] = '\n';
+				counter = 0;
+				i = ++writer;
+			}
+		}
+		std::vector<sf::String> refinedText;
+		counter = 0;
+		writer = 0;
+		for (int i = 0; i < text.getSize(); i++)
+		{
+			if (text[i] == '\n') ++counter;
+			if (counter > numberLines)
+			{
+				refinedText.push_back(text.substring(writer, (i - writer +1)));
+				if ((i + 1) < text.getSize())
+				{
+					writer = i + 1;
+				}
+				else
+				{
+					writer = i;
+				}
+				counter = 0;
+			}
+		}
+		if (writer < text.getSize()-1)
+		{
+			refinedText.push_back(text.substring(writer, (text.getSize() - writer)));
+		}
+		for (sf::String t : refinedText)
+		{
+			std::cout << "----------------------------------------------------------------" << std::endl;
+			std::cout << t.toAnsiString() << std::endl;
+			std::cout << "----------------------------------------------------------------" << std::endl;
+		}
+		return refinedText;
+	}
 	void addLineWrapping(sf::String& text, int lineLength)
 	{
 		int writer = 0;

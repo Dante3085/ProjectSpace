@@ -24,7 +24,7 @@ namespace ProjectSpace
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
 		", die zur bildenden Kunst gehört. Eine Originalgrafik entsteht eigenständig, unabhängig von Vorlagen und in der Absicht, die Techniken der Druckgrafik"
 		"für den künstlerischen Ausdruck zu nutzen.",
-				sf::Vector2f(1000,600), sf::Vector2f(200,200)},
+				sf::Vector2f(1000,300), sf::Vector2f(200,200)},
 		combatOrder{ {&char1, &char3}, {&char2, &char4}, {"rsrc/spritesheets/singleImages/hearts-1.png", 
 		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png",
 	    "rsrc/spritesheets/singleImages/hearts-1.png",
@@ -53,7 +53,7 @@ namespace ProjectSpace
 
 		translateAnimation.setEasingFunction(Easing::linear_easeNone);
 		
-		textBox.setPadding(25);
+		//textBox.setPadding(50);
 		//// textBox.setPosition(1000, 1000);
 		//textBox.setPosition(sf::Vector2f{ 1000, 1000 });
 		//textBox.setSize(2000, 400);
