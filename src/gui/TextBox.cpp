@@ -37,6 +37,10 @@ namespace ProjectSpace
 		cursor.addAnimation(EAnimation::IDLE, &cursorAnim);
 		cursor.setAnimation(EAnimation::IDLE);
 		cursor.setScale(8, 8);
+
+		// charSound
+		soundBuffer.loadFromFile("rsrc/audio/sfx/phoenixWright/sfx-blipmale.wav");
+		charSound.setBuffer(soundBuffer);
 	}
 
 	void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -75,6 +79,8 @@ namespace ProjectSpace
 			}
 			if (elapsedMillis > actualCharDelay && wrappedStrCurrentCharIndex < wrappedStr.getSize())
 			{
+				charSound.play();
+
 				elapsedMillis = 0;
 				if (wrappedStr[wrappedStrCurrentCharIndex] == '\n')
 				{

@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 #include <iostream>
 #include <stdio.h>
@@ -74,6 +76,10 @@ namespace ProjectSpace
 
 		// TODO: Make this agnostic to input type(Keyboard, Gamepad, ...). New InputSystem will deal with this(see: TODO.md: InputSystem).
 		sf::Keyboard::Key continueKey;
+
+		// CharSound
+		sf::SoundBuffer soundBuffer;
+		sf::Sound charSound;
 	};
 }
 
