@@ -58,6 +58,7 @@ TODO: Ideen und Dinge, die ich umsetzen will.
      speichern.
    - InputHandling überdenken: Globaler InputHandler auf dem InputEvents registriert werden können.
    - New InputSystem: https://www.gamedev.net/blogs/entry/2250186-designing-a-robust-input-handling-system-for-games/
+                      https://github.com/grimtraveller/scribblings-by-apoch
 
  - Window der Anwedung global verfügbar machen, damit nicht immer über Parameter übergeben werden muss.
    Andererseits signalisiert der Parameter die Absicht vernünftig
