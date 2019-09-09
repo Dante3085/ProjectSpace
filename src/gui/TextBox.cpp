@@ -79,7 +79,10 @@ namespace ProjectSpace
 			}
 			if (elapsedMillis > actualCharDelay && wrappedStrCurrentCharIndex < wrappedStr.getSize())
 			{
-				charSound.play();
+				if (charSound.getStatus() != sf::Sound::SoundSource::Status::Playing)
+				{
+					charSound.play();
+				}
 
 				elapsedMillis = 0;
 				if (wrappedStr[wrappedStrCurrentCharIndex] == '\n')
