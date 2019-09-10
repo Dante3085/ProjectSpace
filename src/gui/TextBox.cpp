@@ -82,7 +82,7 @@ namespace ProjectSpace
 			{
 				if (charSound.getStatus() != sf::Sound::SoundSource::Status::Playing)
 				{
-					charSound.play();
+					// charSound.play();
 				}
 
 				elapsedMillis = 0;

@@ -84,8 +84,8 @@ namespace ProjectSpace
 		{
 			if (sf::Keyboard::isKeyPressed(keyForward))
 			{
+				// cursorMove.play();
 				forward();
-				cursorMove.play();
 			}
 		}
 
@@ -93,8 +93,8 @@ namespace ProjectSpace
 		{
 			if (sf::Keyboard::isKeyPressed(keyBackward))
 			{
+				// cursorMove.play();
 				backward();
-				cursorMove.play();
 			}
 		}
 
@@ -102,6 +102,7 @@ namespace ProjectSpace
 		{
 			if (inputHandler->wasKeyPressed(keyPress))
 			{
+				// cursorMove.play();
 				buttons[selected]->press();
 			}
 		}
