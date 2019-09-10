@@ -11,6 +11,12 @@ namespace ProjectSpace
 		pressKey{ sf::Keyboard::Enter }, pressKeyPreviouslyPressed{ false }, upPreviouslyPressed{false},
 		downPreviouslyPressed{false}
 	{
+		if (visibleItems > strings.size())
+		{
+			visibleItems = strings.size();
+			bottom = visibleItems - 1;
+		}
+
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 
 		if (strings.size() == 0)
@@ -100,10 +106,7 @@ namespace ProjectSpace
 			// sf::Text::getGlobalBounds()'s left and top.
 			sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();
 			selector.setPosition(currentTextBounds.left, currentTextBounds.top);
-
-
-			std::cout << "top: " << top << ", bottom: " << bottom << ", current: " << current << 
-				", selector: " << currentTextBounds << "\n";
+			selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
 		}
 
 		if (!downPreviouslyPressed & (downPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)))
@@ -147,9 +150,7 @@ namespace ProjectSpace
 			// sf::Text::getGlobalBounds()'s left and top.
 			sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();
 			selector.setPosition(currentTextBounds.left, currentTextBounds.top);
-
-			std::cout << "top: " << top << ", bottom: " << bottom << ", current: " << current <<
-				", selector: " << currentTextBounds << "\n";
+			selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
 		}
 	}
 
