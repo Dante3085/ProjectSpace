@@ -31,7 +31,7 @@ namespace ProjectSpace
 	    "rsrc/spritesheets/singleImages/hearts-1.png",
 	    "rsrc/spritesheets/singleImages/sensei.png"}, sf::Vector2f{2000, 500} },
 		audioFader{marvinTrack, 0, 100, 3000},
-		list{sf::Vector2f{500, 1000}, 
+		list{sf::Vector2f{500, 1000}, window,
 	{
 		{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
 		{"Potion x 20", [](){}},

@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Window/Window.hpp>
 
 #include <vector>
 #include <utility>
@@ -21,7 +22,8 @@ namespace ProjectSpace
 	{
 
 	public:
-		List(sf::Vector2f const& position, std::vector<std::pair<std::string, std::function<void()>>> const& strings);
+		List(sf::Vector2f const& position, sf::Window const& window,
+			std::vector<std::pair<std::string, std::function<void()>>> const& strings);
 
 		void update(sf::Time time) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -55,6 +57,8 @@ namespace ProjectSpace
 		sf::RectangleShape selector; // Visually labels the current ListItem.
 		bool upPreviouslyPressed;
 		bool downPreviouslyPressed;
+
+		sf::Window const& window;
 	};
 }
 

@@ -1,15 +1,18 @@
 
 #include "gui/List.h"
 
+#include <SFML/Window/Mouse.hpp>
+
 #include "utility/Log.h"
 #include "utility/Util.h"
 
 namespace ProjectSpace
 {
-	List::List(sf::Vector2f const& position, std::vector<std::pair<std::string, std::function<void()>>> const& strings)
+	List::List(sf::Vector2f const& position, sf::Window const& window, 
+		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
 		: position{position}, spacing{ 10 }, visibleItems{ 4 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
 		pressKey{ sf::Keyboard::Enter }, pressKeyPreviouslyPressed{ false }, upPreviouslyPressed{false},
-		downPreviouslyPressed{false}
+		downPreviouslyPressed{false}, window{window}
 	{
 		if (visibleItems > strings.size())
 		{
@@ -51,11 +54,30 @@ namespace ProjectSpace
 
 	void List::update(sf::Time time)
 	{
+		// TODO: Check this function for improvements in performance.
+		// TODO: InputHandling needs work. New Input System.
+
+		// Check if current ListItem is pressed.
 		if (!pressKeyPreviouslyPressed & (pressKeyPreviouslyPressed = sf::Keyboard::isKeyPressed(pressKey)))
 		{
 			texts[current].second();
 		}
 
+		// Check if one of the visible ListItems is selected by Mouse.
+		for (int i = top; i <= bottom; ++i)
+		{
+			sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
+
+			if (textBounds.contains((sf::Vector2f)sf::Mouse::getPosition(window)))
+			{
+				current = i;
+				selector.setPosition(textBounds.left, textBounds.top);
+				selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
+				break;
+			}
+		}
+
+		// Check if we need to move one ListItem up.
 		if (!upPreviouslyPressed &(upPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)))
 		{
 			// Vom Anfang zum Ende der Liste.
@@ -109,6 +131,7 @@ namespace ProjectSpace
 			selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
 		}
 
+		// Check if we need to move one ListItem down.
 		if (!downPreviouslyPressed & (downPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)))
 		{
 			if (current == texts.size() - 1)
