@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "gui/TextBox.h"
 #include "gui/CombatOrder.h"
+#include "gui/List.h"
 #include "rpg/Character.h"
 #include "audio/AudioFader.h"
 
@@ -60,6 +61,8 @@ namespace ProjectSpace
 
 		sf::Music marvinTrack;
 		AudioFader audioFader;
+
+		List list;
 	};
 }
 

@@ -3,6 +3,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <iostream>
 
 #include "utility/Util.h"
 
@@ -29,7 +30,18 @@ namespace ProjectSpace
 		"rsrc/spritesheets/singleImages/knight iso char_slice down_2.png",
 	    "rsrc/spritesheets/singleImages/hearts-1.png",
 	    "rsrc/spritesheets/singleImages/sensei.png"}, sf::Vector2f{2000, 500} },
-		audioFader{marvinTrack, 0, 100, 3000}
+		audioFader{marvinTrack, 0, 100, 3000},
+		list{sf::Vector2f{1200, 400}, 
+	{
+		{"ListItem0", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
+		{"ListItem1", [](){}},
+		{"ListItem2", [](){}},
+		{"ListItem3", [](){}},
+		{"ListItem4", []() {}},
+		{"ListItem5", []() {}},
+		{"ListItem6", []() {}},
+		{"ListItem7", []() {}},
+	}}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -60,8 +72,8 @@ namespace ProjectSpace
 
 		marvinTrack.openFromFile("rsrc/audio/music/Klassik Soundtrack 1.ogg");
 		
-		Scene::addEntities({ &crono, &fadeAnimation, &camera, &textBox, &combatOrder, &audioFader});
-		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder });
+		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &combatOrder, &audioFader, &list});
+		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
