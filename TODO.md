@@ -8,7 +8,8 @@ TODO: Ideen und Dinge, die ich umsetzen will.
 
  - Event System
 
- - Audio
+ - AudioCollection:
+   - Manipulate Volume of all Sound Effects at the same time.
 
  - Save / Load
 
