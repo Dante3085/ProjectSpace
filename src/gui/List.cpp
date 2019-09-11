@@ -8,12 +8,26 @@
 
 namespace ProjectSpace
 {
+	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
+	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
+	// sf::Text::getGlobalBounds() will.
+
 	List::List(sf::Vector2f const& position, sf::Window const& window, 
 		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
-		: position{position}, spacing{ 10 }, visibleItems{ 4 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
+		: bounds{-1, -1, -1, -1}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
 		pressKey{ sf::Keyboard::Enter }, pressKeyPreviouslyPressed{ false }, upPreviouslyPressed{false},
-		downPreviouslyPressed{false}, window{window}
+		downPreviouslyPressed{ false }, leftMousePreviouslyPressed{false}, window{ window }
 	{
+
+		// Don't allow empty List for now
+		// TODO: Make empty list and append possible.
+		if (strings.size() == 0)
+		{
+			Log::getInstance().defaultLog("Give at least one string and callback.", ll::ERR);
+			Log::getInstance() << lo::EXIT;
+		}
+
+		// There can not be more ListItems visible than actually exist.
 		if (visibleItems > strings.size())
 		{
 			visibleItems = strings.size();
@@ -21,12 +35,6 @@ namespace ProjectSpace
 		}
 
 		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
-
-		if (strings.size() == 0)
-		{
-			Log::getInstance().defaultLog("Give at least one string and callback.", ll::ERR);
-			Log::getInstance() << lo::EXIT;
-		}
 
 		// Position all sf::Texts in vertical sequence.
 		for (int i = 0; i < strings.size(); ++i)
@@ -45,6 +53,30 @@ namespace ProjectSpace
 			texts.push_back(std::pair<sf::Text, std::function<void()>> {text, strings[i].second});
 		}
 
+		// Init List bounds
+		// Can only be done after all Texts have been positioned correctly.
+		sf::FloatRect* currentTextBounds = &texts[0].first.getGlobalBounds();
+		bounds.left = currentTextBounds->left;
+		bounds.top = currentTextBounds->top;
+
+		float width = currentTextBounds->width;
+		float height = currentTextBounds->height;
+
+		for (int i = 1; i < texts.size(); ++i)
+		{
+			currentTextBounds = &texts[i].first.getGlobalBounds();
+
+			if (width < currentTextBounds->width)
+			{
+				width = currentTextBounds->width;
+			}
+			height += currentTextBounds->height;
+		}
+		height += (texts.size() - 1) * spacing;
+
+		bounds.width = width;
+		bounds.height = height;
+
 		// Init selector rectangle.
 		sf::FloatRect topTextBounds = texts[0].first.getGlobalBounds();
 		selector.setPosition(topTextBounds.left, topTextBounds.top);
@@ -58,22 +90,28 @@ namespace ProjectSpace
 		// TODO: InputHandling needs work. New Input System.
 
 		// Check if current ListItem is pressed.
-		if (!pressKeyPreviouslyPressed & (pressKeyPreviouslyPressed = sf::Keyboard::isKeyPressed(pressKey)))
+		if ((!pressKeyPreviouslyPressed & (pressKeyPreviouslyPressed = sf::Keyboard::isKeyPressed(pressKey))))
 		{
 			texts[current].second();
 		}
 
 		// Check if one of the visible ListItems is selected by Mouse.
-		for (int i = top; i <= bottom; ++i)
+		// Only check for all ListItems if Mouse is already inside
+		// the List's bounds to avoid unnecessary checks.
+		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
+		if (bounds.contains(mousePosition))
 		{
-			sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
-
-			if (textBounds.contains((sf::Vector2f)sf::Mouse::getPosition(window)))
+			for (int i = top; i <= bottom; ++i)
 			{
-				current = i;
-				selector.setPosition(textBounds.left, textBounds.top);
-				selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
-				break;
+				sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
+
+				if (textBounds.contains(mousePosition))
+				{
+					current = i;
+					selector.setPosition(textBounds.left, textBounds.top);
+					selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
+					break;
+				}
 			}
 		}
 
@@ -179,7 +217,7 @@ namespace ProjectSpace
 
 	void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		// Draw all visible ListItems.
+		// Draw all visible ListItems and selector.
 		for (int i = top; i <= bottom; ++i)
 		{
 			target.draw(texts[i].first);
@@ -194,14 +232,13 @@ namespace ProjectSpace
 
 	void List::setPosition(sf::Vector2f const& position)
 	{
-		sf::Vector2f shiftVector = position - texts[0].first.getPosition();
+		sf::Vector2f shiftVector = position - sf::Vector2f{ bounds.left, bounds.top };
 		move(shiftVector);
 	}
 
 	void List::setPosition(float x, float y)
 	{
-		sf::Vector2f currentPosition = texts[0].first.getPosition();
-		sf::Vector2f shiftVector = sf::Vector2f{ x - currentPosition.x, y - currentPosition.y };
+		sf::Vector2f shiftVector = sf::Vector2f{ x - bounds.left, y - bounds.top };
 		move(shiftVector);
 	}
 
@@ -211,6 +248,8 @@ namespace ProjectSpace
 		{
 			pair.first.move(by);
 		}
+		bounds.left += by.x;
+		bounds.top += by.y;
 	}
 
 	void List::move(float byX, float byY)
@@ -219,52 +258,42 @@ namespace ProjectSpace
 		{
 			pair.first.move(byX, byY);
 		}
+		bounds.left += byX;
+		bounds.top += byY;
 	}
 
 	sf::Vector2f List::getPosition() const
 	{
-		return texts[0].first.getPosition();
+		return sf::Vector2f{ bounds.left, bounds.top };
 	}
 
 	float List::getX() const
 	{
-		return texts[0].first.getPosition().x;
+		return bounds.left;
 	}
 
 	float List::getY() const
 	{
-		return texts[0].first.getPosition().y;
+		return bounds.top;
 	}
 
 	sf::Vector2f List::getSize() const
 	{
-		float width = texts[0].first.getGlobalBounds().width;
-		float tempWidth = 0;
-		for (int i = 1; i < texts.size(); ++i)
-		{
-			tempWidth = texts[i].first.getGlobalBounds().width;
-			if (tempWidth > width)
-			{
-				width = tempWidth;
-			}
-		}
-
-		float height = 0;
-		for (auto& pair : texts)
-		{
-			height += pair.first.getGlobalBounds().height;
-		}
-
-		return sf::Vector2f{ width, height };
+		return sf::Vector2f{ bounds.width, bounds.height };
 	}
 
 	float List::getWidth() const
 	{
-		return getSize().x;
+		return bounds.width;
 	}
 
 	float List::getHeight() const
 	{
-		return getSize().y;
+		return bounds.height;
+	}
+
+	sf::FloatRect List::getBounds() const
+	{
+		return bounds;
 	}
 }

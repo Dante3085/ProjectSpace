@@ -7,6 +7,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Window/Window.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include <vector>
 #include <utility>
@@ -41,8 +42,10 @@ namespace ProjectSpace
 		float getWidth() const override;
 		float getHeight() const override;
 
+		sf::FloatRect getBounds() const;
+
 	private:
-		sf::Vector2f position;
+		sf::FloatRect bounds;
 		std::vector<std::pair<sf::Text, std::function<void()>>> texts;
 		sf::Font font;      // Font of every Text.
 		sf::Vector2f textSize;
@@ -57,6 +60,7 @@ namespace ProjectSpace
 		sf::RectangleShape selector; // Visually labels the current ListItem.
 		bool upPreviouslyPressed;
 		bool downPreviouslyPressed;
+		bool leftMousePreviouslyPressed;
 
 		sf::Window const& window;
 	};
