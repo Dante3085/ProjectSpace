@@ -14,7 +14,7 @@ namespace ProjectSpace
 
 	List::List(sf::Vector2f const& position, sf::Window const& window, 
 		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
-		: bounds{-1, -1, -1, -1}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
+		: bounds{ -1, -1, -1, -1 }, topArrow{ 15, 3 }, bottomArrow{15, 3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
 		pressKey{ sf::Keyboard::Enter }, pressKeyPreviouslyPressed{ false }, upPreviouslyPressed{false},
 		downPreviouslyPressed{ false }, leftMousePreviouslyPressed{false}, window{ window }
 	{
@@ -62,7 +62,7 @@ namespace ProjectSpace
 		float width = currentTextBounds->width;
 		float height = currentTextBounds->height;
 
-		for (int i = 1; i < texts.size(); ++i)
+		for (int i = 1; i < visibleItems; ++i)
 		{
 			currentTextBounds = &texts[i].first.getGlobalBounds();
 
@@ -72,7 +72,7 @@ namespace ProjectSpace
 			}
 			height += currentTextBounds->height;
 		}
-		height += (texts.size() - 1) * spacing;
+		height += (visibleItems - 1) * spacing;
 
 		bounds.width = width;
 		bounds.height = height;
@@ -82,6 +82,15 @@ namespace ProjectSpace
 		selector.setPosition(topTextBounds.left, topTextBounds.top);
 		selector.setSize(sf::Vector2f{ topTextBounds.width, topTextBounds.height });
 		selector.setFillColor(sf::Color{255, 0, 0, 50});
+
+		// TODO: Set position of these properly. Problems with resolution.
+		// Init TopArrow.
+		topArrow.setPosition(bounds.left - 35, bounds.top - 1);
+
+		// Init BottomArrow.
+		// TODO: Figure out how to correctly setPosition after rotation.
+		bottomArrow.setRotation(180);
+		bottomArrow.setPosition(bounds.left - 5, bounds.top + bounds.height + 3);
 	}
 
 	void List::update(sf::Time time)
@@ -95,10 +104,40 @@ namespace ProjectSpace
 			texts[current].second();
 		}
 
+		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
+
+		// Check if Mouse is over TopArrow or BottomArrow.
+		if (topArrow.getGlobalBounds().contains(mousePosition))
+		{
+			topArrow.setFillColor(sf::Color{ 169,169,169 });
+
+			if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			{
+				up();
+			}
+		}
+		else
+		{
+			topArrow.setFillColor(sf::Color::White);
+		}
+
+		if (bottomArrow.getGlobalBounds().contains(mousePosition))
+		{
+			bottomArrow.setFillColor(sf::Color{ 169,169,169 });
+
+			if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			{
+				down();
+			}
+		}
+		else
+		{
+			bottomArrow.setFillColor(sf::Color::White);
+		}
+
 		// Check if one of the visible ListItems is selected by Mouse.
 		// Only check for all ListItems if Mouse is already inside
 		// the List's bounds to avoid unnecessary checks.
-		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
 		if (bounds.contains(mousePosition))
 		{
 			for (int i = top; i <= bottom; ++i)
@@ -118,101 +157,16 @@ namespace ProjectSpace
 		// Check if we need to move one ListItem up.
 		if (!upPreviouslyPressed &(upPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)))
 		{
-			// Vom Anfang zum Ende der Liste.
-			if (current == 0)
-			{
-				// Remember previous positions
-				std::vector<sf::Vector2f> prevPositions;
-				for (int i = top; i <= bottom; ++i)
-				{
-					prevPositions.push_back(texts[i].first.getPosition());
-				}
-
-				int lastListItem = texts.size() - 1;
-
-				current = lastListItem;
-				bottom = lastListItem;
-				top = current - (visibleItems - 1); // -1, da das aktuell auch mitzählt.
-
-				// Reposition Texts.
-				int posCounter = 0;
-				for (int i = top; i <= bottom; ++i)
-				{
-					texts[i].first.setPosition(prevPositions[posCounter++]);
-				}
-			}
-
-			// Über das oberste sichtbare ListItem hinweg.
-			else if (current == top)
-			{
-				--current;
-				--top;
-				--bottom;
-
-				// Reposition Texts.
-				for (int i = top; i <= bottom; ++i)
-				{
-					texts[i].first.setPosition(texts[i + 1].first.getPosition());
-				}
-			}
-
-			// Sonst einfach einen nach oben.
-			else
-			{
-				--current;
-			}
-
-			// ATTENTION: sf::Text::getPosition() does not return the same position as
-			// sf::Text::getGlobalBounds()'s left and top.
-			sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();
-			selector.setPosition(currentTextBounds.left, currentTextBounds.top);
-			selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
+			up();
 		}
 
 		// Check if we need to move one ListItem down.
 		if (!downPreviouslyPressed & (downPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)))
 		{
-			if (current == texts.size() - 1)
-			{
-				// Remember previous positions
-				std::vector<sf::Vector2f> prevPositions;
-				for (int i = top; i <= bottom; ++i)
-				{
-					prevPositions.push_back(texts[i].first.getPosition());
-				}
-
-				current = 0;
-				top = 0;
-				bottom = visibleItems - 1;
-
-				// Reposition Texts.
-				int posCounter = 0;
-				for (int i = top; i <= bottom; ++i)
-				{
-					texts[i].first.setPosition(prevPositions[posCounter++]);
-				}
-			}
-			else if (current == bottom)
-			{
-				++current;
-				++bottom;
-				++top;
-
-				for (int i = bottom; i >= top; --i)
-				{
-					texts[i].first.setPosition(texts[i - 1].first.getPosition());
-				}
-			}
-			else
-			{
-				++current;
-			}
-			// ATTENTION: sf::Text::getPosition() does not return the same position as
-			// sf::Text::getGlobalBounds()'s left and top.
-			sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();
-			selector.setPosition(currentTextBounds.left, currentTextBounds.top);
-			selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
+			down();
 		}
+
+		leftMousePreviouslyPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 	}
 
 	void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -223,11 +177,105 @@ namespace ProjectSpace
 			target.draw(texts[i].first);
 		}
 		target.draw(selector);
+		target.draw(topArrow);
+		target.draw(bottomArrow);
 	}
 
-	sf::Text const& List::getTopText() const
+	void List::up()
 	{
-		return texts[0].first;
+		// Vom Anfang zum Ende der Liste.
+		if (current == 0)
+		{
+			// Remember previous positions
+			std::vector<sf::Vector2f> prevPositions;
+			for (int i = top; i <= bottom; ++i)
+			{
+				prevPositions.push_back(texts[i].first.getPosition());
+			}
+
+			int lastListItem = texts.size() - 1;
+
+			current = lastListItem;
+			bottom = lastListItem;
+			top = current - (visibleItems - 1); // -1, da das aktuell auch mitzählt.
+
+			// Reposition Texts.
+			int posCounter = 0;
+			for (int i = top; i <= bottom; ++i)
+			{
+				texts[i].first.setPosition(prevPositions[posCounter++]);
+			}
+		}
+
+		// Über das oberste sichtbare ListItem hinweg.
+		else if (current == top)
+		{
+			--current;
+			--top;
+			--bottom;
+
+			// Reposition Texts.
+			for (int i = top; i <= bottom; ++i)
+			{
+				texts[i].first.setPosition(texts[i + 1].first.getPosition());
+			}
+		}
+
+		// Sonst einfach einen nach oben.
+		else
+		{
+			--current;
+		}
+
+		// ATTENTION: sf::Text::getPosition() does not return the same position as
+		// sf::Text::getGlobalBounds()'s left and top.
+		sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();
+		selector.setPosition(currentTextBounds.left, currentTextBounds.top);
+		selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
+	}
+
+	void List::down()
+	{
+		if (current == texts.size() - 1)
+		{
+			// Remember previous positions
+			std::vector<sf::Vector2f> prevPositions;
+			for (int i = top; i <= bottom; ++i)
+			{
+				prevPositions.push_back(texts[i].first.getPosition());
+			}
+
+			current = 0;
+			top = 0;
+			bottom = visibleItems - 1;
+
+			// Reposition Texts.
+			int posCounter = 0;
+			for (int i = top; i <= bottom; ++i)
+			{
+				texts[i].first.setPosition(prevPositions[posCounter++]);
+			}
+		}
+		else if (current == bottom)
+		{
+			++current;
+			++bottom;
+			++top;
+
+			for (int i = bottom; i >= top; --i)
+			{
+				texts[i].first.setPosition(texts[i - 1].first.getPosition());
+			}
+		}
+		else
+		{
+			++current;
+		}
+		// ATTENTION: sf::Text::getPosition() does not return the same position as
+		// sf::Text::getGlobalBounds()'s left and top.
+		sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();
+		selector.setPosition(currentTextBounds.left, currentTextBounds.top);
+		selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
 	}
 
 	void List::setPosition(sf::Vector2f const& position)
@@ -250,6 +298,8 @@ namespace ProjectSpace
 		}
 		bounds.left += by.x;
 		bounds.top += by.y;
+
+		selector.setPosition(bounds.left, bounds.top);
 	}
 
 	void List::move(float byX, float byY)
@@ -260,6 +310,8 @@ namespace ProjectSpace
 		}
 		bounds.left += byX;
 		bounds.top += byY;
+
+		selector.setPosition(bounds.left, bounds.top);
 	}
 
 	sf::Vector2f List::getPosition() const

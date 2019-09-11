@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
@@ -28,7 +29,12 @@ namespace ProjectSpace
 
 		void update(sf::Time time) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-		sf::Text const& getTopText() const;
+
+		// Select the ListItem directly above the current ListItem.
+		void up();
+
+		// Select the ListItem directly beneath the current ListItem.
+		void down();
 
 		// TODO: Translatable overrides
 		void setPosition(sf::Vector2f const& position) override;
@@ -47,17 +53,20 @@ namespace ProjectSpace
 	private:
 		sf::FloatRect bounds;
 		std::vector<std::pair<sf::Text, std::function<void()>>> texts;
-		sf::Font font;      // Font of every Text.
-		sf::Vector2f textSize;
-		float spacing;      // Vertical spacing between each Text.
-		int visibleItems;   // Number of ListItems visible at the same time.
-		int top;            // Index of first ListItem.
-		int bottom;         // Index of last ListItem.
-		int current;        // Index of currently selected ListItem.
-		sf::Keyboard::Key pressKey;  // If this key is pressed, the currently selected ListItem is pressed.
-		bool pressKeyPreviouslyPressed;
+		sf::Font font;               // Font of every Text.
 
 		sf::RectangleShape selector; // Visually labels the current ListItem.
+		sf::CircleShape topArrow;    // Click this Arrow to go one ListItem up.
+		sf::CircleShape bottomArrow; // Click this Arrow to go one ListItem down.
+
+		float spacing;      	     // Vertical spacing between each Text.
+		int visibleItems;   	     // Number of ListItems visible at the same time.
+		int top;            	     // Index of first ListItem.
+		int bottom;         	     // Index of last ListItem.
+		int current;         	     // Index of currently selected ListItem.
+
+		sf::Keyboard::Key pressKey;  // If this key is pressed, the currently selected ListItem is pressed.
+		bool pressKeyPreviouslyPressed;
 		bool upPreviouslyPressed;
 		bool downPreviouslyPressed;
 		bool leftMousePreviouslyPressed;
