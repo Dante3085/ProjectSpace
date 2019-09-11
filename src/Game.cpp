@@ -25,15 +25,15 @@
 namespace ProjectSpace
 {
 	Game::Game(std::string const& windowTitle, WindowStyle style)
-	: window{sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style},
-	currentScene{nullptr}, windowWidth{(float)sf::VideoMode::getDesktopMode().width}, 
-		windowHeight{(float)sf::VideoMode::getDesktopMode().height}
+		: window{ sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style },
+		currentScene{ nullptr }, windowWidth{ (float)sf::VideoMode::getDesktopMode().width },
+		windowHeight{ (float)sf::VideoMode::getDesktopMode().height }
 	{
 		init();
 	}
 
 	Game::Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style)
-	: window{sf::VideoMode{screenWidth, screenHeight}, windowTitle, style}, currentScene{nullptr}
+		: window{ sf::VideoMode{screenWidth, screenHeight}, windowTitle, style }, currentScene{ nullptr }
 	{
 		init();
 	}
@@ -52,36 +52,16 @@ namespace ProjectSpace
 
 		// Was mache ich jetzt, wenn Drawables die keine Entities sind existieren ?
 	}
-	
+
 	void Game::start()
 	{
 		sf::Clock clock{};
 
-		// This is main Game-Loop
-		std::string strFrameTime{""};
-		int counter = 0;
 		while (window.isOpen())
 		{
 			// At the start of each iteration "clock.restart()" will return the time that the last iteration took.
 			// This is so that all objects of the current iteration know how much time has passed since the last frame.
 			sf::Time time = clock.restart();
-			float frameTime = time.asSeconds();
-			
-			/*strFrameTime.append("frameTime: ");
-			strFrameTime.append(std::to_string(frameTime));
-			strFrameTime.append(" ");
-			strFrameTime.append("fps: ");
-			strFrameTime.append(std::to_string(1.0f / frameTime));
-			strFrameTime.append("\n");
-
-			if (counter == 10)
-			{
-				std::cout << strFrameTime;
-				strFrameTime.clear();
-				counter = 0;
-			}*/
-
-			// std::cout << sf::Mouse::getPosition() << "\n";
 
 			// This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen. Ist wohl ziemlich wichtig in SFML.)
 			sf::Event event;
@@ -92,6 +72,11 @@ namespace ProjectSpace
 				{
 					window.close();
 				}
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+			{
+				window.close();
 			}
 
 			// Update all Entities...
@@ -111,8 +96,6 @@ namespace ProjectSpace
 			}
 
 			window.display();
-
-			++counter;
 		}
 	}
 
@@ -121,7 +104,7 @@ namespace ProjectSpace
 		if (scenes.count(scene) == 0)
 		{
 			Log::getInstance() << lo::PTC << ll::ERR << lo::TIMESTAMP << "Given scene is not known to Game."
-			<< lo::STACKTRACE << lo::END;
+				<< lo::STACKTRACE << lo::END;
 			return;
 		}
 
@@ -133,12 +116,12 @@ namespace ProjectSpace
 		window.setFramerateLimit(60);
 
 		// Creating Scenes
-		scenes[EScene::DEBUG] = new DebugScene{window};
+		scenes[EScene::DEBUG] = new DebugScene{ window };
 		scenes[EScene::CHRONO_TRIGGER] = new ChronoTriggerScene{ window };
 		currentScene = scenes[EScene::CHRONO_TRIGGER];
 
 		// Fps Counter of the Game.
-		FpsCounter* fpsCounter = new FpsCounter{"rsrc/fonts/arial.ttf"};
+		FpsCounter* fpsCounter = new FpsCounter{ "rsrc/fonts/arial.ttf" };
 
 		// InputHandler for input Actions that are always available in the game independent of any specific Scene.
 		InputHandler* globalInputHandler = new InputHandler{};
@@ -148,22 +131,22 @@ namespace ProjectSpace
 		ButtonMenu* buttonMenu;
 
 		// Creating Menu
-		Button* btn = new Button{[this]()
+		Button* btn = new Button{ [this]()
 		{
 			window.close();
-		}, window, "EXIT"};
+		}, window, "EXIT" };
 
 		Button* btn2 = new Button{ window, "Close Menu" };
 
-		Button* btn3 = new Button{[this]()
+		Button* btn3 = new Button{ [this]()
 		{
 			setCurrentScene(EScene::DEBUG);
-		}, window, "Debug Scene"};
+		}, window, "Debug Scene" };
 
-		Button* btn4 = new Button{[this]()
+		Button* btn4 = new Button{ [this]()
 		{
 			setCurrentScene(EScene::LEVEL_ONE);
-		}, window, "Scene 1"};
+		}, window, "Scene 1" };
 
 		Button* btn5 = new Button{ [this]()
 		{
@@ -179,8 +162,8 @@ namespace ProjectSpace
 		btnBox->setPosition(-10, 50);
 		btnBox->setSpacing(5);
 
-		buttonMenu = new ButtonMenu{{btn, btn2, btn3, btn4, btn5, btn6}, 
-			globalInputHandler};
+		buttonMenu = new ButtonMenu{ {btn, btn2, btn3, btn4, btn5, btn6},
+			globalInputHandler };
 
 		float btnBoxWidth = btnBox->getWidth();
 		TranslateAnimation* menuTa;
@@ -188,12 +171,12 @@ namespace ProjectSpace
 		menuTa->start();
 
 		btn2->setOnPressed([btnBoxWidth, menuTa]()
-		{
+			{
 				menuTa->setFrom(menuTa->getTranslatable().getPosition());
 				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
 				menuTa->setEasingFunction(Easing::back_easeInOut);
 				menuTa->start();
-		});
+			});
 
 		// Setting up input handler
 		using key = sf::Keyboard;
@@ -203,49 +186,44 @@ namespace ProjectSpace
 		globalInputHandler->storeKeyState(key::R, false);
 		globalInputHandler->storeKeyState(key::Tab, false);
 		globalInputHandler->add([this, menuTa, btnBoxWidth, globalInputHandler, fpsCounter, btnBox]()
-		{
-			if (key::isKeyPressed(key::Escape))
 			{
-				window.close();
-			}
-
-			if (!globalInputHandler->wasKeyPressed(key::Tab) && key::isKeyPressed(key::Tab))
-			{
-				if (menuTa->getTo() == sf::Vector2f{ -250 - btnBoxWidth, 50 })
+				if (!globalInputHandler->wasKeyPressed(key::Tab) && key::isKeyPressed(key::Tab))
 				{
-					menuTa->setFrom(menuTa->getTranslatable().getPosition());
-					menuTa->setTo(sf::Vector2f{ -5, 50 });
-					menuTa->setEasingFunction(Easing::back_easeInOut);
-					menuTa->start();
+					if (menuTa->getTo() == sf::Vector2f{ -250 - btnBoxWidth, 50 })
+					{
+						menuTa->setFrom(menuTa->getTranslatable().getPosition());
+						menuTa->setTo(sf::Vector2f{ -5, 50 });
+						menuTa->setEasingFunction(Easing::back_easeInOut);
+						menuTa->start();
+					}
+					else
+					{
+						menuTa->setFrom(menuTa->getTranslatable().getPosition());
+						menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
+						menuTa->setEasingFunction(Easing::back_easeInOut);
+						menuTa->start();
+					}
 				}
-				else
-				{
-					menuTa->setFrom(menuTa->getTranslatable().getPosition());
-					menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-					menuTa->setEasingFunction(Easing::back_easeInOut);
-					menuTa->start();
-				}
-			}
 
-			if (!globalInputHandler->wasKeyPressed(key::F1) && key::isKeyPressed(key::F1))
-			{
-				if (fpsCounter->isHidden())
+				if (!globalInputHandler->wasKeyPressed(key::F1) && key::isKeyPressed(key::F1))
 				{
-					fpsCounter->setHide(false);
+					if (fpsCounter->isHidden())
+					{
+						fpsCounter->setHide(false);
+					}
+					else
+					{
+						fpsCounter->setHide(true);
+					}
 				}
-				else
-				{
-					fpsCounter->setHide(true);
-				}
-			}
 
-			globalInputHandler->storeKeyState(key::F1, key::isKeyPressed(key::F1));
-			globalInputHandler->storeKeyState(key::E, key::isKeyPressed(key::E));
-			globalInputHandler->storeKeyState(key::R, key::isKeyPressed(key::R));
-			globalInputHandler->storeKeyState(key::Tab, key::isKeyPressed(key::Tab));
-		});
+				globalInputHandler->storeKeyState(key::F1, key::isKeyPressed(key::F1));
+				globalInputHandler->storeKeyState(key::E, key::isKeyPressed(key::E));
+				globalInputHandler->storeKeyState(key::R, key::isKeyPressed(key::R));
+				globalInputHandler->storeKeyState(key::Tab, key::isKeyPressed(key::Tab));
+			});
 
-		globalEntities = {fpsCounter, globalInputHandler, btnBox, menuTa, buttonMenu};
-		globalDrawables = {fpsCounter, btnBox};
+		globalEntities = { fpsCounter, globalInputHandler, btnBox, menuTa, buttonMenu };
+		globalDrawables = { fpsCounter, btnBox };
 	}
 }
