@@ -154,13 +154,12 @@ namespace ProjectSpace
 			}
 		}
 
-		// Check if we need to move one ListItem up.
+		// Check if up or down key is pressed.
 		if (!upPreviouslyPressed &(upPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)))
 		{
 			up();
 		}
 
-		// Check if we need to move one ListItem down.
 		if (!downPreviouslyPressed & (downPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)))
 		{
 			down();
