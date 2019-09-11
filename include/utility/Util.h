@@ -6,6 +6,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/String.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -100,7 +101,8 @@ namespace ProjectSpace
 	{
 		// TODO: A way to remove these as well.
 		void drawLine(sf::Vector2f const& begin, sf::Vector2f const& end, Scene& scene);
-		void drawRec(sf::Vector2f const& position, sf::Vector2f const& size, Scene& scene);
+		void drawRec(sf::Vector2f const& position, sf::Vector2f const& size, sf::Color const& color, Scene& scene);
+		void drawFloatRect(sf::FloatRect const& floatRect, Scene& scene);
 	}
 	namespace dd = DebugDrawing;
 }
