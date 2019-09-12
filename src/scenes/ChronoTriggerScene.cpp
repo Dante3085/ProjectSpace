@@ -18,7 +18,7 @@ namespace ProjectSpace
 		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
 		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
-		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
+		rWasDown{ false },
 		camera{ crono, window, sf::Vector2f{200, 200} },
 		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
@@ -46,7 +46,8 @@ namespace ProjectSpace
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 	}},
-	translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 }
+	translateAnimation{ list, sf::Vector2f{500, 500}, sf::Vector2f{600, 500}, 150 },
+	fadeAnimation{list, 0, 255, 300}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -80,7 +81,8 @@ namespace ProjectSpace
 		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
 		sound.setBuffer(soundBuffer);
 
-		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &combatOrder, &audioFader, &list});
+		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox, 
+			                 &combatOrder, &audioFader, &list});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 	}
 
@@ -120,6 +122,7 @@ namespace ProjectSpace
 		{
 			crono.setAnimation(EAnimation::RIGHT);
 			crono.move(cronoSpeed, 0);
+			list.move(8, 0);
 		}
 		else if (dWasDown)
 		{
@@ -128,6 +131,23 @@ namespace ProjectSpace
 
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
+			if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
+			{
+				translateAnimation.setFrom(sf::Vector2f{ 600, 500 });
+				translateAnimation.setTo(sf::Vector2f{ 500, 500 });
+
+				fadeAnimation.setStartAlpha(255);
+				fadeAnimation.setEndAlpha(0);
+			}
+			else
+			{
+				translateAnimation.setFrom(sf::Vector2f{ 500, 500 });
+				translateAnimation.setTo(sf::Vector2f{ 600, 500 });
+
+				fadeAnimation.setStartAlpha(0);
+				fadeAnimation.setEndAlpha(255);
+			}
+			fadeAnimation.start();
 			translateAnimation.start();
 		}
 

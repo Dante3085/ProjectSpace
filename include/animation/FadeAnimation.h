@@ -22,6 +22,10 @@ namespace ProjectSpace
 		void start();
 		void reset();
 		void setEasingFunction(Easing::EasingFunction easingFunction);
+		void setStartAlpha(int startAlpha);
+		void setEndAlpha(int endAlpha);
+		int getStartAlpha();
+		int getEndAlpha();
 
 	private:
 		Fadeable& fadeable;

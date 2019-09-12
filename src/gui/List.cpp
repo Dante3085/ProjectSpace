@@ -346,7 +346,9 @@ namespace ProjectSpace
 		bounds.left += by.x;
 		bounds.top += by.y;
 
-		selector.setPosition(bounds.left, bounds.top);
+		selector.move(by);
+		topArrow.move(by);
+		bottomArrow.move(by);
 	}
 
 	void List::move(float byX, float byY)
@@ -358,7 +360,9 @@ namespace ProjectSpace
 		bounds.left += byX;
 		bounds.top += byY;
 
-		selector.setPosition(bounds.left, bounds.top);
+		selector.move(byX, byY);
+		topArrow.move(byX, byY);
+		bottomArrow.move(byX, byY);
 	}
 
 	sf::Vector2f List::getPosition() const
@@ -389,6 +393,28 @@ namespace ProjectSpace
 	float List::getHeight() const
 	{
 		return bounds.height;
+	}
+
+	void List::setColor(sf::Color const& color)
+	{
+		for (auto& pair : texts)
+		{
+			pair.first.setFillColor(color);
+		}
+		topArrow.setFillColor(color);
+		bottomArrow.setFillColor(color);
+
+		// TODO: Better implementation. Store selector color or something.
+		// Don't allow selector opacity over 50
+		if (color.a > 50)
+		{
+			selector.setFillColor(sf::Color(255, 0, 0, 50));
+		}
+		else
+		{
+			sf::Color c(255, 0, 0, color.a);
+			selector.setFillColor(c);
+		}
 	}
 
 	sf::FloatRect List::getBounds() const

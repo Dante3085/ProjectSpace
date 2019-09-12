@@ -49,7 +49,6 @@ namespace ProjectSpace
 		bool spaceWasDown;
 		bool rWasDown;
 
-		FadeAnimation fadeAnimation;
 		Camera camera;
 		TextBox textBox;
 
@@ -65,6 +64,7 @@ namespace ProjectSpace
 
 		List list;
 		TranslateAnimation translateAnimation;
+		FadeAnimation fadeAnimation;
 
 		sf::SoundBuffer soundBuffer;
 		sf::Sound sound;

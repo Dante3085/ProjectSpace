@@ -16,11 +16,12 @@
 #include <functional>
 
 #include "gui/MenuElement.h"
+#include "animation/Fadeable.h"
 
 namespace ProjectSpace
 {
 	// GUI List Widget
-	class List : public MenuElement
+	class List : public MenuElement, public Fadeable
 	{
 
 	public:
@@ -36,7 +37,7 @@ namespace ProjectSpace
 		// Select the ListItem directly beneath the current ListItem.
 		void down();
 
-		// TODO: Translatable overrides
+		// Translatable overrides
 		void setPosition(sf::Vector2f const& position) override;
 		void setPosition(float x, float y) override;
 		void move(sf::Vector2f const& by) override;
@@ -47,6 +48,9 @@ namespace ProjectSpace
 		sf::Vector2f getSize() const override;
 		float getWidth() const override;
 		float getHeight() const override;
+
+		// Fadeable overrides
+		void setColor(sf::Color const& color) override;
 
 		sf::FloatRect getBounds() const;
 
