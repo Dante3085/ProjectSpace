@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 #include "tilemap/Tilemap.h"
 #include "animation/Animation.h"
@@ -48,7 +50,6 @@ namespace ProjectSpace
 		bool rWasDown;
 
 		FadeAnimation fadeAnimation;
-		TranslateAnimation translateAnimation;
 		Camera camera;
 		TextBox textBox;
 
@@ -63,6 +64,10 @@ namespace ProjectSpace
 		AudioFader audioFader;
 
 		List list;
+		TranslateAnimation translateAnimation;
+
+		sf::SoundBuffer soundBuffer;
+		sf::Sound sound;
 	};
 }
 

@@ -19,7 +19,6 @@ namespace ProjectSpace
 		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
 		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
 		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
-		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
 		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
@@ -31,10 +30,10 @@ namespace ProjectSpace
 	    "rsrc/spritesheets/singleImages/hearts-1.png",
 	    "rsrc/spritesheets/singleImages/sensei.png"}, sf::Vector2f{2000, 500} },
 		audioFader{marvinTrack, 0, 100, 3000},
-		list{sf::Vector2f{500, 1000}, window,
+		list{sf::Vector2f{100, 800}, window,
 	{
 		{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
-		{"Potion x 20", [](){}},
+		{"Potion x 20", [this]() { sound.play(); }},
 		{"Black-Spheroid x 20", []() {}},
 		{"Hi-Ether x 20", []() {}},
 		{"Antdoit x 20", []() {}},
@@ -46,7 +45,8 @@ namespace ProjectSpace
 		{"PhoenixDown x 2", []() {}},
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
-	}}
+	}},
+	translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 }
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -77,6 +77,9 @@ namespace ProjectSpace
 
 		marvinTrack.openFromFile("rsrc/audio/music/Klassik Soundtrack 1.ogg");
 		
+		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
+		sound.setBuffer(soundBuffer);
+
 		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &combatOrder, &audioFader, &list});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 	}
@@ -125,7 +128,7 @@ namespace ProjectSpace
 
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			combatOrder.cycle();
+			translateAnimation.start();
 		}
 
 		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))

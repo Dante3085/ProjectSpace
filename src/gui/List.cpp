@@ -14,9 +14,10 @@ namespace ProjectSpace
 
 	List::List(sf::Vector2f const& position, sf::Window const& window, 
 		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
-		: bounds{ -1, -1, -1, -1 }, topArrow{ 15, 3 }, bottomArrow{15, 3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
+		: bounds{ -1, -1, -1, -1 }, topArrow{ 3 }, bottomArrow{3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
 		pressKey{ sf::Keyboard::Enter }, pressKeyPreviouslyPressed{ false }, upPreviouslyPressed{false},
-		downPreviouslyPressed{ false }, leftMousePreviouslyPressed{false}, window{ window }
+		downPreviouslyPressed{ false }, leftMousePreviouslyPressed{false}, window{ window },
+		upHoldDuration{500}, upHoldElapsed{0}, downHoldDuration{500}, downHoldElapsed{0}
 	{
 
 		// Don't allow empty List for now
@@ -83,14 +84,20 @@ namespace ProjectSpace
 		selector.setSize(sf::Vector2f{ topTextBounds.width, topTextBounds.height });
 		selector.setFillColor(sf::Color{255, 0, 0, 50});
 
-		// TODO: Set position of these properly. Problems with resolution.
-		// Init TopArrow.
-		topArrow.setPosition(bounds.left - 35, bounds.top - 1);
+		// Init Arrows.
+		float textHeight = texts[0].first.getGlobalBounds().height;
+		topArrow.setPoint(0, sf::Vector2f{ bounds.left - 40, bounds.top + textHeight });
+		topArrow.setPoint(1, sf::Vector2f{bounds.left - 10, bounds.top + textHeight});
+		topArrow.setPoint(2, sf::Vector2f( bounds.left - 25, bounds.top ));
 
-		// Init BottomArrow.
-		// TODO: Figure out how to correctly setPosition after rotation.
-		bottomArrow.setRotation(180);
-		bottomArrow.setPosition(bounds.left - 5, bounds.top + bounds.height + 3);
+		bottomArrow.setPoint(0, sf::Vector2f{ bounds.left - 40, bounds.top + bounds.height - textHeight });
+		bottomArrow.setPoint(1, sf::Vector2f{ bounds.left - 10, bounds.top + bounds.height - textHeight });
+		bottomArrow.setPoint(2, sf::Vector2f(bounds.left - 25, bounds.top + bounds.height));
+
+		// Expand bounds to include arrows.
+		sf::FloatRect tempBounds = bounds;
+		bounds.left = topArrow.getPoint(0).x;
+		bounds.width = (tempBounds.left + tempBounds.width) - bounds.left;
 	}
 
 	void List::update(sf::Time time)
@@ -106,40 +113,43 @@ namespace ProjectSpace
 
 		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
 
-		// Check if Mouse is over TopArrow or BottomArrow.
-		if (topArrow.getGlobalBounds().contains(mousePosition))
-		{
-			topArrow.setFillColor(sf::Color{ 169,169,169 });
-
-			if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-			{
-				up();
-			}
-		}
-		else
-		{
-			topArrow.setFillColor(sf::Color::White);
-		}
-
-		if (bottomArrow.getGlobalBounds().contains(mousePosition))
-		{
-			bottomArrow.setFillColor(sf::Color{ 169,169,169 });
-
-			if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-			{
-				down();
-			}
-		}
-		else
-		{
-			bottomArrow.setFillColor(sf::Color::White);
-		}
-
-		// Check if one of the visible ListItems is selected by Mouse.
 		// Only check for all ListItems if Mouse is already inside
 		// the List's bounds to avoid unnecessary checks.
 		if (bounds.contains(mousePosition))
 		{
+			// Check if Mouse is over TopArrow
+			if (topArrow.getGlobalBounds().contains(mousePosition))
+			{
+				topArrow.setFillColor(sf::Color{ 169,169,169 });
+				std::cout << "topArrow: " << topArrow.getPosition() << "\n";
+
+				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					up();
+				}
+			}
+			else
+			{
+				topArrow.setFillColor(sf::Color::White);
+			}
+
+			// Check if Mouse is over BottomArrow.
+			if (bottomArrow.getGlobalBounds().contains(mousePosition))
+			{
+				bottomArrow.setFillColor(sf::Color{ 169,169,169 });
+				std::cout << "bottomArrow: " << bottomArrow.getPosition() << "\n";
+
+				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					down();
+				}
+			}
+			else
+			{
+				bottomArrow.setFillColor(sf::Color::White);
+			}
+
+			// Check if one of the visible ListItems is selected by Mouse.
 			for (int i = top; i <= bottom; ++i)
 			{
 				sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
@@ -160,10 +170,48 @@ namespace ProjectSpace
 			up();
 		}
 
+		// Make it possible to hold the up key to move up faster.
+		if (upPreviouslyPressed)
+		{
+			if (upHoldElapsed >= upHoldDuration)
+			{
+				up();
+				upHoldElapsed *= 0.85;
+			}
+			else
+			{
+				upHoldElapsed += time.asMilliseconds();
+			}
+		}
+		else
+		{
+			upHoldElapsed = 0;
+		}
+
 		if (!downPreviouslyPressed & (downPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)))
 		{
 			down();
 		}
+
+		// Make it possible to hold the down key to move down faster.
+		if (downPreviouslyPressed)
+		{
+			if (downHoldElapsed >= downHoldDuration)
+			{
+				down();
+				downHoldElapsed *= 0.85;
+			}
+			else
+			{
+				downHoldElapsed += time.asMilliseconds();
+			}
+		}
+		else
+		{
+			downHoldElapsed = 0;
+		}
+
+		// Makes it possible to hold the down key to move down faster.
 
 		leftMousePreviouslyPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 	}

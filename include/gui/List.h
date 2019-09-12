@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
@@ -55,9 +55,9 @@ namespace ProjectSpace
 		std::vector<std::pair<sf::Text, std::function<void()>>> texts;
 		sf::Font font;               // Font of every Text.
 
-		sf::RectangleShape selector; // Visually labels the current ListItem.
-		sf::CircleShape topArrow;    // Click this Arrow to go one ListItem up.
-		sf::CircleShape bottomArrow; // Click this Arrow to go one ListItem down.
+		sf::ConvexShape topArrow;
+		sf::ConvexShape bottomArrow; 
+		sf::RectangleShape selector; // Visually labels the current ListItem
 
 		float spacing;      	     // Vertical spacing between each Text.
 		int visibleItems;   	     // Number of ListItems visible at the same time.
@@ -72,6 +72,13 @@ namespace ProjectSpace
 		bool leftMousePreviouslyPressed;
 
 		sf::Window const& window;
+
+		float upHoldDuration; // Amount of time that has to pass since the down key has been pressed and held down 
+		                      // for it to be considered as a hold.
+		float upHoldElapsed;  // Amount of time that has been passed since the down key has been pressed and held down.
+
+		float downHoldDuration; // See: upHoldDuration
+		float downHoldElapsed;  // See: upHoldElapsed
 	};
 }
 
