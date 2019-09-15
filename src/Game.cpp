@@ -27,7 +27,8 @@ namespace ProjectSpace
 	Game::Game(std::string const& windowTitle, WindowStyle style)
 		: window{ sf::VideoMode{sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height}, windowTitle, style },
 		currentScene{ nullptr }, windowWidth{ (float)sf::VideoMode::getDesktopMode().width },
-		windowHeight{ (float)sf::VideoMode::getDesktopMode().height }
+		windowHeight{ (float)sf::VideoMode::getDesktopMode().height },
+		inputManager{&InputManager::getInstance()}
 	{
 		init();
 	}
@@ -59,6 +60,9 @@ namespace ProjectSpace
 
 		while (window.isOpen())
 		{
+			inputManager->updateCurrentKeys();
+			inputManager->updateInputContexts();
+
 			// At the start of each iteration "clock.restart()" will return the time that the last iteration took.
 			// This is so that all objects of the current iteration know how much time has passed since the last frame.
 			sf::Time time = clock.restart();
@@ -96,6 +100,8 @@ namespace ProjectSpace
 			}
 
 			window.display();
+
+			inputManager->updatePreviousKeys();
 		}
 	}
 
@@ -223,7 +229,7 @@ namespace ProjectSpace
 				globalInputHandler->storeKeyState(key::Tab, key::isKeyPressed(key::Tab));
 			});
 
-		globalEntities = { fpsCounter, globalInputHandler, btnBox, menuTa, buttonMenu };
+		globalEntities = { fpsCounter, globalInputHandler, btnBox, menuTa/*, buttonMenu*/ };
 		globalDrawables = { fpsCounter, btnBox };
 	}
 }

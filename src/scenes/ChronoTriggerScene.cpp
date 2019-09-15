@@ -47,7 +47,27 @@ namespace ProjectSpace
 		{"Final-Elixir x 20", []() {}},
 	}},
 	translateAnimation{ list, sf::Vector2f{500, 500}, sf::Vector2f{600, 500}, 150 },
-	fadeAnimation{list, 0, 255, 300}
+	fadeAnimation{list, 0, 255, 300},
+	list2{ sf::Vector2f{1000, 100}, window,
+	{
+		{"Ether x 50", []() {}},
+		{"Potion x 20", []() {}},
+		{"Grenade x 6", []() {}},
+		{"Potion x 20", []() {}},
+		{"PhoenixDown x 2", []() {}},
+		{"Potion x 20", []() {}},
+		{"Final-Elixir x 20", []() {}}
+	} },
+		list3{ sf::Vector2f{2000, 400}, window,
+	{
+		{"Ether x 50", []() {}},
+		{"Potion x 20", []() {}},
+		{"Grenade x 6", []() {}},
+		{"Potion x 20", []() {}},
+		{"PhoenixDown x 2", []() {}},
+		{"Potion x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+	}} 
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -82,8 +102,8 @@ namespace ProjectSpace
 		sound.setBuffer(soundBuffer);
 
 		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox, 
-			                 &combatOrder, &audioFader, &list});
-		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
+			                 &combatOrder, &audioFader, &list, &list2, &list3});
+		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list, &list2, &list3 });
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)

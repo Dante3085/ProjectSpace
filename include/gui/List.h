@@ -17,6 +17,7 @@
 
 #include "gui/MenuElement.h"
 #include "animation/Fadeable.h"
+#include "input/InputManager.h"
 
 namespace ProjectSpace
 {
@@ -70,9 +71,6 @@ namespace ProjectSpace
 		int current;         	     // Index of currently selected ListItem.
 
 		sf::Keyboard::Key pressKey;  // If this key is pressed, the currently selected ListItem is pressed.
-		bool pressKeyPreviouslyPressed;
-		bool upPreviouslyPressed;
-		bool downPreviouslyPressed;
 		bool leftMousePreviouslyPressed;
 
 		sf::Window const& window;
@@ -83,6 +81,10 @@ namespace ProjectSpace
 
 		float downHoldDuration; // See: upHoldDuration
 		float downHoldElapsed;  // See: upHoldElapsed
+
+		InputManager* inputManager;
+		InputContext inputContext;
+		static int numLists;  // Mainly for having unique InputContext names for all List instances.
 	};
 }
 

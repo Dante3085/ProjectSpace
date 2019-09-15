@@ -8,6 +8,8 @@
 
 namespace ProjectSpace
 {
+	int List::numLists = 0;
+
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
 	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
 	// sf::Text::getGlobalBounds() will.
@@ -15,9 +17,9 @@ namespace ProjectSpace
 	List::List(sf::Vector2f const& position, sf::Window const& window, 
 		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
 		: bounds{ -1, -1, -1, -1 }, topArrow{ 3 }, bottomArrow{3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
-		pressKey{ sf::Keyboard::Enter }, pressKeyPreviouslyPressed{ false }, upPreviouslyPressed{false},
-		downPreviouslyPressed{ false }, leftMousePreviouslyPressed{false}, window{ window },
-		upHoldDuration{500}, upHoldElapsed{0}, downHoldDuration{500}, downHoldElapsed{0}
+		pressKey{ sf::Keyboard::Enter }, leftMousePreviouslyPressed{false}, window{ window },
+		upHoldDuration{500}, upHoldElapsed{0}, downHoldDuration{500}, downHoldElapsed{0},
+		inputManager{&InputManager::getInstance()}
 	{
 
 		// Don't allow empty List for now
@@ -82,7 +84,7 @@ namespace ProjectSpace
 		sf::FloatRect topTextBounds = texts[0].first.getGlobalBounds();
 		selector.setPosition(topTextBounds.left, topTextBounds.top);
 		selector.setSize(sf::Vector2f{ topTextBounds.width, topTextBounds.height });
-		selector.setFillColor(sf::Color{255, 0, 0, 50});
+		selector.setFillColor(sf::Color{255, 0, 0, 255});
 
 		// Init Arrows.
 		float textHeight = texts[0].first.getGlobalBounds().height;
@@ -98,6 +100,15 @@ namespace ProjectSpace
 		sf::FloatRect tempBounds = bounds;
 		bounds.left = topArrow.getPoint(0).x;
 		bounds.width = (tempBounds.left + tempBounds.width) - bounds.left;
+
+		// Setup Input with InputManager.
+		inputContext.setPredicate([this]()
+			{
+				return bounds.contains((sf::Vector2f)sf::Mouse::getPosition(this->window));
+			});
+		std::string inputContextName = "gui/List";
+		inputContextName += std::to_string(numLists++);
+		inputManager->registerInputContext(inputContextName, &inputContext);
 	}
 
 	void List::update(sf::Time time)
@@ -105,10 +116,60 @@ namespace ProjectSpace
 		// TODO: Check this function for improvements in performance.
 		// TODO: InputHandling needs work. New Input System.
 
-		// Check if current ListItem is pressed.
-		if ((!pressKeyPreviouslyPressed & (pressKeyPreviouslyPressed = sf::Keyboard::isKeyPressed(pressKey))))
+		if (inputContext.isValid())
 		{
-			texts[current].second();
+			// Check if current ListItem is pressed.
+			if (inputManager->onKeyPressed(pressKey))
+			{
+				texts[current].second();
+			}
+
+			// Check if up or down key is pressed.
+			if (inputManager->onKeyPressed(sf::Keyboard::Up))
+			{
+				up();
+			}
+
+			// Make it possible to hold the up key to move up faster.
+			if (inputManager->wasKeyPressed(sf::Keyboard::Up))
+			{
+				if (upHoldElapsed >= upHoldDuration)
+				{
+					up();
+					upHoldElapsed *= 0.90;
+				}
+				else
+				{
+					upHoldElapsed += time.asMilliseconds();
+				}
+			}
+			else
+			{
+				upHoldElapsed = 0;
+			}
+
+			if (inputManager->onKeyPressed(sf::Keyboard::Down))
+			{
+				down();
+			}
+
+			// Make it possible to hold the down key to move down faster.
+			if (inputManager->wasKeyPressed(sf::Keyboard::Down))
+			{
+				if (downHoldElapsed >= downHoldDuration)
+				{
+					down();
+					downHoldElapsed *= 0.90;
+				}
+				else
+				{
+					downHoldElapsed += time.asMilliseconds();
+				}
+			}
+			else
+			{
+				downHoldElapsed = 0;
+			}
 		}
 
 		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
@@ -164,53 +225,6 @@ namespace ProjectSpace
 			}
 		}
 
-		// Check if up or down key is pressed.
-		if (!upPreviouslyPressed &(upPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)))
-		{
-			up();
-		}
-
-		// Make it possible to hold the up key to move up faster.
-		if (upPreviouslyPressed)
-		{
-			if (upHoldElapsed >= upHoldDuration)
-			{
-				up();
-				upHoldElapsed *= 0.85;
-			}
-			else
-			{
-				upHoldElapsed += time.asMilliseconds();
-			}
-		}
-		else
-		{
-			upHoldElapsed = 0;
-		}
-
-		if (!downPreviouslyPressed & (downPreviouslyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)))
-		{
-			down();
-		}
-
-		// Make it possible to hold the down key to move down faster.
-		if (downPreviouslyPressed)
-		{
-			if (downHoldElapsed >= downHoldDuration)
-			{
-				down();
-				downHoldElapsed *= 0.85;
-			}
-			else
-			{
-				downHoldElapsed += time.asMilliseconds();
-			}
-		}
-		else
-		{
-			downHoldElapsed = 0;
-		}
-
 		// Makes it possible to hold the down key to move down faster.
 
 		leftMousePreviouslyPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
@@ -218,12 +232,12 @@ namespace ProjectSpace
 
 	void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
+		target.draw(selector);
 		// Draw all visible ListItems and selector.
 		for (int i = top; i <= bottom; ++i)
 		{
 			target.draw(texts[i].first);
 		}
-		target.draw(selector);
 		target.draw(topArrow);
 		target.draw(bottomArrow);
 	}
@@ -403,18 +417,7 @@ namespace ProjectSpace
 		}
 		topArrow.setFillColor(color);
 		bottomArrow.setFillColor(color);
-
-		// TODO: Better implementation. Store selector color or something.
-		// Don't allow selector opacity over 50
-		if (color.a > 50)
-		{
-			selector.setFillColor(sf::Color(255, 0, 0, 50));
-		}
-		else
-		{
-			sf::Color c(255, 0, 0, color.a);
-			selector.setFillColor(c);
-		}
+		selector.setFillColor(sf::Color(255, 0, 0, color.a));
 	}
 
 	sf::FloatRect List::getBounds() const

@@ -65,6 +65,8 @@ namespace ProjectSpace
 		List list;
 		TranslateAnimation translateAnimation;
 		FadeAnimation fadeAnimation;
+		List list2;
+		List list3;
 
 		sf::SoundBuffer soundBuffer;
 		sf::Sound sound;

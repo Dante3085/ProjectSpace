@@ -12,6 +12,7 @@
 #include "scenes/EScene.h"
 #include "scenes/Scene.h"
 #include "WindowStyle.h"
+#include "input/InputManager.h"
 
 namespace ProjectSpace
 {
@@ -72,6 +73,8 @@ namespace ProjectSpace
 
 		bool freeze;
 		bool f2LastFrame;
+
+		InputManager* inputManager;
 	};
 }
 
