@@ -7,7 +7,9 @@ namespace ProjectSpace
 	enum class Action
 	{
 		LIST_UP,
-		LIST_DOWN
+		LIST_DOWN,
+		LIST_SELECT,
+		PRINT
 	};
 
 	enum class State

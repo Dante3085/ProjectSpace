@@ -51,7 +51,7 @@ namespace ProjectSpace
 		std::map<Action, bool> actionsFired;
 		// std::map<State, bool> statesOn;
 
-		static std::map<std::string, sf::Keyboard::Key> stringToKey;
+		static std::map<std::string, sf::Keyboard::Key> stringToKey; // LookupTable for string from ContextFile to sf::Keyboard::Key.
 		static std::map<std::string, Action> stringToAction;
 		static std::map<std::string, State> stringToState;
 

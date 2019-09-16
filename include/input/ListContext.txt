@@ -1,11 +1,9 @@
-// This is a comment. REMOVE everything after and including "//" until newLine character is hit.
-// Also remove empty lines.
 
-// KEYBOARD MAPPINGS
-// An Action only fires once. Whether onPress or onRelease can be configured.
-numKeyToActionMappings=2
-key::up onPressed list_down // key::up will fire the list_up action on being pressed.
-key::down onPressed list_down
+numKeyToActionMappings=4
+key::W onPressed list_up
+key::S onPressed list_down
+key::Space onPressed list_select
+key::F1 onPressed print
 
 // A State is either turned on or off. What key(s) turn the State on and off
 // and if it should be onPress or onRelease can be configured.

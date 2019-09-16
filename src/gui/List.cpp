@@ -116,19 +116,18 @@ namespace ProjectSpace
 		// TODO: Check this function for improvements in performance.
 		// TODO: InputHandling needs work. New Input System.
 
+		if (inputContext.hasActionFired(Action::PRINT))
+		{
+			std::cout << "Print Action fired" << std::endl;
+		}
+
 		if (inputContext.isValid())
 		{
 			// Check if current ListItem is pressed.
-			if (inputManager->onKeyPressed(pressKey))
+			if (inputContext.hasActionFired(Action::LIST_SELECT))
 			{
 				texts[current].second();
 			}
-
-			// Check if up or down key is pressed.
-			/*if (inputManager->onKeyPressed(sf::Keyboard::Up))
-			{
-				up();
-			}*/
 
 			if (inputContext.hasActionFired(Action::LIST_UP))
 			{
