@@ -1,0 +1,21 @@
+// This is a comment. REMOVE everything after and including "//" until newLine character is hit.
+// Also remove empty lines.
+
+// KEYBOARD MAPPINGS
+// An Action only fires once. Whether onPress or onRelease can be configured.
+numKeyToActionMappings=2
+key::up onPressed list_down // key::up will fire the list_up action on being pressed.
+key::down onPressed list_down
+
+// A State is either turned on or off. What key(s) turn the State on and off
+// and if it should be onPress or onRelease can be configured.
+// numKeyToStateMappings=4
+// key::W onPressed walk_north key::W onReleased // key::W turns the state walk_north on, on being pressed and key::W turns it off on being released.
+// key::A onPressed walk_west key::A onReleased
+// key::S onPressed walk_south key::S onReleased 
+// key::D onPressed walk_east key::D onReleased
+
+// GAMEPAD MAPPINGS
+// numPS4ButtonToActionMappings=2
+// ps4button::dpad_up onPressed list_up
+// ps4button::dpad_down onPressed list_down

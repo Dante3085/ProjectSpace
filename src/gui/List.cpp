@@ -19,7 +19,7 @@ namespace ProjectSpace
 		: bounds{ -1, -1, -1, -1 }, topArrow{ 3 }, bottomArrow{3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
 		pressKey{ sf::Keyboard::Enter }, leftMousePreviouslyPressed{false}, window{ window },
 		upHoldDuration{500}, upHoldElapsed{0}, downHoldDuration{500}, downHoldElapsed{0},
-		inputManager{&InputManager::getInstance()}
+		inputManager{&InputManager::getInstance()}, inputContext{"include/input/ListContext.txt"}
 	{
 
 		// Don't allow empty List for now
@@ -125,13 +125,18 @@ namespace ProjectSpace
 			}
 
 			// Check if up or down key is pressed.
-			if (inputManager->onKeyPressed(sf::Keyboard::Up))
+			/*if (inputManager->onKeyPressed(sf::Keyboard::Up))
+			{
+				up();
+			}*/
+
+			if (inputContext.hasActionFired(Action::LIST_UP))
 			{
 				up();
 			}
 
 			// Make it possible to hold the up key to move up faster.
-			if (inputManager->wasKeyPressed(sf::Keyboard::Up))
+			/*if (inputManager->wasKeyPressed(sf::Keyboard::Up))
 			{
 				if (upHoldElapsed >= upHoldDuration)
 				{
@@ -146,15 +151,15 @@ namespace ProjectSpace
 			else
 			{
 				upHoldElapsed = 0;
-			}
+			}*/
 
-			if (inputManager->onKeyPressed(sf::Keyboard::Down))
+			if (inputContext.hasActionFired(Action::LIST_DOWN))
 			{
 				down();
 			}
 
 			// Make it possible to hold the down key to move down faster.
-			if (inputManager->wasKeyPressed(sf::Keyboard::Down))
+			/*if (inputManager->wasKeyPressed(sf::Keyboard::Down))
 			{
 				if (downHoldElapsed >= downHoldDuration)
 				{
@@ -169,7 +174,7 @@ namespace ProjectSpace
 			else
 			{
 				downHoldElapsed = 0;
-			}
+			}*/
 		}
 
 		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
@@ -182,7 +187,6 @@ namespace ProjectSpace
 			if (topArrow.getGlobalBounds().contains(mousePosition))
 			{
 				topArrow.setFillColor(sf::Color{ 169,169,169 });
-				std::cout << "topArrow: " << topArrow.getPosition() << "\n";
 
 				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
@@ -198,7 +202,6 @@ namespace ProjectSpace
 			if (bottomArrow.getGlobalBounds().contains(mousePosition))
 			{
 				bottomArrow.setFillColor(sf::Color{ 169,169,169 });
-				std::cout << "bottomArrow: " << bottomArrow.getPosition() << "\n";
 
 				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
