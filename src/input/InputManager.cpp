@@ -122,14 +122,24 @@ namespace ProjectSpace
 		{"list_up", Action::LIST_UP},
 	    {"list_down", Action::LIST_DOWN},
 		{"list_select", Action::LIST_SELECT},
-		{"print", Action::PRINT},
 	};
-	std::map<std::string, State> InputContext::stringToState;
+	std::map<std::string, State> InputContext::stringToState
+	{
+		{"list_hold_up", State::LIST_HOLD_UP},
+		{"list_hold_down", State::LIST_HOLD_DOWN},
+		{"walk_north", State::WALK_NORTH},
+		{"walk_east", State::WALK_EAST},
+		{"walk_south", State::WALK_SOUTH},
+		{"walk_west", State::WALK_WEST},
+	};
+
+	// TODO: Workload bei häufig aufgerufenen Funktionen reduzieren, um Performance zu heben.
 
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
 	: inputManager{&InputManager::getInstance()}, valid{false}, predicate{predicate}
 	{
 		parseContextFile(contextFile);
+
 	}
 
 	InputContext::InputContext(std::string const& contextFile)
@@ -140,29 +150,35 @@ namespace ProjectSpace
 
 	void InputContext::update()
 	{
+		// Check for Actions being fired.
 		for (auto& pair : keyToAction)
 		{
-			if (pair.second.second == "onPressed")
+			// If InputMode function returns true on the corresponding key, store that the corresponding Action has fired.
+			// pair.second.second is a function pointer to certain non static InputManager member functions. 
+			// Since they are non static they need to be called on an object. That is the inputManager pointer in this case.
+			// TODO: std::pair makes the code hard to read if you don't yet have a proper mental model of the context.
+			if ((inputManager->*pair.second.second)(pair.first))
 			{
-				if (inputManager->onKeyPressed(pair.first))
-				{
-					actionsFired[pair.second.first] = true;
-				}
-				else
-				{
-					actionsFired[pair.second.first] = false;
-				}
+				actionsFired[pair.second.first] = true;
 			}
-			else if (pair.second.second == "onReleased")
+		}
+
+		// Check for States being turned on.
+		for (auto& pair : keyToStateOn)
+		{
+			if ((inputManager->*pair.second.second)(pair.first))
 			{
-				if (inputManager->onKeyReleased(pair.first))
-				{
-					actionsFired[pair.second.first] = true;
-				}
-				else
-				{
-					actionsFired[pair.second.first] = false;
-				}
+				statesOn[pair.second.first] = true;
+				std::cout << "State '" << (int)pair.second.first << "' has been turned on." << std::endl;
+			}
+		}
+
+		// Check for States being turned off.
+		for (auto& pair : keyToStateOff)
+		{
+			if ((inputManager->*pair.second.second)(pair.first))
+			{
+				statesOn[pair.second.first] = false;
 			}
 		}
 	}
@@ -179,25 +195,45 @@ namespace ProjectSpace
 
 	bool InputContext::hasActionFired(Action action)
 	{
-		return actionsFired[action];
+		if (actionsFired.count(action) == 0)
+		{
+			std::string msg = "Given Action '";
+			msg += std::to_string(static_cast<int>(action));
+			msg += "' is not known to this InputContext.";
+			Log::getInstance().defaultLog(msg, ll::ERR, true);
+
+			// return false; // This is not necessary since the Log call will terminate the entire program.
+		}
+		else
+		{
+			// TODO: Die Action erst zu resetten, wenn sie abgefragt wird könnte zu Problemen führen.
+			// Beispiel: Action wird auf true gesetzt, aber keiner fragt sie zunächst ab.
+			// Wenn die Aktion dann erst nach längerer Zeit abgefragt wird, ist die offensichtliche Korrelation
+			// zwischen Tastendruck und Effekt natürlich nicht mehr gegeben. 
+			// Mögliche Lösung: Auf true gesetzte Actions nach gewisser Zeit automatisch auf false setzen.
+			if (actionsFired.at(action))
+			{
+				actionsFired[action] = false;
+				return true;
+			}
+			return false;
+		}
 	}
 
 	bool InputContext::isStateOn(State state)
 	{
-		// TODO: Dummy return value. Not yet implemented.
-		return false;
+		return statesOn[state];
 	}
 
 	void InputContext::parseContextFile(std::string const& contextFile)
 	{
 		std::string contextFile_commentsRemoved = removeCommentsAndEmtpyLines(contextFile);
-
-		// TODO: Parse ContextFile
 		std::ifstream inFile{ contextFile_commentsRemoved };
 
 		std::string str;
 		while (inFile >> str)
 		{
+			// Check for the Key to Action mapping section.
 			if (str.find("numKeyToActionMappings") != std::string::npos)
 			{
 				// 23 must be the index of the first digit of the number, since the string is fixed except for the number.
@@ -218,14 +254,22 @@ namespace ProjectSpace
 					}
 					sf::Keyboard::Key key = stringToKey[str];
 
-					// Get Action input modus.
+					// Get InputMode.
 					inFile >> str;
-					// Check if given Action input modus exists.
-					if (str != "onPressed" && str != "onReleased")
+
+					InputMode inputMode;
+					if (str == "onPressed")
 					{
-						Log::getInstance().defaultLog("onPressed and onReleased are currently the only modi for Action input.", ll::ERR, true);
+						inputMode = &InputManager::onKeyPressed;
 					}
-					std::string mode = str; // onPressed oder onReleased. TODO: Auch das irgendwie in map niederlegen. Nicht einfach if testen.
+					else if (str == "onReleased")
+					{
+						inputMode = &InputManager::onKeyReleased;
+					}
+					else
+					{
+						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
+					}
 
 					// Get Action.
 					inFile >> str;
@@ -238,8 +282,90 @@ namespace ProjectSpace
 					}
 					Action action = stringToAction[str];
 
-					keyToAction[key] = std::pair<Action, std::string>{action, mode};
+					keyToAction[key] = std::pair<Action, InputMode>{action, inputMode};
 					actionsFired[action] = false;
+				}
+			}
+
+			// Check for the Key to State mapping section. 
+			else if (str.find("numKeyToStateMappings") != std::string::npos)
+			{
+				int numKeyToStateMappings = std::stoi(str.substr(22, str.size() - 22));
+
+				for (int i = 0; i < numKeyToStateMappings; ++i)
+				{
+					// Get Key that turns the State on.
+					inFile >> str;
+					// Check if given std::string for Key exists.
+					if (stringToKey.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a sf::Keyboard::Key.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					sf::Keyboard::Key onKey = stringToKey[str];
+
+				    // Get InputMode for onKey.
+					inFile >> str;
+
+					InputMode inputModeOnKey;
+					if (str == "onPressed")
+					{
+						inputModeOnKey = &InputManager::onKeyPressed;
+					}
+					else if (str == "onReleased")
+					{
+						inputModeOnKey = &InputManager::onKeyReleased;
+					}
+					else
+					{
+						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
+					}
+
+				    // Get State
+					inFile >> str;
+					if (stringToState.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a State.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					State state = stringToState[str];
+
+				    // Get Key that turns the State off.
+					inFile >> str;
+					// Check if given std::string for Key exists.
+					if (stringToKey.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a sf::Keyboard::Key.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					sf::Keyboard::Key offKey = stringToKey[str];
+
+				    // Get InputMode for offKey.
+					inFile >> str;
+
+					InputMode inputModeOffKey;
+					if (str == "onPressed")
+					{
+						inputModeOffKey = &InputManager::onKeyPressed;
+					}
+					else if (str == "onReleased")
+					{
+						inputModeOffKey = &InputManager::onKeyReleased;
+					}
+					else
+					{
+						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
+					}
+
+					keyToStateOn[onKey] = std::pair<State, InputMode>{ state, inputModeOnKey };
+					keyToStateOff[offKey] = std::pair<State, InputMode>{ state, inputModeOffKey };
+					statesOn[state] = false;
 				}
 			}
 		}

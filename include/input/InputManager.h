@@ -45,16 +45,23 @@ namespace ProjectSpace
 		bool valid;
 		std::function<bool()> predicate;
 
-		std::map<sf::Keyboard::Key, std::pair<Action, std::string>> keyToAction;
+		using InputMode = bool(InputManager::*)(sf::Keyboard::Key) const; // Function pointer to member functions of InputManager that check for key stuff.
+
+		std::map<sf::Keyboard::Key, std::pair<Action, InputMode>> keyToAction;  // Maps a Key to an Action and it's mode(onPressed/onReleased).
 		// std::map<ControllerButton, std::tuple<Action, std::string>> controllerButtonToAction;
 
-		std::map<Action, bool> actionsFired;
-		// std::map<State, bool> statesOn;
+		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOn;
+		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOff;
 
-		static std::map<std::string, sf::Keyboard::Key> stringToKey; // LookupTable for string from ContextFile to sf::Keyboard::Key.
-		static std::map<std::string, Action> stringToAction;
-		static std::map<std::string, State> stringToState;
+		std::map<Action, bool> actionsFired;  // Stores if an Action has been fired or not.
+		std::map<State, bool> statesOn;       // Stores if a State is on or not.
 
+		static std::map<std::string, sf::Keyboard::Key> stringToKey; // Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
+		static std::map<std::string, Action> stringToAction;	     // Lookup-Table to convert std::string from ContextFile to Action.
+		static std::map<std::string, State> stringToState;	         // Lookup-Table to convert std::string from ContextFile to State.
+
+		// InputManager needs to be able to block an InputContext by having access to it's private members.
+		// TODO: Vielleicht krieg ich das aucht ohne friend intern in InputContext hin.
 		friend class InputManager;
 	};
 

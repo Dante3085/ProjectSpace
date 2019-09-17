@@ -1,17 +1,12 @@
 
-numKeyToActionMappings=4
-key::W onPressed list_up
-key::S onPressed list_down
-key::Space onPressed list_select
-key::F1 onPressed print
+numKeyToActionMappings=3
+key::Up onPressed list_up                // On initial press of Key Up the Action LIST_UP will be fired.
+key::Down onPressed list_down
+key::Enter onPressed list_select
 
-// A State is either turned on or off. What key(s) turn the State on and off
-// and if it should be onPress or onRelease can be configured.
-// numKeyToStateMappings=4
-// key::W onPressed walk_north key::W onReleased // key::W turns the state walk_north on, on being pressed and key::W turns it off on being released.
-// key::A onPressed walk_west key::A onReleased
-// key::S onPressed walk_south key::S onReleased 
-// key::D onPressed walk_east key::D onReleased
+numKeyToStateMappings=2
+key::T onPressed list_hold_up key::Up onReleased // On initial press of Key Up the State LIST_HOLD_UP will be turned on and on releasing Key Up the State LIST_HOLD_UP will be turned off.
+key::Down onPressed list_hold_down key::Down onReleased
 
 // GAMEPAD MAPPINGS
 // numPS4ButtonToActionMappings=2

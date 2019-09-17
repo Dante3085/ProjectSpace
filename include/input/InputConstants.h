@@ -9,15 +9,17 @@ namespace ProjectSpace
 		LIST_UP,
 		LIST_DOWN,
 		LIST_SELECT,
-		PRINT
 	};
 
 	enum class State
 	{
+		LIST_HOLD_UP,
+		LIST_HOLD_DOWN,
+
 		WALK_NORTH,
 		WALK_EAST,
 		WALK_SOUTH,
-		WALK_WEST
+		WALK_WEST,
 	};
 }
 

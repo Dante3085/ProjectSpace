@@ -116,11 +116,6 @@ namespace ProjectSpace
 		// TODO: Check this function for improvements in performance.
 		// TODO: InputHandling needs work. New Input System.
 
-		if (inputContext.hasActionFired(Action::PRINT))
-		{
-			std::cout << "Print Action fired" << std::endl;
-		}
-
 		if (inputContext.isValid())
 		{
 			// Check if current ListItem is pressed.
@@ -134,13 +129,12 @@ namespace ProjectSpace
 				up();
 			}
 
-			// Make it possible to hold the up key to move up faster.
-			/*if (inputManager->wasKeyPressed(sf::Keyboard::Up))
+			if (inputContext.isStateOn(State::LIST_HOLD_UP))
 			{
 				if (upHoldElapsed >= upHoldDuration)
 				{
 					up();
-					upHoldElapsed *= 0.90;
+					upHoldElapsed *= 0.90f;
 				}
 				else
 				{
@@ -150,15 +144,14 @@ namespace ProjectSpace
 			else
 			{
 				upHoldElapsed = 0;
-			}*/
+			}
 
 			if (inputContext.hasActionFired(Action::LIST_DOWN))
 			{
 				down();
 			}
 
-			// Make it possible to hold the down key to move down faster.
-			/*if (inputManager->wasKeyPressed(sf::Keyboard::Down))
+			if (inputContext.isStateOn(State::LIST_HOLD_DOWN))
 			{
 				if (downHoldElapsed >= downHoldDuration)
 				{
@@ -173,7 +166,7 @@ namespace ProjectSpace
 			else
 			{
 				downHoldElapsed = 0;
-			}*/
+			}
 		}
 
 		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
