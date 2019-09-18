@@ -134,6 +134,8 @@ namespace ProjectSpace
 	};
 
 	// TODO: Workload bei häufig aufgerufenen Funktionen reduzieren, um Performance zu heben.
+	// TODO: onStateOn(State state): Gibt true zurück, wenn der State von off auf on geschaltet wird.
+	// TODO: onStateOff(State state): Gibt true zurück, wenn der State von on auf off geschaltet wird.
 
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
 	: inputManager{&InputManager::getInstance()}, valid{false}, predicate{predicate}
@@ -157,6 +159,7 @@ namespace ProjectSpace
 			// pair.second.second is a function pointer to certain non static InputManager member functions. 
 			// Since they are non static they need to be called on an object. That is the inputManager pointer in this case.
 			// TODO: std::pair makes the code hard to read if you don't yet have a proper mental model of the context.
+			// Maybe just use named struct with named members.
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
 				actionsFired[pair.second.first] = true;
@@ -166,10 +169,13 @@ namespace ProjectSpace
 		// Check for States being turned on.
 		for (auto& pair : keyToStateOn)
 		{
+			// Remember value that the State had previously. 
+			// Should be only necessary in one loop so that every State's previous value is stored.
+			previousStates[pair.second.first] = currentStates[pair.second.first];
+
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
-				statesOn[pair.second.first] = true;
-				std::cout << "State '" << (int)pair.second.first << "' has been turned on." << std::endl;
+				currentStates[pair.second.first] = true;
 			}
 		}
 
@@ -178,7 +184,7 @@ namespace ProjectSpace
 		{
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
-				statesOn[pair.second.first] = false;
+				currentStates[pair.second.first] = false;
 			}
 		}
 	}
@@ -222,7 +228,33 @@ namespace ProjectSpace
 
 	bool InputContext::isStateOn(State state)
 	{
-		return statesOn[state];
+		if (currentStates.count(state) == 0)
+		{
+			std::string msg = "Given State '";
+			msg += std::to_string(static_cast<int>(state));
+			msg += "' is not known to this InputContext.";
+			Log::getInstance().defaultLog(msg, ll::ERR, true);
+		}
+
+		return currentStates[state];
+	}
+
+	bool InputContext::onStateOn(State state)
+	{
+		if (currentStates.count(state) == 0)
+		{
+			std::string msg = "Given State '";
+			msg += std::to_string(static_cast<int>(state));
+			msg += "' is not known to this InputContext.";
+			Log::getInstance().defaultLog(msg, ll::ERR, true);
+		}
+
+		return !previousStates[state] && currentStates[state];
+	}
+
+	bool InputContext::onStateOff(State state)
+	{
+		return previousStates[state] && !currentStates[state];
 	}
 
 	void InputContext::parseContextFile(std::string const& contextFile)
@@ -365,7 +397,8 @@ namespace ProjectSpace
 
 					keyToStateOn[onKey] = std::pair<State, InputMode>{ state, inputModeOnKey };
 					keyToStateOff[offKey] = std::pair<State, InputMode>{ state, inputModeOffKey };
-					statesOn[state] = false;
+					currentStates[state] = false;
+					previousStates[state] = false;
 				}
 			}
 		}

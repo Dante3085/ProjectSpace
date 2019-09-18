@@ -33,12 +33,24 @@ namespace ProjectSpace
 		bool isValid() const;
 
 		bool hasActionFired(Action action);
+
 		bool isStateOn(State state);
+		bool onStateOn(State state);
+		bool onStateOff(State state);
 
 		// Helper for ContextFile parsing.
 	private:
 		void parseContextFile(std::string const& contextFile);
 		std::string removeCommentsAndEmtpyLines(std::string const& contextFile);
+
+		// Helper structs
+	private:
+
+		// Lookup-Tables
+	private:
+		static std::map<std::string, sf::Keyboard::Key> stringToKey; // Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
+		static std::map<std::string, Action> stringToAction;	     // Lookup-Table to convert std::string from ContextFile to Action.
+		static std::map<std::string, State> stringToState;	         // Lookup-Table to convert std::string from ContextFile to State.
 
 	private:
 		InputManager* inputManager;
@@ -54,11 +66,8 @@ namespace ProjectSpace
 		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOff;
 
 		std::map<Action, bool> actionsFired;  // Stores if an Action has been fired or not.
-		std::map<State, bool> statesOn;       // Stores if a State is on or not.
-
-		static std::map<std::string, sf::Keyboard::Key> stringToKey; // Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
-		static std::map<std::string, Action> stringToAction;	     // Lookup-Table to convert std::string from ContextFile to Action.
-		static std::map<std::string, State> stringToState;	         // Lookup-Table to convert std::string from ContextFile to State.
+		std::map<State, bool> currentStates;  // Stores if a State is on or not in the current udpate() iteration.
+		std::map<State, bool> previousStates; // Stores if a State was on or not in the previous update() iteration.
 
 		// InputManager needs to be able to block an InputContext by having access to it's private members.
 		// TODO: Vielleicht krieg ich das aucht ohne friend intern in InputContext hin.
