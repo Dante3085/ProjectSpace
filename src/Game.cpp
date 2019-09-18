@@ -43,60 +43,31 @@ namespace ProjectSpace
 		scenes[EScene::CHRONO_TRIGGER] = new ChronoTriggerScene{ window };
 		currentScene = scenes[EScene::CHRONO_TRIGGER];
 
-		// Fps Counter of the Game.
-		// FpsCounter *fpsCounter = new FpsCounter{ "rsrc/fonts/arial.ttf" };
-
-		// These 4 instances make up a global ButtonMenu (independent of any specific Scene).
-		// VBox *btnBox = new VBox{};
-		// ButtonMenu *buttonMenu;
-
-		// Creating Menu
-		/*Button *btn = new Button{ [this]()
-		{
-			window.close();
-		}, window, "EXIT" };*/
 		exitBtn.setOnPressed([this]()
 			{
 				inputContext.fireAction(Action::EXIT_GAME);
 			});
 
-		// Button *btn2 = new Button{ window, "Close Menu" };
 		closeMenuBtn.setOnPressed([this]()
 			{
 				inputContext.fireAction(Action::GLOBAL_MENU_TOGGLE);
 			});
 
-		/*Button *btn3 = new Button{ [this]()
-		{
-			setCurrentScene(EScene::DEBUG);
-		}, window, "Debug Scene" };*/
 		debugSceneBtn.setOnPressed([this]()
 			{
 				setCurrentScene(EScene::DEBUG);
 			});
 
-		/*Button *btn4 = new Button{ [this]()
-		{
-			setCurrentScene(EScene::LEVEL_ONE);
-		}, window, "Scene 1" };*/
 		sceneOneBtn.setOnPressed([this]()
 			{
 				setCurrentScene(EScene::LEVEL_ONE);
 			});
 
-		/*Button *btn5 = new Button{ [this]()
-		{
-			setCurrentScene(EScene::CHRONO_TRIGGER);
-		}, window, "ChronoTrigger Scene" };*/
 		cronoTriggerSceneBtn.setOnPressed([this]()
 			{
 				setCurrentScene(EScene::CHRONO_TRIGGER);
 			});
 
-		/*Button *btn6 = new Button{ [this]()
-		{
-			setCurrentScene(EScene::COLLISION_SCENE);
-		}, window, "Collision Scene" };*/
 		collisionSceneBtn.setOnPressed([this]()
 			{
 				setCurrentScene(EScene::COLLISION_SCENE);
@@ -126,8 +97,6 @@ namespace ProjectSpace
         {
             delete p.second;
         }
-
-        // Was mache ich jetzt, wenn Drawables die keine Entities sind existieren ?
     }
 
     void Game::start()
@@ -193,45 +162,6 @@ namespace ProjectSpace
 
     void Game::checkGlobalInput()
     {
-        // Global Input
-        /*globalInputHandler->add([this, menuTa, btnBoxWidth, globalInputHandler, fpsCounter, btnBox]()
-        	{
-        		if (!globalInputHandler->wasKeyPressed(key::Tab) && key::isKeyPressed(key::Tab))
-        		{
-        			if (menuTa->getTo() == sf::Vector2f{ -250 - btnBoxWidth, 50 })
-        			{
-        				menuTa->setFrom(menuTa->getTranslatable().getPosition());
-        				menuTa->setTo(sf::Vector2f{ -5, 50 });
-        				menuTa->setEasingFunction(Easing::back_easeInOut);
-        				menuTa->start();
-        			}
-        			else
-        			{
-        				menuTa->setFrom(menuTa->getTranslatable().getPosition());
-        				menuTa->setTo(sf::Vector2f{ -250 - btnBoxWidth, 50 });
-        				menuTa->setEasingFunction(Easing::back_easeInOut);
-        				menuTa->start();
-        			}
-        		}
-
-        		if (!globalInputHandler->wasKeyPressed(key::F1) && key::isKeyPressed(key::F1))
-        		{
-        			if (fpsCounter->isHidden())
-        			{
-        				fpsCounter->setHide(false);
-        			}
-        			else
-        			{
-        				fpsCounter->setHide(true);
-        			}
-        		}
-        	});*/
-
-        /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-        	{
-        		window.close();
-        	}*/
-
         if (inputContext.hasActionFired(Action::EXIT_GAME))
         {
             window.close();
