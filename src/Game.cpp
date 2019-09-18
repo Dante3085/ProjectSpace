@@ -15,14 +15,15 @@
 
 namespace ProjectSpace
 {
-    Game::Game(std::string const &windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style)
-        : window{ sf::VideoMode{screenWidth, screenHeight}, windowTitle, style },
+	Game::Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style)
+		: window{ sf::VideoMode{screenWidth, screenHeight}, windowTitle, style },
 		scenes{},
 		currentScene{ nullptr },
 		windowWidth{ (float)sf::VideoMode::getDesktopMode().width },
 		windowHeight{ (float)sf::VideoMode::getDesktopMode().height },
 		inputManager{ &InputManager::getInstance() },
 		inputContext{ "include/input/contexts/GlobalContext.txt" },
+		frozen{ false },
 		fpsCounter{ "rsrc/fonts/arial.ttf" },
 		exitBtn{ window, "EXIT GAME" },
 		closeMenuBtn{ window, "CLOSE MENU" },
@@ -105,44 +106,47 @@ namespace ProjectSpace
 
         while (window.isOpen())
         {
+			sf::Time time = clock.restart();
+
             inputManager->updateCurrentKeys();
             inputManager->updateInputContexts();
 
-            // At the start of each iteration "clock.restart()" will return the time that the last iteration took.
-            // This is so that all objects of the current iteration know how much time has passed since the last frame.
-            sf::Time time = clock.restart();
-
-            // TODO: This is the Event-Loop (Hier muessen wir nochmal gucken, was wir damit anstellen koennen.
-            // Ist wohl ziemlich wichtig in SFML.
             sf::Event event;
             while (window.pollEvent(event))
             {
-                // For example by pressing the Close-Button on a Window, a Closed Event is created.
                 if (event.type == sf::Event::Closed)
                 {
                     window.close();
                 }
             }
 
-			checkGlobalInput();
+			if (inputContext.hasActionFired(Action::FREEZE_GAME_TOGGLE))
+			{
+				frozen = frozen ? false : true;
+			}
 
-            // Update all Entities...
-            currentScene->update(time);
-            for (Entity *e : globalEntities)
-            {
-                e->update(time);
-            }
+			if (!frozen)
+			{
+				checkGlobalInput();
 
-            // Draw all Drawables...
-            window.clear();
+				// Update all Entities...
+				currentScene->update(time);
+				for (Entity* e : globalEntities)
+				{
+					e->update(time);
+				}
 
-            window.draw(*currentScene);
-            for (sf::Drawable *d : globalDrawables)
-            {
-                window.draw(*d);
-            }
+				// Draw all Drawables...
+				window.clear();
 
-            window.display();
+				window.draw(*currentScene);
+				for (sf::Drawable* d : globalDrawables)
+				{
+					window.draw(*d);
+				}
+
+				window.display();
+			}
 
             inputManager->updatePreviousKeys();
         }

@@ -47,6 +47,8 @@ namespace ProjectSpace
         InputManager *inputManager;
         InputContext inputContext;
 
+		bool frozen; // If this is true, the Game stops in time. TODO: Better explanation.
+
         // Global Entities/Drawables
     private:
         FpsCounter fpsCounter;

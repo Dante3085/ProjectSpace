@@ -126,6 +126,7 @@ namespace ProjectSpace
 	std::map<std::string, Action> InputContext::stringToAction
 	{
 		{"exit_game", Action::EXIT_GAME},
+		{"freeze_game_toggle", Action::FREEZE_GAME_TOGGLE},
 		{"global_menu_toggle", Action::GLOBAL_MENU_TOGGLE},
 		{"fps_counter_toggle", Action::FPS_COUNTER_TOGGLE},
 

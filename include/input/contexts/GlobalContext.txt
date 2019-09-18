@@ -1,6 +1,7 @@
 
 // key -> Action
-numKeyToActionMappings=3
+numKeyToActionMappings=4
 key::Escape onPressed exit_game
+key::F onPressed freeze_game_toggle
 key::Tab onPressed global_menu_toggle
 key::F1 onPressed fps_counter_toggle

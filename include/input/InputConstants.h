@@ -7,6 +7,7 @@ namespace ProjectSpace
 	enum class Action
 	{
 		EXIT_GAME,
+		FREEZE_GAME_TOGGLE,
 		GLOBAL_MENU_TOGGLE,
 		FPS_COUNTER_TOGGLE,
 
