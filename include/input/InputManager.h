@@ -8,6 +8,7 @@
 #include <string>
 #include <set>
 #include <utility>
+#include <iostream>
 
 #include "input/InputConstants.h"
 
@@ -18,9 +19,11 @@ namespace ProjectSpace
 	class InputManager;
 	class Log;
 
+	// Usefull stuff.
 	// For incrementing a Key variable in loops and other stuff.
 	sf::Keyboard::Key& operator++(sf::Keyboard::Key& key);
 	std::string toString(State state);
+	std::ostream& operator<<(std::ostream& stream, State state);
 
 	class InputContext
 	{
@@ -34,6 +37,7 @@ namespace ProjectSpace
 		bool isValid() const;
 
 		bool hasActionFired(Action action);
+		void fireAction(Action action);
 
 		bool isStateOn(State state);
 		bool onStateOn(State state);

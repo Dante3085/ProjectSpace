@@ -6,7 +6,7 @@
 
 #include "gui/Button.h"
 #include "animation/TranslateAnimation.h"
-#include "input/InputHandler.h"
+#include "input/InputManager.h"
 #include "Scene.h"
 
 namespace ProjectSpace
@@ -21,7 +21,6 @@ namespace ProjectSpace
 	private:
 		Button btn;
 		TranslateAnimation btnAnim;
-		InputHandler inputHandler;
 	};
 }
 

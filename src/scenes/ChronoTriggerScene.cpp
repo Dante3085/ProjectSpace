@@ -17,8 +17,6 @@ namespace ProjectSpace
 		cronoWalkRight{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
-		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
-		rWasDown{ false },
 		camera{ crono, window, sf::Vector2f{200, 200} },
 		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
@@ -67,7 +65,7 @@ namespace ProjectSpace
 		{"PhoenixDown x 2", []() {}},
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
-	}} 
+	}}, inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -104,51 +102,21 @@ namespace ProjectSpace
 		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox, 
 			                 &combatOrder, &audioFader, &list, &list2, &list3});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list, &list2, &list3 });
+
+		inputContext.setPredicate([]()
+			{
+				return true;
+			});
+		InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
+		
+		InputManager::getInstance().blockInputContext("gui/List0");
+		InputManager::getInstance().blockInputContext("gui/List1");
+		InputManager::getInstance().blockInputContext("gui/List2");
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			crono.setAnimation(EAnimation::UP);
-			crono.move(0, -cronoSpeed);
-		}
-		else if (wWasDown)
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			crono.setAnimation(EAnimation::LEFT);
-			crono.move(-cronoSpeed, 0);
-		}
-		else if (aWasDown)
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			crono.setAnimation(EAnimation::DOWN);
-			crono.move(0, cronoSpeed);
-		}
-		else if (sWasDown)
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			crono.setAnimation(EAnimation::RIGHT);
-			crono.move(cronoSpeed, 0);
-			list.move(8, 0);
-		}
-		else if (dWasDown)
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
+		/*
 		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
@@ -186,14 +154,103 @@ namespace ProjectSpace
 				audioFader.setEasingFunction(Easing::sine_easeIn);
 			}
 			audioFader.start();
+		}*/
+
+		if (inputContext.onStateOn(State::WALK_NORTH))
+		{
+			crono.setAnimation(EAnimation::UP);
+		}
+		else if (inputContext.onStateOff(State::WALK_NORTH))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+		if (inputContext.isStateOn(State::WALK_NORTH))
+		{
+			// crono.setAnimation(EAnimation::UP);
+			crono.move(0, -cronoSpeed);
 		}
 
-		wWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-		aWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-		sWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-		dWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-		spaceWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-		rWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::R);
+		if (inputContext.onStateOn(State::WALK_EAST))
+		{
+			crono.setAnimation(EAnimation::RIGHT);
+		}
+		else if (inputContext.onStateOff(State::WALK_EAST))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+		if (inputContext.isStateOn(State::WALK_EAST))
+		{
+			crono.setAnimation(EAnimation::RIGHT);
+			crono.move(cronoSpeed, 0);
+		}
+
+		if (inputContext.onStateOn(State::WALK_SOUTH))
+		{
+			crono.setAnimation(EAnimation::DOWN);
+		}
+		else if (inputContext.onStateOff(State::WALK_SOUTH))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+		if (inputContext.isStateOn(State::WALK_SOUTH))
+		{
+			crono.setAnimation(EAnimation::DOWN);
+			crono.move(0, cronoSpeed);
+		}
+
+		if (inputContext.onStateOn(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::LEFT);
+		}
+		else if (inputContext.onStateOff(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+		if (inputContext.isStateOn(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::LEFT);
+			crono.move(-cronoSpeed, 0);
+		}
+
+		/*if (inputContext.isStateOn(State::WALK_NORTH))
+		{
+			crono.setAnimation(EAnimation::UP);
+			crono.move(0, -cronoSpeed);
+		}
+		else if (inputContext.onStateOff(State::WALK_NORTH))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+
+		if (inputContext.isStateOn(State::WALK_EAST))
+		{
+			crono.setAnimation(EAnimation::RIGHT);
+			crono.move(cronoSpeed, 0);
+		}
+		else if (inputContext.onStateOff(State::WALK_EAST))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+
+		if (inputContext.isStateOn(State::WALK_SOUTH))
+		{
+			crono.setAnimation(EAnimation::DOWN);
+			crono.move(0, cronoSpeed);
+		}
+		else if (inputContext.onStateOff(State::WALK_SOUTH))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+
+		if (inputContext.isStateOn(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::LEFT);
+			crono.move(-cronoSpeed, 0);
+		}
+		else if (inputContext.onStateOff(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}*/
 		
 		Scene::update(time);
 	}

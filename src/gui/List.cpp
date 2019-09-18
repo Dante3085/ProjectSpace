@@ -19,7 +19,7 @@ namespace ProjectSpace
 		: bounds{ -1, -1, -1, -1 }, topArrow{ 3 }, bottomArrow{3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
 		pressKey{ sf::Keyboard::Enter }, leftMousePreviouslyPressed{false}, window{ window },
 		upHoldDuration{500}, upHoldElapsed{0}, downHoldDuration{500}, downHoldElapsed{0},
-		inputManager{&InputManager::getInstance()}, inputContext{"include/input/ListContext.txt"}
+		inputManager{&InputManager::getInstance()}, inputContext{"include/input/contexts/ListContext.txt"}
 	{
 
 		// Don't allow empty List for now

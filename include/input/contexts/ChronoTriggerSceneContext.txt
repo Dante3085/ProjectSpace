@@ -1,0 +1,16 @@
+
+// key -> State
+numKeyToStateMappings=10
+key::W onPressed walk_north key::W onReleased
+key::A onPressed walk_west key::A onReleased
+key::S onPressed walk_south key::S onReleased
+key::D onPressed walk_east key::D onReleased
+
+key::Up onPressed walk_north key::Up onReleased
+key::Left onPressed walk_west key::Left onReleased
+key::Down onPressed walk_south key::Down onReleased
+key::Right onPressed walk_east key::Right onReleased
+
+key::I onPressed walk_north key::I onReleased
+
+key::O onPressed walk_north key::O onReleased

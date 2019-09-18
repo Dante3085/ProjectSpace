@@ -20,6 +20,7 @@
 #include "gui/List.h"
 #include "rpg/Character.h"
 #include "audio/AudioFader.h"
+#include "input/InputManager.h"
 
 namespace ProjectSpace
 {
@@ -42,13 +43,6 @@ namespace ProjectSpace
 
 		int cronoSpeed;
 
-		bool wWasDown;
-		bool aWasDown;
-		bool sWasDown;
-		bool dWasDown;
-		bool spaceWasDown;
-		bool rWasDown;
-
 		Camera camera;
 		TextBox textBox;
 
@@ -70,6 +64,8 @@ namespace ProjectSpace
 
 		sf::SoundBuffer soundBuffer;
 		sf::Sound sound;
+
+		InputContext inputContext;
 	};
 }
 

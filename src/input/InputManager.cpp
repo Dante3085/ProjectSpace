@@ -6,9 +6,15 @@
 
 #include "utility/Log.h"
 #include "utility/FileIO.h"
+#include "utility/Util.h"
 
 namespace ProjectSpace
 {
+	// TODO: Für die folgenden Lookup-Table könnten std::unorderedmaps(Hash-Tables) besser sein, da diese besser für
+	// sich nicht oft verändernde Daten sind(Wenig bis gar keine inserts/deletes). Durchschnittlich O(1) search, insert und delete.
+	// Momentan wird normale map gebraucht die auf Ordnungsrelation mit balanced binary search tree basiert. O(log n).
+	// Allerdings könnte unsere Größenordnung auch zu niedrig sein, dass diese Veränderung eine Auswirkung haben würde.
+
 	std::map<std::string, sf::Keyboard::Key> InputContext::stringToKey
 	{
 		{"key::A", sf::Keyboard::A},
@@ -119,14 +125,24 @@ namespace ProjectSpace
 
 	std::map<std::string, Action> InputContext::stringToAction
 	{
+		{"exit_game", Action::EXIT_GAME},
+		{"global_menu_toggle", Action::GLOBAL_MENU_TOGGLE},
+		{"fps_counter_toggle", Action::FPS_COUNTER_TOGGLE},
+
 		{"list_up", Action::LIST_UP},
 	    {"list_down", Action::LIST_DOWN},
 		{"list_select", Action::LIST_SELECT},
+
+		{"button_menu_forward", Action::BUTTON_MENU_FORWARD},
+		{"button_menu_backward", Action::BUTTON_MENU_BACKWARD},
+		{"button_menu_press", Action::BUTTON_MENU_PRESS},
 	};
+
 	std::map<std::string, State> InputContext::stringToState
 	{
 		{"list_hold_up", State::LIST_HOLD_UP},
 		{"list_hold_down", State::LIST_HOLD_DOWN},
+
 		{"walk_north", State::WALK_NORTH},
 		{"walk_east", State::WALK_EAST},
 		{"walk_south", State::WALK_SOUTH},
@@ -134,8 +150,8 @@ namespace ProjectSpace
 	};
 
 	// TODO: Workload bei häufig aufgerufenen Funktionen reduzieren, um Performance zu heben.
-	// TODO: onStateOn(State state): Gibt true zurück, wenn der State von off auf on geschaltet wird.
-	// TODO: onStateOff(State state): Gibt true zurück, wenn der State von on auf off geschaltet wird.
+	// TODO: Sind mehrere Keys auf denselben State gemappt funktioniert onStateOn nur bei dem Key,
+	// der als 2. auf den State gemappt wurde. Sehr komisch. Wie soll das vernünftig debuggt werden ?
 
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
 	: inputManager{&InputManager::getInstance()}, valid{false}, predicate{predicate}
@@ -172,6 +188,7 @@ namespace ProjectSpace
 			// Remember value that the State had previously. 
 			// Should be only necessary at the top of the first loop so that every State's previous value is stored.
 			previousStates[pair.second.first] = currentStates[pair.second.first];
+			// std::cout << previousStates << "\n";
 
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
@@ -226,6 +243,18 @@ namespace ProjectSpace
 			}
 			return false;
 		}
+	}
+
+	void InputContext::fireAction(Action action)
+	{
+		if (actionsFired.count(action) == 0)
+		{
+			std::string msg = "Given Action '";
+			msg += std::to_string(static_cast<int>(action));
+			msg += "' is not known to this InputContext.";
+			Log::getInstance().defaultLog(msg, ll::ERR, true);
+		}
+		actionsFired[action] = true;
 	}
 
 	bool InputContext::isStateOn(State state)
@@ -417,6 +446,13 @@ namespace ProjectSpace
 	std::string InputContext::removeCommentsAndEmtpyLines(std::string const& contextFile)
 	{
 		std::ifstream inFile{ contextFile };
+		if (!inFile.is_open())
+		{
+			std::string msg = "Given ContextFile '";
+			msg += contextFile;
+			msg += "' does not exist.";
+			Log::getInstance().defaultLog(msg, ll::ERR, true);
+		}
 
 		std::string contextFile_commentsRemoved = contextFile;
 		contextFile_commentsRemoved.erase(contextFile_commentsRemoved.size() - 4);
@@ -492,6 +528,21 @@ namespace ProjectSpace
 		case State::WALK_WEST: return "WALK_WEST"; break;
 		default: return "UNKNOWN STATE";
 		}
+	}
+
+	std::ostream& operator<<(std::ostream& stream, State state)
+	{
+		switch (state)
+		{
+		case State::LIST_HOLD_DOWN: stream << "LIST_HOLD_DOWN"; break;
+		case State::LIST_HOLD_UP: stream << "LIST_HOLD_UP"; break;
+		case State::WALK_EAST: stream << "WALK_EAST"; break;
+		case State::WALK_NORTH: stream << "WALK_NORTH"; break;
+		case State::WALK_SOUTH: stream << "WALK_SOUTH"; break;
+		case State::WALK_WEST: stream << "WALK_WEST"; break;
+		default: stream << "UNKNOWN STATE";
+		}
+		return stream;
 	}
 
 	InputManager::InputManager()

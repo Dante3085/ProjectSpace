@@ -5,6 +5,7 @@
 
 # random stuff that i don't want to commit
 rsrc/*
+*commentsRemoved.txt
 
 # linux project specific files
 makefile

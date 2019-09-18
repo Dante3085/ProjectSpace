@@ -6,9 +6,17 @@ namespace ProjectSpace
 {
 	enum class Action
 	{
+		EXIT_GAME,
+		GLOBAL_MENU_TOGGLE,
+		FPS_COUNTER_TOGGLE,
+
 		LIST_UP,
 		LIST_DOWN,
 		LIST_SELECT,
+
+		BUTTON_MENU_FORWARD,
+		BUTTON_MENU_BACKWARD,
+		BUTTON_MENU_PRESS,
 	};
 
 	enum class State

@@ -5,32 +5,12 @@
 
 namespace ProjectSpace
 {
-	ButtonMenu::ButtonMenu(InputHandler* inputHandler)
-	: buttons{}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
-	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, 
-		btnPress{2}
-	{
-		inputHandler->storeKeyState(keyForward, false);
-		inputHandler->storeKeyState(keyBackward, false);
-		inputHandler->storeKeyState(keyPress, false);
+	int ButtonMenu::numInstances = 0;
 
-		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
-		{
-			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
-			Log::getInstance() << lo::EXIT;
-		}
-		cursorMove.setBuffer(buffer);
-	}
-
-	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler) 
-	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{sf::Keyboard::Down}, 
-	keyBackward{sf::Keyboard::Up}, keyPress{sf::Keyboard::Enter}, btnForward{0}, btnBackward{1}, 
-		btnPress{2}
+	ButtonMenu::ButtonMenu()
+	: selected{0}, inputContext{"include/input/contexts/ButtonMenuContext.txt"}
 	{
 		buttons[selected]->select();
-		inputHandler->storeKeyState(keyForward, false);
-		inputHandler->storeKeyState(keyBackward, false);
-		inputHandler->storeKeyState(keyPress, false);
 
 		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
 		{
@@ -38,19 +18,20 @@ namespace ProjectSpace
 			Log::getInstance() << lo::EXIT;
 		}
 		cursorMove.setBuffer(buffer);
+
+		inputContext.setPredicate([]()
+			{
+				return true;
+			});
+		std::string inputContextName = "ButtonMenu";
+		inputContextName += std::to_string(numInstances++);
+		InputManager::getInstance().registerInputContext(inputContextName, &inputContext);
 	}
 
-	// TODO: Ich weiß, dass ButtonMenu::ButtonMenu die keys/buttons schon setzt und ich diese hier erneut setze.
-	// Ich bin aber zu faul mir etwas anderes auszudenken.
-	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
-		sf::Keyboard::Key keyForward, sf::Keyboard::Key keyBackward, sf::Keyboard::Key keyPress)
-	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, keyForward{keyForward}, 
-		keyBackward{keyBackward}, keyPress{keyPress}
+	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons) 
+		: buttons{ buttons }, selected{0}, inputContext{ "include/input/contexts/ButtonMenuContext.txt" }
 	{
 		buttons[selected]->select();
-		inputHandler->storeKeyState(keyForward, false);
-		inputHandler->storeKeyState(keyBackward, false);
-		inputHandler->storeKeyState(keyPress, false);
 
 		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
 		{
@@ -58,29 +39,19 @@ namespace ProjectSpace
 			Log::getInstance() << lo::EXIT;
 		}
 		cursorMove.setBuffer(buffer);
-	}
 
-	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
-		unsigned int btnForward, unsigned int btnBackward, unsigned int btnPress)
-	: buttons{buttons}, inputHandler{inputHandler}, selected{0}, btnForward{btnForward}, 
-		btnBackward{btnBackward}, btnPress{btnPress}
-	{
-		buttons[selected]->select();
-		inputHandler->storeKeyState(keyForward, false);
-		inputHandler->storeKeyState(keyBackward, false);
-		inputHandler->storeKeyState(keyPress, false);
-
-		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		inputContext.setPredicate([]()
 		{
-			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
-			Log::getInstance() << lo::EXIT;
-		}
-		cursorMove.setBuffer(buffer);
+			return true;
+		});
+		std::string inputContextName = "ButtonMenu";
+		inputContextName += std::to_string(numInstances++);
+		InputManager::getInstance().registerInputContext(inputContextName, &inputContext);
 	}
 
 	void ButtonMenu::update(sf::Time time)
 	{
-		if (!inputHandler->wasKeyPressed(keyForward))
+		/*if (!inputHandler->wasKeyPressed(keyForward))
 		{
 			if (sf::Keyboard::isKeyPressed(keyForward))
 			{
@@ -105,12 +76,22 @@ namespace ProjectSpace
 				// cursorMove.play();
 				buttons[selected]->press();
 			}
-		}
+		}*/
 
-		inputHandler->storeKeyState(keyForward, sf::Keyboard::isKeyPressed(keyForward));
-		inputHandler->storeKeyState(keyBackward, sf::Keyboard::isKeyPressed(keyBackward));
-		inputHandler->storeKeyState(keyPress, sf::Keyboard::isKeyPressed(keyPress));
-		// TODO: Store ButtonState
+		if (inputContext.hasActionFired(Action::BUTTON_MENU_FORWARD))
+		{
+			cursorMove.play();
+			forward();
+		}
+		else if(inputContext.hasActionFired(Action::BUTTON_MENU_BACKWARD))
+		{
+			cursorMove.play();
+			backward();
+		}
+		else if (inputContext.hasActionFired(Action::BUTTON_MENU_PRESS))
+		{
+			buttons[selected]->press();
+		}
 	}
 
 	void ButtonMenu::forward()
