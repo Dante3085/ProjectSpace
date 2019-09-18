@@ -20,6 +20,7 @@ namespace ProjectSpace
 
 	// For incrementing a Key variable in loops and other stuff.
 	sf::Keyboard::Key& operator++(sf::Keyboard::Key& key);
+	std::string toString(State state);
 
 	class InputContext
 	{

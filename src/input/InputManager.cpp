@@ -170,11 +170,12 @@ namespace ProjectSpace
 		for (auto& pair : keyToStateOn)
 		{
 			// Remember value that the State had previously. 
-			// Should be only necessary in one loop so that every State's previous value is stored.
+			// Should be only necessary at the top of the first loop so that every State's previous value is stored.
 			previousStates[pair.second.first] = currentStates[pair.second.first];
 
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
+				// std::cout << toString(pair.second.first) << " angeschaltet" << "\n";
 				currentStates[pair.second.first] = true;
 			}
 		}
@@ -184,6 +185,7 @@ namespace ProjectSpace
 		{
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
+				//  std::cout << toString(pair.second.first) << " ausgeschaltet" << "\n";
 				currentStates[pair.second.first] = false;
 			}
 		}
@@ -254,6 +256,14 @@ namespace ProjectSpace
 
 	bool InputContext::onStateOff(State state)
 	{
+		if (currentStates.count(state) == 0)
+		{
+			std::string msg = "Given State '";
+			msg += std::to_string(static_cast<int>(state));
+			msg += "' is not known to this InputContext.";
+			Log::getInstance().defaultLog(msg, ll::ERR, true);
+		}
+
 		return previousStates[state] && !currentStates[state];
 	}
 
@@ -468,6 +478,20 @@ namespace ProjectSpace
 		}
 		key = static_cast<sf::Keyboard::Key>(static_cast<int>(key) + 1);
 		return key;
+	}
+
+	std::string toString(State state)
+	{
+		switch (state)
+		{
+		case State::LIST_HOLD_DOWN: return "LIST_HOLD_DOWN"; break;
+		case State::LIST_HOLD_UP: return "LIST_HOLD_UP"; break;
+		case State::WALK_EAST: return "WALK_EAST"; break;
+		case State::WALK_NORTH: return "WALK_NORTH"; break;
+		case State::WALK_SOUTH: return "WALK_SOUTH"; break;
+		case State::WALK_WEST: return "WALK_WEST"; break;
+		default: return "UNKNOWN STATE";
+		}
 	}
 
 	InputManager::InputManager()
