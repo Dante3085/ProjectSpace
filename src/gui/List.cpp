@@ -10,6 +10,9 @@ namespace ProjectSpace
 {
 	int List::numLists = 0;
 
+	// TODO: Anzeige für aktuelles ListItem relativ zur gesamten Liste(auch nicht sichtbarer Teil).
+	// TODO: Mit mittlerem MouseButton durch die Liste scrollen.
+
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
 	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
 	// sf::Text::getGlobalBounds() will.

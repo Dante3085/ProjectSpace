@@ -7,6 +7,8 @@ namespace ProjectSpace
 	: onPressed{onPressed}, window{window}, mouseOnButton{false}, previousMouseOnButton{false}, 
 	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}, str{string}
 	{
+		// TODO: Parse given string with Util function to properly insert new lines.
+
 		font.loadFromFile("rsrc/fonts/arial.ttf");
 		text.setFont(font);
 		text.setString(string);
@@ -19,13 +21,11 @@ namespace ProjectSpace
 		onSelected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 255));
-			// this->move(5, 0);
 		};
 
 		onUnselected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 200));
-			// this->move(-5, 0);
 		};
 	}
 
@@ -45,13 +45,11 @@ namespace ProjectSpace
 		onSelected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 255));
-			// this->move(5, 0);
 		};
 
 		onUnselected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 200));
-			// this->move(-5, 0);
 		};
 	}
 

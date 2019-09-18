@@ -151,8 +151,13 @@ namespace ProjectSpace
 	};
 
 	// TODO: Workload bei häufig aufgerufenen Funktionen reduzieren, um Performance zu heben.
+
 	// TODO: Sind mehrere Keys auf denselben State gemappt funktioniert onStateOn nur bei dem Key,
 	// der als 2. auf den State gemappt wurde. Sehr komisch. Wie soll das vernünftig debuggt werden ?
+
+	// TODO: maps currentKeys und previousKeys durch SFML Events im EventLoop vermeidbar ?
+	// Momentan scheint die regelmäßige Aktualisierung der beiden maps im GameLoop aber nicht
+	// besonders lange zu dauern.
 
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
 	: inputManager{&InputManager::getInstance()}, valid{false}, predicate{predicate}
