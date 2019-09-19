@@ -8,7 +8,11 @@
 namespace ProjectSpace
 {
 	Character::Character(int strength, int defense, int agility, int intelligence, std::string const& name)
-	: strength{strength}, defense{defense}, agility{agility}, intelligence{intelligence}, name{name}
+		: strength{strength}, 
+		defense{defense}, 
+		agility{agility}, 
+		intelligence{intelligence}, 
+		name{name}
 	{
 
 	}

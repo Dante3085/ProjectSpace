@@ -19,10 +19,23 @@ namespace ProjectSpace
 
 	List::List(sf::Vector2f const& position, sf::Window const& window, 
 		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
-		: bounds{ -1, -1, -1, -1 }, topArrow{ 3 }, bottomArrow{3}, spacing{ 10 }, visibleItems{ 5 }, top{ 0 }, bottom{ visibleItems - 1 }, current{ 0 },
-		pressKey{ sf::Keyboard::Enter }, leftMousePreviouslyPressed{false}, window{ window },
-		upHoldDuration{500}, upHoldElapsed{0}, downHoldDuration{500}, downHoldElapsed{0},
-		inputManager{&InputManager::getInstance()}, inputContext{"include/input/contexts/ListContext.txt"}
+		: bounds{ -1, -1, -1, -1 }, 
+		topArrow{ 3 }, 
+		bottomArrow{3}, 
+		spacing{ 10 }, 
+		visibleItems{ 5 }, 
+		top{ 0 }, 
+		bottom{ visibleItems - 1 }, 
+		current{ 0 },
+		pressKey{ sf::Keyboard::Enter }, 
+		leftMousePreviouslyPressed{false}, 
+		window{ window },
+		upHoldDuration{500}, 
+		upHoldElapsed{0}, 
+		downHoldDuration{500}, 
+		downHoldElapsed{0},
+		inputManager{&InputManager::getInstance()}, 
+		inputContext{"include/input/contexts/ListContext.txt"}
 	{
 
 		// Don't allow empty List for now

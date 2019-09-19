@@ -5,10 +5,23 @@
 
 namespace ProjectSpace
 {
+	// TODO: Load String contents from file.
+
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: originalStr{ str }, wrappedStr{ str }, writtenStr{ "" }, padding{ 50 }, elapsedMillis{ 0 }, wrappedStrCurrentCharIndex{ 0 },
-		lineBreakCounter{ 0 }, waitForContinueKey{ false }, charDelay{ 100 }, cursorAnim{ "rsrc/spritesheets/cursor.png", 0.5f },
-		cursor{ sf::Vector2f{0, 0} }, continueKey{ sf::Keyboard::Space }, charWidth{ 25 }, lineHeight{ 36.5 }
+		: originalStr{ str }, 
+		wrappedStr{ str }, 
+		writtenStr{ "" }, 
+		padding{ 50 }, 
+		elapsedMillis{ 0 }, 
+		wrappedStrCurrentCharIndex{ 0 },
+		lineBreakCounter{ 0 }, 
+		waitForContinueKey{ false }, 
+		charDelay{ 100 }, 
+		cursorAnim{ "rsrc/spritesheets/cursor.png", 0.5f },
+		cursor{ sf::Vector2f{0, 0} }, 
+		continueKey{ sf::Keyboard::Space }, 
+		charWidth{ 25 }, 
+		lineHeight{ 36.5 }
 	{
 		// Initialize this Textbox's background.
 		texture.loadFromFile(texturePath);

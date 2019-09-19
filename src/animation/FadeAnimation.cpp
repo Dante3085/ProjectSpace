@@ -4,8 +4,13 @@
 namespace ProjectSpace
 {
 	FadeAnimation::FadeAnimation(Fadeable& fadeable, int startAlpha, int endAlpha, int durationInMilliseconds)
-		: fadeable{ fadeable }, startAlpha{ startAlpha }, endAlpha{ endAlpha }, durationInMilliseconds{ durationInMilliseconds },
-		elapsedMilliseconds{ 0 }, doUpdate{ false }, easingFunction{ Easing::sine_easeInOut }
+		: fadeable{ fadeable }, 
+		startAlpha{ startAlpha }, 
+		endAlpha{ endAlpha }, 
+		durationInMilliseconds{ durationInMilliseconds },
+		elapsedMilliseconds{ 0 }, 
+		doUpdate{ false }, 
+		easingFunction{ Easing::sine_easeInOut }
 	{
 		fadeable.setColor(sf::Color( 255, 255, 255, startAlpha ));
 	}

@@ -4,7 +4,9 @@
 namespace ProjectSpace
 {
 	Collidable::Collidable(CollisionType type) 
-	: type{ type }, drawBoundingBox{ true }, collisionHandler{ [](Collidable* partner){} } 
+		: type{ type }, 
+		drawBoundingBox{ true }, 
+		collisionHandler{ [](Collidable* partner){} } 
 	{
 
 	}

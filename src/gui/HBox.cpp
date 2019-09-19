@@ -5,11 +5,16 @@
 
 namespace ProjectSpace
 {
-    HBox::HBox(float spacing) : bounds{0, 0, 0, 0}, spacing{spacing}, hidden{false} {}
+    HBox::HBox(float spacing) 
+		: bounds{0, 0, 0, 0}, 
+		spacing{spacing}, 
+		hidden{false} {}
 
     HBox::HBox(std::vector<MenuElement *> menuElements, sf::Vector2f position, float spacing)
-        : menuElements{ menuElements }, bounds{ position.x, position.y, -1, -1 }, spacing{ spacing },
-          hidden{false}
+        : menuElements{ menuElements }, 
+		bounds{ position.x, position.y, -1, -1 }, 
+		spacing{ spacing },
+        hidden{false}
     {
         updateWidth();
         updateHeight();

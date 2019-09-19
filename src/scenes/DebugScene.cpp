@@ -4,7 +4,9 @@
 namespace ProjectSpace
 {
 	DebugScene::DebugScene(sf::RenderWindow& window)
-		: Scene{ window }, btn{ window, "DebugScene" }, btnAnim{ btn }
+		: Scene{ window }, 
+		btn{ window, "DebugScene" }, 
+		btnAnim{ btn }
 	{
 		btnAnim.setDuration(500);
 		btnAnim.setEasingFunction(Easing::back_easeOut);

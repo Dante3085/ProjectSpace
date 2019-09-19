@@ -4,7 +4,7 @@
 namespace ProjectSpace
 {
 	CollisionBox::CollisionBox(sf::Vector2f position, sf::Vector2f size)
-	: box{size}
+		: box{size}
 	{
 			// Position und Aussehen der CollisionBox festlegen.
 		box.setPosition(position);

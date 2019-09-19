@@ -8,7 +8,8 @@ namespace ProjectSpace
 	int ButtonMenu::numInstances = 0;
 
 	ButtonMenu::ButtonMenu()
-	: selected{0}, inputContext{"include/input/contexts/ButtonMenuContext.txt"}
+		: selected{0}, 
+		inputContext{"include/input/contexts/ButtonMenuContext.txt"}
 	{
 		buttons[selected]->select();
 

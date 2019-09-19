@@ -6,7 +6,9 @@
 namespace ProjectSpace
 {
 	Camera::Camera(Translatable const& translatable, sf::RenderWindow& window, sf::Vector2f const& size) 
-	: translatable{&translatable}, window{window}, view{translatable.getPosition(), size},
+		: translatable{&translatable}, 
+		window{window}, 
+		view{translatable.getPosition(), size},
 		offset{translatable.getWidth() / 2.f, translatable.getHeight() / 2.f}
 	{
 		// Zooms out

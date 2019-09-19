@@ -6,9 +6,16 @@
 
 namespace ProjectSpace
 {
-	MenuGroup::MenuGroup() : menuElements{}, bounds{} {}
+	MenuGroup::MenuGroup() 
+		: menuElements{}, 
+		bounds{} 
+	{
+
+	}
+
     MenuGroup::MenuGroup(std::vector<MenuElement*>& menuElements)
-		: menuElements{ menuElements }, bounds{}
+		: menuElements{ menuElements }, 
+		bounds{}
     {
 		// Figure out bounds(x/left, y/top, width, height) of MenuGroup given by given MenuElements.
 		// I know this all could probably be done in a single iteration over all MenuElements,

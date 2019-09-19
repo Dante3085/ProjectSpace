@@ -160,14 +160,18 @@ namespace ProjectSpace
 	// besonders lange zu dauern.
 
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
-	: inputManager{&InputManager::getInstance()}, valid{false}, predicate{predicate}
+		: inputManager{&InputManager::getInstance()}, 
+		valid{false}, 
+		predicate{predicate}
 	{
 		parseContextFile(contextFile);
 
 	}
 
 	InputContext::InputContext(std::string const& contextFile)
-		: inputManager{ &InputManager::getInstance() }, valid{ false }, predicate{ []() { return false; } }
+		: inputManager{ &InputManager::getInstance() }, 
+		valid{ false }, 
+		predicate{ []() { return false; } }
 	{
 		parseContextFile(contextFile);
 	}

@@ -3,9 +3,9 @@
 
 namespace ProjectSpace
 {
-	LayerCollidable::LayerCollidable(sf::Vector2f position, sf::Vector2f size,
-		std::vector<sf::Vector2f> points)
-		: cb{position, size}, cs{points}
+	LayerCollidable::LayerCollidable(sf::Vector2f position, sf::Vector2f size, std::vector<sf::Vector2f> points)
+		: cb{position, size}, 
+		cs{points}
 	{
 	}
 

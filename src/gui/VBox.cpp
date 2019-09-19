@@ -9,7 +9,9 @@ namespace ProjectSpace
 	{}
 
     VBox::VBox(std::vector<MenuElement *> menuElements, sf::Vector2f position, float spacing)
-        : menuElements{menuElements}, bounds{position.x, position.y, -1, -1}, spacing{spacing}, 
+        : menuElements{menuElements}, 
+		bounds{position.x, position.y, -1, -1}, 
+		spacing{spacing}, 
 		hidden{false} 
 	{
 		updateWidth();

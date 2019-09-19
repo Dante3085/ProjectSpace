@@ -9,14 +9,18 @@
 
 namespace ProjectSpace
 {
+	// TODO: Crono Framerate independant speed(constant speed through different framerates).
+
 	ChronoTriggerScene::ChronoTriggerScene(sf::RenderWindow& window)
-		: Scene{ window }, tilemap{ "rsrc/tilesets/SNES - Chrono Trigger - Court Room.gif" },
+		: Scene{ window }, 
+		tilemap{ "rsrc/tilesets/SNES - Chrono Trigger - Court Room.gif" },
 		cronoIdle{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkLeft{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkUp{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkRight{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
-		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
+		crono{ sf::Vector2f{200, 200} }, 
+		cronoSpeed{ 8 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
 		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
@@ -65,7 +69,8 @@ namespace ProjectSpace
 		{"PhoenixDown x 2", []() {}},
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
-	}}, inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"}
+	}}, 
+	inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -108,10 +113,9 @@ namespace ProjectSpace
 				return true;
 			});
 		InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
-		
-		InputManager::getInstance().blockInputContext("gui/List0");
-		InputManager::getInstance().blockInputContext("gui/List1");
-		InputManager::getInstance().blockInputContext("gui/List2");
+
+		translateAnimation.start();
+		fadeAnimation.start();
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
@@ -166,7 +170,7 @@ namespace ProjectSpace
 		}
 		if (inputContext.isStateOn(State::WALK_NORTH))
 		{
-			// crono.setAnimation(EAnimation::UP);
+			crono.setAnimation(EAnimation::UP);
 			crono.move(0, -cronoSpeed);
 		}
 
@@ -211,46 +215,6 @@ namespace ProjectSpace
 			crono.setAnimation(EAnimation::LEFT);
 			crono.move(-cronoSpeed, 0);
 		}
-
-		/*if (inputContext.isStateOn(State::WALK_NORTH))
-		{
-			crono.setAnimation(EAnimation::UP);
-			crono.move(0, -cronoSpeed);
-		}
-		else if (inputContext.onStateOff(State::WALK_NORTH))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (inputContext.isStateOn(State::WALK_EAST))
-		{
-			crono.setAnimation(EAnimation::RIGHT);
-			crono.move(cronoSpeed, 0);
-		}
-		else if (inputContext.onStateOff(State::WALK_EAST))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (inputContext.isStateOn(State::WALK_SOUTH))
-		{
-			crono.setAnimation(EAnimation::DOWN);
-			crono.move(0, cronoSpeed);
-		}
-		else if (inputContext.onStateOff(State::WALK_SOUTH))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (inputContext.isStateOn(State::WALK_WEST))
-		{
-			crono.setAnimation(EAnimation::LEFT);
-			crono.move(-cronoSpeed, 0);
-		}
-		else if (inputContext.onStateOff(State::WALK_WEST))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}*/
 		
 		Scene::update(time);
 	}
