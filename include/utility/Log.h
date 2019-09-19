@@ -25,6 +25,7 @@ TODO: Log verbosity(low, medium, high). On low, only error LogEntries are printe
 TODO: Logging channels(Animation channel, Combat channel, Scene channel, ...). Mute channels to only get desired LogEntries.
 TODO: Limit Log for duplicate LogEntries.
 TODO: LogRotation: Have 2 or more Logs. After certain size or time save log. (https://en.wikipedia.org/wiki/Log_rotation)
+TODO: Log << lo::PTC << "String" << integer << "\n" << std::vector<T>::size() << lo::END. hat unter Linux nicht alles ausgegeben.
 */
 
 namespace ProjectSpace
