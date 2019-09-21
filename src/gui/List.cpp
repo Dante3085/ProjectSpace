@@ -12,22 +12,29 @@ namespace ProjectSpace
 
 	// TODO: Anzeige für aktuelles ListItem relativ zur gesamten Liste(auch nicht sichtbarer Teil).
 	// TODO: Mit mittlerem MouseButton durch die Liste scrollen.
+	// TODO: Mauszeiger auf beliebigem ListItem soll traversieren mit Hoch und Runter Tasten nicht stören.
 
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
 	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
 	// sf::Text::getGlobalBounds() will.
 
-	List::List(sf::Vector2f const& position, sf::Window const& window, 
+	List::List(sf::Vector2f const& position, sf::Window const& window,
 		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
-		: bounds{ -1, -1, -1, -1 }, 
-		topArrow{ 3 }, 
-		bottomArrow{3}, 
-		spacing{ 10 }, 
-		visibleItems{ 5 }, 
+		: bounds{ -1, -1, -1, -1 },
+		selectedColor{ 105,105,105 },
+		unselectedColor{ sf::Color::White },
+		topArrow{ 3 },
+		bottomArrow{ 3 },
+		localizerSpacing{ 5 },
+		localizerYFirstSegment{-1},
+		localizerYLastSegment{-1},
+		localizerSegmentHeight{-1},
+		localizerTotalVerticalSpace{-1},
+		textSpacing{ 10 }, 
+		visibleItems{ 20 }, 
 		top{ 0 }, 
 		bottom{ visibleItems - 1 }, 
 		current{ 0 },
-		pressKey{ sf::Keyboard::Enter }, 
 		leftMousePreviouslyPressed{false}, 
 		window{ window },
 		upHoldDuration{500}, 
@@ -66,7 +73,7 @@ namespace ProjectSpace
 			else
 			{
 				sf::Vector2f newPosition{ texts[i - 1].first.getPosition() +
-									      sf::Vector2f{0, texts[i - 1].first.getGlobalBounds().height + spacing} };
+									      sf::Vector2f{0, texts[i - 1].first.getGlobalBounds().height + textSpacing} };
 				text.setPosition(newPosition);
 			}
 			texts.push_back(std::pair<sf::Text, std::function<void()>> {text, strings[i].second});
@@ -91,7 +98,7 @@ namespace ProjectSpace
 			}
 			height += currentTextBounds->height;
 		}
-		height += (visibleItems - 1) * spacing;
+		height += (visibleItems - 1) * textSpacing;
 
 		bounds.width = width;
 		bounds.height = height;
@@ -100,7 +107,7 @@ namespace ProjectSpace
 		sf::FloatRect topTextBounds = texts[0].first.getGlobalBounds();
 		selector.setPosition(topTextBounds.left, topTextBounds.top);
 		selector.setSize(sf::Vector2f{ topTextBounds.width, topTextBounds.height });
-		selector.setFillColor(sf::Color{255, 0, 0, 255});
+		selector.setFillColor(sf::Color::Red);
 
 		// Init Arrows.
 		float textHeight = texts[0].first.getGlobalBounds().height;
@@ -117,10 +124,25 @@ namespace ProjectSpace
 		bounds.left = topArrow.getPoint(0).x;
 		bounds.width = (tempBounds.left + tempBounds.width) - bounds.left;
 
+		// Init localizer. Should already be inside bounds. No extra calculations needed.
+		localizerYFirstSegment = topArrow.getPoint(0).y + localizerSpacing;
+		localizerTotalVerticalSpace = (bottomArrow.getPoint(0).y - localizerSpacing) -
+			                          (localizerYFirstSegment);
+		localizerSegmentHeight = localizerTotalVerticalSpace / strings.size();
+		localizerYLastSegment = bottomArrow.getPoint(0).y - localizerSpacing - localizerSegmentHeight;
+
+		float localizerWidth = (topArrow.getPoint(1).x - localizerSpacing) - (topArrow.getPoint(0).x + localizerSpacing);
+		localizer.setSize(sf::Vector2f{ localizerWidth, localizerSegmentHeight });
+		localizer.setPosition(topArrow.getPoint(0).x + localizerSpacing, localizerYFirstSegment);
+		localizer.setFillColor(sf::Color::White);
+
 		// Setup Input with InputManager.
 		inputContext.setPredicate([this]()
 			{
-				return bounds.contains((sf::Vector2f)sf::Mouse::getPosition(this->window));
+				// TODO: Wie kann man einfach den Fokus auf einen InputContext setzen, sodass die Maus nicht immer in den
+				// bounds sein muss.
+				// return bounds.contains((sf::Vector2f)sf::Mouse::getPosition(this->window));
+				return true;
 			});
 		std::string inputContextName = "gui/List";
 		inputContextName += std::to_string(numLists++);
@@ -194,7 +216,7 @@ namespace ProjectSpace
 			// Check if Mouse is over TopArrow
 			if (topArrow.getGlobalBounds().contains(mousePosition))
 			{
-				topArrow.setFillColor(sf::Color{ 169,169,169 });
+				topArrow.setFillColor(selectedColor);
 
 				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
@@ -203,13 +225,13 @@ namespace ProjectSpace
 			}
 			else
 			{
-				topArrow.setFillColor(sf::Color::White);
+				topArrow.setFillColor(unselectedColor);
 			}
 
 			// Check if Mouse is over BottomArrow.
 			if (bottomArrow.getGlobalBounds().contains(mousePosition))
 			{
-				bottomArrow.setFillColor(sf::Color{ 169,169,169 });
+				bottomArrow.setFillColor(selectedColor);
 
 				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
@@ -218,7 +240,7 @@ namespace ProjectSpace
 			}
 			else
 			{
-				bottomArrow.setFillColor(sf::Color::White);
+				bottomArrow.setFillColor(unselectedColor);
 			}
 
 			// Check if one of the visible ListItems is selected by Mouse.
@@ -244,6 +266,7 @@ namespace ProjectSpace
 	void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(selector);
+		target.draw(localizer);
 		// Draw all visible ListItems and selector.
 		for (int i = top; i <= bottom; ++i)
 		{
@@ -277,6 +300,8 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(prevPositions[posCounter++]);
 			}
+
+			localizer.setPosition(localizer.getPosition().x, localizerYLastSegment);
 		}
 
 		// Über das oberste sichtbare ListItem hinweg.
@@ -291,13 +316,20 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(texts[i + 1].first.getPosition());
 			}
+
+			localizer.move(0, -localizerSegmentHeight);
 		}
 
 		// Sonst einfach einen nach oben.
 		else
 		{
 			--current;
+
+			localizer.move(0, -localizerSegmentHeight);
 		}
+
+		localizer.setFillColor((current == 0 || current == texts.size() - 1) ? 
+			                    selectedColor : unselectedColor);
 
 		// ATTENTION: sf::Text::getPosition() does not return the same position as
 		// sf::Text::getGlobalBounds()'s left and top.
@@ -327,6 +359,8 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(prevPositions[posCounter++]);
 			}
+
+			localizer.setPosition(localizer.getPosition().x, localizerYFirstSegment);
 		}
 		else if (current == bottom)
 		{
@@ -338,11 +372,19 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(texts[i - 1].first.getPosition());
 			}
+
+			localizer.move(0, localizerSegmentHeight);
 		}
 		else
 		{
 			++current;
+
+			localizer.move(0, localizerSegmentHeight);
 		}
+
+		localizer.setFillColor((current == texts.size() - 1 || current == 0) ? 
+			                    selectedColor : unselectedColor);
+
 		// ATTENTION: sf::Text::getPosition() does not return the same position as
 		// sf::Text::getGlobalBounds()'s left and top.
 		sf::FloatRect currentTextBounds = texts[current].first.getGlobalBounds();

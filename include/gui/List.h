@@ -59,18 +59,26 @@ namespace ProjectSpace
 		sf::FloatRect bounds;
 		std::vector<std::pair<sf::Text, std::function<void()>>> texts;
 		sf::Font font;               // Font of every Text.
+		sf::Color selectedColor;
+		sf::Color unselectedColor;
 
-		sf::ConvexShape topArrow;
-		sf::ConvexShape bottomArrow; 
-		sf::RectangleShape selector; // Visually labels the current ListItem
+		sf::ConvexShape topArrow;     // Click to go one ListItem up.
+		sf::ConvexShape bottomArrow;  // Click to go one ListItem down.
+		sf::RectangleShape selector;  // Visually labels the current ListItem.
 
-		float spacing;      	     // Vertical spacing between each Text.
+		sf::RectangleShape localizer; // Visual representation of the location of the selected ListItem relative to the whole List.
+		float localizerSpacing;       // Space between localizer and all 4 adjacent sides.
+		float localizerYFirstSegment; // Y-coordinate of the first Localizer segment.
+		float localizerYLastSegment;  // Y-coordinate of the last Localizer segment.
+		float localizerSegmentHeight; // Height of a Localizer segment.
+		float localizerTotalVerticalSpace;
+
+		float textSpacing;      	 // Vertical spacing between each Text.
 		int visibleItems;   	     // Number of ListItems visible at the same time.
 		int top;            	     // Index of first ListItem.
 		int bottom;         	     // Index of last ListItem.
 		int current;         	     // Index of currently selected ListItem.
 
-		sf::Keyboard::Key pressKey;  // If this key is pressed, the currently selected ListItem is pressed.
 		bool leftMousePreviouslyPressed;
 
 		sf::Window const& window;

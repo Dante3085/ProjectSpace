@@ -48,8 +48,8 @@ namespace ProjectSpace
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 	}},
-	translateAnimation{ list, sf::Vector2f{500, 500}, sf::Vector2f{600, 500}, 150 },
-	fadeAnimation{list, 0, 255, 300},
+	// translateAnimation{ list, sf::Vector2f{500, 500}, sf::Vector2f{600, 500}, 150 },
+	// fadeAnimation{list, 0, 255, 300},
 	list2{ sf::Vector2f{1000, 100}, window,
 	{
 		{"Ether x 50", []() {}},
@@ -92,7 +92,7 @@ namespace ProjectSpace
 		crono.setAnimation(EAnimation::IDLE);
 		crono.setScale(6, 6);
 
-		translateAnimation.setEasingFunction(Easing::linear_easeNone);
+		// translateAnimation.setEasingFunction(Easing::linear_easeNone);
 		
 		//textBox.setPadding(50);
 		//// textBox.setPosition(1000, 1000);
@@ -104,18 +104,15 @@ namespace ProjectSpace
 		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
 		sound.setBuffer(soundBuffer);
 
-		Scene::addEntities({ &crono, &fadeAnimation, &translateAnimation, /*&camera,*/ &textBox, 
-			                 &combatOrder, &audioFader, &list, &list2, &list3});
-		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list, &list2, &list3 });
+		Scene::addEntities({ &crono, /*&camera,*/ &textBox, 
+			                 &combatOrder, &audioFader, &list});
+		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 
 		inputContext.setPredicate([]()
 			{
 				return true;
 			});
 		InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
-
-		translateAnimation.start();
-		fadeAnimation.start();
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
@@ -159,6 +156,28 @@ namespace ProjectSpace
 			}
 			audioFader.start();
 		}*/
+
+		//if (inputContext.hasActionFired(Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST))
+		//{
+		//	if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
+		//	{
+		//		translateAnimation.setFrom(sf::Vector2f{ 600, 500 });
+		//		translateAnimation.setTo(sf::Vector2f{ 500, 500 });
+
+		//		/*fadeAnimation.setStartAlpha(255);
+		//		fadeAnimation.setEndAlpha(0);*/
+		//	}
+		//	else
+		//	{
+		//		translateAnimation.setFrom(sf::Vector2f{ 500, 500 });
+		//		translateAnimation.setTo(sf::Vector2f{ 600, 500 });
+
+		//		/*fadeAnimation.setStartAlpha(0);
+		//		fadeAnimation.setEndAlpha(255);*/
+		//	}
+		//	// fadeAnimation.start();
+		//	translateAnimation.start();
+		//}
 
 		if (inputContext.onStateOn(State::WALK_NORTH))
 		{

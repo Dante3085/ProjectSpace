@@ -57,8 +57,8 @@ namespace ProjectSpace
 		AudioFader audioFader;
 
 		List list;
-		TranslateAnimation translateAnimation;
-		FadeAnimation fadeAnimation;
+		// TranslateAnimation translateAnimation;
+		// FadeAnimation fadeAnimation;
 		List list2;
 		List list3;
 

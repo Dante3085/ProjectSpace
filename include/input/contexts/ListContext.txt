@@ -7,7 +7,7 @@ key::Enter onPressed list_select
 
 // key -> State
 numKeyToStateMappings=2
-key::T onPressed list_hold_up key::Up onReleased // On initial press of Key Up the State LIST_HOLD_UP will be turned on and on releasing Key Up the State LIST_HOLD_UP will be turned off.
+key::Up onPressed list_hold_up key::Up onReleased // On initial press of Key Up the State LIST_HOLD_UP will be turned on and on releasing Key Up the State LIST_HOLD_UP will be turned off.
 key::Down onPressed list_hold_down key::Down onReleased
 
 // GAMEPAD MAPPINGS
