@@ -270,6 +270,10 @@ namespace ProjectSpace
 					// TODO: Solution that detects the Mouse leaving Bounds. Doing this all the time is bad.
 					// Also try that for above code.
 
+					mouseHoversTopArrow = false;
+					mouseHoversBottomArrow = false;
+					mouseHoversLocalizer = false;
+
 					topArrow.setFillColor(nonHoverColor);
 					bottomArrow.setFillColor(nonHoverColor);
 					localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
