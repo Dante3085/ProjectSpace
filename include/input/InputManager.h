@@ -2,9 +2,14 @@
 #ifndef INPUT_MANAGER_H
 #define INPUT_MANAGER_H
 
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/System/Vector2.hpp>
+
 #include <functional>
 #include <map>
-#include <SFML/Window/Keyboard.hpp>
 #include <string>
 #include <set>
 #include <utility>
@@ -18,11 +23,15 @@ namespace ProjectSpace
 	class istream;
 	class InputManager;
 	class Log;
+	class Game;
 
 	// Usefull stuff.
 	// For incrementing a Key variable in loops and other stuff.
 	sf::Keyboard::Key& operator++(sf::Keyboard::Key& key);
+	sf::Mouse::Button& operator++(sf::Mouse::Button& mouseButton);
 	std::string toString(State state);
+	std::string toString(sf::Mouse::Button button);
+	std::string toString(sf::Keyboard::Key key);
 	std::ostream& operator<<(std::ostream& stream, State state);
 
 	class InputContext
@@ -51,12 +60,6 @@ namespace ProjectSpace
 		// Helper structs
 	private:
 
-		// Lookup-Tables
-	private:
-		static std::map<std::string, sf::Keyboard::Key> stringToKey; // Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
-		static std::map<std::string, Action> stringToAction;	     // Lookup-Table to convert std::string from ContextFile to Action.
-		static std::map<std::string, State> stringToState;	         // Lookup-Table to convert std::string from ContextFile to State.
-
 	private:
 		InputManager* inputManager;
 		bool valid;
@@ -64,11 +67,11 @@ namespace ProjectSpace
 
 		using InputMode = bool(InputManager::*)(sf::Keyboard::Key) const; // Function pointer to member functions of InputManager that check for key stuff.
 
-		std::map<sf::Keyboard::Key, std::pair<Action, InputMode>> keyToAction;  // Maps a Key to an Action and it's mode(onPressed/onReleased).
+		std::map<sf::Keyboard::Key, std::pair<Action, InputMode>> keyToAction;  // Stores which Key fires an Action and in which way (onPressed/onReleased).
 		// std::map<ControllerButton, std::tuple<Action, std::string>> controllerButtonToAction;
 
-		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOn;
-		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOff;
+		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOn;  // Stores which Key turns a State on and in which way (onPressed/onReleased).
+		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOff; // Stores which Key turns a State off and in which way (onPressed/onReleased).
 
 		std::map<Action, bool> actionsFired;  // Stores if an Action has been fired or not.
 		std::map<State, bool> currentStates;  // Stores if a State is on or not in the current udpate() iteration.
@@ -91,28 +94,53 @@ namespace ProjectSpace
 		InputManager(InputManager const&) = delete;
 		void operator=(InputManager const&) = delete;
 
-		void updateCurrentKeys();
-		void updatePreviousKeys();
-		void updateInputContexts();
+		// Call inside Event-Loop.
+		void updateCurrentInputStates(sf::Event event);
 
-		void registerInputContext(std::string const& name, InputContext* inputContext);
-		void blockInputContext(std::string const& name);
+		// Call at the bottom of Game-Loop(last instruction).
+		// Updates previousInputStates and other stuff that needs to be reset before going to the next 
+		// Game-Loop iteration.
+		void updateBeforeNextIteration();
+
+		// Call after updateCurrentKeys outside of Event-Loop(first instruction after Event-Loop).
+		void updateInputContexts();
 		
 		bool onKeyPressed(sf::Keyboard::Key key) const;
 		bool onKeyReleased(sf::Keyboard::Key key) const;
 		bool isKeyPressed(sf::Keyboard::Key key) const;
 		bool wasKeyPressed(sf::Keyboard::Key key) const;
 
+		bool onMouseButtonPressed(sf::Mouse::Button mouseButton) const;
+		bool onMouseButtonReleased(sf::Mouse::Button mouseButton) const;
+		bool isMouseButtonPressed(sf::Mouse::Button mouseButton) const;
+		bool wasMouseButtonPressed(sf::Mouse::Button mouseButton) const;
+		bool hasMouseMoved() const;
+		sf::Vector2i getMousePosition() const;
+
+		void registerInputContext(std::string const& name, InputContext* inputContext);
+		void blockInputContext(std::string const& name);
+
 	private:
 		InputManager();
 
+		// sf::Keyboard
 		std::map<sf::Keyboard::Key, bool> currentKeys;
 		std::map<sf::Keyboard::Key, bool> previousKeys;
+		sf::Keyboard::Key lastUpdatetKey;
+
+		// sf::Mouse
+		std::map<sf::Mouse::Button, bool> currentMouseButtons;
+		std::map<sf::Mouse::Button, bool> previousMouseButtons;
+		sf::Mouse::Button lastUpdatetMouseButton;
+		bool mouseMovedThisFrame;
+		sf::Vector2i currentMousePosition;
 
 		// TODO: std::map<std::string, std::pair<InputContext*, bool>> inputContexts.
 		// The std::set is not necessary for checking blocked InputContexts.
 		std::map<std::string, InputContext*> inputContexts;
 		std::set<std::string> blockedInputContexts;
+
+		friend Game;
 	};
 }
 

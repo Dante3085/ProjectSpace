@@ -1,8 +1,6 @@
 
 #include "gui/List.h"
 
-#include <SFML/Window/Mouse.hpp>
-
 #include "utility/Log.h"
 #include "utility/Util.h"
 
@@ -10,39 +8,39 @@ namespace ProjectSpace
 {
 	int List::numLists = 0;
 
-	// TODO: Anzeige für aktuelles ListItem relativ zur gesamten Liste(auch nicht sichtbarer Teil).
 	// TODO: Mit mittlerem MouseButton durch die Liste scrollen.
-	// TODO: Mauszeiger auf beliebigem ListItem soll traversieren mit Hoch und Runter Tasten nicht stören.
+	// TODO: Localizer soll auch auf Selektion mit Maus reagieren.
 
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
 	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
 	// sf::Text::getGlobalBounds() will.
 
-	List::List(sf::Vector2f const& position, sf::Window const& window,
-		std::vector<std::pair<std::string, std::function<void()>>> const& strings)
+	List::List(sf::Vector2f const& position, std::vector<std::pair<std::string, std::function<void()>>> const& strings)
 		: bounds{ -1, -1, -1, -1 },
-		selectedColor{ 105,105,105 },
-		unselectedColor{ sf::Color::White },
+		hoverColor{ 105,105,105 },
+		nonHoverColor{ sf::Color::White },
 		topArrow{ 3 },
+		mouseHoversTopArrow{ false },
 		bottomArrow{ 3 },
+		mouseHoversBottomArrow{ false },
 		localizerSpacing{ 5 },
-		localizerYFirstSegment{-1},
-		localizerYLastSegment{-1},
-		localizerSegmentHeight{-1},
-		localizerTotalVerticalSpace{-1},
-		textSpacing{ 10 }, 
-		visibleItems{ 20 }, 
-		top{ 0 }, 
-		bottom{ visibleItems - 1 }, 
+		localizerYFirstSegment{ -1 },
+		localizerYLastSegment{ -1 },
+		localizerSegmentHeight{ -1 },
+		localizerTotalVerticalSpace{ -1 },
+		mouseHoversLocalizer{ false },
+		localizerTopOrBottomColor{255, 88, 88},
+		textSpacing{ 10 },
+		visibleItems{ 10 },
+		top{ 0 },
+		bottom{ visibleItems - 1 },
 		current{ 0 },
-		leftMousePreviouslyPressed{false}, 
-		window{ window },
-		upHoldDuration{500}, 
-		upHoldElapsed{0}, 
-		downHoldDuration{500}, 
-		downHoldElapsed{0},
-		inputManager{&InputManager::getInstance()}, 
-		inputContext{"include/input/contexts/ListContext.txt"}
+		upHoldDuration{ 500 },
+		upHoldElapsed{ 0 },
+		downHoldDuration{ 500 },
+		downHoldElapsed{ 0 },
+		inputManager{ &InputManager::getInstance() },
+		inputContext{ "include/input/contexts/ListContext.txt" }
 	{
 
 		// Don't allow empty List for now
@@ -73,7 +71,7 @@ namespace ProjectSpace
 			else
 			{
 				sf::Vector2f newPosition{ texts[i - 1].first.getPosition() +
-									      sf::Vector2f{0, texts[i - 1].first.getGlobalBounds().height + textSpacing} };
+										  sf::Vector2f{0, texts[i - 1].first.getGlobalBounds().height + textSpacing} };
 				text.setPosition(newPosition);
 			}
 			texts.push_back(std::pair<sf::Text, std::function<void()>> {text, strings[i].second});
@@ -112,8 +110,8 @@ namespace ProjectSpace
 		// Init Arrows.
 		float textHeight = texts[0].first.getGlobalBounds().height;
 		topArrow.setPoint(0, sf::Vector2f{ bounds.left - 40, bounds.top + textHeight });
-		topArrow.setPoint(1, sf::Vector2f{bounds.left - 10, bounds.top + textHeight});
-		topArrow.setPoint(2, sf::Vector2f( bounds.left - 25, bounds.top ));
+		topArrow.setPoint(1, sf::Vector2f{ bounds.left - 10, bounds.top + textHeight });
+		topArrow.setPoint(2, sf::Vector2f(bounds.left - 25, bounds.top));
 
 		bottomArrow.setPoint(0, sf::Vector2f{ bounds.left - 40, bounds.top + bounds.height - textHeight });
 		bottomArrow.setPoint(1, sf::Vector2f{ bounds.left - 10, bounds.top + bounds.height - textHeight });
@@ -127,14 +125,14 @@ namespace ProjectSpace
 		// Init localizer. Should already be inside bounds. No extra calculations needed.
 		localizerYFirstSegment = topArrow.getPoint(0).y + localizerSpacing;
 		localizerTotalVerticalSpace = (bottomArrow.getPoint(0).y - localizerSpacing) -
-			                          (localizerYFirstSegment);
+			(localizerYFirstSegment);
 		localizerSegmentHeight = localizerTotalVerticalSpace / strings.size();
 		localizerYLastSegment = bottomArrow.getPoint(0).y - localizerSpacing - localizerSegmentHeight;
 
 		float localizerWidth = (topArrow.getPoint(1).x - localizerSpacing) - (topArrow.getPoint(0).x + localizerSpacing);
 		localizer.setSize(sf::Vector2f{ localizerWidth, localizerSegmentHeight });
 		localizer.setPosition(topArrow.getPoint(0).x + localizerSpacing, localizerYFirstSegment);
-		localizer.setFillColor(sf::Color::White);
+		localizer.setFillColor(hoverColor);
 
 		// Setup Input with InputManager.
 		inputContext.setPredicate([this]()
@@ -152,7 +150,6 @@ namespace ProjectSpace
 	void List::update(sf::Time time)
 	{
 		// TODO: Check this function for improvements in performance.
-		// TODO: InputHandling needs work. New Input System.
 
 		if (inputContext.isValid())
 		{
@@ -205,62 +202,103 @@ namespace ProjectSpace
 			{
 				downHoldElapsed = 0;
 			}
-		}
 
-		sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(window);
-
-		// Only check for all ListItems if Mouse is already inside
-		// the List's bounds to avoid unnecessary checks.
-		if (bounds.contains(mousePosition))
-		{
-			// Check if Mouse is over TopArrow
-			if (topArrow.getGlobalBounds().contains(mousePosition))
+			if (inputManager->hasMouseMoved())
 			{
-				topArrow.setFillColor(selectedColor);
+				sf::Vector2f mousePosition = (sf::Vector2f)inputManager->getMousePosition();
 
-				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				if (bounds.contains(mousePosition))
+				{
+					if (topArrow.getGlobalBounds().contains(mousePosition))
+					{
+						mouseHoversTopArrow = true;
+						mouseHoversBottomArrow = false;
+						mouseHoversLocalizer = false;
+
+						topArrow.setFillColor(hoverColor);
+					}
+					else if (bottomArrow.getGlobalBounds().contains(mousePosition))
+					{
+						mouseHoversTopArrow = false;
+						mouseHoversBottomArrow = true;
+						mouseHoversLocalizer = false;
+
+						bottomArrow.setFillColor(hoverColor);
+					}
+					else if (localizer.getGlobalBounds().contains(mousePosition))
+					{
+						mouseHoversTopArrow = false;
+						mouseHoversBottomArrow = false;
+						mouseHoversLocalizer = true;
+
+						localizer.setFillColor(hoverColor);
+					}
+					else
+					{
+						mouseHoversTopArrow = false;
+						mouseHoversBottomArrow = false;
+						mouseHoversLocalizer = false;
+
+						topArrow.setFillColor(nonHoverColor);
+						bottomArrow.setFillColor(nonHoverColor);
+						localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+							localizerTopOrBottomColor : nonHoverColor);
+
+						for (int i = top; i <= bottom; ++i)
+						{
+							sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
+
+							if (textBounds.contains(mousePosition))
+							{
+								current = i;
+								selector.setPosition(textBounds.left, textBounds.top);
+								selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
+
+								localizer.setPosition(localizer.getPosition().x,
+									localizerYFirstSegment + (current * localizerSegmentHeight));
+
+								localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+									localizerTopOrBottomColor : nonHoverColor);
+
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					// TODO: Solution that detects the Mouse leaving Bounds. Doing this all the time is bad.
+					// Also try that for above code.
+
+					topArrow.setFillColor(nonHoverColor);
+					bottomArrow.setFillColor(nonHoverColor);
+					localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+						localizerTopOrBottomColor : nonHoverColor);
+				}
+			}
+
+			if (mouseHoversTopArrow)
+			{
+				if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
 				{
 					up();
 				}
 			}
-			else
+			else if (mouseHoversBottomArrow)
 			{
-				topArrow.setFillColor(unselectedColor);
-			}
-
-			// Check if Mouse is over BottomArrow.
-			if (bottomArrow.getGlobalBounds().contains(mousePosition))
-			{
-				bottomArrow.setFillColor(selectedColor);
-
-				if (!leftMousePreviouslyPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
 				{
 					down();
 				}
 			}
-			else
+			else if (mouseHoversLocalizer)
 			{
-				bottomArrow.setFillColor(unselectedColor);
-			}
-
-			// Check if one of the visible ListItems is selected by Mouse.
-			for (int i = top; i <= bottom; ++i)
-			{
-				sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
-
-				if (textBounds.contains(mousePosition))
+				if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
 				{
-					current = i;
-					selector.setPosition(textBounds.left, textBounds.top);
-					selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
-					break;
+					std::cout << "Selector clicked\n";
 				}
 			}
 		}
-
-		// Makes it possible to hold the down key to move down faster.
-
-		leftMousePreviouslyPressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 	}
 
 	void List::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -300,8 +338,6 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(prevPositions[posCounter++]);
 			}
-
-			localizer.setPosition(localizer.getPosition().x, localizerYLastSegment);
 		}
 
 		// Über das oberste sichtbare ListItem hinweg.
@@ -316,20 +352,22 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(texts[i + 1].first.getPosition());
 			}
-
-			localizer.move(0, -localizerSegmentHeight);
 		}
 
 		// Sonst einfach einen nach oben.
 		else
 		{
 			--current;
-
-			localizer.move(0, -localizerSegmentHeight);
 		}
 
-		localizer.setFillColor((current == 0 || current == texts.size() - 1) ? 
-			                    selectedColor : unselectedColor);
+		// Set Localizer Position to represent current ListItem
+		// and if necessary fill it with a special color when
+		// it is on the last or first ListItem.
+		localizer.setPosition(localizer.getPosition().x,
+			localizerYFirstSegment + (current * localizerSegmentHeight));
+
+		localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+			localizerTopOrBottomColor : nonHoverColor);
 
 		// ATTENTION: sf::Text::getPosition() does not return the same position as
 		// sf::Text::getGlobalBounds()'s left and top.
@@ -359,8 +397,6 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(prevPositions[posCounter++]);
 			}
-
-			localizer.setPosition(localizer.getPosition().x, localizerYFirstSegment);
 		}
 		else if (current == bottom)
 		{
@@ -372,18 +408,20 @@ namespace ProjectSpace
 			{
 				texts[i].first.setPosition(texts[i - 1].first.getPosition());
 			}
-
-			localizer.move(0, localizerSegmentHeight);
 		}
 		else
 		{
 			++current;
-
-			localizer.move(0, localizerSegmentHeight);
 		}
 
-		localizer.setFillColor((current == texts.size() - 1 || current == 0) ? 
-			                    selectedColor : unselectedColor);
+		// Set Localizer Position to represent current ListItem
+		// and if necessary fill it with a special color when
+		// it is on the last or first ListItem.
+		localizer.setPosition(localizer.getPosition().x,
+			localizerYFirstSegment + (current * localizerSegmentHeight));
+
+		localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+			                   localizerTopOrBottomColor : nonHoverColor);
 
 		// ATTENTION: sf::Text::getPosition() does not return the same position as
 		// sf::Text::getGlobalBounds()'s left and top.
@@ -391,6 +429,8 @@ namespace ProjectSpace
 		selector.setPosition(currentTextBounds.left, currentTextBounds.top);
 		selector.setSize(sf::Vector2f{ currentTextBounds.width, currentTextBounds.height });
 	}
+
+	// TODO: Alle Positionierungsfunktionen updatet, da neue Elemente hinzugekommen sind.
 
 	void List::setPosition(sf::Vector2f const& position)
 	{
@@ -476,5 +516,24 @@ namespace ProjectSpace
 	sf::FloatRect List::getBounds() const
 	{
 		return bounds;
+	}
+
+	void List::updateLocalizer()
+	{
+		localizer.setPosition(localizer.getPosition().x,
+			localizerYFirstSegment + (current * localizerSegmentHeight));
+
+		if (current == 0 || current == texts.size() - 1)
+		{
+			localizer.setFillColor(localizerTopOrBottomColor);
+		}
+		else if (mouseHoversLocalizer)
+		{
+			localizer.setFillColor(hoverColor);
+		}
+		else
+		{
+			localizer.setFillColor(nonHoverColor);
+		}
 	}
 }

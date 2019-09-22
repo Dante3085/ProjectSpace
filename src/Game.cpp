@@ -15,6 +15,9 @@
 
 namespace ProjectSpace
 {
+	// TODO: Globaler InputContext muss nicht unbedingt eine InputContext Instanz sein.
+	// Falls dieser immer aktiv ist, können einfach InputManager-Abfragen gemacht werden.
+
 	Game::Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style)
 		: window{ sf::VideoMode{screenWidth, screenHeight}, windowTitle, style },
 		scenes{},
@@ -38,6 +41,7 @@ namespace ProjectSpace
 		globalDrawables{ &fpsCounter, &btnBox }
     {
 		window.setFramerateLimit(60);
+		window.setKeyRepeatEnabled(false);
 
 		// Creating Scenes
 		scenes[EScene::DEBUG] = new DebugScene{ window };
@@ -108,17 +112,18 @@ namespace ProjectSpace
         {
 			sf::Time time = clock.restart();
 
-            inputManager->updateCurrentKeys();
-            inputManager->updateInputContexts();
-
             sf::Event event;
             while (window.pollEvent(event))
             {
+				// Without this pressing X on the window does nothing.
                 if (event.type == sf::Event::Closed)
                 {
                     window.close();
                 }
+
+				inputManager->updateCurrentInputStates(event);
             }
+			inputManager->updateInputContexts();
 
 			if (inputContext.hasActionFired(Action::FREEZE_GAME_TOGGLE))
 			{
@@ -148,7 +153,7 @@ namespace ProjectSpace
 				window.display();
 			}
 
-            inputManager->updatePreviousKeys();
+            inputManager->updateBeforeNextIteration();
         }
     }
 
@@ -166,6 +171,12 @@ namespace ProjectSpace
 
     void Game::checkGlobalInput()
     {
+		if (inputManager->isKeyPressed(sf::Keyboard::Escape))
+		{
+			window.close();
+			return;
+		}
+
         if (inputContext.hasActionFired(Action::EXIT_GAME))
         {
             window.close();

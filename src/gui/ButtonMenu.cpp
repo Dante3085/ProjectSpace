@@ -52,41 +52,14 @@ namespace ProjectSpace
 
 	void ButtonMenu::update(sf::Time time)
 	{
-		/*if (!inputHandler->wasKeyPressed(keyForward))
-		{
-			if (sf::Keyboard::isKeyPressed(keyForward))
-			{
-				// cursorMove.play();
-				forward();
-			}
-		}
-
-		if (!inputHandler->wasKeyPressed(keyBackward))
-		{
-			if (sf::Keyboard::isKeyPressed(keyBackward))
-			{
-				// cursorMove.play();
-				backward();
-			}
-		}
-
-		if (!sf::Keyboard::isKeyPressed(keyPress))
-		{
-			if (inputHandler->wasKeyPressed(keyPress))
-			{
-				// cursorMove.play();
-				buttons[selected]->press();
-			}
-		}*/
-
 		if (inputContext.hasActionFired(Action::BUTTON_MENU_FORWARD))
 		{
-			cursorMove.play();
+			// cursorMove.play();
 			forward();
 		}
 		else if(inputContext.hasActionFired(Action::BUTTON_MENU_BACKWARD))
 		{
-			cursorMove.play();
+			// cursorMove.play();
 			backward();
 		}
 		else if (inputContext.hasActionFired(Action::BUTTON_MENU_PRESS))

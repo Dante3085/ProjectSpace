@@ -7,7 +7,6 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/ConvexShape.hpp>
-#include <SFML/Window/Window.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 #include <vector>
@@ -26,8 +25,7 @@ namespace ProjectSpace
 	{
 
 	public:
-		List(sf::Vector2f const& position, sf::Window const& window,
-			std::vector<std::pair<std::string, std::function<void()>>> const& strings);
+		List(sf::Vector2f const& position, std::vector<std::pair<std::string, std::function<void()>>> const& strings);
 
 		void update(sf::Time time) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -55,15 +53,23 @@ namespace ProjectSpace
 
 		sf::FloatRect getBounds() const;
 
+		// Helper
+	private:
+		void updateLocalizer();
+
 	private:
 		sf::FloatRect bounds;
 		std::vector<std::pair<sf::Text, std::function<void()>>> texts;
 		sf::Font font;               // Font of every Text.
-		sf::Color selectedColor;
-		sf::Color unselectedColor;
+		sf::Color hoverColor;
+		sf::Color nonHoverColor;
 
 		sf::ConvexShape topArrow;     // Click to go one ListItem up.
+		bool mouseHoversTopArrow;
+
 		sf::ConvexShape bottomArrow;  // Click to go one ListItem down.
+		bool mouseHoversBottomArrow;
+
 		sf::RectangleShape selector;  // Visually labels the current ListItem.
 
 		sf::RectangleShape localizer; // Visual representation of the location of the selected ListItem relative to the whole List.
@@ -72,16 +78,14 @@ namespace ProjectSpace
 		float localizerYLastSegment;  // Y-coordinate of the last Localizer segment.
 		float localizerSegmentHeight; // Height of a Localizer segment.
 		float localizerTotalVerticalSpace;
+		bool mouseHoversLocalizer;
+		sf::Color localizerTopOrBottomColor; // Color the Localizer has when on the first or last ListItem.
 
 		float textSpacing;      	 // Vertical spacing between each Text.
 		int visibleItems;   	     // Number of ListItems visible at the same time.
 		int top;            	     // Index of first ListItem.
 		int bottom;         	     // Index of last ListItem.
 		int current;         	     // Index of currently selected ListItem.
-
-		bool leftMousePreviouslyPressed;
-
-		sf::Window const& window;
 
 		float upHoldDuration; // Amount of time that has to pass since the down key has been pressed and held down 
 		                      // for it to be considered as a hold.

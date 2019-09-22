@@ -18,6 +18,8 @@ namespace ProjectSpace
 		BUTTON_MENU_FORWARD,
 		BUTTON_MENU_BACKWARD,
 		BUTTON_MENU_PRESS,
+
+		CHRONO_TRIGGER_SCENE_TOGGLE_LIST
 	};
 
 	enum class State

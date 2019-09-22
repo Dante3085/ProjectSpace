@@ -15,8 +15,10 @@ namespace ProjectSpace
 	// Momentan wird normale map gebraucht die auf Ordnungsrelation mit balanced binary search tree basiert. O(log n).
 	// Allerdings könnte unsere Größenordnung auch zu niedrig sein, dass diese Veränderung eine Auswirkung haben würde.
 
-	std::map<std::string, sf::Keyboard::Key> InputContext::stringToKey
+	// Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
+	std::map<std::string, sf::Keyboard::Key> stringToKey
 	{
+		{"key::Unknown", sf::Keyboard::Unknown}, // Gibt es soweit ich weiß auf der Tastatur nicht. Zur Vollständigkeit.
 		{"key::A", sf::Keyboard::A},
 		{"key::B", sf::Keyboard::B},
 		{"key::C", sf::Keyboard::C},
@@ -123,7 +125,8 @@ namespace ProjectSpace
 		{"key::F15", sf::Keyboard::F15},
 	};
 
-	std::map<std::string, Action> InputContext::stringToAction
+	// Lookup-Table to convert std::string from ContextFile to Action.
+	std::map<std::string, Action> stringToAction
 	{
 		{"exit_game", Action::EXIT_GAME},
 		{"freeze_game_toggle", Action::FREEZE_GAME_TOGGLE},
@@ -137,9 +140,12 @@ namespace ProjectSpace
 		{"button_menu_forward", Action::BUTTON_MENU_FORWARD},
 		{"button_menu_backward", Action::BUTTON_MENU_BACKWARD},
 		{"button_menu_press", Action::BUTTON_MENU_PRESS},
+
+		{"chrono_trigger_scene_toggle_list", Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST}
 	};
 
-	std::map<std::string, State> InputContext::stringToState
+	// Lookup-Table to convert std::string from ContextFile to State.
+	std::map<std::string, State> stringToState
 	{
 		{"list_hold_up", State::LIST_HOLD_UP},
 		{"list_hold_down", State::LIST_HOLD_DOWN},
@@ -159,13 +165,14 @@ namespace ProjectSpace
 	// Momentan scheint die regelmäßige Aktualisierung der beiden maps im GameLoop aber nicht
 	// besonders lange zu dauern.
 
+	// TODO: Auch Maus unterstützen. Spezielle Mouse-Wheel.
+
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
 		: inputManager{&InputManager::getInstance()}, 
 		valid{false}, 
 		predicate{predicate}
 	{
 		parseContextFile(contextFile);
-
 	}
 
 	InputContext::InputContext(std::string const& contextFile)
@@ -212,7 +219,7 @@ namespace ProjectSpace
 		{
 			if ((inputManager->*pair.second.second)(pair.first))
 			{
-				//  std::cout << toString(pair.second.first) << " ausgeschaltet" << "\n";
+				// std::cout << toString(pair.second.first) << " ausgeschaltet" << "\n";
 				currentStates[pair.second.first] = false;
 			}
 		}
@@ -526,6 +533,24 @@ namespace ProjectSpace
 		return key;
 	}
 
+	sf::Mouse::Button& operator++(sf::Mouse::Button& mouseButton)
+	{
+		if (mouseButton == sf::Mouse::Button::ButtonCount)
+		{
+			Log::getInstance().defaultLog("Out of range.", ll::ERR, true);
+		}
+		mouseButton = static_cast<sf::Mouse::Button>(static_cast<int>(mouseButton) + 1);
+		return mouseButton;
+	}
+
+	std::string toString(sf::Mouse::Button button)
+	{
+		switch (button)
+		{
+		case sf::Mouse::Button::Left: return "Mouse::Left"; break;
+		}
+	}
+
 	std::string toString(State state)
 	{
 		switch (state)
@@ -537,6 +562,17 @@ namespace ProjectSpace
 		case State::WALK_SOUTH: return "WALK_SOUTH"; break;
 		case State::WALK_WEST: return "WALK_WEST"; break;
 		default: return "UNKNOWN STATE";
+		}
+	}
+
+	std::string toString(sf::Keyboard::Key key)
+	{
+		for (auto& pair : stringToKey)
+		{
+			if (pair.second == key)
+			{
+				return pair.first;
+			}
 		}
 	}
 
@@ -556,36 +592,83 @@ namespace ProjectSpace
 	}
 
 	InputManager::InputManager()
+		: lastUpdatetKey{sf::Keyboard::Key::Unknown},
+		lastUpdatetMouseButton{sf::Mouse::Button::ButtonCount},
+		mouseMovedThisFrame{false},
+		currentMousePosition{-1, -1}
 	{
 		using Key = sf::Keyboard::Key;
-
 		for (Key k = Key::A; k < Key::KeyCount; ++k)
 		{
 			currentKeys[k] = false;
 			previousKeys[k] = false;
 		}
 
+		using MouseButton = sf::Mouse::Button;
+		for (MouseButton b = MouseButton::Left; b < MouseButton::ButtonCount; ++b)
+		{
+			currentMouseButtons[b] = false;
+			previousMouseButtons[b] = false;
+		}
 	}
 
-	// Call at the top of GameLoop.
-    void InputManager::updateCurrentKeys()
+	void InputManager::updateCurrentInputStates(sf::Event event)
+	{
+		switch (event.type)
+		{
+		case sf::Event::KeyPressed:
+		{
+			lastUpdatetKey = event.key.code;
+			currentKeys[event.key.code] = true;
+
+			break;
+		}
+		case sf::Event::KeyReleased:
+		{
+			lastUpdatetKey = event.key.code;
+			currentKeys[event.key.code] = false;
+
+			break;
+		}
+
+		case sf::Event::MouseButtonPressed:
+		{
+			lastUpdatetMouseButton = event.mouseButton.button;
+			currentMouseButtons[event.mouseButton.button] = true;
+
+			break;
+		}
+		case sf::Event::MouseButtonReleased:
+		{
+			lastUpdatetMouseButton = event.mouseButton.button;
+			currentMouseButtons[event.mouseButton.button] = false;
+
+			break;
+		}
+		case sf::Event::MouseMoved:
+		{
+			mouseMovedThisFrame = true;
+
+			currentMousePosition.x = event.mouseMove.x;
+			currentMousePosition.y = event.mouseMove.y;
+
+			break;
+		}
+		}
+	}
+
+    void InputManager::updateBeforeNextIteration()
     {
-    	for (auto& pair : currentKeys)
-    	{
-    		currentKeys[pair.first] = sf::Keyboard::isKeyPressed(pair.first);
-    	}
+		// TODO: Wäre es hier besser zu gucken, ob sich der lastUpdatetKey im Vergleich zur letzten
+		// Iteration verändert hat, um die 2 std::map<K, V>::operator[] Aufrufe zu vermeiden ?
+		// Dasselbe für alle anderen InputDevices ?
+
+		previousKeys[lastUpdatetKey] = currentKeys[lastUpdatetKey];
+		previousMouseButtons[lastUpdatetMouseButton] = currentMouseButtons[lastUpdatetMouseButton];
+
+		mouseMovedThisFrame = false;
     }
 
-	// Call at the bottom of GameLoop.
-    void InputManager::updatePreviousKeys()
-    {
-    	for (auto& pair : previousKeys)
-    	{
-    		previousKeys[pair.first] = currentKeys[pair.first];
-    	}
-    }
-
-	// Call after updateCurrentKeys.
     void InputManager::updateInputContexts()
     {
     	for(auto& pair : inputContexts)
@@ -657,5 +740,35 @@ namespace ProjectSpace
 	bool InputManager::wasKeyPressed(sf::Keyboard::Key key) const
 	{
 		return previousKeys.at(key);
+	}
+
+	bool InputManager::onMouseButtonPressed(sf::Mouse::Button mouseButton) const
+	{
+		return !previousMouseButtons.at(mouseButton) && currentMouseButtons.at(mouseButton);
+	}
+
+	bool InputManager::onMouseButtonReleased(sf::Mouse::Button mouseButton) const
+	{
+		return previousMouseButtons.at(mouseButton) && !currentMouseButtons.at(mouseButton);
+	}
+
+	bool InputManager::isMouseButtonPressed(sf::Mouse::Button mouseButton) const
+	{
+		return currentMouseButtons.at(mouseButton);
+	}
+
+	bool InputManager::wasMouseButtonPressed(sf::Mouse::Button mouseButton) const
+	{
+		return previousMouseButtons.at(mouseButton);
+	}
+
+	bool InputManager::hasMouseMoved() const
+	{
+		return mouseMovedThisFrame;
+	}
+
+	sf::Vector2i InputManager::getMousePosition() const
+	{
+		return currentMousePosition;
 	}
 }

@@ -32,7 +32,7 @@ namespace ProjectSpace
 	    "rsrc/spritesheets/singleImages/hearts-1.png",
 	    "rsrc/spritesheets/singleImages/sensei.png"}, sf::Vector2f{2000, 500} },
 		audioFader{marvinTrack, 0, 100, 3000},
-		list{sf::Vector2f{100, 800}, window,
+		list{sf::Vector2f{100, 800},
 	{
 		{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
 		{"Potion x 20", [this]() { sound.play(); }},
@@ -48,28 +48,6 @@ namespace ProjectSpace
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 	}},
-	// translateAnimation{ list, sf::Vector2f{500, 500}, sf::Vector2f{600, 500}, 150 },
-	// fadeAnimation{list, 0, 255, 300},
-	list2{ sf::Vector2f{1000, 100}, window,
-	{
-		{"Ether x 50", []() {}},
-		{"Potion x 20", []() {}},
-		{"Grenade x 6", []() {}},
-		{"Potion x 20", []() {}},
-		{"PhoenixDown x 2", []() {}},
-		{"Potion x 20", []() {}},
-		{"Final-Elixir x 20", []() {}}
-	} },
-		list3{ sf::Vector2f{2000, 400}, window,
-	{
-		{"Ether x 50", []() {}},
-		{"Potion x 20", []() {}},
-		{"Grenade x 6", []() {}},
-		{"Potion x 20", []() {}},
-		{"PhoenixDown x 2", []() {}},
-		{"Potion x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-	}}, 
 	inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
@@ -112,51 +90,11 @@ namespace ProjectSpace
 			{
 				return true;
 			});
-		InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
+		// InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
 	{
-		/*
-		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		{
-			if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
-			{
-				translateAnimation.setFrom(sf::Vector2f{ 600, 500 });
-				translateAnimation.setTo(sf::Vector2f{ 500, 500 });
-
-				fadeAnimation.setStartAlpha(255);
-				fadeAnimation.setEndAlpha(0);
-			}
-			else
-			{
-				translateAnimation.setFrom(sf::Vector2f{ 500, 500 });
-				translateAnimation.setTo(sf::Vector2f{ 600, 500 });
-
-				fadeAnimation.setStartAlpha(0);
-				fadeAnimation.setEndAlpha(255);
-			}
-			fadeAnimation.start();
-			translateAnimation.start();
-		}
-
-		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-		{
-			if (marvinTrack.getVolume() == 100)
-			{
-				audioFader.setStartVolume(100);
-				audioFader.setEndVolume(0);
-				audioFader.setEasingFunction(Easing::sine_easeOut);
-			}
-			else
-			{
-				audioFader.setStartVolume(0);
-				audioFader.setEndVolume(100);
-				audioFader.setEasingFunction(Easing::sine_easeIn);
-			}
-			audioFader.start();
-		}*/
-
 		//if (inputContext.hasActionFired(Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST))
 		//{
 		//	if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
