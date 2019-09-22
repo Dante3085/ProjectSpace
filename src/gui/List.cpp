@@ -1,6 +1,8 @@
 
 #include "gui/List.h"
 
+#include <cmath>
+
 #include "utility/Log.h"
 #include "utility/Util.h"
 
@@ -40,7 +42,8 @@ namespace ProjectSpace
 		downHoldDuration{ 500 },
 		downHoldElapsed{ 0 },
 		inputManager{ &InputManager::getInstance() },
-		inputContext{ "include/input/contexts/ListContext.txt" }
+		inputContext{ "include/input/contexts/ListContext.txt" },
+		mouseInsideBounds{false}
 	{
 
 		// Don't allow empty List for now
@@ -209,6 +212,8 @@ namespace ProjectSpace
 
 				if (bounds.contains(mousePosition))
 				{
+					mouseInsideBounds = true;
+
 					if (topArrow.getGlobalBounds().contains(mousePosition))
 					{
 						mouseHoversTopArrow = true;
@@ -270,6 +275,8 @@ namespace ProjectSpace
 					// TODO: Solution that detects the Mouse leaving Bounds. Doing this all the time is bad.
 					// Also try that for above code.
 
+					mouseInsideBounds = false;
+
 					mouseHoversTopArrow = false;
 					mouseHoversBottomArrow = false;
 					mouseHoversLocalizer = false;
@@ -278,6 +285,26 @@ namespace ProjectSpace
 					bottomArrow.setFillColor(nonHoverColor);
 					localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
 						localizerTopOrBottomColor : nonHoverColor);
+				}
+			}
+
+			if (mouseInsideBounds)
+			{
+				if (inputManager->getMouseWheelDelta() < 0)
+				{
+					int absMouseWheelDelta = abs(inputManager->getMouseWheelDelta());
+					for (int i = 0; i < absMouseWheelDelta; ++i)
+					{
+						down();
+					}
+				}
+				else if (inputManager->getMouseWheelDelta() > 0)
+				{
+					int absMouseWheelDelta = abs(inputManager->getMouseWheelDelta());
+					for (int i = 0; i < absMouseWheelDelta; ++i)
+					{
+						up();
+					}
 				}
 			}
 

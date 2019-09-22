@@ -97,6 +97,8 @@ namespace ProjectSpace
 		InputManager* inputManager;
 		InputContext inputContext;
 		static int numLists;  // Mainly for having unique InputContext names for all List instances.
+
+		bool mouseInsideBounds;
 	};
 }
 
