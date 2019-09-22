@@ -117,6 +117,9 @@ namespace ProjectSpace
 		bool hasMouseMoved() const;
 		sf::Vector2i getMousePosition() const;
 
+		// 0 is not moved.
+		int getMouseWheelDelta() const;
+
 		void registerInputContext(std::string const& name, InputContext* inputContext);
 		void blockInputContext(std::string const& name);
 
@@ -134,6 +137,7 @@ namespace ProjectSpace
 		sf::Mouse::Button lastUpdatetMouseButton;
 		bool mouseMovedThisFrame;
 		sf::Vector2i currentMousePosition;
+		int mouseWheelDelta;
 
 		// TODO: std::map<std::string, std::pair<InputContext*, bool>> inputContexts.
 		// The std::set is not necessary for checking blocked InputContexts.

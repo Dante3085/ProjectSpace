@@ -595,7 +595,8 @@ namespace ProjectSpace
 		: lastUpdatetKey{sf::Keyboard::Key::Unknown},
 		lastUpdatetMouseButton{sf::Mouse::Button::ButtonCount},
 		mouseMovedThisFrame{false},
-		currentMousePosition{-1, -1}
+		currentMousePosition{-1, -1},
+		mouseWheelDelta{0}
 	{
 		using Key = sf::Keyboard::Key;
 		for (Key k = Key::A; k < Key::KeyCount; ++k)
@@ -654,6 +655,15 @@ namespace ProjectSpace
 
 			break;
 		}
+		case sf::Event::MouseWheelScrolled:
+		{
+			if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+			{
+				mouseWheelDelta = event.mouseWheelScroll.delta;
+			}
+
+			break;
+		}
 		}
 	}
 
@@ -667,6 +677,7 @@ namespace ProjectSpace
 		previousMouseButtons[lastUpdatetMouseButton] = currentMouseButtons[lastUpdatetMouseButton];
 
 		mouseMovedThisFrame = false;
+		mouseWheelDelta = 0;
     }
 
     void InputManager::updateInputContexts()
@@ -770,5 +781,10 @@ namespace ProjectSpace
 	sf::Vector2i InputManager::getMousePosition() const
 	{
 		return currentMousePosition;
+	}
+
+	int InputManager::getMouseWheelDelta() const
+	{
+		return mouseWheelDelta;
 	}
 }
