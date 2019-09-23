@@ -11,8 +11,11 @@ namespace ProjectSpace
 	int List::numLists = 0;
 
 	// TODO: Disable Mouse selection when scrolling with Mouse Wheel.
-	// TODO: Don't scroll beyond beginning or end of List. This not being the case makes it annoying
-	// when scrolling through large parts of the List and then accidentally going over the end or beginning.
+
+	// TODO: Make Mouse Wheel scrolling smoother/more precise.
+
+	// TODO: Sortierungsmöglichkeiten
+
 
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
 	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
@@ -302,6 +305,10 @@ namespace ProjectSpace
 					{
 						for (int i = 0; i < absMouseWheelDelta; ++i)
 						{
+							if (current == texts.size() - 1)
+							{
+								break;
+							}
 							down();
 						}
 					}
@@ -309,6 +316,10 @@ namespace ProjectSpace
 					{
 						for (int i = 0; i < absMouseWheelDelta; ++i)
 						{
+							if (current == 0)
+							{
+								break;
+							}
 							up();
 						}
 					}
