@@ -293,6 +293,8 @@ namespace ProjectSpace
 				float mouseWheelDelta = inputManager->getMouseWheelDelta();
 				float absMouseWheelDelta = abs(mouseWheelDelta);
 
+				// Check if mouse wheel was moved enough to count as a single scroll
+				// This is mainly to avoid accidental scrolling on high precision laptop tochpads.
 				if (absMouseWheelDelta >= 0.01)
 				{
 					if (mouseWheelDelta < 0)
