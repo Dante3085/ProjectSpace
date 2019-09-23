@@ -10,8 +10,9 @@ namespace ProjectSpace
 {
 	int List::numLists = 0;
 
-	// TODO: Mit mittlerem MouseButton durch die Liste scrollen.
-	// TODO: Localizer soll auch auf Selektion mit Maus reagieren.
+	// TODO: Disable Mouse selection when scrolling with Mouse Wheel.
+	// TODO: Don't scroll beyond beginning or end of List. This not being the case makes it annoying
+	// when scrolling through large parts of the List and then accidentally going over the end or beginning.
 
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
 	// and sf::Text::getPosition() will not return the upperLeft corner of visible sf::Text, only
