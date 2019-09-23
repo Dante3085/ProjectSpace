@@ -657,9 +657,10 @@ namespace ProjectSpace
 		}
 		case sf::Event::MouseWheelScrolled:
 		{
-			if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+			if (event.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel)
 			{
 				mouseWheelDelta = event.mouseWheelScroll.delta;
+				std::cout << mouseWheelDelta << "\n";
 			}
 
 			break;
@@ -783,7 +784,7 @@ namespace ProjectSpace
 		return currentMousePosition;
 	}
 
-	int InputManager::getMouseWheelDelta() const
+	float InputManager::getMouseWheelDelta() const
 	{
 		return mouseWheelDelta;
 	}

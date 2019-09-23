@@ -290,20 +290,24 @@ namespace ProjectSpace
 
 			if (mouseInsideBounds)
 			{
-				if (inputManager->getMouseWheelDelta() < 0)
+				float mouseWheelDelta = inputManager->getMouseWheelDelta();
+				float absMouseWheelDelta = abs(mouseWheelDelta);
+
+				if (absMouseWheelDelta >= 0.01)
 				{
-					int absMouseWheelDelta = abs(inputManager->getMouseWheelDelta());
-					for (int i = 0; i < absMouseWheelDelta; ++i)
+					if (mouseWheelDelta < 0)
 					{
-						down();
+						for (int i = 0; i < absMouseWheelDelta; ++i)
+						{
+							down();
+						}
 					}
-				}
-				else if (inputManager->getMouseWheelDelta() > 0)
-				{
-					int absMouseWheelDelta = abs(inputManager->getMouseWheelDelta());
-					for (int i = 0; i < absMouseWheelDelta; ++i)
+					else if (mouseWheelDelta > 0)
 					{
-						up();
+						for (int i = 0; i < absMouseWheelDelta; ++i)
+						{
+							up();
+						}
 					}
 				}
 			}
