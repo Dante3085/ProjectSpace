@@ -193,9 +193,15 @@ namespace ProjectSpace
 			// Since they are non static they need to be called on an object. That is the inputManager pointer in this case.
 			// TODO: std::pair makes the code hard to read if you don't yet have a proper mental model of the context.
 			// Maybe just use named struct with named members.
-			if ((inputManager->*pair.second.second)(pair.first))
+			/*if ((inputManager->*pair.second.second)(pair.first))
 			{
 				actionsFired[pair.second.first] = true;
+			}*/
+
+			if ((inputManager->*pair.second.keyInputMode)(pair.first))
+			{
+				std::cout << toString(pair.second.action) << " gefeuert\n";
+				actionsFired[pair.second.action] = true;
 			}
 		}
 
@@ -204,23 +210,22 @@ namespace ProjectSpace
 		{
 			// Remember value that the State had previously. 
 			// Should be only necessary at the top of the first loop so that every State's previous value is stored.
-			previousStates[pair.second.first] = currentStates[pair.second.first];
-			// std::cout << previousStates << "\n";
+			previousStates[pair.second.state] = currentStates[pair.second.state];
 
-			if ((inputManager->*pair.second.second)(pair.first))
+			if ((inputManager->*pair.second.keyInputMode)(pair.first))
 			{
-				// std::cout << toString(pair.second.first) << " angeschaltet" << "\n";
-				currentStates[pair.second.first] = true;
+				std::cout << toString(pair.second.state) << " angeschaltet\n";
+				currentStates[pair.second.state] = true;
 			}
 		}
 
 		// Check for States being turned off.
 		for (auto& pair : keyToStateOff)
 		{
-			if ((inputManager->*pair.second.second)(pair.first))
+			if ((inputManager->*pair.second.keyInputMode)(pair.first))
 			{
-				// std::cout << toString(pair.second.first) << " ausgeschaltet" << "\n";
-				currentStates[pair.second.first] = false;
+				std::cout << toString(pair.second.state) << " ausgeschaltet\n";
+				currentStates[pair.second.state] = false;
 			}
 		}
 	}
@@ -330,6 +335,8 @@ namespace ProjectSpace
 
 				for (int i = 0; i < numKeyToActionMappings; ++i)
 				{
+					ActionKeyData actionKeyData;
+
 					// Get key.
 					inFile >> str;
 					// Check if given std::string for Key exists.
@@ -345,14 +352,13 @@ namespace ProjectSpace
 					// Get InputMode.
 					inFile >> str;
 
-					InputMode inputMode;
 					if (str == "onPressed")
 					{
-						inputMode = &InputManager::onKeyPressed;
+						actionKeyData.keyInputMode = &InputManager::onKeyPressed;
 					}
 					else if (str == "onReleased")
 					{
-						inputMode = &InputManager::onKeyReleased;
+						actionKeyData.keyInputMode = &InputManager::onKeyReleased;
 					}
 					else
 					{
@@ -368,10 +374,10 @@ namespace ProjectSpace
 						msg += "' can not be translated into an Action.";
 						Log::getInstance().defaultLog(msg, ll::ERR, true);
 					}
-					Action action = stringToAction[str];
+					actionKeyData.action = stringToAction[str];
 
-					keyToAction[key] = std::pair<Action, InputMode>{action, inputMode};
-					actionsFired[action] = false;
+					keyToAction[key] = actionKeyData;
+					actionsFired[actionKeyData.action] = false;
 				}
 			}
 
@@ -382,6 +388,9 @@ namespace ProjectSpace
 
 				for (int i = 0; i < numKeyToStateMappings; ++i)
 				{
+					StateKeyData stateOnKeyData;
+					StateKeyData stateOffKeyData;
+
 					// Get Key that turns the State on.
 					inFile >> str;
 					// Check if given std::string for Key exists.
@@ -397,14 +406,13 @@ namespace ProjectSpace
 				    // Get InputMode for onKey.
 					inFile >> str;
 
-					InputMode inputModeOnKey;
 					if (str == "onPressed")
 					{
-						inputModeOnKey = &InputManager::onKeyPressed;
+						stateOnKeyData.keyInputMode = &InputManager::onKeyPressed;
 					}
 					else if (str == "onReleased")
 					{
-						inputModeOnKey = &InputManager::onKeyReleased;
+						stateOnKeyData.keyInputMode = &InputManager::onKeyReleased;
 					}
 					else
 					{
@@ -421,6 +429,8 @@ namespace ProjectSpace
 						Log::getInstance().defaultLog(msg, ll::ERR, true);
 					}
 					State state = stringToState[str];
+					stateOnKeyData.state = state;
+					stateOffKeyData.state = state;
 
 				    // Get Key that turns the State off.
 					inFile >> str;
@@ -437,22 +447,21 @@ namespace ProjectSpace
 				    // Get InputMode for offKey.
 					inFile >> str;
 
-					InputMode inputModeOffKey;
 					if (str == "onPressed")
 					{
-						inputModeOffKey = &InputManager::onKeyPressed;
+						stateOffKeyData.keyInputMode = &InputManager::onKeyPressed;
 					}
 					else if (str == "onReleased")
 					{
-						inputModeOffKey = &InputManager::onKeyReleased;
+						stateOffKeyData.keyInputMode = &InputManager::onKeyReleased;
 					}
 					else
 					{
 						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
 					}
 
-					keyToStateOn[onKey] = std::pair<State, InputMode>{ state, inputModeOnKey };
-					keyToStateOff[offKey] = std::pair<State, InputMode>{ state, inputModeOffKey };
+					keyToStateOn[onKey] = stateOnKeyData;
+					keyToStateOff[offKey] = stateOffKeyData;
 					currentStates[state] = false;
 					previousStates[state] = false;
 				}
@@ -551,6 +560,18 @@ namespace ProjectSpace
 		}
 	}
 
+	std::string toString(Action action)
+	{
+		for (auto& pair : stringToAction)
+		{
+			if (pair.second == action)
+			{
+				return pair.first;
+			}
+		}
+		return "UNKNOWN_ACTION";
+	}
+
 	std::string toString(State state)
 	{
 		switch (state)
@@ -574,6 +595,7 @@ namespace ProjectSpace
 				return pair.first;
 			}
 		}
+		return "UNKNOWN_KEY";
 	}
 
 	std::ostream& operator<<(std::ostream& stream, State state)
@@ -662,6 +684,12 @@ namespace ProjectSpace
 				mouseWheelDelta = event.mouseWheelScroll.delta;
 				std::cout << mouseWheelDelta << "\n";
 			}
+
+			break;
+		}
+		case sf::Event::JoystickButtonPressed:
+		{
+			// TODO: Joystick Event stuff.
 
 			break;
 		}

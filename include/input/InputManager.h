@@ -23,12 +23,12 @@ namespace ProjectSpace
 	class istream;
 	class InputManager;
 	class Log;
-	class Game;
 
 	// Usefull stuff.
 	// For incrementing a Key variable in loops and other stuff.
 	sf::Keyboard::Key& operator++(sf::Keyboard::Key& key);
 	sf::Mouse::Button& operator++(sf::Mouse::Button& mouseButton);
+	std::string toString(Action action);
 	std::string toString(State state);
 	std::string toString(sf::Mouse::Button button);
 	std::string toString(sf::Keyboard::Key key);
@@ -59,19 +59,59 @@ namespace ProjectSpace
 
 		// Helper structs
 	private:
+		using KeyInputMode = bool(InputManager::*)(sf::Keyboard::Key) const;   // Function pointer to member functions of InputManager that check for key stuff.
+		using MouseInputMode = bool(InputManager::*)(sf::Mouse::Button) const; // Function pointer to member functions of InputManager that check for Mouse stuff.
+		using JoystickInputMode = bool(InputManager::*)(unsigned int joystickButton) const; // Function pointer to member functions of InputManager that check for Joystick stuff.
+
+		// TODO: Die Unterscheidung auf KeyData, MouseData und JoystickData könnte vielleicht durch Union verhindert werden.
+		// Bin mir aber nicht sicher, ob das hier Sinn macht.
+
+		struct ActionKeyData
+		{
+			Action action;
+			KeyInputMode keyInputMode;
+		};
+
+		struct ActionMouseData
+		{
+			Action action;
+			MouseInputMode mouseInputMode;
+		};
+
+		struct ActionJoystickData
+		{
+			Action action;
+			JoystickInputMode joystickInputMode;
+		};
+
+		struct StateKeyData
+		{
+			State state;
+			KeyInputMode keyInputMode;
+		};
+
+		struct StateMouseData
+		{
+			State state;
+			MouseInputMode mouseInputMode;
+		};
+
+		struct StateJoystickData
+		{
+			State state;
+			JoystickInputMode joystickInputMode;
+		};
 
 	private:
 		InputManager* inputManager;
 		bool valid;
 		std::function<bool()> predicate;
 
-		using InputMode = bool(InputManager::*)(sf::Keyboard::Key) const; // Function pointer to member functions of InputManager that check for key stuff.
-
-		std::map<sf::Keyboard::Key, std::pair<Action, InputMode>> keyToAction;  // Stores which Key fires an Action and in which way (onPressed/onReleased).
+		std::map<sf::Keyboard::Key, ActionKeyData> keyToAction;  // Stores which Key fires an Action and in which way (onPressed/onReleased).
 		// std::map<ControllerButton, std::tuple<Action, std::string>> controllerButtonToAction;
 
-		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOn;  // Stores which Key turns a State on and in which way (onPressed/onReleased).
-		std::map<sf::Keyboard::Key, std::pair<State, InputMode>> keyToStateOff; // Stores which Key turns a State off and in which way (onPressed/onReleased).
+		std::map<sf::Keyboard::Key, StateKeyData> keyToStateOn;  // Stores which Key turns a State on and in which way (onPressed/onReleased).
+		std::map<sf::Keyboard::Key, StateKeyData> keyToStateOff; // Stores which Key turns a State off and in which way (onPressed/onReleased).
 
 		std::map<Action, bool> actionsFired;  // Stores if an Action has been fired or not.
 		std::map<State, bool> currentStates;  // Stores if a State is on or not in the current udpate() iteration.
@@ -143,8 +183,6 @@ namespace ProjectSpace
 		// The std::set is not necessary for checking blocked InputContexts.
 		std::map<std::string, InputContext*> inputContexts;
 		std::set<std::string> blockedInputContexts;
-
-		friend Game;
 	};
 }
 
