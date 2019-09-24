@@ -25,6 +25,7 @@ TODO: Log verbosity(low, medium, high). On low, only error LogEntries are printe
 TODO: Logging channels(Animation channel, Combat channel, Scene channel, ...). Mute channels to only get desired LogEntries.
 TODO: Limit Log for duplicate LogEntries.
 TODO: LogRotation: Have 2 or more Logs. After certain size or time save log. (https://en.wikipedia.org/wiki/Log_rotation)
+TODO: Log << lo::PTC << "String" << integer << "\n" << std::vector<T>::size() << lo::END. hat unter Linux nicht alles ausgegeben.
 */
 
 namespace ProjectSpace
@@ -81,11 +82,15 @@ namespace ProjectSpace
 		void operator=(Log const&) = delete;
 
 		/* Appends a LogEntry with a timestamp, stacktrace, the given message and loglevel
-		   and prints it to the console.
+		   and prints it to the console. If exit is true LogOption::EXIT is used.
 		*/
-		void defaultLog(std::string const& message, LogLevel logLevel)
+		void defaultLog(std::string const& message, LogLevel logLevel, bool exit = false)
 		{
 			*this << lo::PTC << logLevel << lo::TIMESTAMP << message << lo::STACKTRACE << lo::END;
+			if (exit)
+			{
+				*this << lo::EXIT;
+			}
 		}
 
 		// Only allow numeric types.

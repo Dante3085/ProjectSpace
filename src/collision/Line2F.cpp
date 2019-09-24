@@ -7,8 +7,10 @@
 
 namespace ProjectSpace
 {
-	Line2F::Line2F(sf::Vector2f p1, sf::Vector2f p2)
-	: positionVector{p1}, p2{p2}, directionVector{p2 - p1} {}
+	Line2F::Line2F(sf::Vector2f p1, sf::Vector2f p2) 
+		: positionVector{p1}, 
+		p2{p2}, 
+		directionVector{p2 - p1} {}
 
 	sf::Vector2f Line2F::point(float parameter) const
 	{

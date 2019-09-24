@@ -6,8 +6,13 @@
 namespace ProjectSpace
 {
 	AudioFader::AudioFader(sf::Music& music, float startVolume, float endVolume, float durationInMilliseconds)
-		: music{&music}, startVolume{ startVolume }, endVolume{ endVolume }, durationInMilliseconds{ durationInMilliseconds },
-		elapsedMilliseconds{ 0 }, doUpdate{false}, easingFunction{ Easing::sine_easeIn }
+		: music{&music}, 
+		startVolume{ startVolume }, 
+		endVolume{ endVolume }, 
+		durationInMilliseconds{ durationInMilliseconds },
+		elapsedMilliseconds{ 0 }, 
+		doUpdate{false}, 
+		easingFunction{ Easing::sine_easeIn }
 	{
 		this->music->setVolume(startVolume);
 	}

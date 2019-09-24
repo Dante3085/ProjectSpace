@@ -6,10 +6,20 @@
 namespace ProjectSpace
 {
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
-		: originalStr{ str }, wrappedStr{}, writtenStr{ "" }, padding{ 50 }, elapsedMillis{ 0 }, currentCharIndex{ 0 },
-		lineBreakCounter{ 0 }, waitForContinueKey{ false }, charDelay{ 100 }, cursorAnim{ "rsrc/spritesheets/cursor.png", 0.5f },
-		cursor{ sf::Vector2f{0, 0} }, continueKey{ sf::Keyboard::Space }, charWidth{ 25 }, lineHeight{ 36.5 }, absatzPtr{ 0 },
-		writingState{ WritingState::standard }
+		: originalStr{ str }, 
+		wrappedStr{ str }, 
+		writtenStr{ "" }, 
+		padding{ 50 }, 
+		elapsedMillis{ 0 }, 
+		wrappedStrCurrentCharIndex{ 0 },
+		lineBreakCounter{ 0 }, 
+		waitForContinueKey{ false }, 
+		charDelay{ 100 }, 
+		cursorAnim{ "rsrc/spritesheets/cursor.png", 0.5f },
+		cursor{ sf::Vector2f{0, 0} }, 
+		continueKey{ sf::Keyboard::Space }, 
+		charWidth{ 25 }, 
+		lineHeight{ 36.5 }
 	{
 		// Initialize this Textbox's background.
 		texture.loadFromFile(texturePath);
@@ -29,8 +39,6 @@ namespace ProjectSpace
 
 		text.setFillColor(sf::Color(255, 255, 255, 255));
 		//zeilenanzahl =~ size / 36,5
-		//????????addLineWrapping(this->wrappedStr, (size.x - 2*padding) / charWidth);
-		wrappedStr = addTextWrapping(this->originalStr, (size.x - 2 * padding) / charWidth, (rec.getSize().y - 2 * padding), lineHeight);
 		text.setString(writtenStr);
 		text.setPosition(position.x + padding, position.y + padding);
 

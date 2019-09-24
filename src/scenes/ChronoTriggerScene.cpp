@@ -9,17 +9,18 @@
 
 namespace ProjectSpace
 {
+	// TODO: Crono Framerate independant speed(constant speed through different framerates).
+
 	ChronoTriggerScene::ChronoTriggerScene(sf::RenderWindow& window)
-		: Scene{ window }, tilemap{ "rsrc/tilesets/SNES - Chrono Trigger - Court Room.gif" },
+		: Scene{ window }, 
+		tilemap{ "rsrc/tilesets/SNES - Chrono Trigger - Court Room.gif" },
 		cronoIdle{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkLeft{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkUp{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkRight{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
-		crono{ sf::Vector2f{200, 200} }, cronoSpeed{ 8 },
-		wWasDown{ false }, aWasDown{ false }, sWasDown{ false }, dWasDown{ false }, spaceWasDown{ false },
-		rWasDown{ false }, fadeAnimation{ crono, 255, 0, 1000 },
-		translateAnimation{ crono, sf::Vector2f{500, 500}, sf::Vector2f{1000, 500}, 2000 },
+		crono{ sf::Vector2f{200, 200} }, 
+		cronoSpeed{ 8 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
 		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
@@ -31,10 +32,10 @@ namespace ProjectSpace
 	    "rsrc/spritesheets/singleImages/hearts-1.png",
 	    "rsrc/spritesheets/singleImages/sensei.png"}, sf::Vector2f{2000, 500} },
 		audioFader{marvinTrack, 0, 100, 3000},
-		list{sf::Vector2f{500, 1000}, window,
+		list{sf::Vector2f{100, 800},
 	{
 		{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
-		{"Potion x 20", [](){}},
+		{"Potion x 20", [this]() { sound.play(); }},
 		{"Black-Spheroid x 20", []() {}},
 		{"Hi-Ether x 20", []() {}},
 		{"Antdoit x 20", []() {}},
@@ -46,7 +47,133 @@ namespace ProjectSpace
 		{"PhoenixDown x 2", []() {}},
 		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
-	}}
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
+		{"Potion x 20", [this]() { sound.play(); }},
+		{"Black-Spheroid x 20", []() {}},
+		{"Hi-Ether x 20", []() {}},
+		{"Antdoit x 20", []() {}},
+		{"Elixir x 20", []() {}},
+		{"Ether x 50", []() {}},
+		{"Potion x 20", []() {}},
+		{"Grenade x 6", []() {}},
+		{"Potion x 20", []() {}},
+		{"PhoenixDown x 2", []() {}},
+		{"Potion x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},
+	}},
+	inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -68,7 +195,7 @@ namespace ProjectSpace
 		crono.setAnimation(EAnimation::IDLE);
 		crono.setScale(6, 6);
 
-		translateAnimation.setEasingFunction(Easing::linear_easeNone);
+		// translateAnimation.setEasingFunction(Easing::linear_easeNone);
 		
 		//textBox.setPadding(50);
 		//// textBox.setPosition(1000, 1000);
@@ -77,80 +204,99 @@ namespace ProjectSpace
 
 		marvinTrack.openFromFile("rsrc/audio/music/Klassik Soundtrack 1.ogg");
 		
-		Scene::addEntities({ &crono, &fadeAnimation, /*&camera,*/ &textBox, &combatOrder, &audioFader, &list});
+		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
+		sound.setBuffer(soundBuffer);
+
+		Scene::addEntities({ &crono, /*&camera,*/ &textBox, 
+			                 &combatOrder, &audioFader, &list});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
+
+		inputContext.setPredicate([]()
+			{
+				return true;
+			});
+		// InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		//if (inputContext.hasActionFired(Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST))
+		//{
+		//	if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
+		//	{
+		//		translateAnimation.setFrom(sf::Vector2f{ 600, 500 });
+		//		translateAnimation.setTo(sf::Vector2f{ 500, 500 });
+
+		//		/*fadeAnimation.setStartAlpha(255);
+		//		fadeAnimation.setEndAlpha(0);*/
+		//	}
+		//	else
+		//	{
+		//		translateAnimation.setFrom(sf::Vector2f{ 500, 500 });
+		//		translateAnimation.setTo(sf::Vector2f{ 600, 500 });
+
+		//		/*fadeAnimation.setStartAlpha(0);
+		//		fadeAnimation.setEndAlpha(255);*/
+		//	}
+		//	// fadeAnimation.start();
+		//	translateAnimation.start();
+		//}
+
+		if (inputContext.onStateOn(State::WALK_NORTH))
+		{
+			crono.setAnimation(EAnimation::UP);
+		}
+		else if (inputContext.onStateOff(State::WALK_NORTH))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+		if (inputContext.isStateOn(State::WALK_NORTH))
 		{
 			crono.setAnimation(EAnimation::UP);
 			crono.move(0, -cronoSpeed);
 		}
-		else if (wWasDown)
+
+		if (inputContext.onStateOn(State::WALK_EAST))
+		{
+			crono.setAnimation(EAnimation::RIGHT);
+		}
+		else if (inputContext.onStateOff(State::WALK_EAST))
 		{
 			crono.setAnimation(EAnimation::IDLE);
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			crono.setAnimation(EAnimation::LEFT);
-			crono.move(-cronoSpeed, 0);
-		}
-		else if (aWasDown)
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			crono.setAnimation(EAnimation::DOWN);
-			crono.move(0, cronoSpeed);
-		}
-		else if (sWasDown)
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		if (inputContext.isStateOn(State::WALK_EAST))
 		{
 			crono.setAnimation(EAnimation::RIGHT);
 			crono.move(cronoSpeed, 0);
 		}
-		else if (dWasDown)
+
+		if (inputContext.onStateOn(State::WALK_SOUTH))
+		{
+			crono.setAnimation(EAnimation::DOWN);
+		}
+		else if (inputContext.onStateOff(State::WALK_SOUTH))
 		{
 			crono.setAnimation(EAnimation::IDLE);
 		}
-
-		if (!spaceWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		if (inputContext.isStateOn(State::WALK_SOUTH))
 		{
-			combatOrder.cycle();
+			crono.setAnimation(EAnimation::DOWN);
+			crono.move(0, cronoSpeed);
 		}
 
-		if (!rWasDown && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+		if (inputContext.onStateOn(State::WALK_WEST))
 		{
-			if (marvinTrack.getVolume() == 100)
-			{
-				audioFader.setStartVolume(100);
-				audioFader.setEndVolume(0);
-				audioFader.setEasingFunction(Easing::sine_easeOut);
-			}
-			else
-			{
-				audioFader.setStartVolume(0);
-				audioFader.setEndVolume(100);
-				audioFader.setEasingFunction(Easing::sine_easeIn);
-			}
-			audioFader.start();
+			crono.setAnimation(EAnimation::LEFT);
 		}
-
-		wWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-		aWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-		sWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-		dWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-		spaceWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-		rWasDown = sf::Keyboard::isKeyPressed(sf::Keyboard::R);
+		else if (inputContext.onStateOff(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::IDLE);
+		}
+		if (inputContext.isStateOn(State::WALK_WEST))
+		{
+			crono.setAnimation(EAnimation::LEFT);
+			crono.move(-cronoSpeed, 0);
+		}
 		
 		Scene::update(time);
 	}

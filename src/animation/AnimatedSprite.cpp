@@ -7,7 +7,10 @@
 namespace ProjectSpace
 {
     AnimatedSprite::AnimatedSprite(sf::Vector2f position)
-        : currentAnimation{ EAnimation::NONE }, frameIndex{ 0 }, elapsedSeconds{ 0 }, speed{0}
+        : currentAnimation{ EAnimation::NONE }, 
+		frameIndex{ 0 }, 
+		elapsedSeconds{ 0 }, 
+		speed{0}
     {
         sprite.setPosition(position);
     }

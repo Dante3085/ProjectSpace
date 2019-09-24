@@ -1,0 +1,37 @@
+
+#ifndef INPUT_CONSTANTS_H
+#define INPUT_CONSTANTS_H
+
+namespace ProjectSpace
+{
+	enum class Action
+	{
+		EXIT_GAME,
+		FREEZE_GAME_TOGGLE,
+		GLOBAL_MENU_TOGGLE,
+		FPS_COUNTER_TOGGLE,
+
+		LIST_UP,
+		LIST_DOWN,
+		LIST_SELECT,
+
+		BUTTON_MENU_FORWARD,
+		BUTTON_MENU_BACKWARD,
+		BUTTON_MENU_PRESS,
+
+		CHRONO_TRIGGER_SCENE_TOGGLE_LIST
+	};
+
+	enum class State
+	{
+		LIST_HOLD_UP,
+		LIST_HOLD_DOWN,
+
+		WALK_NORTH,
+		WALK_EAST,
+		WALK_SOUTH,
+		WALK_WEST,
+	};
+}
+
+#endif

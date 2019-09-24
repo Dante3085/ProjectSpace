@@ -6,7 +6,7 @@
 namespace ProjectSpace
 {
 	CollisionShape::CollisionShape(std::vector<sf::Vector2f> points)
-	: shape{points.size()}
+		: shape{points.size()}
 	{
 			// Uebergebene Points in die ConvexShape setzen.
 		for (int i = 0; i < points.size(); ++i)

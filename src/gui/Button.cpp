@@ -3,11 +3,23 @@
 
 namespace ProjectSpace
 {
-	Button::Button(std::function<void()> onPressed, sf::Window const& window, std::string string)
-	: onPressed{onPressed}, window{window}, mouseOnButton{false}, previousMouseOnButton{false}, 
-	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}, str{string}
+	// TODO: Initializing a Button takes long (~9-20ms). Loading Font. getGlobalBounds() takes long if sf::Text or 
+	// sf::RectangleShape needs to run internal updates before returing the bounds.
+
+	// TODO: Parse given string with Util function to properly insert new lines.
+
+	Button::Button(std::function<void()> onPressed, sf::Window const& window, std::string const& string)
+		: onPressed{onPressed}, 
+		window{window}, 
+		mouseOnButton{false},
+		previousMouseOnButton{false}, 
+	    leftMouseDown{false}, 
+		previousLeftMouseDown{false}, 
+		onSelected{[](){}}, 
+		onUnselected{[](){}}, 
+		str{string}
 	{
-		font.loadFromFile("rsrc/fonts/arial.ttf");
+		font.loadFromFile("rsrc/fonts/joystix_monospace.ttf");
 		text.setFont(font);
 		text.setString(string);
 
@@ -19,19 +31,24 @@ namespace ProjectSpace
 		onSelected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 255));
-			// this->move(5, 0);
 		};
 
 		onUnselected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 200));
-			// this->move(-5, 0);
 		};
 	}
 
-	Button::Button(sf::Window const& window, std::string string)
-	: onPressed{[](){}}, window{window}, mouseOnButton{false}, previousMouseOnButton{false}, 
-	leftMouseDown{false}, previousLeftMouseDown{false}, onSelected{[](){}}, onUnselected{[](){}}, str{string}
+	Button::Button(sf::Window const& window, std::string const& string)
+		: onPressed{[](){}}, 
+		window{window}, 
+		mouseOnButton{false}, 
+		previousMouseOnButton{false}, 
+	    leftMouseDown{false}, 
+		previousLeftMouseDown{false}, 
+		onSelected{[](){}}, 
+		onUnselected{[](){}}, 
+		str{string}
 	{
 		font.loadFromFile("rsrc/fonts/arial.ttf");
 		text.setFont(font);
@@ -45,13 +62,11 @@ namespace ProjectSpace
 		onSelected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 255));
-			// this->move(5, 0);
 		};
 
 		onUnselected = [this]()
 		{
 			this->setFillColor(sf::Color(135,206,235, 200));
-			// this->move(-5, 0);
 		};
 	}
 
@@ -88,20 +103,24 @@ namespace ProjectSpace
 
 	void Button::setPosition(sf::Vector2f const& position)
 	{
-		rectangle.setPosition(position);
+		sf::Vector2f recSize = rectangle.getSize();
+		sf::FloatRect textBounds = text.getGlobalBounds();
 
-		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
-		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
-		text.setPosition(textX, textY);
+		text.setPosition(position.x + 0.5f * recSize.x - 0.5f * textBounds.width,
+			             position.y + 0.5f * recSize.y - 0.5f * textBounds.height);
+
+		rectangle.setPosition(position);
 	}
 
 	void Button::setPosition(float x, float y)
 	{
-		rectangle.setPosition(x, y);
+		sf::Vector2f recSize = rectangle.getSize();
+		sf::FloatRect textBounds = text.getGlobalBounds();
 
-		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
-		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
-		text.setPosition(textX, textY);
+		text.setPosition(x + 0.5f * recSize.x - 0.5f * textBounds.width,
+			             y + 0.5f * recSize.y - 0.5f * textBounds.height);
+
+		rectangle.setPosition(x, y);
 	}
 
 	void Button::move(sf::Vector2f const& by)
@@ -177,20 +196,24 @@ namespace ProjectSpace
 
 	void Button::setSize(float width, float height)
 	{
-		rectangle.setSize(sf::Vector2f(width, height));
+		sf::Vector2f position = rectangle.getPosition();
+		sf::FloatRect textBounds = text.getGlobalBounds();
 
-		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
-		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
-		text.setPosition(textX, textY);
+		text.setPosition(position.x + 0.5f * width - 0.5f * textBounds.width,
+			             position.y + 0.5f * height - 0.5f * textBounds.height);
+
+		rectangle.setSize(sf::Vector2f(width, height));
 	}
 
 	void Button::setSize(sf::Vector2f const& size)
 	{
-		rectangle.setSize(size);
+		sf::Vector2f position = rectangle.getPosition();
+		sf::FloatRect textBounds = text.getGlobalBounds();
 
-		float textX = rectangle.getGlobalBounds().left + ((rectangle.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f));
-		float textY = rectangle.getGlobalBounds().top + (rectangle.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f);
-		text.setPosition(textX, textY);
+		text.setPosition(position.x + 0.5f * size.x - 0.5f * textBounds.width,
+			position.y + 0.5f * size.y - 0.5f * textBounds.height);
+
+		rectangle.setSize(size);
 	}
 
 	void Button::select() const

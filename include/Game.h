@@ -8,71 +8,64 @@
 #include <vector>
 #include <map>
 
-#include "scenes/Entity.h"
 #include "scenes/EScene.h"
-#include "scenes/Scene.h"
 #include "WindowStyle.h"
+#include "input/InputManager.h"
+#include "gui/FpsCounter.h"
+#include "gui/Button.h"
+#include "gui/ButtonMenu.h"
+#include "gui/VBox.h"
+#include "animation/TranslateAnimation.h"
 
 namespace ProjectSpace
 {
-	/**
-	 * @brief      Core class of the Game. Contains main Game-Loop and Event-Loop.
-	 */
-	class Game
-	{
-	public:
+    // Forward declarations
+    class Scene;
+    class Entity;
 
-		/**
-		 * @brief      Constructs a Game detecting the monitor's resolution automatically.
-		 *
-		 * @param[in]  windowTitle  Title of the Game's window.
-		 */
-		Game(std::string const& windowTitle, WindowStyle style = DEFAULT);
-
-		/**
-		 * @brief      Constructs a Game.
-		 *
-		 * @param[in]  screenWidth   Width of the Game's window.
-		 * @param[in]  screenHeight  Height of the Game's window.
-		 * @param[in]  windowTitle   Title of the Game's window.
-		 */
+    class Game
+    {
+    public:
 		Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style = DEFAULT);
+        Game(std::string const& windowTitle, WindowStyle style = DEFAULT);
+        ~Game();
 
-		/**
-		 * @brief      Destroys every Scene of the Game.
-		 */
-		~Game();
+        void start();
+        void setCurrentScene(EScene scene);
 
-		/**
-		 * @brief      Starts the Game/Game-Loop.
-		 */
-		void start();
+        // Helper functions.
+    private:
+        void checkGlobalInput();
 
-		/**
-		 * @brief      Sets the current scene.
-		 *
-		 * @param[in]  scene  The scene
-		 */
-		void setCurrentScene(EScene scene);
+    private:
+        sf::RenderWindow window; 		  // Window of the Game.
+        std::map<EScene, Scene *> scenes; // All Scenes of the Game.
+        Scene *currentScene; 			  // Scene that is currently active (is drawn and updated).
+        float windowWidth;
+        float windowHeight;
 
-	private:
-		/**
-		 * @brief      Helper function for initializing everything before starting the Game. Creates all Sprites and stuff...
-		 */
-		void init();
+        InputManager *inputManager;
+        InputContext inputContext;
 
-		sf::RenderWindow window; 		 // Window of the Game.
-		std::map<EScene, Scene*> scenes; // All Scenes of the Game.
-		Scene* currentScene; 			 // Scene that is currently active (is drawn and updated).
-		float windowWidth;
-		float windowHeight;
+		bool frozen; // If this is true, the Game stops in time. TODO: Better explanation.
 
-		std::vector<Entity*> globalEntities; 		// Entities that get updated independent of any specific Scene.
-		std::vector<sf::Drawable*> globalDrawables;	// sf::Drawables that get drawn independent of any specific Scene.
+        // Global Entities/Drawables
+    private:
+        FpsCounter fpsCounter;
 
-		bool freeze;
-		bool f2LastFrame;
-	};
+        Button exitBtn;
+        Button closeMenuBtn;
+        Button debugSceneBtn;
+        Button sceneOneBtn;
+        Button cronoTriggerSceneBtn;
+        Button collisionSceneBtn;
+        VBox btnBox;
+        ButtonMenu buttonMenu;
+        TranslateAnimation menuTa;
+
+        std::vector<Entity *> globalEntities; 		    // Entities that get updated independent of any specific Scene.
+        std::vector<sf::Drawable *> globalDrawables;
+    };
 }
 
 #endif

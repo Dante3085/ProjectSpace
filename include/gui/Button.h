@@ -24,8 +24,8 @@ namespace ProjectSpace
 	{
 	public:
 		
-		Button(std::function<void()> onPressed, sf::Window const& window, std::string string = "NONE");
-		Button(sf::Window const& window, std::string string = "NONE");
+		Button(std::function<void()> onPressed, sf::Window const& window, std::string const& string = "NONE");
+		Button(sf::Window const& window, std::string const& string = "NONE");
 
 		void update(sf::Time time) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -51,6 +51,9 @@ namespace ProjectSpace
 		void select() const;
 		void unselect() const;
 		void press() const;
+
+		// Helper functions
+	private:
 
 	private:
 		bool leftMouseDown;						// Stores whether or not the LeftMouseButton is currently down.

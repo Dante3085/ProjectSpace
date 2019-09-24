@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 #include "tilemap/Tilemap.h"
 #include "animation/Animation.h"
@@ -18,6 +20,7 @@
 #include "gui/List.h"
 #include "rpg/Character.h"
 #include "audio/AudioFader.h"
+#include "input/InputManager.h"
 
 namespace ProjectSpace
 {
@@ -40,15 +43,6 @@ namespace ProjectSpace
 
 		int cronoSpeed;
 
-		bool wWasDown;
-		bool aWasDown;
-		bool sWasDown;
-		bool dWasDown;
-		bool spaceWasDown;
-		bool rWasDown;
-
-		FadeAnimation fadeAnimation;
-		TranslateAnimation translateAnimation;
 		Camera camera;
 		TextBox textBox;
 
@@ -63,6 +57,13 @@ namespace ProjectSpace
 		AudioFader audioFader;
 
 		List list;
+		// TranslateAnimation translateAnimation;
+		// FadeAnimation fadeAnimation;
+
+		sf::SoundBuffer soundBuffer;
+		sf::Sound sound;
+
+		InputContext inputContext;
 	};
 }
 

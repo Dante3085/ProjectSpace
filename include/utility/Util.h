@@ -10,12 +10,15 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <map>
 
 #include "collision/Line2F.h"
 #include "scenes/Scene.h"
 
 namespace ProjectSpace
 {
+	// Forward declarations
+
 	// sf::Vector2<T>
 
 	// For printing sf::Vector2<T> to std::cout
@@ -93,6 +96,17 @@ namespace ProjectSpace
 		stream << "}";
 	}
 
+	template <class K, class V>
+	std::ostream& operator<<(std::ostream& stream, std::map<K, V>& map)
+	{
+		stream << "{ ";
+		for (auto& pair : map)
+		{
+			stream << "(" << pair.first << ", " << pair.second << ")";
+		}
+		return stream << "}";
+	}
+
 	// Inserts \n into text according to given lineLength, so that text wraps in between words.
 	void addLineWrapping(sf::String& text, int lineLength);
 	std::vector<sf::String> addTextWrapping(sf::String const& original, int lineLength, float textHeight, float lineHeight);
@@ -100,6 +114,7 @@ namespace ProjectSpace
 	namespace DebugDrawing
 	{
 		// TODO: A way to remove these as well.
+		void drawPoint(sf::Vector2f const& point, Scene& scene);
 		void drawLine(sf::Vector2f const& begin, sf::Vector2f const& end, Scene& scene);
 		void drawRec(sf::Vector2f const& position, sf::Vector2f const& size, sf::Color const& color, Scene& scene);
 		void drawFloatRect(sf::FloatRect const& floatRect, Scene& scene);

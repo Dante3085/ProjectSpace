@@ -1,0 +1,16 @@
+
+// key -> Action
+numKeyToActionMappings=3
+key::Up onPressed list_up                // On initial press of Key Up the Action LIST_UP will be fired.
+key::Down onPressed list_down
+key::Enter onPressed list_select
+
+// key -> State
+numKeyToStateMappings=2
+key::Up onPressed list_hold_up key::Up onReleased // On initial press of Key Up the State LIST_HOLD_UP will be turned on and on releasing Key Up the State LIST_HOLD_UP will be turned off.
+key::Down onPressed list_hold_down key::Down onReleased
+
+// GAMEPAD MAPPINGS
+// numPS4ButtonToActionMappings=2
+// ps4button::dpad_up onPressed list_up
+// ps4button::dpad_down onPressed list_down

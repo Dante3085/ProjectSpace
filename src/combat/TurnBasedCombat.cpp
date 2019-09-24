@@ -4,7 +4,10 @@
 namespace ProjectSpace
 {
 	TurnBasedCombat::TurnBasedCombat(std::vector<Character*> const& party1, std::vector<Character*> const& party2)
-		: party1{ party1 }, party2{ party2 }, nextAction{ CombatAction::INVALID }, nextActionTarget{ nullptr }
+		: party1{ party1 }, 
+		party2{ party2 }, 
+		nextAction{ CombatAction::INVALID }, 
+		nextActionTarget{ nullptr }
 	{
 		// Sort all Characters decending in terms of their agility stat.
 		std::vector<Character*> temp{ party1 };

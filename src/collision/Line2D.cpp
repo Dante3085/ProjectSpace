@@ -6,7 +6,11 @@ namespace ProjectSpace
 	Line2D::Line2D(float gradient, float yAxis) : gradient{gradient}, yAxis{yAxis}, pointsGiven{false} {}
 
 	Line2D::Line2D(sf::Vector2f p1, sf::Vector2f p2)
-	: p1{p1}, p2{p2}, gradient{(p2.y - p1.y) / (p2.x - p1.x)}, yAxis{p1.y + (-(p1.x * gradient))}, pointsGiven{true} {}
+		: p1{p1}, 
+		p2{p2}, 
+		gradient{(p2.y - p1.y) / (p2.x - p1.x)}, 
+		yAxis{p1.y + (-(p1.x * gradient))}, 
+		pointsGiven{true} {}
 
 
 		/**

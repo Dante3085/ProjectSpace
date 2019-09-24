@@ -10,8 +10,16 @@
 namespace ProjectSpace
 {
 	TranslateAnimation::TranslateAnimation(Translatable& translatable, sf::Vector2f const& from, sf::Vector2f const& to, float duration)
-		: translatable{ &translatable }, from{ from }, to{ to }, duration{ duration }, elapsedTime{0}, doUpdate{ false },
-		currentVelocity{ -1, -1 }, easingFunction{ Easing::elastic_easeOut }, onFinished{ []() {} }, log{ &Log::getInstance() }
+		: translatable{ &translatable }, 
+		from{ from }, 
+		to{ to }, 
+		duration{ duration }, 
+		elapsedTime{0}, 
+		doUpdate{ false },
+		currentVelocity{ -1, -1 }, 
+		easingFunction{ Easing::elastic_easeOut }, 
+		onFinished{ []() {} }, 
+		log{ &Log::getInstance() }
 	{
 		this->translatable->setPosition(from);
 	}

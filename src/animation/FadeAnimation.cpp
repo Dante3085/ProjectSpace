@@ -4,9 +4,16 @@
 namespace ProjectSpace
 {
 	FadeAnimation::FadeAnimation(Fadeable& fadeable, int startAlpha, int endAlpha, int durationInMilliseconds)
-		: fadeable{ fadeable }, startAlpha{ startAlpha }, endAlpha{ endAlpha }, durationInMilliseconds{ durationInMilliseconds },
-		elapsedMilliseconds{ 0 }, doUpdate{ false }, easingFunction{ Easing::sine_easeInOut }
-	{}
+		: fadeable{ fadeable }, 
+		startAlpha{ startAlpha }, 
+		endAlpha{ endAlpha }, 
+		durationInMilliseconds{ durationInMilliseconds },
+		elapsedMilliseconds{ 0 }, 
+		doUpdate{ false }, 
+		easingFunction{ Easing::sine_easeInOut }
+	{
+		fadeable.setColor(sf::Color( 255, 255, 255, startAlpha ));
+	}
 
 	void FadeAnimation::update(sf::Time time)
 	{
@@ -20,7 +27,8 @@ namespace ProjectSpace
 		elapsedMilliseconds += time.asMilliseconds();
 		if (elapsedMilliseconds >= durationInMilliseconds)
 		{
-			fadeable.setColor(sf::Color(255, 255, 255, 0));
+			c.a = endAlpha;
+			fadeable.setColor(c);
 			elapsedMilliseconds = 0;
 			doUpdate = false;
 			return;
@@ -42,5 +50,25 @@ namespace ProjectSpace
 	void FadeAnimation::setEasingFunction(Easing::EasingFunction easingFunction)
 	{
 		this->easingFunction = easingFunction;
+	}
+
+	void FadeAnimation::setStartAlpha(int startAlpha)
+	{
+		this->startAlpha = startAlpha;
+	}
+
+	void FadeAnimation::setEndAlpha(int endAlpha)
+	{
+		this->endAlpha = endAlpha;
+	}
+
+	int FadeAnimation::getStartAlpha()
+	{
+		return startAlpha;
+	}
+
+	int FadeAnimation::getEndAlpha()
+	{
+		return endAlpha;
 	}
 }

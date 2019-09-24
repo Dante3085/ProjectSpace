@@ -1,0 +1,6 @@
+
+// key -> Action
+numKeyToActionMappings=3
+key::Up onPressed button_menu_backward
+key::Down onPressed button_menu_forward
+key::Enter onPressed button_menu_press

@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "scenes/Entity.h"
-#include "input/InputHandler.h"
+#include "input/InputManager.h"
 #include "Button.h"
 
 namespace ProjectSpace
@@ -20,12 +20,8 @@ namespace ProjectSpace
 	class ButtonMenu : public Entity
 	{
 	public:
-		ButtonMenu(InputHandler* inputHandler);
-		ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler);
-		ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
-			sf::Keyboard::Key keyForward, sf::Keyboard::Key keyBackward, sf::Keyboard::Key keyPress);
-		ButtonMenu(std::vector<Button const*> buttons, InputHandler* inputHandler, 
-			unsigned int btnForward, unsigned int btnBackward, unsigned int btnPress);
+		ButtonMenu();
+		ButtonMenu(std::vector<Button const*> buttons);
 
 		void update(sf::Time time) override;
 
@@ -51,18 +47,14 @@ namespace ProjectSpace
 
 	private:
 		std::vector<Button const*> buttons; // Buttons in this ButtonMenu.
-		InputHandler* inputHandler; // InputHandler of this ButtonMenu's context to store key/button state information.
 		int selected;	// Index of currently selected Button in this ButtonMenu.
 
-		sf::Keyboard::Key keyForward;	// Key for selecting the next Button in this ButtonMenu.
-		sf::Keyboard::Key keyBackward;	// Key for selecting the previous Button in this ButtonMenu.
-		sf::Keyboard::Key keyPress;		// Key for pressing the currently selected Button in this ButtonMenu.
-		unsigned int btnForward;		// ControllerButton for selecting the next Button in this ButtonMenu.
-		unsigned int btnBackward;		// ControllerButton for selecting the previous Button in this ButtonMenu.
-		unsigned int btnPress;			// ControllerButton for pressing the currently selected Button in this ButtonMenu.
+		InputContext inputContext;
 
 		sf::SoundBuffer buffer;
 		sf::Sound cursorMove;
+
+		static int numInstances;
 	};
 }
 

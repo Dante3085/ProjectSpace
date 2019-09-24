@@ -80,7 +80,9 @@ namespace ProjectSpace
 
 	CombatOrder::CombatOrder(std::vector<Character*> party1, std::vector<Character*> party2,
 		std::vector<std::string> texturePaths, sf::Vector2f const& position)
-		: portraitSize{ 200, 200 }, portraitDefaultColor{ sf::Color(135,206,235, 200) }, spacing{ 10 },
+		: portraitSize{ 200, 200 }, 
+		portraitDefaultColor{ sf::Color(135,206,235, 200) }, 
+		spacing{ 10 },
 		cycleDuration{200}
 	{
 		if ((party1.size() + party2.size()) != texturePaths.size())
