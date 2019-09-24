@@ -93,7 +93,7 @@ namespace ProjectSpace
 					waitForContinueKey = false;
 				}
 				currentCharIndex = 0;
-				++absatzPtr;
+				//++absatzPtr;
 				sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
 
 				// Try to roughly position the cursor at 80 percent of the Character's height.
@@ -129,13 +129,15 @@ namespace ProjectSpace
 			cursor.update(time);
 			if (continueKeyPressed)
 			{
+				++absatzPtr;
 				waitForContinueKey = false;
 				continueKeyPressed = false;
 
 			}
 		}
 		else
-		{
+		{	
+			//writingState = WritingState::immediately;
 			switch (writingState)
 			{
 			case WritingState::standard:
