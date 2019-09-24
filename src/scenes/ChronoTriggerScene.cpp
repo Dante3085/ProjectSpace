@@ -152,28 +152,35 @@ namespace ProjectSpace
 
 	void ChronoTriggerScene::update(sf::Time time)
 	{
+		int anzahl[] = {0,0};
+		sf::Vector2f currentPosition = crono.getPosition();
 		if (inputContext.isStateOn(State::WALK_NORTH))
 		{
+			++anzahl[0];
 			crono.setAnimation(EAnimation::UP);
 			crono.move(0, -cronoSpeed);
 		}
-		else if (inputContext.isStateOn(State::WALK_EAST))
+		if (inputContext.isStateOn(State::WALK_SOUTH))
 		{
-			crono.setAnimation(EAnimation::RIGHT);
-			crono.move(cronoSpeed, 0);
-		}
-		else if (inputContext.isStateOn(State::WALK_SOUTH))
-		{
+			++anzahl[0];
 			crono.setAnimation(EAnimation::DOWN);
 			crono.move(0, cronoSpeed);
 		}
-		else if (inputContext.isStateOn(State::WALK_WEST))
+		if (inputContext.isStateOn(State::WALK_EAST))
 		{
+			++anzahl[1];
+			crono.setAnimation(EAnimation::RIGHT);
+			crono.move(cronoSpeed, 0);
+		}
+		if (inputContext.isStateOn(State::WALK_WEST))
+		{
+			++anzahl[1];
 			crono.setAnimation(EAnimation::LEFT);
 			crono.move(-cronoSpeed, 0);
 		}
-		else
+		if((anzahl[0] > 1)||(anzahl[1] > 1)||((anzahl[0] == 0) && (anzahl[1] == 0)))
 		{
+			crono.setPosition(currentPosition);
 			crono.setAnimation(EAnimation::IDLE);
 		}
 		
