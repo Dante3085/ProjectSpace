@@ -11,14 +11,15 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <SFML/Window/Keyboard.hpp>
 
 #include "MenuElement.h"
 #include "animation/Animation.h"
 #include "animation/AnimatedSprite.h"
+#include "input/InputManager.h"
 
 namespace ProjectSpace
 {
+
 	enum class WritingState
 	{
 		standard,
@@ -84,15 +85,16 @@ namespace ProjectSpace
 		Animation cursorAnim;   // Animation of the cursor.
 		AnimatedSprite cursor;  // Display to prompt the user for input.
 
-		// TODO: Make this agnostic to input type(Keyboard, Gamepad, ...). New InputSystem will deal with this(see: TODO.md: InputSystem).
-		sf::Keyboard::Key continueKey;
-
 		// CharSound
 		sf::SoundBuffer soundBuffer;
 		sf::Sound charSound;
 
 		WritingState writingState;
 		
+		InputContext inputContext;
+		InputManager* inputManager;
+
+		static int numInstances;
 	};
 }
 

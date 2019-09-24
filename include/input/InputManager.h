@@ -108,10 +108,13 @@ namespace ProjectSpace
 		std::function<bool()> predicate;
 
 		std::map<sf::Keyboard::Key, ActionKeyData> keyToAction;  // Stores which Key fires an Action and in which way (onPressed/onReleased).
-		// std::map<ControllerButton, std::tuple<Action, std::string>> controllerButtonToAction;
+		std::map<PS4Button, ActionJoystickData> ps4ButtonToAction;
 
 		std::map<sf::Keyboard::Key, StateKeyData> keyToStateOn;  // Stores which Key turns a State on and in which way (onPressed/onReleased).
 		std::map<sf::Keyboard::Key, StateKeyData> keyToStateOff; // Stores which Key turns a State off and in which way (onPressed/onReleased).
+
+		std::map<PS4Button, StateJoystickData> ps4ButtonToStateOn;
+		std::map<PS4Button, StateJoystickData> ps4ButtonToStateOff;
 
 		std::map<Action, bool> actionsFired;  // Stores if an Action has been fired or not.
 		std::map<State, bool> currentStates;  // Stores if a State is on or not in the current udpate() iteration.
@@ -156,9 +159,16 @@ namespace ProjectSpace
 		bool wasMouseButtonPressed(sf::Mouse::Button mouseButton) const;
 		bool hasMouseMoved() const;
 		sf::Vector2i getMousePosition() const;
-
-		// 0 is not moved.
 		float getMouseWheelDelta() const;
+
+		bool onJoystickButtonPressed(unsigned int joystickButton) const;
+		bool onJoystickButtonPressed(PS4Button ps4Button) const;
+		bool onJoystickButtonReleased(unsigned int joystickButton) const;
+		bool onJoystickButtonReleased(PS4Button ps4Button) const;
+		bool isJoystickButtonPressed(unsigned int joystickButton) const;
+		bool isJoystickButtonPressed(PS4Button ps4Button) const;
+		bool wasJoystickButtonPressed(unsigned int joystickButton) const;
+		bool wasJoystickButtonPressed(PS4Button ps4Button) const;
 
 		void registerInputContext(std::string const& name, InputContext* inputContext);
 		void blockInputContext(std::string const& name);
@@ -179,10 +189,19 @@ namespace ProjectSpace
 		sf::Vector2i currentMousePosition;
 		float mouseWheelDelta;
 
+		// sf::Joystick
+		std::map<unsigned int, bool> currentJoystickButtons;
+		std::map<unsigned int, bool> previousJoystickButtons;
+		unsigned int lastUpdatetJoystickButton;
+
+		bool inputByMouseAndKeyboard;
+
 		// TODO: std::map<std::string, std::pair<InputContext*, bool>> inputContexts.
 		// The std::set is not necessary for checking blocked InputContexts.
 		std::map<std::string, InputContext*> inputContexts;
 		std::set<std::string> blockedInputContexts;
+
+		friend InputContext;
 	};
 }
 

@@ -5,6 +5,8 @@
 
 namespace ProjectSpace
 {
+	int TextBox::numInstances = 0;
+
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
 		: originalStr{ str }, 
 		wrappedStr{ str }, 
@@ -17,9 +19,10 @@ namespace ProjectSpace
 		charDelay{ 100 }, 
 		cursorAnim{ "rsrc/spritesheets/cursor.png", 0.5f },
 		cursor{ sf::Vector2f{0, 0} }, 
-		continueKey{ sf::Keyboard::Space }, 
 		charWidth{ 25 }, 
-		lineHeight{ 36.5 }
+		lineHeight{ 36.5 },
+		inputContext{"include/input/contexts/TextBoxContext.txt"},
+		inputManager{&InputManager::getInstance()}
 	{
 		// Initialize this Textbox's background.
 		texture.loadFromFile(texturePath);
@@ -51,6 +54,14 @@ namespace ProjectSpace
 		// charSound
 		soundBuffer.loadFromFile("rsrc/audio/sfx/phoenixWright/sfx-blipmale.wav");
 		charSound.setBuffer(soundBuffer);
+
+		inputContext.setPredicate([]()
+			{
+				return true;
+			});
+		std::string inputContextName = "TextBox";
+		inputContextName.append(std::to_string(numInstances++));
+		inputManager->registerInputContext(inputContextName, &inputContext);
 	}
 
 	void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -104,7 +115,7 @@ namespace ProjectSpace
 		// TODO: Make it possible to show all the text with a single button press.
 		if (absatzPtr >= wrappedStr.size()) return;
 		elapsedMillis += time.asMilliseconds();
-		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
+		/*bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
 		if (continueKeyPressed)
 		{
 			writingState = WritingState::fast;
@@ -112,15 +123,29 @@ namespace ProjectSpace
 		else
 		{
 			writingState = WritingState::standard;
+		}*/
+
+		if (inputContext.isStateOn(State::TEXTBOX_FAST))
+		{
+			writingState = WritingState::fast;
 		}
+		else
+		{
+			writingState = WritingState::standard;
+		}
+
 		if (waitForContinueKey)
 		{
 			cursor.update(time);
-			if (continueKeyPressed)
+			/*if (continueKeyPressed)
 			{	
 				waitForContinueKey = false;
 				continueKeyPressed = false;
+			}*/
 
+			if (inputContext.hasActionFired(Action::TEXTBOX_CONTINUE))
+			{
+				waitForContinueKey = false;
 			}
 		}
 		else

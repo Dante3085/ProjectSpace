@@ -55,7 +55,8 @@ namespace ProjectSpace
 
 		// Helper
 	private:
-		void updateLocalizer();
+		void checkInputActionsAndStates(sf::Time time);
+		void checkMouseInteraction(sf::Time time);
 
 	private:
 		sf::FloatRect bounds;
