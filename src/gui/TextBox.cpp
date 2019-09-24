@@ -41,7 +41,8 @@ namespace ProjectSpace
 
 		text.setFillColor(sf::Color(255, 255, 255, 255));
 		//zeilenanzahl =~ size / 36,5
-		addLineWrapping(this->wrappedStr, (size.x - 2*padding) / charWidth);
+		//????????addLineWrapping(this->wrappedStr, (size.x - 2*padding) / charWidth);
+		wrappedStr = addTextWrapping(this->originalStr, (size.x - 2 * padding) / charWidth, (rec.getSize().y - 2 * padding), lineHeight);
 		text.setString(writtenStr);
 		text.setPosition(position.x + padding, position.y + padding);
 
@@ -54,7 +55,6 @@ namespace ProjectSpace
 		// charSound
 		soundBuffer.loadFromFile("rsrc/audio/sfx/phoenixWright/sfx-blipmale.wav");
 		charSound.setBuffer(soundBuffer);
-		addTextWrapping(this->originalStr, (size.x - 2 * padding) / charWidth, (rec.getSize().y - 2 * padding), lineHeight);
 	}
 
 	void TextBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -68,13 +68,54 @@ namespace ProjectSpace
 		}
 	}
 
+	void TextBox::writeChar(bool withDelay)
+	{
+		if (((!withDelay) || (elapsedMillis > charDelay)) && currentCharIndex < wrappedStr[absatzPtr].getSize())
+		{
+			if (charSound.getStatus() != sf::Sound::SoundSource::Status::Playing)
+			{
+				charSound.play();
+			}
+
+			elapsedMillis = 0;
+
+			// Every line of this TextBox is full of text.
+			writtenStr += wrappedStr[absatzPtr][currentCharIndex++];
+			text.setString(writtenStr);
+		}
+		else
+		{
+			if (currentCharIndex >= wrappedStr[absatzPtr].getSize())
+			{
+				waitForContinueKey = true;
+				currentCharIndex = 0;
+				++absatzPtr;
+				sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
+
+				// Try to roughly position the cursor at 80 percent of the Character's height.
+				// So roughly at the Character's foot.
+				cursorPos.y += text.getCharacterSize() * 0.8f;
+				cursor.setPosition(cursorPos);
+			}
+		}
+
+	}
+
 	void TextBox::update(sf::Time time)
 	{
+		
 		// TODO: Make it possible to show all the text with a single button press.
-
+		if (absatzPtr >= wrappedStr.size()) return;
 		elapsedMillis += time.asMilliseconds();
 		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
-		
+		if (continueKeyPressed)
+		{
+			writingState = WritingState::fast;
+		}
+		else
+		{
+			writingState = WritingState::standard;
+		}
 		if (waitForContinueKey)
 		{
 			cursor.update(time);
@@ -82,24 +123,48 @@ namespace ProjectSpace
 			{
 				waitForContinueKey = false;
 				continueKeyPressed = false;
+
 			}
 		}
 		else
 		{
+			switch (writingState)
+			{
+			case WritingState::standard:
+				writeChar(true);
+				break;
+			case WritingState::fast:
+				writeChar(false);
+				break;
+			case WritingState::immediately:
+				writtenStr = wrappedStr[absatzPtr];
+				text.setString(writtenStr);
+				if (absatzPtr < (wrappedStr.size() - 1))
+				{
+					waitForContinueKey = true;
+					sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
+					// Try to roughly position the cursor at 80 percent of the Character's height.
+					// So roughly at the Character's foot.
+					cursorPos.y += text.getCharacterSize() * 0.8f;
+					cursor.setPosition(cursorPos);
+				}
+				break;
+			}
+			/*
 			float actualCharDelay = 0;
 			if (!continueKeyPressed)
 			{
 				actualCharDelay = charDelay;
 			}
-			if (elapsedMillis > actualCharDelay && wrappedStrCurrentCharIndex < wrappedStr.getSize())
+			if (elapsedMillis > actualCharDelay && currentCharIndex < wrappedStr[absatzPtr].getSize())
 			{
 				if (charSound.getStatus() != sf::Sound::SoundSource::Status::Playing)
 				{
-					// charSound.play();
+					charSound.play();
 				}
 
 				elapsedMillis = 0;
-				if (wrappedStr[wrappedStrCurrentCharIndex] == '\n')
+				if (wrappedStr[currentCharIndex] == '\n')
 				{
 					++lineBreakCounter;
 				}
@@ -107,13 +172,13 @@ namespace ProjectSpace
 				// TODO: "((rec.getSize().y - padding) / lineHeight) - 1" sollte ja die Zeilenzahl der TextBox sein.
 				// Kann man das irgendwie in eine Member Variable gießen und über alle Funktionen aktuell halten ?
 				// Würde das folgende if etwas übersichtlicher machen.
-			
+
 				// Every line of this TextBox is full of text.
-				if (lineBreakCounter >= ((rec.getSize().y - 2*padding) / lineHeight) - 1)
+				if (lineBreakCounter >= ((rec.getSize().y - 2 * padding) / lineHeight) - 1)
 				{
 					lineBreakCounter = 0;
 					writtenStr = "";
-					++wrappedStrCurrentCharIndex;
+					++currentCharIndex;
 					waitForContinueKey = true;
 
 					sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
@@ -125,11 +190,13 @@ namespace ProjectSpace
 				}
 				else
 				{
-					writtenStr += wrappedStr[wrappedStrCurrentCharIndex++];
+					writtenStr += wrappedStr[currentCharIndex++];
 					text.setString(writtenStr);
 				}
 			}
+			*/
 		}
+		
 	}
 
 	void TextBox::setOpacity(int opacity)
@@ -143,8 +210,8 @@ namespace ProjectSpace
 	{
 		this->padding = padding;
 
-		wrappedStr = originalStr;
-		addLineWrapping(wrappedStr, ((rec.getSize().x - 2*padding) / charWidth));
+		wrappedStr = addTextWrapping(this->originalStr, (rec.getSize().x - 2 * padding) / charWidth, (rec.getSize().y - 2 * padding), lineHeight);//??????originalStr;
+		//??????addLineWrapping(wrappedStr, ((rec.getSize().x - 2*padding) / charWidth));
 
 		text.setPosition(rec.getPosition() + padding);
 

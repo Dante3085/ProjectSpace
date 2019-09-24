@@ -52,12 +52,6 @@ namespace ProjectSpace
 		{
 			refinedText.push_back(text.substring(writer, (text.getSize() - writer)));
 		}
-		/*for (sf::String const& t : refinedText)
-		{
-			std::cout << "----------------------------------------------------------------" << std::endl;
-			std::cout << t.toAnsiString() << std::endl;
-			std::cout << "----------------------------------------------------------------" << std::endl;
-		}*/
 		return refinedText;
 	}
 
@@ -100,34 +94,19 @@ namespace ProjectSpace
 			// TODO: Use shared pointer to avoid ressource leak.
 
 			sf::VertexArray* line = new sf::VertexArray{ sf::PrimitiveType::Lines };
-			line->append(sf::Vertex{ begin, sf::Color::Red });
-			line->append(sf::Vertex{ end, sf::Color::Red });
+			line->append(sf::Vertex{ begin });
+			line->append(sf::Vertex{ end });
 
 			scene.addDrawable(line);
 		}
 
-		void drawRec(sf::Vector2f const& position, sf::Vector2f const& size, sf::Color const& color, Scene& scene)
+		void drawRec(sf::Vector2f const& position, sf::Vector2f const& size, Scene& scene)
 		{
 			sf::VertexArray* rec = new sf::VertexArray{ sf::PrimitiveType::Quads };
 			rec->append(sf::Vertex{ position });
 			rec->append(sf::Vertex{ sf::Vector2f{position.x + size.x, position.y} });
 			rec->append(sf::Vertex{ sf::Vector2f{position.x + size.x, position.y + size.y} });
 			rec->append(sf::Vertex{ sf::Vector2f{position.x, position.y + size.y} });
-
-			scene.addDrawable(rec);
-		}
-
-		void drawFloatRect(sf::FloatRect const& floatRect, Scene& scene)
-		{
-			sf::Color color{ sf::Color::Red };
-			color.a = 100;
-
-			sf::VertexArray* rec = new sf::VertexArray{ sf::PrimitiveType::Quads };
-			rec->append(sf::Vertex{ sf::Vector2f{floatRect.left, floatRect.top}, color });
-			rec->append(sf::Vertex{ sf::Vector2f{floatRect.left + floatRect.width, floatRect.top}, color });
-			rec->append(sf::Vertex{ sf::Vector2f{floatRect.left + floatRect.width, 
-				                    floatRect.top + floatRect.height}, color });
-			rec->append(sf::Vertex{ sf::Vector2f{floatRect.left, floatRect.top + floatRect.height}, color });
 
 			scene.addDrawable(rec);
 		}
