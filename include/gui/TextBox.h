@@ -19,6 +19,13 @@
 
 namespace ProjectSpace
 {
+	enum class WritingState
+	{
+		standard,
+		fast,
+		immediately
+	};
+
 	/**
 	 * @brief      A TextBox for displaying Text in the Game.
 	 */
@@ -36,6 +43,7 @@ namespace ProjectSpace
 		void setSize(float width, float height);
 		void setSize(sf::Vector2f const& size);
 		void setTextColor(sf::Color color);
+		void writeChar(bool withDelay);
 
 		// Override von Translatable Vererbung
 		void setPosition(sf::Vector2f const& position) override;
@@ -52,7 +60,7 @@ namespace ProjectSpace
 	private:
 
 		sf::String originalStr;          // Unchanged text content.
-		sf::String wrappedStr;           // originalStr with text-wrapping (Text-wrapping ist die gängige Bezeichnung für automatische Zeilenumbrüche in Text.)
+		std::vector<sf::String> wrappedStr;           // originalStr with text-wrapping (Text-wrapping ist die gängige Bezeichnung für automatische Zeilenumbrüche in Text.)
 		sf::String writtenStr;           // Text content that is currently being displayed.
 		sf::Text text;                   // Drawable text.
 		sf::Font font;                   // Font for drawable text.
@@ -60,7 +68,7 @@ namespace ProjectSpace
 		sf::RectangleShape rec;          // Background geometry.
 		float padding;                   // Distance between drawable text and all 4 sides of the background geometry.
 		float elapsedMillis;             // For text writing speed. TODO: Bessere Dokumentation hier.
-		int wrappedStrCurrentCharIndex;  // Index of character in wrappedStr that is about to be written.
+		int currentCharIndex;  // Index of character in wrappedStr that is about to be written.
 		int lineBreakCounter;            // For keeping track of how many lines of text have been written compared to lines of text this TextBox can display.
 		bool waitForContinueKey;         // Stop writing text and prompt the user to press the continueKey.
 		float charDelay;                 // Time it takes for the next character of the wrappedStr to be displayed.
@@ -71,6 +79,8 @@ namespace ProjectSpace
 		// TODO: Calculate lineHeight properly. Don't just set a number.
 		float lineHeight;       // ????
 
+		int absatzPtr;
+
 		Animation cursorAnim;   // Animation of the cursor.
 		AnimatedSprite cursor;  // Display to prompt the user for input.
 
@@ -80,6 +90,9 @@ namespace ProjectSpace
 		// CharSound
 		sf::SoundBuffer soundBuffer;
 		sf::Sound charSound;
+
+		WritingState writingState;
+		
 	};
 }
 
