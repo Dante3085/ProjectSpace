@@ -60,6 +60,7 @@ namespace ProjectSpace
 		}*/
 		return refinedText;
 	}
+
 	void addLineWrapping(sf::String& text, int lineLength)
 	{
 		int writer = 0;
@@ -82,11 +83,18 @@ namespace ProjectSpace
 				i = ++writer;
 			}
 		}
-
 	}
 
 	namespace DebugDrawing
 	{
+		void drawPoint(sf::Vector2f const& point, Scene& scene)
+		{
+			sf::VertexArray* array = new sf::VertexArray{ sf::PrimitiveType::Points };
+			array->append(sf::Vertex{ point, sf::Color::Blue });
+
+			scene.addDrawable(array);
+		}
+
 		void drawLine(sf::Vector2f const& begin, sf::Vector2f const& end, Scene& scene)
 		{
 			// TODO: Use shared pointer to avoid ressource leak.
