@@ -11,7 +11,7 @@ namespace ProjectSpace
 		writtenStr{ "" }, 
 		padding{ 50 }, 
 		elapsedMillis{ 0 }, 
-		wrappedStrCurrentCharIndex{ 0 },
+		currentCharIndex{ 0 },
 		lineBreakCounter{ 0 }, 
 		waitForContinueKey{ false }, 
 		charDelay{ 100 }, 
@@ -41,7 +41,7 @@ namespace ProjectSpace
 		//zeilenanzahl =~ size / 36,5
 		text.setString(writtenStr);
 		text.setPosition(position.x + padding, position.y + padding);
-
+		wrappedStr = addTextWrapping(this->originalStr, (size.x - 2 * padding) / charWidth, (rec.getSize().y - 2 * padding), lineHeight);
 		// Initialize this Textbox's cursor.
 		cursorAnim.setAnimation({ {0, 0, 5, 1}, {5, 0, 5, 1}, {10, 0, 5, 1}, {15, 0, 5, 1} }, 0.5f);
 		cursor.addAnimation(EAnimation::IDLE, &cursorAnim);
