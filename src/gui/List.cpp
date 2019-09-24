@@ -11,10 +11,10 @@ namespace ProjectSpace
 	int List::numLists = 0;
 
 	// TODO: Disable Mouse selection when scrolling with Mouse Wheel.
-
 	// TODO: Make Mouse Wheel scrolling smoother/more precise.
-
 	// TODO: Sortierungsmöglichkeiten
+	// TODO: Only create as many sf::Text instances as are visible. Then just change the contents when 
+	// going through the list.
 
 
 	// I am not doing bounds{position.x, position.y, -1, -1} because topText will be set to position
@@ -157,196 +157,10 @@ namespace ProjectSpace
 	void List::update(sf::Time time)
 	{
 		// TODO: Check this function for improvements in performance.
-
 		if (inputContext.isValid())
 		{
-			// Check if current ListItem is pressed.
-			if (inputContext.hasActionFired(Action::LIST_SELECT))
-			{
-				texts[current].second();
-			}
-
-			if (inputContext.hasActionFired(Action::LIST_UP))
-			{
-				up();
-			}
-
-			if (inputContext.isStateOn(State::LIST_HOLD_UP))
-			{
-				if (upHoldElapsed >= upHoldDuration)
-				{
-					up();
-					upHoldElapsed *= 0.90f;
-				}
-				else
-				{
-					upHoldElapsed += time.asMilliseconds();
-				}
-			}
-			else
-			{
-				upHoldElapsed = 0;
-			}
-
-			if (inputContext.hasActionFired(Action::LIST_DOWN))
-			{
-				down();
-			}
-
-			if (inputContext.isStateOn(State::LIST_HOLD_DOWN))
-			{
-				if (downHoldElapsed >= downHoldDuration)
-				{
-					down();
-					downHoldElapsed *= 0.90;
-				}
-				else
-				{
-					downHoldElapsed += time.asMilliseconds();
-				}
-			}
-			else
-			{
-				downHoldElapsed = 0;
-			}
-
-			if (inputManager->hasMouseMoved())
-			{
-				sf::Vector2f mousePosition = (sf::Vector2f)inputManager->getMousePosition();
-
-				if (bounds.contains(mousePosition))
-				{
-					mouseInsideBounds = true;
-
-					if (topArrow.getGlobalBounds().contains(mousePosition))
-					{
-						mouseHoversTopArrow = true;
-						mouseHoversBottomArrow = false;
-						mouseHoversLocalizer = false;
-
-						topArrow.setFillColor(hoverColor);
-					}
-					else if (bottomArrow.getGlobalBounds().contains(mousePosition))
-					{
-						mouseHoversTopArrow = false;
-						mouseHoversBottomArrow = true;
-						mouseHoversLocalizer = false;
-
-						bottomArrow.setFillColor(hoverColor);
-					}
-					else if (localizer.getGlobalBounds().contains(mousePosition))
-					{
-						mouseHoversTopArrow = false;
-						mouseHoversBottomArrow = false;
-						mouseHoversLocalizer = true;
-
-						localizer.setFillColor(hoverColor);
-					}
-					else
-					{
-						mouseHoversTopArrow = false;
-						mouseHoversBottomArrow = false;
-						mouseHoversLocalizer = false;
-
-						topArrow.setFillColor(nonHoverColor);
-						bottomArrow.setFillColor(nonHoverColor);
-						localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
-							localizerTopOrBottomColor : nonHoverColor);
-
-						for (int i = top; i <= bottom; ++i)
-						{
-							sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
-
-							if (textBounds.contains(mousePosition))
-							{
-								current = i;
-								selector.setPosition(textBounds.left, textBounds.top);
-								selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
-
-								localizer.setPosition(localizer.getPosition().x,
-									localizerYFirstSegment + (current * localizerSegmentHeight));
-
-								localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
-									localizerTopOrBottomColor : nonHoverColor);
-
-								break;
-							}
-						}
-					}
-				}
-				else
-				{
-					// TODO: Solution that detects the Mouse leaving Bounds. Doing this all the time is bad.
-					// Also try that for above code.
-
-					mouseInsideBounds = false;
-
-					mouseHoversTopArrow = false;
-					mouseHoversBottomArrow = false;
-					mouseHoversLocalizer = false;
-
-					topArrow.setFillColor(nonHoverColor);
-					bottomArrow.setFillColor(nonHoverColor);
-					localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
-						localizerTopOrBottomColor : nonHoverColor);
-				}
-			}
-
-			if (mouseInsideBounds)
-			{
-				float mouseWheelDelta = inputManager->getMouseWheelDelta();
-				float absMouseWheelDelta = abs(mouseWheelDelta);
-
-				// Check if mouse wheel was moved enough to count as a single scroll
-				// This is mainly to avoid accidental scrolling on high precision laptop tochpads.
-				if (absMouseWheelDelta >= 0.01)
-				{
-					if (mouseWheelDelta < 0)
-					{
-						for (int i = 0; i < absMouseWheelDelta; ++i)
-						{
-							if (current == texts.size() - 1)
-							{
-								break;
-							}
-							down();
-						}
-					}
-					else if (mouseWheelDelta > 0)
-					{
-						for (int i = 0; i < absMouseWheelDelta; ++i)
-						{
-							if (current == 0)
-							{
-								break;
-							}
-							up();
-						}
-					}
-				}
-			}
-
-			if (mouseHoversTopArrow)
-			{
-				if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
-				{
-					up();
-				}
-			}
-			else if (mouseHoversBottomArrow)
-			{
-				if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
-				{
-					down();
-				}
-			}
-			else if (mouseHoversLocalizer)
-			{
-				if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
-				{
-					std::cout << "Selector clicked\n";
-				}
-			}
+			checkInputActionsAndStates(time);
+			checkMouseInteraction(time);
 		}
 	}
 
@@ -505,6 +319,7 @@ namespace ProjectSpace
 		selector.move(by);
 		topArrow.move(by);
 		bottomArrow.move(by);
+		localizer.move(by);
 	}
 
 	void List::move(float byX, float byY)
@@ -519,6 +334,7 @@ namespace ProjectSpace
 		selector.move(byX, byY);
 		topArrow.move(byX, byY);
 		bottomArrow.move(byX, byY);
+		localizer.move(byX, byY);
 	}
 
 	sf::Vector2f List::getPosition() const
@@ -567,22 +383,197 @@ namespace ProjectSpace
 		return bounds;
 	}
 
-	void List::updateLocalizer()
+	void List::checkInputActionsAndStates(sf::Time time)
 	{
-		localizer.setPosition(localizer.getPosition().x,
-			localizerYFirstSegment + (current * localizerSegmentHeight));
-
-		if (current == 0 || current == texts.size() - 1)
+		// Check if current ListItem is pressed.
+		if (inputContext.hasActionFired(Action::LIST_SELECT))
 		{
-			localizer.setFillColor(localizerTopOrBottomColor);
+			texts[current].second();
 		}
-		else if (mouseHoversLocalizer)
+
+		if (inputContext.hasActionFired(Action::LIST_UP))
 		{
-			localizer.setFillColor(hoverColor);
+			up();
+		}
+
+		if (inputContext.isStateOn(State::LIST_HOLD_UP))
+		{
+			if (upHoldElapsed >= upHoldDuration)
+			{
+				up();
+				upHoldElapsed *= 0.90f;
+			}
+			else
+			{
+				upHoldElapsed += time.asMilliseconds();
+			}
 		}
 		else
 		{
-			localizer.setFillColor(nonHoverColor);
+			upHoldElapsed = 0;
+		}
+
+		if (inputContext.hasActionFired(Action::LIST_DOWN))
+		{
+			down();
+		}
+
+		if (inputContext.isStateOn(State::LIST_HOLD_DOWN))
+		{
+			if (downHoldElapsed >= downHoldDuration)
+			{
+				down();
+				downHoldElapsed *= 0.90;
+			}
+			else
+			{
+				downHoldElapsed += time.asMilliseconds();
+			}
+		}
+		else
+		{
+			downHoldElapsed = 0;
+		}
+	}
+
+	void List::checkMouseInteraction(sf::Time time)
+	{
+		if (inputManager->hasMouseMoved())
+		{
+			sf::Vector2f mousePosition = (sf::Vector2f)inputManager->getMousePosition();
+
+			if (bounds.contains(mousePosition))
+			{
+				mouseInsideBounds = true;
+
+				if (topArrow.getGlobalBounds().contains(mousePosition))
+				{
+					mouseHoversTopArrow = true;
+					mouseHoversBottomArrow = false;
+					mouseHoversLocalizer = false;
+
+					topArrow.setFillColor(hoverColor);
+				}
+				else if (bottomArrow.getGlobalBounds().contains(mousePosition))
+				{
+					mouseHoversTopArrow = false;
+					mouseHoversBottomArrow = true;
+					mouseHoversLocalizer = false;
+
+					bottomArrow.setFillColor(hoverColor);
+				}
+				else if (localizer.getGlobalBounds().contains(mousePosition))
+				{
+					mouseHoversTopArrow = false;
+					mouseHoversBottomArrow = false;
+					mouseHoversLocalizer = true;
+
+					localizer.setFillColor(hoverColor);
+				}
+				else
+				{
+					mouseHoversTopArrow = false;
+					mouseHoversBottomArrow = false;
+					mouseHoversLocalizer = false;
+
+					topArrow.setFillColor(nonHoverColor);
+					bottomArrow.setFillColor(nonHoverColor);
+					localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+						localizerTopOrBottomColor : nonHoverColor);
+
+					for (int i = top; i <= bottom; ++i)
+					{
+						sf::FloatRect textBounds = texts[i].first.getGlobalBounds();
+
+						if (textBounds.contains(mousePosition))
+						{
+							current = i;
+							selector.setPosition(textBounds.left, textBounds.top);
+							selector.setSize(sf::Vector2f{ textBounds.width, textBounds.height });
+
+							localizer.setPosition(localizer.getPosition().x,
+								localizerYFirstSegment + (current * localizerSegmentHeight));
+
+							localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+								localizerTopOrBottomColor : nonHoverColor);
+
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				// TODO: Solution that detects the Mouse leaving Bounds. Doing this all the time is bad.
+				// Also try that for above code.
+
+				mouseInsideBounds = false;
+
+				mouseHoversTopArrow = false;
+				mouseHoversBottomArrow = false;
+				mouseHoversLocalizer = false;
+
+				topArrow.setFillColor(nonHoverColor);
+				bottomArrow.setFillColor(nonHoverColor);
+				localizer.setFillColor(current == 0 || current == texts.size() - 1 ?
+					localizerTopOrBottomColor : nonHoverColor);
+			}
+		}
+
+		if (mouseInsideBounds)
+		{
+			float mouseWheelDelta = inputManager->getMouseWheelDelta();
+			float absMouseWheelDelta = abs(mouseWheelDelta);
+
+			// Check if mouse wheel was moved enough to count as a single scroll
+			// This is mainly to avoid accidental scrolling on high precision laptop tochpads.
+			if (absMouseWheelDelta >= 0.01)
+			{
+				if (mouseWheelDelta < 0)
+				{
+					for (int i = 0; i < absMouseWheelDelta; ++i)
+					{
+						if (current == texts.size() - 1)
+						{
+							break;
+						}
+						down();
+					}
+				}
+				else if (mouseWheelDelta > 0)
+				{
+					for (int i = 0; i < absMouseWheelDelta; ++i)
+					{
+						if (current == 0)
+						{
+							break;
+						}
+						up();
+					}
+				}
+			}
+		}
+
+		if (mouseHoversTopArrow)
+		{
+			if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
+			{
+				up();
+			}
+		}
+		else if (mouseHoversBottomArrow)
+		{
+			if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
+			{
+				down();
+			}
+		}
+		else if (mouseHoversLocalizer)
+		{
+			if (inputManager->onMouseButtonPressed(sf::Mouse::Button::Left))
+			{
+				std::cout << "Selector clicked\n";
+			}
 		}
 	}
 }

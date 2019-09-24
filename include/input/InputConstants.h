@@ -19,6 +19,8 @@ namespace ProjectSpace
 		BUTTON_MENU_BACKWARD,
 		BUTTON_MENU_PRESS,
 
+		TEXTBOX_CONTINUE,
+
 		CHRONO_TRIGGER_SCENE_TOGGLE_LIST
 	};
 
@@ -31,6 +33,26 @@ namespace ProjectSpace
 		WALK_EAST,
 		WALK_SOUTH,
 		WALK_WEST,
+
+		TEXTBOX_FAST,
+	};
+
+	enum class PS4Button
+	{
+		SQUARE = 0,
+		X,
+		CIRCLE,
+		TRIANGLE,
+		L1,
+		R1,
+		L2,
+		R2,
+		SHARE,
+		OPTIONS,
+		L3,
+		R3,
+		HOME,
+		TOUCHPAD
 	};
 }
 

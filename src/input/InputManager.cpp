@@ -15,6 +15,11 @@ namespace ProjectSpace
 	// Momentan wird normale map gebraucht die auf Ordnungsrelation mit balanced binary search tree basiert. O(log n).
 	// Allerdings könnte unsere Größenordnung auch zu niedrig sein, dass diese Veränderung eine Auswirkung haben würde.
 
+	// TODO: Bug mit PS4Controller bei Actions. L1 -> LIST_UP und R1 -> LIST_DOWN. Schnelles hintereinander drücken beider Buttons
+	// kann dazu führen, dass die zu Action des zuletzt gedrückten Buttons sehr oft bzw. unendlich Mal auslöst, bis der Button wieder
+	// losgelassen wird.
+	// Es scheint, als ob der Bug bei nahezu gleichzeitigem Drücken der Buttons auftritt.
+
 	// Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
 	std::map<std::string, sf::Keyboard::Key> stringToKey
 	{
@@ -125,6 +130,24 @@ namespace ProjectSpace
 		{"key::F15", sf::Keyboard::F15},
 	};
 
+	std::map<std::string, PS4Button> stringToPS4Button
+	{
+		{"ps4button::square", PS4Button::SQUARE},
+		{"ps4button::x", PS4Button::X},
+		{"ps4button::circle", PS4Button::CIRCLE},
+		{"ps4button::triangle", PS4Button::TRIANGLE},
+		{"ps4button::l1", PS4Button::L1},
+		{"ps4button::r1", PS4Button::R1},
+		{"ps4button::l2", PS4Button::L2},
+		{"ps4button::r2", PS4Button::R2},
+		{"ps4button::share", PS4Button::SHARE},
+		{"ps4button::options", PS4Button::OPTIONS},
+		{"ps4button::l3", PS4Button::L3},
+		{"ps4button::r3", PS4Button::R3},
+		{"ps4button::home", PS4Button::HOME},
+		{"ps4button::touchpad", PS4Button::TOUCHPAD},
+	};
+
 	// Lookup-Table to convert std::string from ContextFile to Action.
 	std::map<std::string, Action> stringToAction
 	{
@@ -134,12 +157,14 @@ namespace ProjectSpace
 		{"fps_counter_toggle", Action::FPS_COUNTER_TOGGLE},
 
 		{"list_up", Action::LIST_UP},
-	    {"list_down", Action::LIST_DOWN},
+		{"list_down", Action::LIST_DOWN},
 		{"list_select", Action::LIST_SELECT},
 
 		{"button_menu_forward", Action::BUTTON_MENU_FORWARD},
 		{"button_menu_backward", Action::BUTTON_MENU_BACKWARD},
 		{"button_menu_press", Action::BUTTON_MENU_PRESS},
+
+		{"textbox_continue", Action::TEXTBOX_CONTINUE},
 
 		{"chrono_trigger_scene_toggle_list", Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST}
 	};
@@ -154,6 +179,8 @@ namespace ProjectSpace
 		{"walk_east", State::WALK_EAST},
 		{"walk_south", State::WALK_SOUTH},
 		{"walk_west", State::WALK_WEST},
+
+		{"textbox_fast", State::TEXTBOX_FAST}
 	};
 
 	// TODO: Workload bei häufig aufgerufenen Funktionen reduzieren, um Performance zu heben.
@@ -161,23 +188,19 @@ namespace ProjectSpace
 	// TODO: Sind mehrere Keys auf denselben State gemappt funktioniert onStateOn nur bei dem Key,
 	// der als 2. auf den State gemappt wurde. Sehr komisch. Wie soll das vernünftig debuggt werden ?
 
-	// TODO: maps currentKeys und previousKeys durch SFML Events im EventLoop vermeidbar ?
-	// Momentan scheint die regelmäßige Aktualisierung der beiden maps im GameLoop aber nicht
-	// besonders lange zu dauern.
-
-	// TODO: Auch Maus unterstützen. Spezielle Mouse-Wheel.
+	// TODO: Joystick/Gamepad unterstützen
 
 	InputContext::InputContext(std::string const& contextFile, std::function<bool()> predicate)
-		: inputManager{&InputManager::getInstance()}, 
-		valid{false}, 
-		predicate{predicate}
+		: inputManager{ &InputManager::getInstance() },
+		valid{ false },
+		predicate{ predicate }
 	{
 		parseContextFile(contextFile);
 	}
 
 	InputContext::InputContext(std::string const& contextFile)
-		: inputManager{ &InputManager::getInstance() }, 
-		valid{ false }, 
+		: inputManager{ &InputManager::getInstance() },
+		valid{ false },
 		predicate{ []() { return false; } }
 	{
 		parseContextFile(contextFile);
@@ -185,27 +208,17 @@ namespace ProjectSpace
 
 	void InputContext::update()
 	{
-		// Check for Actions being fired.
+		// Check for Actions being fired Keyboard keys.
 		for (auto& pair : keyToAction)
 		{
-			// If InputMode function returns true on the corresponding key, store that the corresponding Action has fired.
-			// pair.second.second is a function pointer to certain non static InputManager member functions. 
-			// Since they are non static they need to be called on an object. That is the inputManager pointer in this case.
-			// TODO: std::pair makes the code hard to read if you don't yet have a proper mental model of the context.
-			// Maybe just use named struct with named members.
-			/*if ((inputManager->*pair.second.second)(pair.first))
-			{
-				actionsFired[pair.second.first] = true;
-			}*/
-
 			if ((inputManager->*pair.second.keyInputMode)(pair.first))
 			{
-				std::cout << toString(pair.second.action) << " gefeuert\n";
+				// std::cout << toString(pair.second.action) << " fired\n";
 				actionsFired[pair.second.action] = true;
 			}
 		}
 
-		// Check for States being turned on.
+		// Check for States being turned on by Keyboard keys.
 		for (auto& pair : keyToStateOn)
 		{
 			// Remember value that the State had previously. 
@@ -214,17 +227,45 @@ namespace ProjectSpace
 
 			if ((inputManager->*pair.second.keyInputMode)(pair.first))
 			{
-				std::cout << toString(pair.second.state) << " angeschaltet\n";
 				currentStates[pair.second.state] = true;
 			}
 		}
 
-		// Check for States being turned off.
+		// Check for States being turned off by Keyboard keys.
 		for (auto& pair : keyToStateOff)
 		{
 			if ((inputManager->*pair.second.keyInputMode)(pair.first))
 			{
-				std::cout << toString(pair.second.state) << " ausgeschaltet\n";
+				currentStates[pair.second.state] = false;
+			}
+		}
+
+		// Check for Actions being fired by PS4Buttons.
+		for (auto& pair : ps4ButtonToAction)
+		{
+			if ((inputManager->*pair.second.joystickInputMode)(static_cast<unsigned int>(pair.first)))
+			{
+				// std::cout << toString(pair.second.action) << " fired\n";
+				actionsFired[pair.second.action] = true;
+			}
+		}
+
+		// Check for States being turned on by PS4Buttons.
+		for (auto& pair : ps4ButtonToStateOn)
+		{
+			previousStates[pair.second.state] = currentStates[pair.second.state];
+
+			if ((inputManager->*pair.second.joystickInputMode)(static_cast<unsigned int>(pair.first)))
+			{
+				currentStates[pair.second.state] = true;
+			}
+		}
+
+		// Check for States being turned off by PS4Buttons.
+		for (auto& pair : ps4ButtonToStateOff)
+		{
+			if ((inputManager->*pair.second.joystickInputMode)(static_cast<unsigned int>(pair.first)))
+			{
 				currentStates[pair.second.state] = false;
 			}
 		}
@@ -260,6 +301,8 @@ namespace ProjectSpace
 			// Mögliche Lösung: Auf true gesetzte Actions nach gewisser Zeit automatisch auf false setzen.
 			if (actionsFired.at(action))
 			{
+				std::cout << "Action " << toString(action) << " erfolgreich abgefragt.\n";
+
 				actionsFired[action] = false;
 				return true;
 			}
@@ -403,7 +446,7 @@ namespace ProjectSpace
 					}
 					sf::Keyboard::Key onKey = stringToKey[str];
 
-				    // Get InputMode for onKey.
+					// Get InputMode for onKey.
 					inFile >> str;
 
 					if (str == "onPressed")
@@ -419,7 +462,7 @@ namespace ProjectSpace
 						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
 					}
 
-				    // Get State
+					// Get State
 					inFile >> str;
 					if (stringToState.count(str) == 0)
 					{
@@ -432,7 +475,7 @@ namespace ProjectSpace
 					stateOnKeyData.state = state;
 					stateOffKeyData.state = state;
 
-				    // Get Key that turns the State off.
+					// Get Key that turns the State off.
 					inFile >> str;
 					// Check if given std::string for Key exists.
 					if (stringToKey.count(str) == 0)
@@ -444,7 +487,7 @@ namespace ProjectSpace
 					}
 					sf::Keyboard::Key offKey = stringToKey[str];
 
-				    // Get InputMode for offKey.
+					// Get InputMode for offKey.
 					inFile >> str;
 
 					if (str == "onPressed")
@@ -464,6 +507,57 @@ namespace ProjectSpace
 					keyToStateOff[offKey] = stateOffKeyData;
 					currentStates[state] = false;
 					previousStates[state] = false;
+				}
+			}
+
+			// Check for PS4Button to Action mapping section.
+			else if (str.find("numPS4ButtonToActionMappings") != std::string::npos)
+			{
+				int numPS4ButtonToActionMappings = std::stoi(str.substr(29, str.size() - 29));
+
+				for (int i = 0; i < numPS4ButtonToActionMappings; ++i)
+				{
+					ActionJoystickData actionJoystickData;
+
+					// Get PS4Button
+					inFile >> str;
+					if (stringToPS4Button.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a PS4Button.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					PS4Button ps4Button = stringToPS4Button.at(str);
+
+					// Get JoystickInputMode
+					inFile >> str;
+					if (str == "onPressed")
+					{
+						actionJoystickData.joystickInputMode = &InputManager::onJoystickButtonPressed;
+					}
+					else if (str == "onReleased")
+					{
+						actionJoystickData.joystickInputMode = &InputManager::onJoystickButtonReleased;
+					}
+					else
+					{
+						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
+					}
+
+					// Get Action
+					inFile >> str;
+					if (stringToAction.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into an Action.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					actionJoystickData.action = stringToAction.at(str);
+
+					ps4ButtonToAction[ps4Button] = actionJoystickData;
+					actionsFired[actionJoystickData.action] = false;
 				}
 			}
 		}
@@ -614,11 +708,13 @@ namespace ProjectSpace
 	}
 
 	InputManager::InputManager()
-		: lastUpdatetKey{sf::Keyboard::Key::Unknown},
-		lastUpdatetMouseButton{sf::Mouse::Button::ButtonCount},
-		mouseMovedThisFrame{false},
-		currentMousePosition{-1, -1},
-		mouseWheelDelta{0}
+		: lastUpdatetKey{ sf::Keyboard::Key::Unknown },
+		lastUpdatetMouseButton{ sf::Mouse::Button::ButtonCount },
+		mouseMovedThisFrame{ false },
+		currentMousePosition{ -1, -1 },
+		mouseWheelDelta{ 0 },
+		lastUpdatetJoystickButton{ 0 },
+		inputByMouseAndKeyboard{ true }
 	{
 		using Key = sf::Keyboard::Key;
 		for (Key k = Key::A; k < Key::KeyCount; ++k)
@@ -633,6 +729,12 @@ namespace ProjectSpace
 			currentMouseButtons[b] = false;
 			previousMouseButtons[b] = false;
 		}
+
+		for (unsigned int i = 0; i < sf::Joystick::ButtonCount; ++i)
+		{
+			currentJoystickButtons[i] = false;
+			previousJoystickButtons[i] = false;
+		}
 	}
 
 	void InputManager::updateCurrentInputStates(sf::Event event)
@@ -641,6 +743,8 @@ namespace ProjectSpace
 		{
 		case sf::Event::KeyPressed:
 		{
+			inputByMouseAndKeyboard = true;
+
 			lastUpdatetKey = event.key.code;
 			currentKeys[event.key.code] = true;
 
@@ -648,6 +752,8 @@ namespace ProjectSpace
 		}
 		case sf::Event::KeyReleased:
 		{
+			inputByMouseAndKeyboard = true;
+
 			lastUpdatetKey = event.key.code;
 			currentKeys[event.key.code] = false;
 
@@ -656,6 +762,8 @@ namespace ProjectSpace
 
 		case sf::Event::MouseButtonPressed:
 		{
+			inputByMouseAndKeyboard = true;
+
 			lastUpdatetMouseButton = event.mouseButton.button;
 			currentMouseButtons[event.mouseButton.button] = true;
 
@@ -663,6 +771,8 @@ namespace ProjectSpace
 		}
 		case sf::Event::MouseButtonReleased:
 		{
+			inputByMouseAndKeyboard = true;
+
 			lastUpdatetMouseButton = event.mouseButton.button;
 			currentMouseButtons[event.mouseButton.button] = false;
 
@@ -670,8 +780,9 @@ namespace ProjectSpace
 		}
 		case sf::Event::MouseMoved:
 		{
-			mouseMovedThisFrame = true;
+			inputByMouseAndKeyboard = true;
 
+			mouseMovedThisFrame = true;
 			currentMousePosition.x = event.mouseMove.x;
 			currentMousePosition.y = event.mouseMove.y;
 
@@ -679,40 +790,65 @@ namespace ProjectSpace
 		}
 		case sf::Event::MouseWheelScrolled:
 		{
+			inputByMouseAndKeyboard = true;
+
 			if (event.mouseWheelScroll.wheel == sf::Mouse::Wheel::VerticalWheel)
 			{
 				mouseWheelDelta = event.mouseWheelScroll.delta;
-				std::cout << mouseWheelDelta << "\n";
 			}
 
 			break;
 		}
 		case sf::Event::JoystickButtonPressed:
 		{
-			// TODO: Joystick Event stuff.
+			inputByMouseAndKeyboard = false;
+
+			lastUpdatetJoystickButton = event.joystickButton.button;
+			currentJoystickButtons[event.joystickButton.button] = true;
+
+			// std::cout << event.joystickButton.button << std::endl;
+
+			break;
+		}
+		case sf::Event::JoystickButtonReleased:
+		{
+			inputByMouseAndKeyboard = false;
+
+			lastUpdatetJoystickButton = event.joystickButton.button;
+			currentJoystickButtons[event.joystickButton.button] = false;
+
+			break;
+		}
+		case sf::Event::JoystickMoved:
+		{
+			/*if (event.joystickMove.axis == 4)
+			{
+				std::cout << event.joystickMove.position << "\n";
+			}*/
 
 			break;
 		}
 		}
 	}
 
-    void InputManager::updateBeforeNextIteration()
-    {
+	void InputManager::updateBeforeNextIteration()
+	{
 		// TODO: Wäre es hier besser zu gucken, ob sich der lastUpdatetKey im Vergleich zur letzten
 		// Iteration verändert hat, um die 2 std::map<K, V>::operator[] Aufrufe zu vermeiden ?
 		// Dasselbe für alle anderen InputDevices ?
 
 		previousKeys[lastUpdatetKey] = currentKeys[lastUpdatetKey];
 		previousMouseButtons[lastUpdatetMouseButton] = currentMouseButtons[lastUpdatetMouseButton];
+		previousJoystickButtons[lastUpdatetJoystickButton] = currentJoystickButtons[lastUpdatetJoystickButton];
 
 		mouseMovedThisFrame = false;
 		mouseWheelDelta = 0;
-    }
+	}
 
-    void InputManager::updateInputContexts()
-    {
-    	for(auto& pair : inputContexts)
-    	{
+	void InputManager::updateInputContexts()
+	{
+		for (auto& pair : inputContexts)
+		{
 			// If current InputContext is blocked, make it invalid.
 			if (blockedInputContexts.find(pair.first) != blockedInputContexts.end())
 			{
@@ -726,11 +862,11 @@ namespace ProjectSpace
 				pair.second->valid = pair.second->predicate();
 				pair.second->update();
 			}
-    	}
-    }
+		}
+	}
 
-    void InputManager::registerInputContext(std::string const& name, InputContext* inputContext)
-    {
+	void InputManager::registerInputContext(std::string const& name, InputContext* inputContext)
+	{
 		if (inputContexts.count(name) > 0)
 		{
 			std::string msg = "An InputContext with the given name '";
@@ -740,12 +876,12 @@ namespace ProjectSpace
 			Log::getInstance().defaultLog(msg, ll::WARNING);
 			return;
 		}
-    	inputContexts[name] = inputContext;
-    }
+		inputContexts[name] = inputContext;
+	}
 
 	// Makes the given InputContext always invalid.
-    void InputManager::blockInputContext(std::string const& name)
-    {
+	void InputManager::blockInputContext(std::string const& name)
+	{
 		if (inputContexts.count(name) == 0)
 		{
 			std::string msg = "There is no InputContext with the given name '";
@@ -756,25 +892,25 @@ namespace ProjectSpace
 			return;
 		}
 		blockedInputContexts.insert(name);
-    }
+	}
 
 	// Returns true if given key was previously not pressed and is now pressed, otherwise false.
-    bool InputManager::onKeyPressed(sf::Keyboard::Key key) const
-    {
-    	return !previousKeys.at(key) && currentKeys.at(key);
-    }
+	bool InputManager::onKeyPressed(sf::Keyboard::Key key) const
+	{
+		return !previousKeys.at(key) && currentKeys.at(key);
+	}
 
 	// Returns true if given key was previously pressed and is now not pressed, otherwise false.
-    bool InputManager::onKeyReleased(sf::Keyboard::Key key) const
-    {
-    	return previousKeys.at(key) && !currentKeys.at(key);
-    }
+	bool InputManager::onKeyReleased(sf::Keyboard::Key key) const
+	{
+		return previousKeys.at(key) && !currentKeys.at(key);
+	}
 
 	// Returns true if given key is now pressed, otherwise false.
-    bool InputManager::isKeyPressed(sf::Keyboard::Key key) const
-    {
-    	return currentKeys.at(key);
-    }
+	bool InputManager::isKeyPressed(sf::Keyboard::Key key) const
+	{
+		return currentKeys.at(key);
+	}
 
 	// Returns true if given key is now pressed, otherwise false.
 	bool InputManager::wasKeyPressed(sf::Keyboard::Key key) const
@@ -815,5 +951,47 @@ namespace ProjectSpace
 	float InputManager::getMouseWheelDelta() const
 	{
 		return mouseWheelDelta;
+	}
+
+	bool InputManager::onJoystickButtonPressed(unsigned int joystickButton) const
+	{
+		return !previousJoystickButtons.at(joystickButton) && currentJoystickButtons.at(joystickButton);
+	}
+
+	bool InputManager::onJoystickButtonPressed(PS4Button ps4Button) const
+	{
+		return !previousJoystickButtons.at(static_cast<unsigned int>(ps4Button)) &&
+			currentJoystickButtons.at(static_cast<unsigned int>(ps4Button));
+	}
+
+	bool InputManager::onJoystickButtonReleased(unsigned int joystickButton) const
+	{
+		return previousJoystickButtons.at(joystickButton) && !currentJoystickButtons.at(joystickButton);
+	}
+
+	bool InputManager::onJoystickButtonReleased(PS4Button ps4Button) const
+	{
+		return previousJoystickButtons.at(static_cast<unsigned int>(ps4Button)) &&
+			!currentJoystickButtons.at(static_cast<unsigned int>(ps4Button));
+	}
+
+	bool InputManager::isJoystickButtonPressed(unsigned int joystickButton) const
+	{
+		return currentJoystickButtons.at(joystickButton);
+	}
+
+	bool InputManager::isJoystickButtonPressed(PS4Button ps4Button) const
+	{
+		return currentJoystickButtons.at(static_cast<unsigned int>(ps4Button));
+	}
+
+	bool InputManager::wasJoystickButtonPressed(unsigned int joystickButton) const
+	{
+		return previousJoystickButtons.at(joystickButton);
+	}
+
+	bool InputManager::wasJoystickButtonPressed(PS4Button ps4Button) const
+	{
+		return previousJoystickButtons.at(static_cast<unsigned int>(ps4Button));
 	}
 }

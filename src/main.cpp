@@ -5,7 +5,7 @@ int main()
 {
 	using namespace ProjectSpace;
 	
-	Game g{ "ProjectSpace", WindowStyle::DEFAULT };
+	Game g{ "ProjectSpace" };
 	g.start();
 
     return 0;
