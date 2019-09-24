@@ -41,6 +41,7 @@ namespace ProjectSpace
 		InputContext(std::string const& contextFile);
 
 		void update();
+		void reset();
 
 		void setPredicate(std::function<bool()> predicate);
 		bool isValid() const;
@@ -179,12 +180,14 @@ namespace ProjectSpace
 		// sf::Keyboard
 		std::map<sf::Keyboard::Key, bool> currentKeys;
 		std::map<sf::Keyboard::Key, bool> previousKeys;
-		sf::Keyboard::Key lastUpdatetKey;
+
+		// Vector, because it is possible to push several Keys/Buttons before a GameLoop-Iteration ends.
+		std::vector<sf::Keyboard::Key> lastUpdatetKeys;
 
 		// sf::Mouse
 		std::map<sf::Mouse::Button, bool> currentMouseButtons;
 		std::map<sf::Mouse::Button, bool> previousMouseButtons;
-		sf::Mouse::Button lastUpdatetMouseButton;
+		std::vector<sf::Mouse::Button> lastUpdatetMouseButtons;
 		bool mouseMovedThisFrame;
 		sf::Vector2i currentMousePosition;
 		float mouseWheelDelta;
@@ -192,7 +195,8 @@ namespace ProjectSpace
 		// sf::Joystick
 		std::map<unsigned int, bool> currentJoystickButtons;
 		std::map<unsigned int, bool> previousJoystickButtons;
-		unsigned int lastUpdatetJoystickButton;
+		// unsigned int lastUpdatetJoystickButton;
+		std::vector<unsigned int> lastUpdatetJoystickButtons;
 
 		bool inputByMouseAndKeyboard;
 

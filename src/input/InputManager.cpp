@@ -15,10 +15,7 @@ namespace ProjectSpace
 	// Momentan wird normale map gebraucht die auf Ordnungsrelation mit balanced binary search tree basiert. O(log n).
 	// Allerdings könnte unsere Größenordnung auch zu niedrig sein, dass diese Veränderung eine Auswirkung haben würde.
 
-	// TODO: Bug mit PS4Controller bei Actions. L1 -> LIST_UP und R1 -> LIST_DOWN. Schnelles hintereinander drücken beider Buttons
-	// kann dazu führen, dass die zu Action des zuletzt gedrückten Buttons sehr oft bzw. unendlich Mal auslöst, bis der Button wieder
-	// losgelassen wird.
-	// Es scheint, als ob der Bug bei nahezu gleichzeitigem Drücken der Buttons auftritt.
+	// TODO: 2 Actions gleichzeitig drücken Bug für PS4Controller fixen.
 
 	// Lookup-Table to convert std::string from ContextFile to sf::Keyboard::Key.
 	std::map<std::string, sf::Keyboard::Key> stringToKey
@@ -271,6 +268,14 @@ namespace ProjectSpace
 		}
 	}
 
+	void InputContext::reset()
+	{
+		for (auto& pair : actionsFired)
+		{
+			pair.second = false;
+		}
+	}
+
 	void InputContext::setPredicate(std::function<bool()> predicate)
 	{
 		this->predicate = predicate;
@@ -301,7 +306,7 @@ namespace ProjectSpace
 			// Mögliche Lösung: Auf true gesetzte Actions nach gewisser Zeit automatisch auf false setzen.
 			if (actionsFired.at(action))
 			{
-				std::cout << "Action " << toString(action) << " erfolgreich abgefragt.\n";
+				// std::cout << "Action " << toString(action) << " erfolgreich abgefragt.\n";
 
 				actionsFired[action] = false;
 				return true;
@@ -708,12 +713,12 @@ namespace ProjectSpace
 	}
 
 	InputManager::InputManager()
-		: lastUpdatetKey{ sf::Keyboard::Key::Unknown },
-		lastUpdatetMouseButton{ sf::Mouse::Button::ButtonCount },
+		: lastUpdatetKeys{},
+		lastUpdatetMouseButtons{},
 		mouseMovedThisFrame{ false },
 		currentMousePosition{ -1, -1 },
 		mouseWheelDelta{ 0 },
-		lastUpdatetJoystickButton{ 0 },
+		lastUpdatetJoystickButtons{},
 		inputByMouseAndKeyboard{ true }
 	{
 		using Key = sf::Keyboard::Key;
@@ -745,7 +750,8 @@ namespace ProjectSpace
 		{
 			inputByMouseAndKeyboard = true;
 
-			lastUpdatetKey = event.key.code;
+			// lastUpdatetKey = event.key.code;
+			lastUpdatetKeys.push_back(event.key.code);
 			currentKeys[event.key.code] = true;
 
 			break;
@@ -754,7 +760,7 @@ namespace ProjectSpace
 		{
 			inputByMouseAndKeyboard = true;
 
-			lastUpdatetKey = event.key.code;
+			lastUpdatetKeys.push_back(event.key.code);
 			currentKeys[event.key.code] = false;
 
 			break;
@@ -764,7 +770,7 @@ namespace ProjectSpace
 		{
 			inputByMouseAndKeyboard = true;
 
-			lastUpdatetMouseButton = event.mouseButton.button;
+			lastUpdatetMouseButtons.push_back(event.mouseButton.button);
 			currentMouseButtons[event.mouseButton.button] = true;
 
 			break;
@@ -773,7 +779,7 @@ namespace ProjectSpace
 		{
 			inputByMouseAndKeyboard = true;
 
-			lastUpdatetMouseButton = event.mouseButton.button;
+			lastUpdatetMouseButtons.push_back(event.mouseButton.button);
 			currentMouseButtons[event.mouseButton.button] = false;
 
 			break;
@@ -803,7 +809,7 @@ namespace ProjectSpace
 		{
 			inputByMouseAndKeyboard = false;
 
-			lastUpdatetJoystickButton = event.joystickButton.button;
+			lastUpdatetJoystickButtons.push_back(event.joystickButton.button);
 			currentJoystickButtons[event.joystickButton.button] = true;
 
 			// std::cout << event.joystickButton.button << std::endl;
@@ -814,7 +820,7 @@ namespace ProjectSpace
 		{
 			inputByMouseAndKeyboard = false;
 
-			lastUpdatetJoystickButton = event.joystickButton.button;
+			lastUpdatetJoystickButtons.push_back(event.joystickButton.button);
 			currentJoystickButtons[event.joystickButton.button] = false;
 
 			break;
@@ -837,12 +843,31 @@ namespace ProjectSpace
 		// Iteration verändert hat, um die 2 std::map<K, V>::operator[] Aufrufe zu vermeiden ?
 		// Dasselbe für alle anderen InputDevices ?
 
-		previousKeys[lastUpdatetKey] = currentKeys[lastUpdatetKey];
-		previousMouseButtons[lastUpdatetMouseButton] = currentMouseButtons[lastUpdatetMouseButton];
-		previousJoystickButtons[lastUpdatetJoystickButton] = currentJoystickButtons[lastUpdatetJoystickButton];
+		for (int i = 0; i < lastUpdatetKeys.size(); ++i)
+		{
+			previousKeys[lastUpdatetKeys[i]] = currentKeys[lastUpdatetKeys[i]];
+		}
+		lastUpdatetKeys.clear();
+
+		for (int i = 0; i < lastUpdatetMouseButtons.size(); ++i)
+		{
+			previousMouseButtons[lastUpdatetMouseButtons[i]] = currentMouseButtons[lastUpdatetMouseButtons[i]];
+		}
+		lastUpdatetMouseButtons.clear();
+
+		for (int i = 0; i < lastUpdatetJoystickButtons.size(); ++i)
+		{
+			previousJoystickButtons[lastUpdatetJoystickButtons[i]] = currentJoystickButtons[lastUpdatetJoystickButtons[i]];
+		}
+		lastUpdatetJoystickButtons.clear();
 
 		mouseMovedThisFrame = false;
 		mouseWheelDelta = 0;
+
+		for (auto& pair : inputContexts)
+		{
+			pair.second->reset();
+		}
 	}
 
 	void InputManager::updateInputContexts()
