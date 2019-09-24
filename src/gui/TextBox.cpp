@@ -82,7 +82,8 @@ namespace ProjectSpace
 		else
 		{
 			if (currentCharIndex >= wrappedStr[absatzPtr].getSize())
-			{
+			{	
+				writtenStr = "";
 				waitForContinueKey = true;
 				currentCharIndex = 0;
 				++absatzPtr;
@@ -116,7 +117,7 @@ namespace ProjectSpace
 		{
 			cursor.update(time);
 			if (continueKeyPressed)
-			{
+			{	
 				waitForContinueKey = false;
 				continueKeyPressed = false;
 
