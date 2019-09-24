@@ -68,7 +68,7 @@ namespace ProjectSpace
 			elapsedMillis = 0;
 
 			// Every line of this TextBox is full of text.
-			writtenStr += wrappedStr[currentCharIndex++];
+			writtenStr += wrappedStr[absatzPtr][currentCharIndex++];
 			text.setString(writtenStr);
 		}
 		else
@@ -91,8 +91,9 @@ namespace ProjectSpace
 
 	void TextBox::update(sf::Time time)
 	{
+		
 		// TODO: Make it possible to show all the text with a single button press.
-		if (absatzPtr > wrappedStr.size()) return;
+		if (absatzPtr >= wrappedStr.size()) return;
 		elapsedMillis += time.asMilliseconds();
 		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
 		if (continueKeyPressed)
@@ -137,6 +138,7 @@ namespace ProjectSpace
 				}
 				break;
 			}
+			/*
 			float actualCharDelay = 0;
 			if (!continueKeyPressed)
 			{
@@ -180,7 +182,9 @@ namespace ProjectSpace
 					text.setString(writtenStr);
 				}
 			}
+			*/
 		}
+		
 	}
 
 	void TextBox::setOpacity(int opacity)
