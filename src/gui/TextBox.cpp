@@ -82,9 +82,16 @@ namespace ProjectSpace
 		else
 		{
 			if (currentCharIndex >= wrappedStr[absatzPtr].getSize())
-			{	
+			{
 				writtenStr = "";
-				waitForContinueKey = true;
+				if (absatzPtr < wrappedStr.size())
+				{
+					waitForContinueKey = true;
+				}
+				else
+				{
+					waitForContinueKey = false;
+				}
 				currentCharIndex = 0;
 				++absatzPtr;
 				sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
@@ -100,9 +107,13 @@ namespace ProjectSpace
 
 	void TextBox::update(sf::Time time)
 	{
-		
+
 		// TODO: Make it possible to show all the text with a single button press.
-		if (absatzPtr >= wrappedStr.size()) return;
+		if (absatzPtr >= wrappedStr.size())
+		{	
+			waitForContinueKey = false;
+			return;
+		}
 		elapsedMillis += time.asMilliseconds();
 		bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
 		if (continueKeyPressed)
@@ -117,7 +128,7 @@ namespace ProjectSpace
 		{
 			cursor.update(time);
 			if (continueKeyPressed)
-			{	
+			{
 				waitForContinueKey = false;
 				continueKeyPressed = false;
 
@@ -193,7 +204,7 @@ namespace ProjectSpace
 			}
 			*/
 		}
-		
+
 	}
 
 	void TextBox::setOpacity(int opacity)
