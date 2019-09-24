@@ -4,13 +4,13 @@ numKeyToActionMappings=1
 key::Space onPressed chrono_trigger_scene_toggle_list
 
 // key -> State
-numKeyToStateMappings=8
+numKeyToStateMappings=4
 key::W onPressed walk_north key::W onReleased
 key::A onPressed walk_west key::A onReleased
 key::S onPressed walk_south key::S onReleased
 key::D onPressed walk_east key::D onReleased
 
-key::Up onPressed walk_north key::Up onReleased
-key::Left onPressed walk_west key::Left onReleased
-key::Down onPressed walk_south key::Down onReleased
-key::Right onPressed walk_east key::Right onReleased
+// key::Up onPressed walk_north key::Up onReleased
+// key::Left onPressed walk_west key::Left onReleased
+// key::Down onPressed walk_south key::Down onReleased
+// key::Right onPressed walk_east key::Right onReleased
