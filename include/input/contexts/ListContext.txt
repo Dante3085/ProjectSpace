@@ -14,3 +14,6 @@ key::Down onPressed list_hold_down key::Down onReleased
 numPS4ButtonToActionMappings=2
 ps4button::l1 onPressed list_up
 ps4button::r1 onPressed list_down
+
+// ps4Button -> State
+numPS4ButtonToStateMappings=2

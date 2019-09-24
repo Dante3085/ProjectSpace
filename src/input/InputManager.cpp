@@ -374,6 +374,8 @@ namespace ProjectSpace
 		std::string str;
 		while (inFile >> str)
 		{
+			// TODO: uncapitalize section string and check for that to avoid annoying mistakes in ContextFiles.
+
 			// Check for the Key to Action mapping section.
 			if (str.find("numKeyToActionMappings") != std::string::npos)
 			{
@@ -563,6 +565,17 @@ namespace ProjectSpace
 
 					ps4ButtonToAction[ps4Button] = actionJoystickData;
 					actionsFired[actionJoystickData.action] = false;
+				}
+			}
+
+			// Check for PS4Button to State mapping section.
+			else if (str.find("numPS4ButtonToStateMappings") != std::string::npos)
+			{
+			    int numPS4ButtonToStateMappings = std::stoi(str.substr(28, str.size() - 28));
+
+				for (int i = 0; i < numPS4ButtonToStateMappings; ++i)
+				{
+					StateJoystickData 
 				}
 			}
 		}
@@ -864,6 +877,8 @@ namespace ProjectSpace
 		mouseMovedThisFrame = false;
 		mouseWheelDelta = 0;
 
+		// Reset all InputContexts. If an InputContext's Action is still fired at the end of a GameLoop iteration
+		// set it to false. This avoids pending Actions.
 		for (auto& pair : inputContexts)
 		{
 			pair.second->reset();
