@@ -1,6 +1,6 @@
 
 numKeyToActionMappings=1
-key::P onPressed textbox_continue
+key::Space onPressed textbox_continue
 
 // Fehler wenn Leerzeichen neben Gleichzeichen
 numKeyToStateMappings=1

@@ -115,15 +115,6 @@ namespace ProjectSpace
 		// TODO: Make it possible to show all the text with a single button press.
 		if (absatzPtr >= wrappedStr.size()) return;
 		elapsedMillis += time.asMilliseconds();
-		/*bool continueKeyPressed = sf::Keyboard::isKeyPressed(continueKey);
-		if (continueKeyPressed)
-		{
-			writingState = WritingState::fast;
-		}
-		else
-		{
-			writingState = WritingState::standard;
-		}*/
 
 		if (inputContext.isStateOn(State::TEXTBOX_FAST))
 		{
@@ -134,14 +125,10 @@ namespace ProjectSpace
 			writingState = WritingState::standard;
 		}
 
+
 		if (waitForContinueKey)
 		{
 			cursor.update(time);
-			/*if (continueKeyPressed)
-			{	
-				waitForContinueKey = false;
-				continueKeyPressed = false;
-			}*/
 
 			if (inputContext.hasActionFired(Action::TEXTBOX_CONTINUE))
 			{
