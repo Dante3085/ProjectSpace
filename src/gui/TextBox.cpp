@@ -152,7 +152,11 @@ namespace ProjectSpace
 		}
 		else
 		{	
-			//writingState = WritingState::immediately;
+			/*if (inputContext.hasActionFired(Action::TEXTBOX_IMMEDIATLY))
+			{
+				writingState = WritingState::immediately;
+			}*/
+			writingState = WritingState::immediately;
 			switch (writingState)
 			{
 			case WritingState::standard:
@@ -175,51 +179,6 @@ namespace ProjectSpace
 				}
 				break;
 			}
-			/*
-			float actualCharDelay = 0;
-			if (!continueKeyPressed)
-			{
-				actualCharDelay = charDelay;
-			}
-			if (elapsedMillis > actualCharDelay && currentCharIndex < wrappedStr[absatzPtr].getSize())
-			{
-				if (charSound.getStatus() != sf::Sound::SoundSource::Status::Playing)
-				{
-					charSound.play();
-				}
-
-				elapsedMillis = 0;
-				if (wrappedStr[currentCharIndex] == '\n')
-				{
-					++lineBreakCounter;
-				}
-
-				// TODO: "((rec.getSize().y - padding) / lineHeight) - 1" sollte ja die Zeilenzahl der TextBox sein.
-				// Kann man das irgendwie in eine Member Variable gießen und über alle Funktionen aktuell halten ?
-				// Würde das folgende if etwas übersichtlicher machen.
-
-				// Every line of this TextBox is full of text.
-				if (lineBreakCounter >= ((rec.getSize().y - 2 * padding) / lineHeight) - 1)
-				{
-					lineBreakCounter = 0;
-					writtenStr = "";
-					++currentCharIndex;
-					waitForContinueKey = true;
-
-					sf::Vector2f cursorPos{ text.findCharacterPos(writtenStr.getSize() - 1) };
-
-					// Try to roughly position the cursor at 80 percent of the Character's height.
-					// So roughly at the Character's foot.
-					cursorPos.y += text.getCharacterSize() * 0.8f;
-					cursor.setPosition(cursorPos);
-				}
-				else
-				{
-					writtenStr += wrappedStr[currentCharIndex++];
-					text.setString(writtenStr);
-				}
-			}
-			*/
 		}
 
 	}

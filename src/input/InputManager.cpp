@@ -165,6 +165,7 @@ namespace ProjectSpace
 		{"button_menu_press", Action::BUTTON_MENU_PRESS},
 
 		{"textbox_continue", Action::TEXTBOX_CONTINUE},
+		{"textbox_immediatly", Action::TEXTBOX_IMMEDIATLY},
 
 		{"chrono_trigger_scene_toggle_list", Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST}
 	};
