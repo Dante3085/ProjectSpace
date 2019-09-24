@@ -146,6 +146,7 @@ namespace ProjectSpace
 
 			if (inputContext.hasActionFired(Action::TEXTBOX_CONTINUE))
 			{
+				++absatzPtr;
 				waitForContinueKey = false;
 			}
 		}
