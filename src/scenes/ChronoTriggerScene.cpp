@@ -20,7 +20,7 @@ namespace ProjectSpace
 		cronoWalkRight{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		cronoWalkDown{ "rsrc/spritesheets/CronoTransparentBackground.png" },
 		crono{ sf::Vector2f{200, 200} }, 
-		cronoSpeed{ 8 },
+		cronoSpeed{ 12 },
 		camera{ crono, window, sf::Vector2f{200, 200} },
 		textBox{"rsrc/backgrounds/blueTextbox.png", "Graphik, ist im weitesten Sinn der Sammelbegriff für alle künstlerischen oder technischen Zeichnungen sowie"
 		"deren manuelle drucktechnische Vervielfältigung. In der engsten Begriffsverwendung bezieht sich Grafik allein auf die künstlerische Druckgrafik"
@@ -52,57 +52,6 @@ namespace ProjectSpace
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
 		{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
 		{"Potion x 20", [this]() { sound.play(); }},
 		{"Black-Spheroid x 20", []() {}},
@@ -120,52 +69,35 @@ namespace ProjectSpace
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
+		{"Potion x 20", [this]() { sound.play(); }},
+		{"Black-Spheroid x 20", []() {}},
+		{"Hi-Ether x 20", []() {}},
+		{"Antdoit x 20", []() {}},
+		{"Elixir x 20", []() {}},
+		{"Ether x 50", []() {}},
+		{"Potion x 20", []() {}},
+		{"Grenade x 6", []() {}},
+		{"Potion x 20", []() {}},
+		{"PhoenixDown x 2", []() {}},
+		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
-		{"Final-Elixir x 20", []() {}},
+		{"Final-Elixir x 20", []() {}},{"Hi-Potion x 4", []() { std::cout << "ListItem0 gedrueckt!" << std::endl; }},
+		{"Potion x 20", [this]() { sound.play(); }},
+		{"Black-Spheroid x 20", []() {}},
+		{"Hi-Ether x 20", []() {}},
+		{"Antdoit x 20", []() {}},
+		{"Elixir x 20", []() {}},
+		{"Ether x 50", []() {}},
+		{"Potion x 20", []() {}},
+		{"Grenade x 6", []() {}},
+		{"Potion x 20", []() {}},
+		{"PhoenixDown x 2", []() {}},
+		{"Potion x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
@@ -207,7 +139,7 @@ namespace ProjectSpace
 		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
 		sound.setBuffer(soundBuffer);
 
-		Scene::addEntities({ &crono, /*&camera,*/ &textBox, 
+		Scene::addEntities({ &crono, &camera, &textBox, 
 			                 &combatOrder, &audioFader, &list});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 
@@ -215,87 +147,34 @@ namespace ProjectSpace
 			{
 				return true;
 			});
-		// InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
+		InputManager::getInstance().registerInputContext("ChronoTriggerScene", &inputContext);
 	}
 
 	void ChronoTriggerScene::update(sf::Time time)
 	{
-		//if (inputContext.hasActionFired(Action::CHRONO_TRIGGER_SCENE_TOGGLE_LIST))
-		//{
-		//	if (translateAnimation.getFrom() == sf::Vector2f{ 500, 500 })
-		//	{
-		//		translateAnimation.setFrom(sf::Vector2f{ 600, 500 });
-		//		translateAnimation.setTo(sf::Vector2f{ 500, 500 });
-
-		//		/*fadeAnimation.setStartAlpha(255);
-		//		fadeAnimation.setEndAlpha(0);*/
-		//	}
-		//	else
-		//	{
-		//		translateAnimation.setFrom(sf::Vector2f{ 500, 500 });
-		//		translateAnimation.setTo(sf::Vector2f{ 600, 500 });
-
-		//		/*fadeAnimation.setStartAlpha(0);
-		//		fadeAnimation.setEndAlpha(255);*/
-		//	}
-		//	// fadeAnimation.start();
-		//	translateAnimation.start();
-		//}
-
-		if (inputContext.onStateOn(State::WALK_NORTH))
-		{
-			crono.setAnimation(EAnimation::UP);
-		}
-		else if (inputContext.onStateOff(State::WALK_NORTH))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
 		if (inputContext.isStateOn(State::WALK_NORTH))
 		{
 			crono.setAnimation(EAnimation::UP);
 			crono.move(0, -cronoSpeed);
 		}
-
-		if (inputContext.onStateOn(State::WALK_EAST))
-		{
-			crono.setAnimation(EAnimation::RIGHT);
-		}
-		else if (inputContext.onStateOff(State::WALK_EAST))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-		if (inputContext.isStateOn(State::WALK_EAST))
+		else if (inputContext.isStateOn(State::WALK_EAST))
 		{
 			crono.setAnimation(EAnimation::RIGHT);
 			crono.move(cronoSpeed, 0);
 		}
-
-		if (inputContext.onStateOn(State::WALK_SOUTH))
-		{
-			crono.setAnimation(EAnimation::DOWN);
-		}
-		else if (inputContext.onStateOff(State::WALK_SOUTH))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-		if (inputContext.isStateOn(State::WALK_SOUTH))
+		else if (inputContext.isStateOn(State::WALK_SOUTH))
 		{
 			crono.setAnimation(EAnimation::DOWN);
 			crono.move(0, cronoSpeed);
 		}
-
-		if (inputContext.onStateOn(State::WALK_WEST))
-		{
-			crono.setAnimation(EAnimation::LEFT);
-		}
-		else if (inputContext.onStateOff(State::WALK_WEST))
-		{
-			crono.setAnimation(EAnimation::IDLE);
-		}
-		if (inputContext.isStateOn(State::WALK_WEST))
+		else if (inputContext.isStateOn(State::WALK_WEST))
 		{
 			crono.setAnimation(EAnimation::LEFT);
 			crono.move(-cronoSpeed, 0);
+		}
+		else
+		{
+			crono.setAnimation(EAnimation::IDLE);
 		}
 		
 		Scene::update(time);
