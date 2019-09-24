@@ -59,8 +59,11 @@ namespace ProjectSpace
 		target.draw(text);
 
 		if (waitForContinueKey)
-		{
-			target.draw(cursor);
+		{	
+			if (absatzPtr < wrappedStr.size()-1)
+			{
+				target.draw(cursor);
+			}
 		}
 	}
 
@@ -132,7 +135,6 @@ namespace ProjectSpace
 				++absatzPtr;
 				waitForContinueKey = false;
 				continueKeyPressed = false;
-
 			}
 		}
 		else
