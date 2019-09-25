@@ -6,7 +6,7 @@
 namespace ProjectSpace
 {
 	int TextBox::numInstances = 0;
-
+#define m 4
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
 		: originalStr{ str }, 
 		wrappedStr{ str }, 
