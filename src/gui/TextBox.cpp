@@ -156,7 +156,7 @@ namespace ProjectSpace
 			{
 				writingState = WritingState::immediately;
 			}*/
-			writingState = WritingState::immediately;
+			//writingState = WritingState::immediately;
 			switch (writingState)
 			{
 			case WritingState::standard:
