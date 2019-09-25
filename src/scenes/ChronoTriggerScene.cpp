@@ -139,7 +139,7 @@ namespace ProjectSpace
 		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
 		sound.setBuffer(soundBuffer);
 
-		Scene::addEntities({ &crono, &camera, &textBox, 
+		Scene::addEntities({ &crono, /*&camera,*/ &textBox, 
 			                 &combatOrder, &audioFader, &list});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 
@@ -152,6 +152,7 @@ namespace ProjectSpace
 
 	void ChronoTriggerScene::update(sf::Time time)
 	{
+
 		int anzahl[] = {0,0};
 		sf::Vector2f currentPosition = crono.getPosition();
 		if (inputContext.isStateOn(State::WALK_NORTH))

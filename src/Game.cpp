@@ -132,14 +132,16 @@ namespace ProjectSpace
 
 			if (!frozen)
 			{
-				checkGlobalInput();
-
 				// Update all Entities...
 				currentScene->update(time);
 				for (Entity* e : globalEntities)
 				{
 					e->update(time);
 				}
+
+				// Needs to happen after updating global Entities since they can fire Actions
+				// that globalInput checks.
+				checkGlobalInput();
 
 				// Draw all Drawables...
 				window.clear();
