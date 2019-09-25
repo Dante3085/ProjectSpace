@@ -96,7 +96,7 @@ namespace ProjectSpace
 		{
 			if (currentCharIndex >= wrappedStr[absatzPtr].getSize())
 			{
-				writtenStr = "";
+				//writtenStr = "";
 				if (absatzPtr < wrappedStr.size())
 				{
 					waitForContinueKey = true;
@@ -144,7 +144,8 @@ namespace ProjectSpace
 			cursor.update(time);
 
 			if (inputContext.hasActionFired(Action::TEXTBOX_CONTINUE))
-			{
+			{	
+				writtenStr = "";
 				++absatzPtr;
 				waitForContinueKey = false;
 			}
