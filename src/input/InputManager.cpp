@@ -576,7 +576,80 @@ namespace ProjectSpace
 
 				for (int i = 0; i < numPS4ButtonToStateMappings; ++i)
 				{
-					StateJoystickData 
+					StateJoystickData stateOnJoystickData;
+					StateJoystickData stateOffJoystickData;
+					
+					// Get PS4Button that turns the State on.
+					inFile >> str;
+					if (stringToPS4Button.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a PS4Button.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					PS4Button onPS4Button = stringToPS4Button.at(str);
+
+					// Get InputMode for onPS4Button.
+					inFile >> str;
+
+					if (str == "onPressed")
+					{
+						stateOnJoystickData.joystickInputMode = &InputManager::onJoystickButtonPressed;
+					}
+					else if (str == "onReleased")
+					{
+						stateOnJoystickData.joystickInputMode = &InputManager::onJoystickButtonReleased;
+					}
+					else
+					{
+						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
+					}
+
+					// Get State
+					inFile >> str;
+					if (stringToState.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a State.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					State state = stringToState.at(str);
+					stateOnJoystickData.state = state;
+					stateOffJoystickData.state = state;
+
+					// Get PS4Button that turns the State off.
+					inFile >> str;
+					if (stringToPS4Button.count(str) == 0)
+					{
+						std::string msg = "Given std::string '";
+						msg += str;
+						msg += "' can not be translated into a PS4Button.";
+						Log::getInstance().defaultLog(msg, ll::ERR, true);
+					}
+					PS4Button offPS4Button = stringToPS4Button.at(str);
+
+					// Get InputMode for offPS4Button
+					inFile >> str;
+
+					if (str == "onPressed")
+					{
+						stateOffJoystickData.joystickInputMode = &InputManager::onJoystickButtonPressed;
+					}
+					else if (str == "onReleased")
+					{
+						stateOffJoystickData.joystickInputMode = &InputManager::onJoystickButtonReleased;
+					}
+					else
+					{
+						Log::getInstance().defaultLog("onPressed and onReleased are currently the only available InputModes.", ll::ERR, true);
+					}
+
+					ps4ButtonToStateOn[onPS4Button] = stateOnJoystickData;
+					ps4ButtonToStateOff[offPS4Button] = stateOffJoystickData;
+					currentStates[state] = false;
+					currentStates[state] = false;
 				}
 			}
 		}
