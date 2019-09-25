@@ -109,3 +109,6 @@ TODO: Ideen und Dinge, die ich umsetzen will.
   - ScrollText
     - Horizontal scrollender Text, der ab bestimmter Grenze wieder am Anfang weiterscrollt.
 	- https://www.youtube.com/watch?v=e_pY-uGkDFA
+
+  - Entity doUpdate Variable und Entity::update() checkt, ob doUpdate true ist.
+    Zentrale Stelle, um der Entity das updaten zu verbieten.
