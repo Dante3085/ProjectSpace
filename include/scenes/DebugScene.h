@@ -4,10 +4,10 @@
 
 #include <SFML/Window/Window.hpp>
 
-#include "gui/Button.h"
-#include "animation/TranslateAnimation.h"
 #include "input/InputManager.h"
 #include "Scene.h"
+#include "animation/AnimatedSprite.h"
+#include "animation/Animation.h"
 
 namespace ProjectSpace
 {
@@ -17,10 +17,50 @@ namespace ProjectSpace
 		DebugScene(sf::RenderWindow& window);
 
 		void update(sf::Time time) override;
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	private:
-		Button btn;
-		TranslateAnimation btnAnim;
+		Animation animMagicSpell;
+		Animation animMagic8;
+		Animation animBlueFire;
+		Animation animCasting;
+		Animation animMagicHit;
+		Animation animFlameLash;
+		Animation animFireSpin;
+		Animation animProtectionCircle;
+		Animation animBrightFire;
+		Animation animWeaponHit;
+		Animation animFire;
+		Animation animNebula;
+		Animation animVortex;
+		Animation animPhantom;
+		Animation animLoading;
+		Animation animSunburn;
+		Animation animFelSpell;
+		Animation animMidknight;
+		Animation animFreezing;
+		Animation animMagicBubble;
+
+		AnimatedSprite magicSpell;
+		AnimatedSprite magic8;
+		AnimatedSprite blueFire;
+		AnimatedSprite casting;
+		AnimatedSprite magicHit;
+		AnimatedSprite flameLash;
+		AnimatedSprite fireSpin;
+		AnimatedSprite protectionCircle;
+		AnimatedSprite brightFire;
+		AnimatedSprite weaponHit;
+		AnimatedSprite fire;
+		AnimatedSprite nebula;
+		AnimatedSprite vortex;
+		AnimatedSprite phantom;
+		AnimatedSprite loading;
+		AnimatedSprite sunburn;
+		AnimatedSprite felSpell;
+		AnimatedSprite midknight;
+		AnimatedSprite freezing;
+		AnimatedSprite magicBubble;
 	};
 }
 

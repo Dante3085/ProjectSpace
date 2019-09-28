@@ -3,22 +3,88 @@
 
 namespace ProjectSpace
 {
-	DebugScene::DebugScene(sf::RenderWindow& window)
-		: Scene{ window }, 
-		btn{ window, "DebugScene" }, 
-		btnAnim{ btn }
-	{
-		btnAnim.setDuration(500);
-		btnAnim.setEasingFunction(Easing::back_easeOut);
+    DebugScene::DebugScene(sf::RenderWindow &window)
+        : Scene{ window },
+          animMagicSpell{"rsrc/spritesheets/1_magicspell_spritesheet.png", 100, 100, 0, 0, 75, 0.05f},
+          animMagic8{"rsrc/spritesheets/2_magic8_spritesheet.png", 100, 100, 0, 0, 61, 0.05f},
+          animBlueFire{"rsrc/spritesheets/3_bluefire_spritesheet.png", 100, 100, 0, 0, 61, 0.05f},
+          animCasting{ "rsrc/spritesheets/4_casting_spritesheet.png", 100, 100, 0, 0, 72, 0.05f },
+          animMagicHit{"rsrc/spritesheets/5_magickahit_spritesheet.png", 100, 100, 0, 0, 42, 0.05f},
+          animFlameLash{ "rsrc/spritesheets/6_flamelash_spritesheet.png", 100, 100, 0, 0, 46, 0.05f },
+          animFireSpin{ "rsrc/spritesheets/7_firespin_spritesheet.png", 100, 100, 0, 0, 61, 0.05f},
+          animProtectionCircle{ "rsrc/spritesheets/8_protectioncircle_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animBrightFire{ "rsrc/spritesheets/9_brightfire_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animWeaponHit{ "rsrc/spritesheets/10_weaponhit_spritesheet.png", 100, 100, 0, 0, 31, 0.05f },
+          animFire{ "rsrc/spritesheets/11_fire_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animNebula{ "rsrc/spritesheets/12_nebula_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animVortex{ "rsrc/spritesheets/13_vortex_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animPhantom{"rsrc/spritesheets/14_phantom_spritesheet.png", 100, 100, 0, 0, 61, 0.05f},
+          animLoading{ "rsrc/spritesheets/15_loading_spritesheet.png", 100, 100, 0, 0, 121, 0.05f },
+          animSunburn{ "rsrc/spritesheets/16_sunburn_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animFelSpell{ "rsrc/spritesheets/17_felspell_spritesheet.png", 100, 100, 0, 0, 91, 0.05f },
+          animMidknight{ "rsrc/spritesheets/18_midnight_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
+          animFreezing{ "rsrc/spritesheets/19_freezing_spritesheet.png", 100, 100, 0, 0, 86, 0.05f },
+          animMagicBubble{ "rsrc/spritesheets/20_magicbubbles_spritesheet.png", 100, 100, 0, 0, 61, 0.05f },
 
-		addEntities({ &btn, &btnAnim });
-		addDrawables({ &btn });
-	}
+          magicSpell{ sf::Vector2f{0, 0}, sf::Vector2f{2, 2} },
+          magic8{ sf::Vector2f{200, 0}, sf::Vector2f{2, 2} },
+          blueFire{ sf::Vector2f{400, 0}, sf::Vector2f{2, 2} },
+          casting{ sf::Vector2f{600, 0}, sf::Vector2f{2, 2} },
+          magicHit{ sf::Vector2f{800, 0}, sf::Vector2f{2, 2} },
+          flameLash{ sf::Vector2f{1000, 0}, sf::Vector2f{2, 2} },
+          fireSpin{ sf::Vector2f{1200, 0}, sf::Vector2f{2, 2} },
+          protectionCircle{ sf::Vector2f{1400, 0}, sf::Vector2f{2, 2} },
+          brightFire{ sf::Vector2f{1600, 0}, sf::Vector2f{2, 2} },
+          weaponHit{ sf::Vector2f{1800, 0}, sf::Vector2f{2, 2} },
+          fire{ sf::Vector2f{2000, 0}, sf::Vector2f{2, 2} },
+          nebula{ sf::Vector2f{2200, 0}, sf::Vector2f{2, 2} },
+          vortex{ sf::Vector2f{2400, 0}, sf::Vector2f{2, 2} },
+          phantom{ sf::Vector2f{2600, 0}, sf::Vector2f{2, 2} },
+          loading{ sf::Vector2f{2800, 0}, sf::Vector2f{2, 2} },
+          sunburn{ sf::Vector2f{3000, 0}, sf::Vector2f{2, 2} },
+          felSpell{ sf::Vector2f{0, 200}, sf::Vector2f{2, 2} },
+          midknight{ sf::Vector2f{200, 200}, sf::Vector2f{2, 2} },
+          freezing{ sf::Vector2f{400, 200}, sf::Vector2f{2, 2} },
+          magicBubble{ sf::Vector2f{600, 200}, sf::Vector2f{2, 2} }
+    {
+        magicSpell.addAnimation(EAnimation::IDLE, &animMagicSpell);
+        magic8.addAnimation(EAnimation::IDLE, &animMagic8);
+        blueFire.addAnimation(EAnimation::IDLE, &animBlueFire);
+        casting.addAnimation(EAnimation::IDLE, &animCasting);
+        magicHit.addAnimation(EAnimation::IDLE, &animMagicHit);
+        flameLash.addAnimation(EAnimation::IDLE, &animFlameLash);
+        fireSpin.addAnimation(EAnimation::IDLE, &animFireSpin);
+        protectionCircle.addAnimation(EAnimation::IDLE, &animProtectionCircle);
+        brightFire.addAnimation(EAnimation::IDLE, &animBrightFire);
+        weaponHit.addAnimation(EAnimation::IDLE, &animWeaponHit);
+        fire.addAnimation(EAnimation::IDLE, &animFireSpin);
+        nebula.addAnimation(EAnimation::IDLE, &animNebula);
+        vortex.addAnimation(EAnimation::IDLE, &animVortex);
+        phantom.addAnimation(EAnimation::IDLE, &animPhantom);
+        loading.addAnimation(EAnimation::IDLE, &animLoading);
+        sunburn.addAnimation(EAnimation::IDLE, &animSunburn);
+        felSpell.addAnimation(EAnimation::IDLE, &animFelSpell);
+        midknight.addAnimation(EAnimation::IDLE, &animMidknight);
+        freezing.addAnimation(EAnimation::IDLE, &animFreezing);
+        magicBubble.addAnimation(EAnimation::IDLE, &animMagicBubble);
 
-	void DebugScene::update(sf::Time time)
-	{
-		
+        addEntities({ &magicSpell, &magic8, &blueFire, &casting, &magicHit, &flameLash, &fireSpin, &protectionCircle, &brightFire, 
+        	&weaponHit, &fire, &nebula, &vortex, &phantom, &loading, &sunburn, &felSpell, &midknight, &freezing, &magicBubble });
 
-		Scene::update(time);
-	}
+        addDrawables({ &magicSpell, &magic8, &blueFire, &casting, &magicHit, &flameLash, &fireSpin, &protectionCircle, &brightFire, 
+        	&weaponHit, &fire, &nebula, &vortex, &phantom, &loading, &sunburn, &felSpell, &midknight, &freezing, &magicBubble });
+    }
+
+    void DebugScene::update(sf::Time time)
+    {
+
+
+        Scene::update(time);
+    }
+
+    void DebugScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+
+        Scene::draw(target, states);
+    }
 }
