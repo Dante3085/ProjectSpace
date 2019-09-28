@@ -26,7 +26,7 @@ namespace ProjectSpace
     {
     public:
 
-        AnimatedSprite(sf::Vector2f position);
+		AnimatedSprite(sf::Vector2f position, sf::Vector2f scale = sf::Vector2f{1, 1});
 
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
         void update(sf::Time time) override;

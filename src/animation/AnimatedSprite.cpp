@@ -6,13 +6,14 @@
 
 namespace ProjectSpace
 {
-    AnimatedSprite::AnimatedSprite(sf::Vector2f position)
+    AnimatedSprite::AnimatedSprite(sf::Vector2f position, sf::Vector2f scale)
         : currentAnimation{ EAnimation::NONE }, 
 		frameIndex{ 0 }, 
 		elapsedSeconds{ 0 }, 
 		speed{0}
     {
         sprite.setPosition(position);
+		sprite.setScale(scale);
     }
 
     void AnimatedSprite::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -100,7 +101,7 @@ namespace ProjectSpace
     void AnimatedSprite::addAnimation(EAnimation name, Animation *animation)
     {
         animations[name] = animation;
-		currentAnimation = name;
+		setAnimation(name);
     }
 
     void AnimatedSprite::setColor(sf::Color const &color)
