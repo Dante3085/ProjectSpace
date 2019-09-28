@@ -100,6 +100,7 @@ namespace ProjectSpace
     void AnimatedSprite::addAnimation(EAnimation name, Animation *animation)
     {
         animations[name] = animation;
+		currentAnimation = name;
     }
 
     void AnimatedSprite::setColor(sf::Color const &color)
