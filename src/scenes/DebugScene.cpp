@@ -45,7 +45,11 @@ namespace ProjectSpace
           felSpell{ sf::Vector2f{0, 200}, sf::Vector2f{2, 2} },
           midknight{ sf::Vector2f{200, 200}, sf::Vector2f{2, 2} },
           freezing{ sf::Vector2f{400, 200}, sf::Vector2f{2, 2} },
-          magicBubble{ sf::Vector2f{600, 200}, sf::Vector2f{2, 2} }
+          magicBubble{ sf::Vector2f{600, 200}, sf::Vector2f{2, 2} },
+
+		ta{ magicSpell, sf::Vector2f{0, 0}, sf::Vector2f{1000, 1000}, 100 },
+		ta2{ flameLash, sf::Vector2f{1000, 0}, sf::Vector2f{300, 1800}, 100 },
+		ta3{ phantom, sf::Vector2f{2600, 0}, sf::Vector2f{100, 700}, 100 }
     {
         magicSpell.addAnimation(EAnimation::IDLE, &animMagicSpell);
         magic8.addAnimation(EAnimation::IDLE, &animMagic8);
@@ -69,22 +73,58 @@ namespace ProjectSpace
         magicBubble.addAnimation(EAnimation::IDLE, &animMagicBubble);
 
         addEntities({ &magicSpell, &magic8, &blueFire, &casting, &magicHit, &flameLash, &fireSpin, &protectionCircle, &brightFire, 
-        	&weaponHit, &fire, &nebula, &vortex, &phantom, &loading, &sunburn, &felSpell, &midknight, &freezing, &magicBubble });
+        	&weaponHit, &fire, &nebula, &vortex, &phantom, &loading, &sunburn, &felSpell, &midknight, &freezing, &magicBubble,
+			&ta, &ta2, &ta3});
 
         addDrawables({ &magicSpell, &magic8, &blueFire, &casting, &magicHit, &flameLash, &fireSpin, &protectionCircle, &brightFire, 
         	&weaponHit, &fire, &nebula, &vortex, &phantom, &loading, &sunburn, &felSpell, &midknight, &freezing, &magicBubble });
+
+		ta.start();
+		ta2.start();
+		ta3.start();
     }
 
-    void DebugScene::update(sf::Time time)
-    {
+	void DebugScene::update(sf::Time time)
+	{
+		if (InputManager::getInstance().onKeyPressed(sf::Keyboard::Space))
+		{
+			if (ta.getTo() == sf::Vector2f{ 1000, 1000 })
+			{
+				ta.setTo(sf::Vector2f{ 0, 0 });
+			}
+			else
+			{
+				ta.setTo(sf::Vector2f{ 1000, 1000 });
+			}
 
+			if (ta2.getTo() == sf::Vector2f{ 300, 1800 })
+			{
+				ta2.setTo(sf::Vector2f{ 1000, 0 });
+			}
+			else
+			{
+				ta2.setTo(sf::Vector2f{ 300, 1800 });
+			}
 
-        Scene::update(time);
-    }
+			if (ta3.getTo() == sf::Vector2f{100, 700})
+			{
+				ta3.setTo(sf::Vector2f{2600, 0});
+			}
+			else
+			{
+				ta3.setTo(sf::Vector2f{ 100, 700 });
+			}
 
-    void DebugScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
-    {
+			ta.setFrom(ta.getTranslatable().getPosition());
+			ta.start();
 
-        Scene::draw(target, states);
-    }
+			ta2.setFrom(ta2.getTranslatable().getPosition());
+			ta2.start();
+
+			ta3.setFrom(ta3.getTranslatable().getPosition());
+			ta3.start();
+		}
+
+		Scene::update(time);
+	}
 }

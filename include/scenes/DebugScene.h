@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "animation/AnimatedSprite.h"
 #include "animation/Animation.h"
+#include "animation/TranslateAnimation.h"
 
 namespace ProjectSpace
 {
@@ -17,7 +18,6 @@ namespace ProjectSpace
 		DebugScene(sf::RenderWindow& window);
 
 		void update(sf::Time time) override;
-		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	private:
 		Animation animMagicSpell;
@@ -61,6 +61,10 @@ namespace ProjectSpace
 		AnimatedSprite midknight;
 		AnimatedSprite freezing;
 		AnimatedSprite magicBubble;
+
+		TranslateAnimation ta;
+		TranslateAnimation ta2;
+		TranslateAnimation ta3;
 	};
 }
 
