@@ -139,7 +139,7 @@ namespace ProjectSpace
 		soundBuffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg");
 		sound.setBuffer(soundBuffer);
 
-		Scene::addEntities({ &crono, /*&camera,*/ &textBox, 
+		Scene::addEntities({ &crono, &camera, &textBox, 
 			                 &combatOrder, &audioFader, &list});
 		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
 
