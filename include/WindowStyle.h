@@ -4,7 +4,7 @@
 
 namespace ProjectSpace
 {
-	enum WindowStyle
+	enum class WindowStyle
 	{
 		NONE = 0,
 		TITLEBAR = 1 << 0,

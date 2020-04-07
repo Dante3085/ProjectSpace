@@ -105,7 +105,9 @@ namespace ProjectSpace
 		{"Final-Elixir x 20", []() {}},
 		{"Final-Elixir x 20", []() {}},
 	}},
-	inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"}
+	inputContext{"include/input/contexts/ChronoTriggerSceneContext.txt"},
+	collisionBox{ sf::Vector2f{400, 500}, sf::Vector2f{100, 100} },
+	collisionManager{{&collisionBox, &crono}}
 	{
 		tilemap.loadFromFile("tilemaps/chronoTriggerScene.txt");
 
@@ -141,7 +143,7 @@ namespace ProjectSpace
 
 		Scene::addEntities({ &crono, /*&camera,*/ &textBox, 
 			                 &combatOrder, &audioFader, &list});
-		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list });
+		Scene::addDrawables({ &tilemap, &crono, &textBox, &combatOrder, &list, &collisionBox });
 
 		inputContext.setPredicate([]()
 			{

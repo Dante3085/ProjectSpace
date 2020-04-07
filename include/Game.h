@@ -26,8 +26,8 @@ namespace ProjectSpace
     class Game
     {
     public:
-		Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style = DEFAULT);
-        Game(std::string const& windowTitle, WindowStyle style = DEFAULT);
+		Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style = WindowStyle::DEFAULT);
+        Game(std::string const& windowTitle, WindowStyle style = WindowStyle::DEFAULT);
         ~Game();
 
         void start();

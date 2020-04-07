@@ -21,6 +21,8 @@
 #include "rpg/Character.h"
 #include "audio/AudioFader.h"
 #include "input/InputManager.h"
+#include "collision/CollisionBox.h"
+#include "collision/CollisionManager.h"
 
 namespace ProjectSpace
 {
@@ -64,6 +66,9 @@ namespace ProjectSpace
 		sf::Sound sound;
 
 		InputContext inputContext;
+
+		CollisionBox collisionBox;
+		CollisionManager collisionManager;
 	};
 }
 

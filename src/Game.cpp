@@ -19,7 +19,7 @@ namespace ProjectSpace
 	// Falls dieser immer aktiv ist, können einfach InputManager-Abfragen gemacht werden.
 
 	Game::Game(std::string const& windowTitle, unsigned int screenWidth, unsigned int screenHeight, WindowStyle style)
-		: window{ sf::VideoMode{screenWidth, screenHeight}, windowTitle, style },
+		: window{ sf::VideoMode{screenWidth, screenHeight}, windowTitle, (unsigned int)style },
 		scenes{},
 		currentScene{ nullptr },
 		windowWidth{ (float)sf::VideoMode::getDesktopMode().width },
@@ -36,7 +36,7 @@ namespace ProjectSpace
 		collisionSceneBtn{ window, "COLLISION SCENE" },
 		btnBox{},
 		buttonMenu{ {&exitBtn, &closeMenuBtn, &debugSceneBtn, &sceneOneBtn, &cronoTriggerSceneBtn, &collisionSceneBtn} },
-		menuTa{ btnBox, sf::Vector2f{-250 - btnBox.getWidth(), 50}, sf::Vector2f{-5, 50}, 500 },
+		menuTa{ btnBox, sf::Vector2f{-250 - btnBox.getWidth(), 50}, sf::Vector2f{-5, 50}, 200 },
 		globalEntities{ &fpsCounter, &btnBox, &menuTa, &buttonMenu },
 		globalDrawables{ &fpsCounter, &btnBox }
     {
@@ -83,6 +83,7 @@ namespace ProjectSpace
 		btnBox.setPosition(-10, 50);
 		btnBox.setSpacing(5);
 
+		menuTa.setEasingFunction(Easing::linear_easeNone);
 		menuTa.start();
 
 		inputContext.setPredicate([]()
@@ -157,6 +158,7 @@ namespace ProjectSpace
 
             inputManager->updateBeforeNextIteration();
         }
+
     }
 
     void Game::setCurrentScene(EScene scene)
@@ -190,14 +192,12 @@ namespace ProjectSpace
             {
                 menuTa.setFrom(menuTa.getTranslatable().getPosition());
                 menuTa.setTo(sf::Vector2f{ -5, 50 });
-                menuTa.setEasingFunction(Easing::back_easeInOut);
                 menuTa.start();
             }
             else
             {
                 menuTa.setFrom(menuTa.getTranslatable().getPosition());
                 menuTa.setTo(sf::Vector2f{ -250 - btnBox.getWidth(), 50 });
-                menuTa.setEasingFunction(Easing::back_easeInOut);
                 menuTa.start();
             }
         }

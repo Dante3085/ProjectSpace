@@ -17,5 +17,5 @@ ps4button::r1 onPressed list_down
 
 // ps4Button -> State
 numPS4ButtonToStateMappings=2
-ps4button::square onPressed list_hold_up ps4button::square onReleased
+ps4button::l1 onPressed list_hold_up ps4button::l1 onReleased
 ps4button::r1 onPressed list_hold_down ps4button::r1 onReleased

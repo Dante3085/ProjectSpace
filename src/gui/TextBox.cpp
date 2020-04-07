@@ -6,6 +6,7 @@
 namespace ProjectSpace
 {
 	int TextBox::numInstances = 0;
+
 	TextBox::TextBox(std::string texturePath, sf::String str, sf::Vector2f size, sf::Vector2f position)
 		: originalStr{ str }, 
 		wrappedStr{ str }, 
@@ -23,6 +24,7 @@ namespace ProjectSpace
 		inputContext{"include/input/contexts/TextBoxContext.txt"},
 		inputManager{&InputManager::getInstance()}
 	{
+
 		// Initialize this Textbox's background.
 		texture.loadFromFile(texturePath);
 		rec.setTexture(&texture);
@@ -151,10 +153,10 @@ namespace ProjectSpace
 		}
 		else
 		{	
-			/*if (inputContext.hasActionFired(Action::TEXTBOX_IMMEDIATLY))
+			if (inputContext.hasActionFired(Action::TEXTBOX_IMMEDIATLY))
 			{
 				writingState = WritingState::immediately;
-			}*/
+			}
 			//writingState = WritingState::immediately;
 			switch (writingState)
 			{

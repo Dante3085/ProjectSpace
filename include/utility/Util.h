@@ -7,6 +7,7 @@
 #include <SFML/System/String.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/System/String.hpp>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -106,6 +107,8 @@ namespace ProjectSpace
 		}
 		return stream << "}";
 	}
+
+	void debugSfString(sf::String const& sfString);
 
 	// Inserts \n into text according to given lineLength, so that text wraps in between words.
 	void addLineWrapping(sf::String& text, int lineLength);

@@ -79,6 +79,11 @@ namespace ProjectSpace
 		}
 	}
 
+	void debugSfString(sf::String const& sfString)
+	{
+		std::string s = sfString;
+	}
+
 	namespace DebugDrawing
 	{
 		void drawPoint(sf::Vector2f const& point, Scene& scene)

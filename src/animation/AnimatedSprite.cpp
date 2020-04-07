@@ -96,6 +96,8 @@ namespace ProjectSpace
         sprite.setTextureRect((*animations[currentAnimation])[0]);
         elapsedSeconds = 0;
         frameIndex = 0;
+
+		std::cout << "setAnimation" << std::endl;
     }
 
     void AnimatedSprite::addAnimation(EAnimation name, Animation *animation)

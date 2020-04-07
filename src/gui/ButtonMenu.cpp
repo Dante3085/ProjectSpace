@@ -8,12 +8,15 @@ namespace ProjectSpace
 	int ButtonMenu::numInstances = 0;
 
 	ButtonMenu::ButtonMenu()
-		: selected{0}, 
-		inputContext{"include/input/contexts/ButtonMenuContext.txt"}
+		: buttons{},
+		selected{0}, 
+		inputContext{"include/input/contexts/ButtonMenuContext.txt"},
+		buffer{},
+		cursorMove{}
 	{
 		buttons[selected]->select();
 
-		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		if (!buffer.loadFromFile("rsrc/audio/sfx/test.wav"))
 		{
 			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
 			Log::getInstance() << lo::EXIT;
@@ -30,11 +33,15 @@ namespace ProjectSpace
 	}
 
 	ButtonMenu::ButtonMenu(std::vector<Button const*> buttons) 
-		: buttons{ buttons }, selected{0}, inputContext{ "include/input/contexts/ButtonMenuContext.txt" }
+		: buttons{ buttons }, 
+		selected{0}, 
+		inputContext{ "include/input/contexts/ButtonMenuContext.txt" },
+		buffer{}, 
+		cursorMove{}
 	{
 		buttons[selected]->select();
 
-		if (!buffer.loadFromFile("rsrc/audio/sfx/ff7CursorMove.ogg"))
+		if (!buffer.loadFromFile("rsrc/audio/sfx/test.wav"))
 		{
 			Log::getInstance().defaultLog("Couldn't load cursorMove sound effect.", ll::ERR);
 			Log::getInstance() << lo::EXIT;
@@ -54,12 +61,12 @@ namespace ProjectSpace
 	{
 		if (inputContext.hasActionFired(Action::BUTTON_MENU_FORWARD))
 		{
-			// cursorMove.play();
+			cursorMove.play();
 			forward();
 		}
 		else if(inputContext.hasActionFired(Action::BUTTON_MENU_BACKWARD))
 		{
-			// cursorMove.play();
+			cursorMove.play();
 			backward();
 		}
 		else if (inputContext.hasActionFired(Action::BUTTON_MENU_PRESS))

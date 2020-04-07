@@ -19,14 +19,15 @@
 #include "animation/Animation.h"
 #include "animation/Fadeable.h"
 #include "scenes/Entity.h"
+#include "collision/Collidable.h"
 
 namespace ProjectSpace
 {
-    class AnimatedSprite : public sf::Drawable, public Entity, public Fadeable, public Translatable
+    class AnimatedSprite : public sf::Drawable, public Entity, public Fadeable, public Translatable, public Collidable
     {
     public:
 
-		AnimatedSprite(sf::Vector2f position, sf::Vector2f scale = sf::Vector2f{1, 1});
+	AnimatedSprite(sf::Vector2f position, sf::Vector2f scale = sf::Vector2f{1, 1});
 
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
         void update(sf::Time time) override;
